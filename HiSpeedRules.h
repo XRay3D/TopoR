@@ -17,18 +17,16 @@ namespace TopoR_PCB_Classes {
 
 // Раздел «Правила для высокоскоростных устройств».
 
-class HiSpeedRules {
+struct HiSpeedRules {
 
     // Волновое сопротивление и правила разводки сигналов по слоям.
 
-public:
-    class Impedance {
-    public:
-        class LayerRule_Impendance {
+    struct Impedance {
+
+        struct LayerRule_Impendance {
 
             // Ширина проводника.
 
-        public:
             //[XmlAttribute("width", DataType = "float")] public float _width;
             float _width = 0.0F;
 
@@ -40,7 +38,6 @@ public:
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -58,14 +55,12 @@ public:
 
     // Волновое сопротивление и правила разводки сигналов по слоям для дифференциальных сигналов.
 
-public:
-    class ImpedanceDiff {
-    public:
-        class LayerRule_ImpendanceDiff {
+    struct ImpedanceDiff {
+
+        struct LayerRule_ImpendanceDiff {
 
             // Ширина проводника.
 
-        public:
             //[XmlAttribute("width", DataType = "float")] public float _width;
             float _width = 0.0F;
 
@@ -82,7 +77,6 @@ public:
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -100,17 +94,14 @@ public:
 
     // Описание сигнального кластера цепей.
 
-public:
-    class SignalCluster {
+    struct SignalCluster {
 
         // Описание заданной связи.
 
-    public:
-        class PinPair {
+        struct PinPair {
 
             // Ссылка на контакт источника сигнала.
 
-        public:
             //[XmlElement("PinRef")] public List<PinRef> _PinRefs;
             std::vector<std::optional<PinRef>> _PinRefs;
             bool ShouldSerialize_PinRefs();
@@ -118,12 +109,10 @@ public:
 
         // Описание сигнала.
 
-    public:
-        class Signal {
+        struct Signal {
 
             // Имя объекта или ссылка на именованный объект.
 
-        public:
             //[XmlAttribute("name")] public string _name;
             std::string _name;
 
@@ -144,7 +133,6 @@ public:
 
         // Ссылка на волновое сопротивление.
 
-    public:
         //[XmlElement("ImpedanceRef")] public ImpedanceRef _ImpedanceRef;
         std::optional<ImpedanceRef> _ImpedanceRef;
 
@@ -186,12 +174,10 @@ public:
 
     // Описание дифференциального сигнала (дифференциальной пары).
 
-public:
-    class DiffSignal {
+    struct DiffSignal {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -214,12 +200,10 @@ public:
 
     // Описание группы сигналов.
 
-public:
-    class SignalGroup {
+    struct SignalGroup {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -234,17 +218,14 @@ public:
 
     // Описание правил выравнивания задержек.
 
-public:
-    class RulesDelay {
+    struct RulesDelay {
 
         // Описание правила выравнивания задержек для группы цепей или группы дифференциальных пар.
 
-    public:
-        class DelayEqual {
+        struct DelayEqual {
 
             // Флаг применения правила.
 
-        public:
             //[XmlAttribute("enabled")] public Bool _enabled;
             Bool _enabled{};
 
@@ -272,12 +253,10 @@ public:
 
         // Описание правила задания абсолютного значения задержки.
 
-    public:
-        class DelayConstant {
+        struct DelayConstant {
 
             // Флаг применения правила.
 
-        public:
             //[XmlAttribute("enabled")] public Bool _enabled;
             Bool _enabled{};
 
@@ -320,12 +299,11 @@ public:
         // Описание правила взаимного выравнивания задержек.
 
         // <remarks>! Правило несимметрично относительно ObjectLeft и ObjectRight</remarks>
-    public:
-        class DelayRelation {
+
+        struct DelayRelation {
 
             // Флаг применения правила.
 
-        public:
             //[XmlAttribute("enabled")] public Bool _enabled;
             Bool _enabled{};
 
@@ -371,7 +349,6 @@ public:
 
         // Правила выравнивания задержек для группы цепей или группы дифференциальных пар.
 
-    public:
         //[XmlElement("DelayEqual")] public List<DelayEqual> _DelayEquals;
         std::vector<std::optional<DelayEqual>> _DelayEquals;
         bool ShouldSerialize_DelayEquals();
@@ -393,17 +370,14 @@ public:
 
     // Настройки поиска сигналов.
 
-public:
-    class SignalSearchSettings {
+    struct SignalSearchSettings {
 
         // Правило именования цепей дифференциальных сигналов.
 
-    public:
-        class RuleDiffSignalNetsNames {
+        struct RuleDiffSignalNetsNames {
 
             // Флаг применения правила.
 
-        public:
             //[XmlAttribute("enabled")] public Bool _enabled;
             Bool _enabled{};
 
@@ -423,12 +397,10 @@ public:
 
         // Список цепей, исключённых из поиска сигналов.
 
-    public:
-        class ExcludedNets {
+        struct ExcludedNets {
 
             // Минимальное количество контактов в силовой цепи. Параметр используется для автоматического определения силовых цепей.
 
-        public:
             //[XmlAttribute("minPinsNumber", DataType = "int")] public int _minPinsNumber;
             int _minPinsNumber = 0;
 
@@ -441,7 +413,6 @@ public:
 
         // Максимальное число цепей в сигнальном кластере. Параметр используется при автоматическом определении цепей сигнального кластера.
 
-    public:
         //[XmlAttribute("maxNetsInCluster", DataType = "int")] public int _maxNetsInCluster;
         int _maxNetsInCluster = 0;
 
@@ -469,7 +440,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

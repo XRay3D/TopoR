@@ -17,16 +17,14 @@ namespace TopoR_PCB_Classes {
 
 // Раздел «Настройки отображения».
 
-class DisplayControl {
+struct DisplayControl {
 
     // Настройка отображения: параметры текущего вида.
 
-public:
-    class View {
+    struct View {
 
         // Параметр текущего вида: масштаб.
 
-    public:
         //[XmlAttribute("scale", DataType = "float")] public float _scale;
         float _scale = 0.0F;
 
@@ -43,8 +41,7 @@ public:
 
     // Устанавливает активный слой.
 
-public:
-    class ActiveLayer {
+    struct ActiveLayer {
         /* Опечатка в спецификации?    .
             // Тип слоя.
 
@@ -53,31 +50,26 @@ public:
 
         // Наименование слоя.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
     };
 
     // Настройка отображения: единицы измерения.
 
-public:
-    class Units_DisplayControl {
+    struct Units_DisplayControl {
 
         // Настройка отображения: единицы измерения.
 
-    public:
         //[XmlAttribute("preference")] public preference _preference;
         preference _preference{};
     };
 
     // Настройка отображения: общие цветовые настройки.
 
-public:
-    class Colors_DisplayControl {
+    struct Colors_DisplayControl {
 
         // Настройка отображения: текущая цветовая схема.
 
-    public:
         //[XmlAttribute("colorScheme")] public string _colorScheme;
         std::string _colorScheme;
 
@@ -189,12 +181,10 @@ public:
 
     // Настройка отображения: настройки видимости объектов.
 
-public:
-    class Show_DisplayControl {
+    struct Show_DisplayControl {
 
         // Настройка отображения: текущая схема отображения.
 
-    public:
         //[XmlAttribute("displayScheme")] public string _displayScheme;
         std::string _displayScheme;
 
@@ -529,17 +519,14 @@ public:
 
     // Настройки сетки.
 
-public:
-    class Grid {
+    struct Grid {
 
         // Настройка отображения сетки: шаг сетки.
 
-    public:
-        class GridSpace {
+        struct GridSpace {
 
             // шаг сетки по горизонтали.
 
-        public:
             //[XmlAttribute("x", DataType = "float")] public float _x;
             float _x = 0.0F;
 
@@ -551,7 +538,6 @@ public:
 
         // Настройка отображения сетки: цвет сетки.
 
-    public:
         //[XmlAttribute("gridColor")] public string _gridColor;
         std::string _gridColor;
 
@@ -592,17 +578,14 @@ public:
 
     // Настройка отображения: настройки видимости слоя.
 
-public:
-    class LayerOptions {
+    struct LayerOptions {
 
         // Настройка отображения: цветовые настройки слоя.
 
-    public:
-        class Colors_LayerOptions {
+        struct Colors_LayerOptions {
 
             // Настройка отображения слоя: цвет деталей, проводников (основной цвет слоя).
 
-        public:
             //[XmlAttribute("details")] public string _details;
             std::string _details;
 
@@ -619,12 +602,10 @@ public:
 
         // Настройка отображения слоя: настройки видимости.
 
-    public:
-        class Show_LayerOptions {
+        struct Show_LayerOptions {
 
             // Флаг видимости.
 
-        public:
             //[XmlAttribute("visible")] public Bool _visible;
             Bool _visible{};
 
@@ -650,7 +631,6 @@ public:
 
         // Ссылка на слой.
 
-    public:
         //[XmlElement("LayerRef")] public LayerRef _LayerRef;
         std::optional<LayerRef> _LayerRef;
 
@@ -667,17 +647,14 @@ public:
 
     // Отображение цепей особым цветом.
 
-public:
-    class ColorNets {
+    struct ColorNets {
 
         // Отображение цепей особым цветом: установить цвет для цепи / сигнала / группы цепей / группы сигналов.
 
-    public:
-        class SetColor {
+        struct SetColor {
 
             // Отображение цепей особым цветом: задание цвета.
 
-        public:
             //[XmlAttribute("color")] public string _color;
             std::string _color;
 
@@ -689,7 +666,6 @@ public:
 
         // Флаг применения правила.
 
-    public:
         //[XmlAttribute("enabled")] public Bool _enabled;
         Bool _enabled{};
 
@@ -745,12 +721,10 @@ public:
 
     // Фильтр отображения связей.
 
-public:
-    class FilterNetlines {
+    struct FilterNetlines {
 
         // Флаг применения правила.
 
-    public:
         //[XmlAttribute("enabled")] public Bool _enabled;
         Bool _enabled{};
 
@@ -766,7 +740,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

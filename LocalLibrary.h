@@ -17,38 +17,34 @@ namespace TopoR_PCB_Classes {
 
 // Раздел «Библиотечные элементы». (Обязательный раздел)
 
-class LocalLibrary {
-public:
-    class BasePad {
+struct LocalLibrary {
+
+    struct BasePad {
 
         // Ссылка на слой или тип слоя.
 
         // <value>LayerTypeRef | LayerRef</value>
-    public:
+
         //[XmlElement("LayerTypeRef", typeof(LayerTypeRef)), XmlElement("LayerRef", typeof(LayerRef))] public Object _Reference;
         std::any _Reference;
     };
 
     // Описание круглой контактной площадки.
 
-public:
-    class PadCircle : public BasePad {
+    struct PadCircle : public BasePad {
 
         // Диаметр окружности, круга, овала.
 
-    public:
         //[XmlAttribute("diameter", DataType = "float")] public float _diameter;
         float _diameter = 0.0F;
     };
 
     // Описание овальной контактной площадки.
 
-public:
-    class PadOval : public BasePad {
+    struct PadOval : public BasePad {
 
         // Диаметр окружности, круга, овала.
 
-    public:
         //[XmlAttribute("diameter", DataType = "float")] public float _diameter;
         float _diameter = 0.0F;
 
@@ -75,12 +71,10 @@ public:
     // прямоугольные КП со срезанными углами;
     // Finger pads.
 
-public:
-    class PadRect : public BasePad {
+    struct PadRect : public BasePad {
 
         // Ширина прямоугольной контактной площадки.
 
-    public:
         //[XmlAttribute("width", DataType = "float")] public float _width;
         float _width = 0.0F;
 
@@ -153,13 +147,12 @@ public:
 
     // Описание полигональной контактной площадки.
 
-public:
-    class PadPoly : public BasePad {
+    struct PadPoly : public BasePad {
 
         // Массив координат точек, вершин.
 
         // <remarks>! Минимум 3 элемента</remarks>
-    public:
+
         //[XmlElement("Dot")] public List<Dot> _Dots;
         std::vector<std::optional<Dot>> _Dots;
         bool ShouldSerialize_Dots();
@@ -167,12 +160,10 @@ public:
 
     // Описание стека контактных площадок.
 
-public:
-    class Padstack {
+    struct Padstack {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -215,19 +206,18 @@ public:
 
     // Описание типа (стека) переходного отверстия.
 
-public:
-    class Viastack {
+    struct Viastack {
 
         // Диапазон слоев.
 
         // <value>AllLayers | [LayerRef]</value>
-    public:
-        class LayerRange {
+
+        struct LayerRange {
 
             // AllLayers - yстанавливает область действия правила: все слои. См. также _LayerRefs
 
             // <remarks>! При null необходимо смотреть _LayersRefs - там описан список ссылок типа LayerRef. </remarks>
-        public:
+
             //[XmlElement("AllLayers", typeof(AllLayers))] public AllLayers _AllLayers;
             std::optional<AllLayers> _AllLayers;
 
@@ -242,7 +232,6 @@ public:
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -275,17 +264,14 @@ public:
 
     // Описание посадочного места.
 
-public:
-    class Footprint {
+    struct Footprint {
 
         // Описание области металлизации (полигона) в посадочном месте компонента.
 
-    public:
-        class Copper_Footprint {
+        struct Copper_Footprint {
 
             // Толщина линии.
 
-        public:
             //[XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth;
             float _lineWidth = 0.0F;
 
@@ -304,12 +290,10 @@ public:
 
         // Описание запрета в посадочном месте Footprint. Для запрета размещения должен быть указан слой с типом Assy.
 
-    public:
-        class Keepout_Place_Trace {
+        struct Keepout_Place_Trace {
 
             // Ссылка на слой.
 
-        public:
             //[XmlElement("LayerRef")] public LayerRef _LayerRef;
             std::optional<LayerRef> _LayerRef;
 
@@ -323,12 +307,10 @@ public:
 
         // Описание монтажного отверстия в посадочном месте.
 
-    public:
-        class Mnthole {
+        struct Mnthole {
 
             // Идентификатор неименованных объектов.
 
-        public:
             //[XmlAttribute("id")] public string _id;
             std::string _id;
 
@@ -345,12 +327,10 @@ public:
 
         // Описание ярлыка в посадочном месте.
 
-    public:
-        class Label_Footprint {
+        struct Label_Footprint {
 
             // Имя объекта или ссылка на именованный объект.
 
-        public:
             //[XmlAttribute("name")] public string _name;
             std::string _name;
 
@@ -397,12 +377,11 @@ public:
         // Если же площадка находится на противоположной стороне, то должен быть установлен флаг flipped.
         // Этот флаг устанавливается в описании контакта посадочного места.
         // </remarks>
-    public:
-        class Pad {
+
+        struct Pad {
 
             // Номер контактной площадки (вывода) посадочного места.
 
-        public:
             //[XmlAttribute("padNum", DataType = "int")] public int _padNum;
             int _padNum = 0;
 
@@ -439,7 +418,6 @@ public:
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -496,17 +474,14 @@ public:
 
     // Описание схемного компонента.
 
-public:
-    class Component {
+    struct Component {
 
         // Описание контакта схемного компонента.
 
-    public:
-        class Pin_Component {
+        struct Pin_Component {
 
             // Номер контакта компонента.
 
-        public:
             //[XmlAttribute("pinNum", DataType = "int")] public int _pinNum;
             int _pinNum = 0;
 
@@ -538,12 +513,10 @@ public:
 
         // Описание атрибута схемного компонента.
 
-    public:
-        class Attribute_Component {
+        struct Attribute_Component {
 
             // Имя объекта или ссылка на именованный объект.
 
-        public:
             //[XmlAttribute("name")] public string _name;
             std::string _name;
 
@@ -555,7 +528,6 @@ public:
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -576,17 +548,14 @@ public:
 
     // Описание упаковки (соответствие контактов компонента и выводов посадочного места).
 
-public:
-    class Package {
+    struct Package {
 
         // Соответствие контакта схемного компонента и вывода посадочного места.
 
-    public:
-        class Pinpack {
+        struct Pinpack {
 
             // Номер контакта компонента.
 
-        public:
             //[XmlAttribute("pinNum", DataType = "int")] public int _pinNum;
             int _pinNum = 0;
 
@@ -608,7 +577,6 @@ public:
 
         // Ссылка на схемный компонент.
 
-    public:
         //[XmlElement("ComponentRef")] public ComponentRef _ComponentRef;
         std::optional<ComponentRef> _ComponentRef;
 
@@ -626,7 +594,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

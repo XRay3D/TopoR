@@ -16,16 +16,14 @@ namespace TopoR_PCB_Classes {
 
 // Раздел «Слои». (Обязательный раздел)
 
-class Layers {
+struct Layers {
 
     // Описание слоя.
 
-public:
-    class Layer {
+    struct Layer {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -68,7 +66,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

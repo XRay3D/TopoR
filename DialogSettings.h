@@ -16,16 +16,15 @@ namespace TopoR_PCB_Classes {
 
 // Раздел «Настройки диалогов».
 
-class DialogSettings {
+struct DialogSettings {
 
     // Настройки DRC.
 
-public:
-    class DRCSettings {
+    struct DRCSettings {
 
         // Настройка DRC: выводить отчёт в указанный файл.
         // </summary
-    public:
+
         //[XmlAttribute("createLog")] public Bool _createLog;
         Bool _createLog{};
 
@@ -296,22 +295,19 @@ public:
 
     // Настройки вывода файлов Gerber.
 
-public:
-    class GerberSettings {
+    struct GerberSettings {
 
         // Настройки вывода файла Gerber.
 
-    public:
-        class ExportFile_GerberSettings {
+        struct ExportFile_GerberSettings {
 
             // Настройка экспорта Gerber файлов: список экспортируемых объектов для слоя.
 
-        public:
-            class ExportObjects_ExportFile {
+            struct ExportObjects_ExportFile {
 
                 // Настройка вывода файла Gerber: выводить контур платы.
                 // </summary
-            public:
+
                 //[XmlAttribute("board")] public Bool _board;
                 Bool _board{};
 
@@ -368,7 +364,7 @@ public:
             // Имя экспортируемого файла Gerber, Drill.
             // </summary
             // <remarks>! Имя не должно содержать путь к файлу.</remarks>
-        public:
+
             //[XmlAttribute("fileName")] public string _fileName;
             std::string _fileName;
 
@@ -408,7 +404,7 @@ public:
 
         // Каталог для выходных файлов (Gerber, Drill).
         // </summary
-    public:
+
         //[XmlAttribute("outPath")] public string _outPath;
         std::string _outPath;
 
@@ -439,22 +435,19 @@ public:
 
     // Настройки вывода файла DXF.
 
-public:
-    class DXFSettings {
+    struct DXFSettings {
 
         // Настройки вывода слоя в файл DXF.
 
-    public:
-        class ExportLayer {
+        struct ExportLayer {
 
             // Настройка экспорта слоя в файл DXF: список экспортируемых объектов для слоя.
 
-        public:
-            class ExportObjects_ExportLayer {
+            struct ExportObjects_ExportLayer {
 
                 // Настройка вывода файлов Geber, DXF: выводить проводники.
                 // </summary
-            public:
+
                 //[XmlAttribute("wires")] public Bool _wires;
                 Bool _wires{};
 
@@ -510,7 +503,6 @@ public:
 
             // Настройка вывода слоя в файл DXF: выводить слой.
 
-        public:
             //[XmlAttribute("output")] public Bool _output;
             Bool _output{};
 
@@ -527,7 +519,6 @@ public:
 
         // Имя выходного файла (ВОМ, DXF).
 
-    public:
         //[XmlAttribute("outFile")] public string _outFile;
         std::string _outFile;
 
@@ -561,25 +552,23 @@ public:
 
     // Настройки вывода файлов Drill.
 
-public:
-    class DrillSettings {
+    struct DrillSettings {
 
         // Настройки вывода файла Gerber.
 
-    public:
-        class ExportFile_DrillSettings {
+        struct ExportFile_DrillSettings {
 
             // Имя экспортируемого файла Gerber, Drill.
             // </summary
             // <remarks>! Имя не должно содержать путь к файлу.</remarks>
-        public:
+
             //[XmlAttribute("fileName")] public string _fileName;
             std::string _fileName;
         };
 
         // Каталог для выходных файлов (Gerber, Drill).
         // </summary
-    public:
+
         //[XmlAttribute("outPath")] public string _outPath;
         std::string _outPath;
 
@@ -610,12 +599,10 @@ public:
 
     // Настройки вывода BOM файла.
 
-public:
-    class BOMSettings {
+    struct BOMSettings {
 
         // Имя выходного файла (ВОМ, DXF).
 
-    public:
         //[XmlAttribute("outFile")] public string _outFile;
         std::string _outFile;
 
@@ -660,12 +647,10 @@ public:
 
     // Настройка фильтра сообщений.
 
-public:
-    class MessagesFilter {
+    struct MessagesFilter {
 
         // Настройка фильтра сообщений: режим показа предупреждений.
 
-    public:
         //[XmlAttribute("showWarnings")] public showWarnings _showWarnings;
         showWarnings _showWarnings{};
 
@@ -800,7 +785,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

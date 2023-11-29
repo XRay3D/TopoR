@@ -25,9 +25,9 @@
 namespace TopoR_PCB_Classes {
 
 // Корневой тег. Включает все разделы файла.
-// [XmlRoot("TopoR_PCB_File")] public class TopoR_PCB_File
-class TopoR_PCB_File {
-public:
+// [XmlRoot("TopoR_PCB_File")] public struct  TopoR_PCB_File
+struct TopoR_PCB_File {
+
     // Раздел «Заголовок файла».
     // [XmlElement("Header")] public Header _Header;
     std::optional<Header> _Header;

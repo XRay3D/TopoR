@@ -16,16 +16,14 @@ namespace TopoR_PCB_Classes {
 
 // Раздел «Группировка объектов».
 
-class Groups {
+struct Groups {
 
     // Описание групп слоёв.
 
-public:
-    class LayerGroup {
+    struct LayerGroup {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -44,12 +42,10 @@ public:
 
     // Описание группы цепей.
 
-public:
-    class NetGroup {
+    struct NetGroup {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -62,12 +58,10 @@ public:
 
     // Описание группы компонентов.
 
-public:
-    class CompGroup {
+    struct CompGroup {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -80,7 +74,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

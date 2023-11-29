@@ -17,18 +17,16 @@ namespace TopoR_PCB_Classes {
 
 // Описание конструктива платы.
 
-class Constructive {
+struct Constructive {
 
     // Описание контура платы и вырезов в плате.
 
-public:
-    class BoardOutline {
-    public:
-        class Shape_Contour {
+    struct BoardOutline {
+
+        struct Shape_Contour {
 
             // Толщина линии.
 
-        public:
             //[XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth;
             float _lineWidth = 0.0F;
 
@@ -46,12 +44,10 @@ public:
             /*************************************************************************/
         };
 
-    public:
-        class Shape_Voids {
+        struct Shape_Voids {
 
             // Толщина линии.
 
-        public:
             //[XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth;
             float _lineWidth = 0.0F;
 
@@ -71,7 +67,6 @@ public:
 
         // Описание контура платы.
 
-    public:
         //[XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> _Contours;
         std::vector<std::optional<Shape_Contour>> _Contours;
         bool ShouldSerialize_Contours();
@@ -85,12 +80,10 @@ public:
 
     // Описание монтажного отверстия на плате.
 
-public:
-    class MntholeInstance {
+    struct MntholeInstance {
 
         // Задаёт угол в градусах c точностью до тысячных долей.
 
-    public:
         //[XmlAttribute("angle", DataType = "float")] public float _angle;
         float _angle = 0.0F;
 
@@ -123,22 +116,18 @@ public:
 
     // Описание запрета.
 
-public:
-    class Keepout_Сonstructive : public std::enable_shared_from_this<Keepout_Сonstructive> {
+    struct Keepout_Сonstructive {
 
         // Тип запрета.
 
-    public:
-        class Role {
+        struct Role {
 
             // Тип запрета: запрет трассировки.
 
-        public:
-            class Trace {
+            struct Trace {
 
                 // Тип запрета трассировки.
 
-            public:
                 //[XmlAttribute("role")] public role _role;
                 role _role{};
 
@@ -160,19 +149,16 @@ public:
 
             // Тип запрета: запрет размещения.
 
-        public:
-            class Place {
+            struct Place {
 
                 // Сторона объекта.
 
-            public:
                 //[XmlAttribute("side")] public side _side;
                 side _side{};
             };
 
             // Тип запрета: запрет трассировки.
 
-        public:
             //[XmlElement("Trace", typeof(Trace))] public Trace _Trace;
             std::optional<Trace> _Trace;
 
@@ -180,7 +166,6 @@ public:
             std::optional<Place> _Place;
         };
 
-    public:
         //[XmlElement("Role", typeof(Role))] public Role _Role;
         std::optional<Role> _Role;
 
@@ -200,7 +185,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

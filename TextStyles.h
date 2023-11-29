@@ -16,16 +16,14 @@ namespace TopoR_PCB_Classes {
 
 // Раздел «Стили надписей».
 
-class TextStyles {
+struct TextStyles {
 
     // Описание стиля надписей.
 
-public:
-    class TextStyle {
+    struct TextStyle {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -58,7 +56,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

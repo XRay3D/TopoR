@@ -17,23 +17,22 @@ namespace TopoR_PCB_Classes {
 
 // Компоненты на плате (обязательный раздел).
 
-class ComponentsOnBoard {
+struct ComponentsOnBoard {
 
     // Описание компонента на плате.
 
     // <remarks>! Если компонент расположен на нижней стороне платы, его посадочное место отображается зеркально относительно вертикальной оси посадочного места, описанного в библиотеке(т.е.без угла поворота). Стеки контактных площадок переворачиваются.</remarks>
-public:
-    class CompInstance {
+
+    struct CompInstance {
 
         // Описание контакта компонента на плате.
 
         // <remarks>! Если PadstackRef не указан, то стек контактных площадок берётся из посадочного места.</remarks>
-    public:
-        class CompInstance_Pin {
+
+        struct CompInstance_Pin {
 
             // Номер контакта компонента.
 
-        public:
             //[XmlAttribute("padNum", DataType = "int")] public int _padNum;
             int _padNum = 0;
 
@@ -51,12 +50,10 @@ public:
 
         // Описание монтажного отверстия в компоненте на плате.
 
-    public:
-        class CompInstance_Mnthole {
+        struct CompInstance_Mnthole {
 
             // Ссылка на монтажное отверстие в посадочном месте.
 
-        public:
             //[XmlAttribute("mntholeRef")] public string _mntholeRef;
             std::string _mntholeRef;
 
@@ -78,17 +75,14 @@ public:
 
         // Описание атрибута компонента на плате.
 
-    public:
-        class CompInstance_Attribute {
+        struct CompInstance_Attribute {
 
             // Описание ярлыка компонента на плате.
 
-        public:
-            class CompInstance_Attribute_Label {
+            struct CompInstance_Attribute_Label {
 
                 // Задаёт угол в градусах c точностью до тысячных долей.
 
-            public:
                 //[XmlAttribute("angle", DataType = "float")] public float _angle;
                 float _angle = 0.0F;
 
@@ -131,7 +125,6 @@ public:
 
             // Тип предопределённого атрибута компонента.
 
-        public:
             //[XmlAttribute("type")] public type _type;
             type _type{};
 
@@ -154,7 +147,6 @@ public:
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -231,12 +223,10 @@ public:
 
     // Описание одиночного контакта..
 
-public:
-    class FreePad {
+    struct FreePad {
 
         // Сторона объекта.
 
-    public:
         //[XmlAttribute("side")] public side _side;
         side _side{};
 
@@ -271,7 +261,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

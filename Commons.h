@@ -7,7 +7,7 @@
 #include <vector>
 
 namespace TopoR_PCB_Classes {
-class Shift;
+struct Shift;
 }
 
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
@@ -629,40 +629,38 @@ enum class wireShape {
 
 // базовый класс ссылок.
 
-class BaseRef {
+struct BaseRef {
 
     // Имя объекта или ссылка на именованный объект.
 
-public:
     // [XmlAttribute("name")] public string _ReferenceName;
     std::string _ReferenceName;
 };
 
 // Ссылка на атрибут.
 
-class AttributeRef : public BaseRef {
+struct AttributeRef : public BaseRef {
 };
 
 // Ссылка на тип слоя.
 
-class LayerTypeRef {
+struct LayerTypeRef {
 
     // Тип слоя.
 
-public:
     // [XmlAttribute("type")] public layer_type _type;
     layer_type _type{};
 };
 
 // Ссылка на группу слоёв.
 
-class LayerGroupRef : public BaseRef {
+struct LayerGroupRef : public BaseRef {
 };
 
 // Ссылка на слой.
 
 // <remarks>! Если в дизайне определён только один слой с заданным именем, то тип слоя не указывается.</remarks>
-class LayerRef : public BaseRef {
+struct LayerRef : public BaseRef {
 
     // Тип слоя или ссылка на именованный cлой
 
@@ -673,56 +671,55 @@ class LayerRef : public BaseRef {
 
 // Ссылка на тип переходного отверстия.
 
-class ViastackRef : public BaseRef {
+struct ViastackRef : public BaseRef {
 };
 
 // Ссылка на стек контактных площадок.
 
-class NetRef : public BaseRef {
+struct NetRef : public BaseRef {
 };
 
 // Ссылка на группу компонентов.
 
-class CompGroupRef : public BaseRef {
+struct CompGroupRef : public BaseRef {
 };
 
 // Ссылка на компонент на плате.
 
-class CompInstanceRef : public BaseRef {
+struct CompInstanceRef : public BaseRef {
 };
 
 // Ссылка на группу цепей.
 
-class NetGroupRef : public BaseRef {
+struct NetGroupRef : public BaseRef {
 };
 
 // Ссылка на волновое сопротивление.
 
-class ImpedanceRef : public BaseRef {
+struct ImpedanceRef : public BaseRef {
 };
 
 // Ссылка на сигнал.
 
-class SignalRef : public BaseRef {
+struct SignalRef : public BaseRef {
 };
 
 // Ссылка на группу сигналов..
 
-class SignalGroupRef : public BaseRef {
+struct SignalGroupRef : public BaseRef {
 };
 
 // Ссылка на дифференциальный сигнал.
 
-class DiffSignalRef : public BaseRef {
+struct DiffSignalRef : public BaseRef {
 };
 
 // Ссылка на контакт.
 
-class PinRef {
+struct PinRef {
 
     // Имя компонента, используется для ссылки на компонент.
 
-public:
     // [XmlAttribute("compName")] public string _compName;
     std::string _compName;
 
@@ -734,41 +731,40 @@ public:
 
 // Ссылка на контакт источника сигнала.
 
-class SourcePinRef : public PinRef {
+struct SourcePinRef : public PinRef {
 };
 
 // Ссылка на контакт приёмника сигнала.
 
-class ReceiverPinRef : public PinRef {
+struct ReceiverPinRef : public PinRef {
 };
 
 // Ссылка на стек контактных площадок.
 
-class PadstackRef : public BaseRef {
+struct PadstackRef : public BaseRef {
 };
 
 // Ссылка на стиль надписей.
 
-class TextStyleRef : public BaseRef {
+struct TextStyleRef : public BaseRef {
 };
 
 // Ссылка на схемный компонент.
 
-class ComponentRef : public BaseRef {
+struct ComponentRef : public BaseRef {
 };
 
 // Ссылка на посадочное место.
 
-class FootprintRef : public BaseRef {
+struct FootprintRef : public BaseRef {
 };
 
 // Ссылка на вывод посадочного места.
 
-class PadRef {
+struct PadRef {
 
     // Ссылка на имя компонента
 
-public:
     // [XmlAttribute("compName")] public string _compName;
     std::string _compName;
 
@@ -781,8 +777,8 @@ public:
 
 //	#region Coordinates
 
-class base_coordinat {
-public:
+struct base_coordinat {
+
     // [XmlAttribute("x", DataType = "float")] public float _x;
     float _x = 0.0F;
 
@@ -796,60 +792,59 @@ public:
 
 // координаты точки, вершины.
 
-class Dot : public base_coordinat {
+struct Dot : public base_coordinat {
 };
 
 // Центр круга (окружности), овала.
 
-class Center : public base_coordinat {
+struct Center : public base_coordinat {
 };
 
 // Начальная точка линии, дуги.
 
-class Start : public base_coordinat {
+struct Start : public base_coordinat {
 };
 
 // Средняя точка дуги.
 
-class Middle : public base_coordinat {
+struct Middle : public base_coordinat {
 };
 
 // Конечная точка линии, дуги.
 
-class End : public base_coordinat {
+struct End : public base_coordinat {
 };
 
 // Точка привязки объекта.
 
-class Org : public base_coordinat {
+struct Org : public base_coordinat {
 };
 
 // Cмещение точки привязки или объекта по осям x и y.
 
-class Shift : public base_coordinat {
+struct Shift : public base_coordinat {
 };
 
 // Вытягивание по осям x и y.
 
-class Stretch : public base_coordinat {
+struct Stretch : public base_coordinat {
 };
 
 //	#endregion Coordinates
 
 //	#region Segments
-class IBaseSegment {
-public:
+struct IBaseSegment {
+
     virtual void Shift(float x, float y) = 0;
     virtual void UnitsConvert(dist in_units, dist out_units) = 0;
 };
 
 // Описание прямолинейного сегмента контура.
 
-class SegmentLine : public IBaseSegment {
+struct SegmentLine : public IBaseSegment {
 
     // Конечная точка линии, дуги.
 
-public:
     // [XmlElement("End")] public End _End;
     std::optional<End> _End;
 
@@ -861,11 +856,10 @@ public:
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся центром. Обход против часовой стрелки.
 
-class SegmentArcCCW : public SegmentLine {
+struct SegmentArcCCW : public SegmentLine {
 
     // Центр круга (окружности), овала.
 
-public:
     // [XmlElement("Center")] public Center _Center;
     std::optional<Center> _Center;
 
@@ -877,17 +871,16 @@ public:
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся центром. Обход по часовой стрелки.
 
-class SegmentArcCW : public SegmentArcCCW {
+struct SegmentArcCW : public SegmentArcCCW {
 };
 
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся углом. Отрицательный угол означает обход по часовой стрелке.
 
-class SegmentArcByAngle : public SegmentLine {
+struct SegmentArcByAngle : public SegmentLine {
 
     // Задаёт угол в градусах c точностью до тысячных долей.
 
-public:
     // [XmlAttribute("angle", DataType = "float")] public float _angle;
     float _angle = 0.0F;
 };
@@ -895,11 +888,10 @@ public:
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся тремя точками: начало, середина и конец.
 
-class SegmentArcByMiddle : public SegmentLine {
+struct SegmentArcByMiddle : public SegmentLine {
 
     // Конечная точка линии, дуги.
 
-public:
     // [XmlElement("Middle")] public Middle _Middle;
     std::optional<Middle> _Middle;
 
@@ -913,19 +905,18 @@ public:
 
 // Интерфейс BaseFigure создан для реализации удобного доступа к одинаковым методам разных объектов
 
-class IBaseFigure {
-public:
+struct IBaseFigure {
+
     virtual void UnitsConvert(dist in_units, dist out_units) = 0;
     virtual void Shift(float x, float y) = 0;
 };
 
 // Дуга, заданная центром. Обход против часовой стрелки.
 
-class ArcCCW : public IBaseFigure {
+struct ArcCCW : public IBaseFigure {
 
     // Центр круга (окружности), овала.
 
-public:
     // [XmlElement("Center")] public Center _Center;
     std::optional<Center> _Center;
 
@@ -946,16 +937,15 @@ public:
 
 // Дуга, заданная центром. Обход по часовой стрелке.
 
-class ArcCW : public ArcCCW {
+struct ArcCW : public ArcCCW {
 };
 
 // Дуга, заданная углом. Отрицательный угол означает обход по часовой стрелке.
 
-class ArcByAngle : public IBaseFigure {
+struct ArcByAngle : public IBaseFigure {
 
     // Задаёт угол в градусах c точностью до тысячных долей.
 
-public:
     // [XmlAttribute("angle", DataType = "float")] public float _angle;
     float _angle = 0.0F;
 
@@ -976,11 +966,10 @@ public:
 
 // Дуга, заданная тремя точками: начало, середина и конец.
 
-class ArcByMiddle : public IBaseFigure {
+struct ArcByMiddle : public IBaseFigure {
 
     // Начальная точка линии, дуги.
 
-public:
     // [XmlElement("Start")] public Start _Start;
     std::optional<Start> _Start;
 
@@ -1001,11 +990,10 @@ public:
 
 // Описание окружности (незалитого круга).
 
-class Circle : public IBaseFigure {
+struct Circle : public IBaseFigure {
 
     // Диаметр окружности, круга, овала.
 
-public:
     // [XmlAttribute("diameter", DataType = "float")] public float _diameter;
     float _diameter = 0.0F;
 
@@ -1021,11 +1009,10 @@ public:
 
 // Описание линии.
 
-class Line : public IBaseFigure {
+struct Line : public IBaseFigure {
 
     // Массив координат точек, вершин.
 
-public:
     // [XmlElement("Dot")] public List<Dot> _Dots;
     std::vector<std::optional<Dot>> _Dots;
     bool ShouldSerialize_Dots();
@@ -1037,11 +1024,10 @@ public:
 
 // Описание полилинии.
 
-class Polyline : public IBaseFigure {
+struct Polyline : public IBaseFigure {
 
     // Начальная точка линии, дуги.
 
-public:
     // [XmlElement("Start")] public Start _Start;
     std::optional<Start> _Start;
 
@@ -1057,45 +1043,44 @@ public:
 // Описание незалитого контура.
 // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
 
-class Contour : public Polyline {
+struct Contour : public Polyline {
 };
 
 // Описание незалитого прямоугольника. Указываются верхняя левая и правая нижняя вершины
 
-class Rect : public Line {
+struct Rect : public Line {
 };
 
 // Описание залитого контура.
 // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
 
-class FilledContour : public Polyline {
+struct FilledContour : public Polyline {
 
 }; // TODO: требует уточнения
 
 // Описание круга.
 
-class FilledCircle : public Circle {
+struct FilledCircle : public Circle {
 };
 
 // Описание залитого прямоугольника.
 
-class FilledRect : public Rect {
+struct FilledRect : public Rect {
 };
 
 // Описание многоугольника.
 // Тег поддерживается, но является устаревшим.Следует использовать тег FilledContour.
 
-class Polygon : public Line {
+struct Polygon : public Line {
 };
 
 // Описание дугообразного сегмента проводника (дуга по часовой стрелке).
 
 // <remarks>Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.</remarks>
-class TrackArcCW : public IBaseFigure {
+struct TrackArcCW : public IBaseFigure {
 
     // Центр круга (окружности), овала.
 
-public:
     // [XmlElement("Center")] public Center _Center;
     std::optional<Center> _Center;
 
@@ -1116,17 +1101,16 @@ public:
 // Описание дугообразного сегмента проводника (дуга против часовой стрелки).
 
 // <remarks>Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.</remarks>
-class TrackArc : public TrackArcCW {
+struct TrackArc : public TrackArcCW {
 };
 
 // Описание прямолинейного сегмента проводника.
 
 // <remarks>Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.</remarks>
-class TrackLine : public IBaseFigure {
+struct TrackLine : public IBaseFigure {
 
     // Конечная точка линии, дуги.
 
-public:
     // [XmlElement("End")] public End _End;
     std::optional<End> _End;
 
@@ -1146,80 +1130,80 @@ public:
 
 // Устанавливает область действия правила: все слои.
 
-class AllLayers {
-public:
+struct AllLayers {
+
     // [XmlElement("AllLayers")] public string _AllLayers;
     std::string _AllLayers;
 };
 
 // Устанавливает область действия правила: все компоненты.
 
-class AllComps {
-public:
+struct AllComps {
+
     // [XmlElement("AllComps")] public string _AllComps;
     std::string _AllComps;
 };
 
 // Устанавливает область действия правила: все цепи.
 
-class AllNets {
-public:
+struct AllNets {
+
     // [XmlElement("AllNets")] public string _AllNets;
     std::string _AllNets;
 };
 
 // Устанавливает область действия правила: все внутренние слои.
 
-class AllLayersInner {
-public:
+struct AllLayersInner {
+
     // [XmlElement("AllLayersInner")] public string _AllLayersInner;
     std::string _AllLayersInner;
 };
 
 // Устанавливает область действия правила: все внутренние сигнальные слои.
 
-class AllLayersInnerSignal {
-public:
+struct AllLayersInnerSignal {
+
     // [XmlElement("AllLayersInnerSignal")] public string _AllLayersInnerSignal;
     std::string _AllLayersInnerSignal;
 };
 
 // Устанавливает область действия правила: все сигнальные слои.
 
-class AllLayersSignal {
-public:
+struct AllLayersSignal {
+
     // [XmlElement("AllLayersSignal")] public string _AllLayersSignal;
     std::string _AllLayersSignal;
 };
 
 // Устанавливает область действия правила: все внешние слои.
 
-class AllLayersOuter {
-public:
+struct AllLayersOuter {
+
     // [XmlElement("AllLayersOuter")] public string _AllLayersOuter;
     std::string _AllLayersOuter;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все типы.
 
-class AllViastacks {
-public:
+struct AllViastacks {
+
     // [XmlElement("AllViastacks")] public string _AllViastacks;
     std::string _AllViastacks;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все сквозные типы.
 
-class AllViastacksThrough {
-public:
+struct AllViastacksThrough {
+
     // [XmlElement("AllViastacksThrough")] public string _AllViastacksThrough;
     std::string _AllViastacksThrough;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все несквозные типы.
 
-class AllViastacksNotThrough {
-public:
+struct AllViastacksNotThrough {
+
     // [XmlElement("AllViastacksNotThrough")] public string _AllViastacksNotThrough;
     std::string _AllViastacksNotThrough;
 };
@@ -1229,11 +1213,10 @@ public:
 
 // Описание термобарьера.
 
-class Thermal {
+struct Thermal {
 
     // Параметр термобарьера: число спиц.! В TopoR поддерживается только одно значение – 4.
 
-public:
     // [XmlAttribute("spokeNum", DataType = "int")] public int _spokeNum;
     int _spokeNum = 0;
 
@@ -1262,11 +1245,10 @@ public:
 
 // Описание детали.
 
-class Detail {
+struct Detail {
 
     // Толщина линии.
 
-public:
     // [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth;
     float _lineWidth = 0.0F;
 
@@ -1287,11 +1269,10 @@ public:
 
 // Описание надписи.
 
-class Text {
+struct Text {
 
     // Параметр надписи: текст надписи.
 
-public:
     // [XmlAttribute("text")] public string _text;
     std::string _text;
 
@@ -1339,8 +1320,8 @@ public:
 
 // Сигналы воздействия правила
 
-class ObjectSignal {
-public:
+struct ObjectSignal {
+
     // [XmlElement("SignalRef", typeof(SignalRef)), XmlElement("DiffSignalRef", typeof(DiffSignalRef)), XmlElement("SignalGroupRef", typeof(SignalGroupRef)),] public Object _Refs;
     std::any _Refs;
 };
@@ -1348,7 +1329,7 @@ public:
 
 // Различные сервисные функции
 
-class Ut final {
+struct Ut final {
 
     // Конвертация единиц измерения
 
@@ -1356,7 +1337,7 @@ class Ut final {
     // <param name="in_units">текущие единицы измерения</param>
     // <param name="out_units">выходные единицы измерения</param>
     // <returns>Возвращает сконвертированное значение</returns>
-public:
+
     static float UnitsConvert(float value, dist in_units, dist out_units);
 };
 } // namespace TopoR_PCB_Classes

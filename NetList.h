@@ -16,16 +16,14 @@ namespace TopoR_PCB_Classes {
 
 // Раздел «Текущий список соединений».
 
-class NetList {
+struct NetList {
 
     // Раздел «Текущий список соединени
 
-public:
-    class Net {
+    struct Net {
 
         // Имя объекта или ссылка на именованный объект.
 
-    public:
         //[XmlAttribute("name")] public string _name;
         std::string _name;
 
@@ -38,7 +36,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

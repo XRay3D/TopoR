@@ -18,16 +18,14 @@ namespace TopoR_PCB_Classes {
 // Раздел «Правила».
 
 // <remarks>! Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.</remarks>
-class Rules {
+struct Rules {
 
     // Описание правила ширины проводников.
 
-public:
-    class WidthOfWires {
+    struct WidthOfWires {
 
         // Флаг применения правила.
 
-    public:
         //[XmlAttribute("enabled")] public Bool _enabled;
         Bool _enabled{};
 
@@ -68,12 +66,10 @@ public:
 
     // Описание правила зазоров между цепями.
 
-public:
-    class ClearanceNetToNet {
+    struct ClearanceNetToNet {
 
         // Флаг применения правила.
 
-    public:
         //[XmlAttribute("enabled")] public Bool _enabled;
         Bool _enabled{};
 
@@ -114,12 +110,10 @@ public:
 
     // Описание правила зазоров между компонентами.
 
-public:
-    class ClearanceCompToComp {
+    struct ClearanceCompToComp {
 
         // Флаг применения правила.
 
-    public:
         //[XmlAttribute("enabled")] public Bool _enabled;
         Bool _enabled{};
 
@@ -140,12 +134,10 @@ public:
 
     // Описание зазоров до края платы.
 
-public:
-    class RulesClearancesToBoard {
+    struct RulesClearancesToBoard {
 
         // Устанавливает зазор от проводников до края платы.
 
-    public:
         //[XmlAttribute("wires", DataType = "float")] public float _clrn;
         float _clrn = 0.0F;
 
@@ -157,12 +149,10 @@ public:
 
     // Описание правила назначения цепям стеков переходных отверстий.
 
-public:
-    class ViastacksOfNets {
+    struct ViastacksOfNets {
 
         // Флаг применения правила.
 
-    public:
         //[XmlAttribute("enabled")] public Bool _enabled;
         Bool _enabled{};
 
@@ -184,12 +174,10 @@ public:
 
     // Описание правила назначения цепям опорных слоёв.
 
-public:
-    class PlaneLayerNets {
+    struct PlaneLayerNets {
 
         // Флаг применения правила.
 
-    public:
         //[XmlAttribute("enabled")] public Bool _enabled;
         Bool _enabled{};
 
@@ -220,12 +208,10 @@ public:
 
     // Описание правила назначения цепям сигнальных слоёв.
 
-public:
-    class SignalLayerNets {
+    struct SignalLayerNets {
 
         // Флаг применения правила.
 
-    public:
         //[XmlAttribute("enabled")] public Bool _enabled;
         Bool _enabled{};
 
@@ -256,12 +242,10 @@ public:
 
     // Свойства цепи.
 
-public:
-    class NetProperty {
+    struct NetProperty {
 
         // Свойство цепи: гибкая фиксация.
 
-    public:
         //[XmlAttribute("flexfix")] public Bool _flexfix;
         Bool _flexfix{};
 
@@ -285,12 +269,10 @@ public:
 
     // Настройки подключения к углам прямоугольных контактных площадок.
 
-public:
-    class PadConnectSettings {
+    struct PadConnectSettings {
 
         // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
 
-    public:
         //[XmlAttribute("mode")] public mode_PadConnectSettings _mode;
         mode_PadConnectSettings _mode{};
 
@@ -315,7 +297,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

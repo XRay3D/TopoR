@@ -18,16 +18,14 @@ namespace TopoR_PCB_Classes {
 // Раздел «Соединения на плате».
 
 // <remarks>В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.</remarks>
-class Connectivity {
+struct Connectivity {
 
     // Переходное отверстие на плате.
 
-public:
-    class Via {
+    struct Via {
 
         // Признак фиксации.
 
-    public:
         //[XmlAttribute("fixed")] public Bool _fixed;
         Bool _fixed{};
 
@@ -53,12 +51,11 @@ public:
     // Описание змейки.
 
     // <remarks>! Проводники, реализующие змейку, описываются в секции Wires (см. описание раздела Connectivity)</remarks>
-public:
-    class Serpent {
+
+    struct Serpent {
 
         // Идентификатор неименованных объектов.
 
-    public:
         //[XmlAttribute("id")] public string _id;
         std::string _id;
 
@@ -96,12 +93,11 @@ public:
     // Описание застёгнутой пары проводников.
 
     // <remarks>! Сегменты(Track) описывают осевую линию пары.Форма проводников пары рассчитывается автоматически.</remarks>
-public:
-    class ZippedWire {
+
+    struct ZippedWire {
 
         // Идентификатор неименованных объектов.
 
-    public:
         //[XmlAttribute("id")] public string _id;
         std::string _id;
 
@@ -139,24 +135,22 @@ public:
 
     // Описание проводника.
 
-public:
-    class Wire {
+    struct Wire {
 
         // Описание части проводника (последовательность сегментов с одной шириной и одинаковым признаком фиксации).
 
         // <remarks>! Атрибут zipwireRef (ссылка на застёгнутую пару проводников) используется, если описываемая часть проводника входит в застёгнутую пару проводников ZippedWire (см. пример описания проводника дифференциальной пары).</remarks>
-    public:
-        class Subwire {
+
+        struct Subwire {
 
             // Описание «капельки» четырёхугольником. Первая вершина соответствует точке привязки контакта (переходного отверстия). Остальные вершины описывают контур четырёхугольника против часовой стрелки.
 
             // <remarks> ! TopoR при импорте игнорирует информацию о капельках.</remarks>
-        public:
-            class Teardrop {
+
+            struct Teardrop {
 
                 // координаты точки, вершины.
 
-            public:
                 //[XmlElement("Dot")] public List<Dot> _Dots;
                 std::vector<std::optional<Dot>> _Dots;
                 bool ShouldSerialize_Dots();
@@ -164,7 +158,6 @@ public:
 
             // Признак фиксации.
 
-        public:
             //[XmlAttribute("fixed")] public Bool _fixed;
             Bool _fixed{};
 
@@ -205,7 +198,6 @@ public:
 
         // Ссылка на слой.
 
-    public:
         //[XmlElement("LayerRef")] public LayerRef _LayerRef;
         std::optional<LayerRef> _LayerRef;
 
@@ -224,58 +216,49 @@ public:
     // Описание заливаемой области металлизации (полигона).
 
     // <remarks>! Заливка полигона линиями (Fill) записывается только для других САПР. TopoR при импорте её игнорирует. Сплошная заливка (fillType = Solid) не записывается.</remarks>
-public:
-    class Copper_Connectivity {
+
+    struct Copper_Connectivity {
 
         // Описание термобарьера для подключения контактных площадок к области металлизации.
 
-    public:
-        class ThermalPad {
+        struct ThermalPad {
 
             // Описание термобарьера.
 
-        public:
             //[XmlElement("Thermal")] public Thermal _Thermal;
             std::optional<Thermal> _Thermal;
         };
 
         // Описание термобарьера для подключения площадок переходных отверстий к области металлизации.
 
-    public:
-        class ThermalVia {
+        struct ThermalVia {
 
             // Описание термобарьера.
 
-        public:
             //[XmlElement("Thermal")] public Thermal _Thermal;
             std::optional<Thermal> _Thermal;
         };
 
         // Описание контура заливаемой области металлизации.
 
-    public:
-        class Shape_Copper {
+        struct Shape_Copper {
 
             // Описание залитой фигуры.
 
-        public:
             //[XmlElement("FilledCircle", typeof(FilledCircle)), XmlElement("FilledRect", typeof(FilledRect)), XmlElement("Polygon", typeof(Polygon)), XmlElement("FilledContour", typeof(FilledContour))] public Object _FilledFigure;
             std::any _FilledFigure;
         };
 
         // Описание островка области металлизации.
 
-    public:
-        class Island {
+        struct Island {
 
             // Описание спицы термобарьера, присутствующего на плате
 
-        public:
-            class ThermalSpoke {
+            struct ThermalSpoke {
 
                 // Толщина линии.
 
-            public:
                 //[XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth;
                 float _lineWidth = 0.0F;
 
@@ -290,7 +273,6 @@ public:
 
             // Описание многоугольника.
 
-        public:
             //[XmlElement("Polygon", typeof(Polygon)), XmlElement("FilledContour", typeof(FilledContour))] public Object _Polygon;
             std::any _Polygon;
 
@@ -310,7 +292,6 @@ public:
 
         // Параметр области металлизации (полигона): приоритет заливки.
 
-    public:
         //[XmlAttribute("priority", DataType ="int")] public int _priority;
         int _priority = 0;
 
@@ -431,24 +412,20 @@ public:
 
     // Описание незаливаемой области металлизации.
 
-public:
-    class NonfilledCopper {
+    struct NonfilledCopper {
 
         // Описание контура незаливаемой области металлизации.
 
-    public:
-        class Shape_NonfilledCopper {
+        struct Shape_NonfilledCopper {
 
             // Описание фигуры.
 
-        public:
             //[XmlElement("ArcCCW", typeof(ArcCCW)), XmlElement("ArcCW", typeof(ArcCW)), XmlElement("ArcByAngle", typeof(ArcByAngle)), XmlElement("ArcByMiddle", typeof(ArcByMiddle)), XmlElement("Circle", typeof(Circle)), XmlElement("Line", typeof(Line)), XmlElement("Polyline", typeof(Polyline)), XmlElement("Rect", typeof(Rect)), XmlElement("Contour", typeof(Contour))] public Object _FigureContPoliline;
             std::any _FigureContPoliline;
         };
 
         // Толщина линии.
 
-    public:
         //[XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth;
         float _lineWidth = 0.0F;
 
@@ -470,7 +447,6 @@ public:
 
     // Версия раздела.
 
-public:
     //[XmlAttribute("version")] public string _version;
     std::string _version;
 

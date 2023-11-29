@@ -13,12 +13,11 @@
 namespace TopoR_PCB_Classes {
 
 // Раздел «Заголовок файла».
-class Header {
+struct Header {
 
-public:
     // Единицы измерений для всего файла.
-    class Units_Header {
-    public:
+    struct Units_Header {
+
         // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
         // [XmlAttribute("dist")] public dist _dist;
         dist _dist{};
@@ -28,7 +27,6 @@ public:
         time _time{};
     };
 
-public:
     // Название формата файла.
     // [XmlElement("Format")] public string _Format;
     std::string _Format;
