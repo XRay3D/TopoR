@@ -1,93 +1,60 @@
 ﻿#pragma once
 
 #include "Commons.h"
-#include <string>
 #include <memory>
+#include <string>
 
-/* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё 
+/* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
 
+namespace TopoR_PCB_Classes {
 
-namespace TopoR_PCB_Classes
-{
-	/// <summary>
-	/// Раздел «Заголовок файла».
-	/// </summary>
-	class Header : public std::enable_shared_from_this<Header>
-	{
-		/// <summary>
-		/// Единицы измерений для всего файла.
-		/// </summary>
-	public:
-		class Units_Header : public std::enable_shared_from_this<Units_Header>
-		{
-			/// <summary>
-			/// Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
-			/// </summary>
-		public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("dist")] public dist _dist;
-			dist _dist = static_cast<dist>(0);
+// Раздел «Заголовок файла».
+class Header {
 
-			/// <summary>
-			/// Единицы измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("time")] public time _time;
-			time _time = static_cast<time>(0);
-		};
-		/// <summary>
-		/// Название формата файла.
-		/// </summary>
+public:
+    // Единицы измерений для всего файла.
+    class Units_Header {
+    public:
+        // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
+        // [XmlAttribute("dist")] public dist _dist;
+        dist _dist{};
 
-	public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Format")] public string _Format;
-		std::wstring _Format;
+        // Единицы измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
+        // [XmlAttribute("time")] public time _time;
+        time _time{};
+    };
 
-		/// <summary>
-		/// Версия формата.
-		/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Version")] public string _Version;
-		std::wstring _Version;
+public:
+    // Название формата файла.
+    // [XmlElement("Format")] public string _Format;
+    std::string _Format;
 
-		/// <summary>
-		/// Название программы, создавшей файл.
-		/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Program")] public string _Program;
-		std::wstring _Program;
+    // Версия формата.
+    // [XmlElement("Version")] public string _Version;
+    std::string _Version;
 
-		/// <summary>
-		/// Дата и время создания файла (в произвольной форме).
-		/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Date")] public string _Date;
-		std::wstring _Date;
+    // Название программы, создавшей файл.
+    // [XmlElement("Program")] public string _Program;
+    std::string _Program;
 
-		/// <summary>
-		/// Формат импортированного файла, из которого был получен дизайн.
-		/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("OriginalFormat")] public string _OriginalFormat;
-		std::wstring _OriginalFormat;
+    // Дата и время создания файла (в произвольной форме).
+    // [XmlElement("Date")] public string _Date;
+    std::string _Date;
 
-		/// <summary>
-		/// Импортированный файл. Путь к файлу задаётся относительно каталога содержащего файл проекта.
-		/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("OriginalFile")] public string _OriginalFile;
-		std::wstring _OriginalFile;
+    // Формат импортированного файла, из которого был получен дизайн.
+    // [XmlElement("OriginalFormat")] public string _OriginalFormat;
+    std::string _OriginalFormat;
 
-		/// <summary>
-		/// Единицы измерения для всего файла.
-		/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Units")] public Units_Header _Units;
-		std::shared_ptr<Units_Header> _Units;
-	};
-}
+    // Импортированный файл. Путь к файлу задаётся относительно каталога содержащего файл проекта.
+    // [XmlElement("OriginalFile")] public string _OriginalFile;
+    std::string _OriginalFile;
+
+    // Единицы измерения для всего файла.
+    // [XmlElement("Units")] public Units_Header _Units;
+    std::optional<Units_Header> _Units;
+};
+} // namespace TopoR_PCB_Classes

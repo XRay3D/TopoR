@@ -1,415 +1,330 @@
 ﻿#pragma once
 
 #include "Commons.h"
-#include <string>
-#include <vector>
 #include <cmath>
 #include <memory>
+#include <optional>
+#include <string>
+#include <vector>
 
-/* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё 
+/* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
 
+namespace TopoR_PCB_Classes {
 
-namespace TopoR_PCB_Classes
-{
-	/// <summary>
-	/// Компоненты на плате (обязательный раздел).
-	/// </summary>
-	class ComponentsOnBoard : public std::enable_shared_from_this<ComponentsOnBoard>
-	{
-		/// <summary>
-		/// Описание компонента на плате.
-		/// </summary>
-		/// <remarks>! Если компонент расположен на нижней стороне платы, его посадочное место отображается зеркально относительно вертикальной оси посадочного места, описанного в библиотеке(т.е.без угла поворота). Стеки контактных площадок переворачиваются.</remarks>
-	public:
-		class CompInstance : public std::enable_shared_from_this<CompInstance>
-		{
+// Компоненты на плате (обязательный раздел).
 
-			/// <summary>
-			/// Описание контакта компонента на плате.
-			/// </summary>
-			/// <remarks>! Если PadstackRef не указан, то стек контактных площадок берётся из посадочного места.</remarks>
-		public:
-			class CompInstance_Pin : public std::enable_shared_from_this<CompInstance_Pin>
-			{
-				/// <summary>
-				/// Номер контакта компонента.
-				/// </summary>
-			public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("padNum", DataType = "int")] public int _padNum;
-				int _padNum = 0;
+class ComponentsOnBoard {
 
-				/// <summary>
-				/// Ссылка на стек контактных площадок.
-				/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
-				std::shared_ptr<PadstackRef> _PadstackRef;
-				bool ShouldSerialize_PadstackRef();
-				/// <summary>
-				/// Точка привязки объекта.
-				/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Org")] public Org _Org;
-				std::shared_ptr<Org> _Org;
-			};
+    // Описание компонента на плате.
 
-			/// <summary>
-			/// Описание монтажного отверстия в компоненте на плате.
-			/// </summary>
-		public:
-			class CompInstance_Mnthole : public std::enable_shared_from_this<CompInstance_Mnthole>
-			{
-				/// <summary>
-				/// Ссылка на монтажное отверстие в посадочном месте.
-				/// </summary>
-			public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("mntholeRef")] public string _mntholeRef;
-				std::wstring _mntholeRef;
+    // <remarks>! Если компонент расположен на нижней стороне платы, его посадочное место отображается зеркально относительно вертикальной оси посадочного места, описанного в библиотеке(т.е.без угла поворота). Стеки контактных площадок переворачиваются.</remarks>
+public:
+    class CompInstance {
 
-				/// <summary>
-				/// Задаёт угол в градусах c точностью до тысячных долей.
-				/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("angle", DataType = "float")] public float _angle;
-				float _angle = 0.0F;
+        // Описание контакта компонента на плате.
 
-				/// <summary>
-				/// Ссылка на стек контактных площадок.
-				/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
-				std::shared_ptr<PadstackRef> _PadstackRef;
+        // <remarks>! Если PadstackRef не указан, то стек контактных площадок берётся из посадочного места.</remarks>
+    public:
+        class CompInstance_Pin {
 
-				/// <summary>
-				/// Cсылка на цепь.
-				/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("NetRef")] public NetRef _NetRef;
-				std::shared_ptr<NetRef> _NetRef;
-			};
+            // Номер контакта компонента.
 
-			/// <summary>
-			/// Описание атрибута компонента на плате.
-			/// </summary>
-		public:
-			class CompInstance_Attribute : public std::enable_shared_from_this<CompInstance_Attribute>
-			{
-				/// <summary>
-				/// Описание ярлыка компонента на плате.
-				/// </summary>
-			public:
-				class CompInstance_Attribute_Label : public std::enable_shared_from_this<CompInstance_Attribute_Label>
-				{
-					/// <summary>
-					/// Задаёт угол в градусах c точностью до тысячных долей.
-					/// </summary>
-				public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("angle", DataType = "float")] public float _angle;
-					float _angle = 0.0F;
+        public:
+            //[XmlAttribute("padNum", DataType = "int")] public int _padNum;
+            int _padNum = 0;
 
-					/// <summary>
-					/// Параметр надписей и ярлыков: зеркальность отображения.
-					/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("mirror")] public Bool _mirror;
-					Bool _mirror = static_cast<Bool>(0);
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlIgnore] public bool _mirrorSpecified
-					bool getMirrorSpecified() const;
+            // Ссылка на стек контактных площадок.
 
-					/// <summary>
-					/// Параметр надписей (ярлыков): способ выравнивания текста.
-					/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("align")] public align _align;
-					align _align = static_cast<align>(0);
+            //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
+            std::optional<PadstackRef> _PadstackRef;
+            bool ShouldSerialize_PadstackRef();
 
-					/// <summary>
-					/// Флаг видимости.
-					/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("visible")] public Bool _visible;
-					Bool _visible = static_cast<Bool>(0);
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlIgnore] public bool _visibleSpecified
-					bool getVisibleSpecified() const;
+            // Точка привязки объекта.
 
-					/// <summary>
-					/// Ссылка на слой.
-					/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("LayerRef")] public LayerRef _LayerRef;
-					std::shared_ptr<LayerRef> _LayerRef;
+            //[XmlElement("Org")] public Org _Org;
+            std::optional<Org> _Org;
+        };
 
-					/// <summary>
-					/// Ссылка на стиль надписей.
-					/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("TextStyleRef")] public TextStyleRef _TextStyleRef;
-					std::shared_ptr<TextStyleRef> _TextStyleRef;
+        // Описание монтажного отверстия в компоненте на плате.
 
-					/// <summary>
-					/// Точка привязки объекта.
-					/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Org")] public Org _Org;
-					std::shared_ptr<Org> _Org;
-				};
+    public:
+        class CompInstance_Mnthole {
 
-				/// <summary>
-				/// Тип предопределённого атрибута компонента.
-				/// </summary>
-			public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("type")] public type _type;
-				type _type = static_cast<type>(0);
+            // Ссылка на монтажное отверстие в посадочном месте.
 
-				/// <summary>
-				/// Имя объекта или ссылка на именованный объект.
-				/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("name")] public string _name;
-				std::wstring _name;
+        public:
+            //[XmlAttribute("mntholeRef")] public string _mntholeRef;
+            std::string _mntholeRef;
 
-				/// <summary>
-				/// Значение атрибута.
-				/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("value")] public string _value;
-				std::wstring _value;
+            // Задаёт угол в градусах c точностью до тысячных долей.
 
-				/// <summary>
-				/// Ярлыки.
-				/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Label")] public List<CompInstance_Attribute_Label> _Labels;
-				std::vector<std::shared_ptr<CompInstance_Attribute_Label>> _Labels;
-				bool ShouldSerialize_Labels();
-			};
+            //[XmlAttribute("angle", DataType = "float")] public float _angle;
+            float _angle = 0.0F;
 
-			/// <summary>
-			/// Имя объекта или ссылка на именованный объект.
-			/// </summary>
-		public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("name")] public string _name;
-			std::wstring _name;
+            // Ссылка на стек контактных площадок.
 
-			/// <summary>
-			/// Уникальный идентификатор компонента. Используется при синхронизации. Необязательный атрибут.
-			/// Если не задан, то будет создан при импорте файла.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("uniqueId")] public string _uniqueId;
-			std::wstring _uniqueId;
+            //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
+            std::optional<PadstackRef> _PadstackRef;
 
-			/// <summary>
-			/// Сторона объекта.
-			/// </summary>
-			/// <remarks>!Значение Both возможно только при описании запретов размещения.</remarks>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("side")] public side _side;
-			side _side = static_cast<side>(0);
+            // Cсылка на цепь.
 
-			/// <summary>
-			/// Задаёт угол в градусах c точностью до тысячных долей.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("angle", DataType = "float")] public float _angle;
-			float _angle = 0.0F;
+            //[XmlElement("NetRef")] public NetRef _NetRef;
+            std::optional<NetRef> _NetRef;
+        };
 
-			/// <summary>
-			/// Признак фиксации.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("fixed")] public Bool _fixed;
-			Bool _fixed = static_cast<Bool>(0);
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlIgnore] public bool _fixedSpecified
-			bool getFixedSpecified() const;
+        // Описание атрибута компонента на плате.
 
-			/// <summary>
-			/// Ссылка на схемный компонент.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("ComponentRef")] public ComponentRef _ComponentRef;
-			std::shared_ptr<ComponentRef> _ComponentRef;
+    public:
+        class CompInstance_Attribute {
 
-			/// <summary>
-			/// Ссылка на посадочное место.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("FootprintRef")] public FootprintRef _FootprintRef;
-			std::shared_ptr<FootprintRef> _FootprintRef;
+            // Описание ярлыка компонента на плате.
 
-			/// <summary>
-			/// Точка привязки объекта.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Org")] public Org _Org;
-			std::shared_ptr<Org> _Org;
+        public:
+            class CompInstance_Attribute_Label {
 
-			/// <summary>
-			/// Контакты компонента на плате.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlArray("Pins")][XmlArrayItem("Pin")] public List<CompInstance_Pin> _Pins;
-			std::vector<std::shared_ptr<CompInstance_Pin>> _Pins;
-			bool ShouldSerialize_Pins();
-			/// <summary>
-			/// Монтажные отверстия.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<CompInstance_Mnthole> _Mntholes;
-			std::vector<std::shared_ptr<CompInstance_Mnthole>> _Mntholes;
-			bool ShouldSerialize_Mntholes();
-			/// <summary>
-			/// Атрибуты компонента.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<CompInstance_Attribute> _Attributes;
-			std::vector<std::shared_ptr<CompInstance_Attribute>> _Attributes;
-			bool ShouldSerialize_Attributes();
+                // Задаёт угол в градусах c точностью до тысячных долей.
 
+            public:
+                //[XmlAttribute("angle", DataType = "float")] public float _angle;
+                float _angle = 0.0F;
 
-			/************************************************************************
-			 * Здесь находятся функции для работы с элементами класса CompInstance. *
-			 * Они не являются частью формата TopoR PCB.                            *
-			 * **********************************************************************/
-			/// <summary>
-			/// Для отображения имени компонента
-			/// </summary>
-			/// <returns></returns>
-			std::wstring ToString();
-			/***********************************************************************/
-		};
+                // Параметр надписей и ярлыков: зеркальность отображения.
 
-		/// <summary>
-		/// Описание одиночного контакта..
-		/// </summary>
-	public:
-		class FreePad : public std::enable_shared_from_this<FreePad>
-		{
-			/// <summary>
-			/// Сторона объекта.
-			/// </summary>
-		public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("side")] public side _side;
-			side _side = static_cast<side>(0);
+                //[XmlAttribute("mirror")] public Bool _mirror;
+                Bool _mirror{};
 
-			/// <summary>
-			/// Задаёт угол в градусах c точностью до тысячных долей.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("angle", DataType = "float")] public float _angle;
-			float _angle = 0.0F;
+                //[XmlIgnore] public bool _mirrorSpecified
+                bool getMirrorSpecified() const;
 
-			/// <summary>
-			/// Признак фиксации.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("fixed")] public Bool _fixed;
-			Bool _fixed = static_cast<Bool>(0);
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlIgnore] public bool _fixedSpecified
-			bool getFixedSpecified() const;
+                // Параметр надписей (ярлыков): способ выравнивания текста.
 
-			/// <summary>
-			/// Ссылка на стек контактных площадок.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
-			std::shared_ptr<PadstackRef> _PadstackRef;
+                //[XmlAttribute("align")] public align _align;
+                align _align{};
 
-			/// <summary>
-			/// Cсылка на цепь.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("NetRef")] public NetRef _NetRef;
-			std::shared_ptr<NetRef> _NetRef;
+                // Флаг видимости.
 
-			/// <summary>
-			/// Точка привязки объекта.
-			/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlElement("Org")] public Org _Org;
-			std::shared_ptr<Org> _Org;
-		};
+                //[XmlAttribute("visible")] public Bool _visible;
+                Bool _visible{};
 
-		/// <summary>
-		/// Версия раздела.
-		/// </summary>
-	public:
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlAttribute("version")] public string _version;
-		std::wstring _version;
+                //[XmlIgnore] public bool _visibleSpecified
+                bool getVisibleSpecified() const;
 
-		/// <summary>
-		/// Описание компонентов на плате (инстанции компонентов)
-		/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlArray("Components")][XmlArrayItem("CompInstance")] public List<CompInstance> _Components;
-		std::vector<std::shared_ptr<CompInstance>> _Components;
-		bool ShouldSerialize_Components();
-		/// <summary>
-		/// Описание одиночных контактов.(инстанции компонентов)
-		/// </summary>
-//C# TO C++ CONVERTER NOTE: The following .NET attribute has no direct equivalent in C++:
-//ORIGINAL LINE: [XmlArray("FreePads")][XmlArrayItem("FreePad")] public List<FreePad> _FreePads;
-		std::vector<std::shared_ptr<FreePad>> _FreePads;
-		bool ShouldSerialize_FreePads();
+                // Ссылка на слой.
 
+                //[XmlElement("LayerRef")] public LayerRef _LayerRef;
+                std::optional<LayerRef> _LayerRef;
 
-		/*****************************************************************************
-		 * Здесь находятся функции для работы с элементами класса ComponentsOnBoard. *
-		 * Они не являются частью формата TopoR PCB.                                 *
-		 * ***************************************************************************/
+                // Ссылка на стиль надписей.
 
-		/// <summary>
-		/// Добавление компонента
-		/// </summary>
-		/// <param name="name">Имя нового компонента. Если имя неуникально, будет добавлен префикс _</param>
-		/// <param name="units">текущие единицы измерения</param>
-		/// <param name="componentRef">ссылка на библиотеку компонентов</param>
-		/// <param name="footprintRef">ссылка на библиотеку посадочных мест</param>
-		/// <returns>Имя нового компонента</returns>
-		std::wstring AddComponent(const std::wstring &name, units units, const std::wstring &componentRef, const std::wstring &footprintRef);
-		/// <summary>
-		/// Удаление компонента по имени
-		/// </summary>
-		/// <param name="name">уникальный имя компонента</param>
-		/// <returns>true - если было произведено удаление, иначе (компонент не найден) - false</returns>
-		bool RemoveComponent(const std::wstring &name);
-		/// <summary>
-		/// Индекс компонента
-		/// </summary>
-		/// <param name="name">уникальное имя компонента</param>
-		/// <returns>индекс компонента или -1, если компонент отсутствует</returns>
-		int ComponentIndexOf(const std::wstring &name);
+                //[XmlElement("TextStyleRef")] public TextStyleRef _TextStyleRef;
+                std::optional<TextStyleRef> _TextStyleRef;
 
-		/// <summary>
-		/// Переименование компонента
-		/// </summary>
-		/// <param name="oldname">старое имя компонента</param>
-		/// <param name="newname">новое имя компонента</param>
-		/// <returns>индекс компонента, если было произведено переименование, -1, если компонент не найден</returns>
-		int RenameComponent(const std::wstring &oldname, const std::wstring &newname);
+                // Точка привязки объекта.
 
-		/// <summary>
-		/// Генерация уникального идентификатора
-		/// </summary>
-		/// <returns>string like "ABCDEFGH"</returns>
-		std::wstring UniqueId();
+                //[XmlElement("Org")] public Org _Org;
+                std::optional<Org> _Org;
+            };
 
-		/*************************************************************************************/
+            // Тип предопределённого атрибута компонента.
 
-	};
-}
+        public:
+            //[XmlAttribute("type")] public type _type;
+            type _type{};
+
+            // Имя объекта или ссылка на именованный объект.
+
+            //[XmlAttribute("name")] public string _name;
+            std::string _name;
+
+            // Значение атрибута.
+
+            //[XmlAttribute("value")] public string _value;
+            std::string _value;
+
+            // Ярлыки.
+
+            //[XmlElement("Label")] public List<CompInstance_Attribute_Label> _Labels;
+            std::vector<std::optional<CompInstance_Attribute_Label>> _Labels;
+            bool ShouldSerialize_Labels();
+        };
+
+        // Имя объекта или ссылка на именованный объект.
+
+    public:
+        //[XmlAttribute("name")] public string _name;
+        std::string _name;
+
+        // Уникальный идентификатор компонента. Используется при синхронизации. Необязательный атрибут.
+        // Если не задан, то будет создан при импорте файла.
+
+        //[XmlAttribute("uniqueId")] public string _uniqueId;
+        std::string _uniqueId;
+
+        // Сторона объекта.
+
+        // <remarks>!Значение Both возможно только при описании запретов размещения.</remarks>
+
+        //[XmlAttribute("side")] public side _side;
+        side _side{};
+
+        // Задаёт угол в градусах c точностью до тысячных долей.
+
+        //[XmlAttribute("angle", DataType = "float")] public float _angle;
+        float _angle = 0.0F;
+
+        // Признак фиксации.
+
+        //[XmlAttribute("fixed")] public Bool _fixed;
+        Bool _fixed{};
+
+        //[XmlIgnore] public bool _fixedSpecified
+        bool getFixedSpecified() const;
+
+        // Ссылка на схемный компонент.
+
+        //[XmlElement("ComponentRef")] public ComponentRef _ComponentRef;
+        std::optional<ComponentRef> _ComponentRef;
+
+        // Ссылка на посадочное место.
+
+        //[XmlElement("FootprintRef")] public FootprintRef _FootprintRef;
+        std::optional<FootprintRef> _FootprintRef;
+
+        // Точка привязки объекта.
+
+        //[XmlElement("Org")] public Org _Org;
+        std::optional<Org> _Org;
+
+        // Контакты компонента на плате.
+
+        //[XmlArray("Pins")][XmlArrayItem("Pin")] public List<CompInstance_Pin> _Pins;
+        std::vector<std::optional<CompInstance_Pin>> _Pins;
+        bool ShouldSerialize_Pins();
+
+        // Монтажные отверстия.
+
+        //[XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<CompInstance_Mnthole> _Mntholes;
+        std::vector<std::optional<CompInstance_Mnthole>> _Mntholes;
+        bool ShouldSerialize_Mntholes();
+
+        // Атрибуты компонента.
+
+        //[XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<CompInstance_Attribute> _Attributes;
+        std::vector<std::optional<CompInstance_Attribute>> _Attributes;
+        bool ShouldSerialize_Attributes();
+
+        /************************************************************************
+         * Здесь находятся функции для работы с элементами класса CompInstance. *
+         * Они не являются частью формата TopoR PCB.                            *
+         * **********************************************************************/
+
+        // Для отображения имени компонента
+
+        // <returns></returns>
+        std::string ToString();
+        /***********************************************************************/
+    };
+
+    // Описание одиночного контакта..
+
+public:
+    class FreePad {
+
+        // Сторона объекта.
+
+    public:
+        //[XmlAttribute("side")] public side _side;
+        side _side{};
+
+        // Задаёт угол в градусах c точностью до тысячных долей.
+
+        //[XmlAttribute("angle", DataType = "float")] public float _angle;
+        float _angle = 0.0F;
+
+        // Признак фиксации.
+
+        //[XmlAttribute("fixed")] public Bool _fixed;
+        Bool _fixed{};
+
+        //[XmlIgnore] public bool _fixedSpecified
+        bool getFixedSpecified() const;
+
+        // Ссылка на стек контактных площадок.
+
+        //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
+        std::optional<PadstackRef> _PadstackRef;
+
+        // Cсылка на цепь.
+
+        //[XmlElement("NetRef")] public NetRef _NetRef;
+        std::optional<NetRef> _NetRef;
+
+        // Точка привязки объекта.
+
+        //[XmlElement("Org")] public Org _Org;
+        std::optional<Org> _Org;
+    };
+
+    // Версия раздела.
+
+public:
+    //[XmlAttribute("version")] public string _version;
+    std::string _version;
+
+    // Описание компонентов на плате (инстанции компонентов)
+
+    //[XmlArray("Components")][XmlArrayItem("CompInstance")] public List<CompInstance> _Components;
+    std::vector<std::optional<CompInstance>> _Components;
+    bool ShouldSerialize_Components();
+
+    // Описание одиночных контактов.(инстанции компонентов)
+
+    //[XmlArray("FreePads")][XmlArrayItem("FreePad")] public List<FreePad> _FreePads;
+    std::vector<std::optional<FreePad>> _FreePads;
+    bool ShouldSerialize_FreePads();
+
+    /*****************************************************************************
+     * Здесь находятся функции для работы с элементами класса ComponentsOnBoard. *
+     * Они не являются частью формата TopoR PCB.                                 *
+     * ***************************************************************************/
+
+    // Добавление компонента
+
+    // <param name="name">Имя нового компонента. Если имя неуникально, будет добавлен префикс _</param>
+    // <param name="units">текущие единицы измерения</param>
+    // <param name="componentRef">ссылка на библиотеку компонентов</param>
+    // <param name="footprintRef">ссылка на библиотеку посадочных мест</param>
+    // <returns>Имя нового компонента</returns>
+    std::string AddComponent(const std::string& name, units units, const std::string& componentRef, const std::string& footprintRef);
+
+    // Удаление компонента по имени
+
+    // <param name="name">уникальный имя компонента</param>
+    // <returns>true - если было произведено удаление, иначе (компонент не найден) - false</returns>
+    bool RemoveComponent(const std::string& name);
+
+    // Индекс компонента
+
+    // <param name="name">уникальное имя компонента</param>
+    // <returns>индекс компонента или -1, если компонент отсутствует</returns>
+    int ComponentIndexOf(const std::string& name);
+
+    // Переименование компонента
+
+    // <param name="oldname">старое имя компонента</param>
+    // <param name="newname">новое имя компонента</param>
+    // <returns>индекс компонента, если было произведено переименование, -1, если компонент не найден</returns>
+    int RenameComponent(const std::string& oldname, const std::string& newname);
+
+    // Генерация уникального идентификатора
+
+    // <returns>string like "ABCDEFGH"</returns>
+    std::string UniqueId();
+
+    /*************************************************************************************/
+};
+} // namespace TopoR_PCB_Classes
