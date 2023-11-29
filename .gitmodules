@@ -1,0 +1,3 @@
+[submodule "pfr_non_boost"]
+	path = pfr_non_boost
+	url = git@github.com:apolukhin/pfr_non_boost.git
