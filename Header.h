@@ -17,42 +17,42 @@ struct Header {
 
     // Единицы измерений для всего файла.
     struct Units_Header {
-
         // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
         // [XmlAttribute("dist")] public dist _dist;
-        dist _dist{};
+        Attribute<dist> _dist{};
 
         // Единицы измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
         // [XmlAttribute("time")] public time _time;
-        time _time{};
+        Attribute<time> _time{};
     };
 
     // Название формата файла.
     // [XmlElement("Format")] public string _Format;
-    std::string _Format;
+    QString _Format;
 
     // Версия формата.
     // [XmlElement("Version")] public string _Version;
-    std::string _Version;
+    QString _Version;
 
     // Название программы, создавшей файл.
     // [XmlElement("Program")] public string _Program;
-    std::string _Program;
+    QString _Program;
 
     // Дата и время создания файла (в произвольной форме).
     // [XmlElement("Date")] public string _Date;
-    std::string _Date;
+    QString _Date;
 
     // Формат импортированного файла, из которого был получен дизайн.
     // [XmlElement("OriginalFormat")] public string _OriginalFormat;
-    std::string _OriginalFormat;
+    QString _OriginalFormat;
 
     // Импортированный файл. Путь к файлу задаётся относительно каталога содержащего файл проекта.
     // [XmlElement("OriginalFile")] public string _OriginalFile;
-    std::string _OriginalFile;
+    QString _OriginalFile;
 
     // Единицы измерения для всего файла.
     // [XmlElement("Units")] public Units_Header _Units;
-    std::optional<Units_Header> _Units;
+    Units_Header _Units;
 };
+
 } // namespace TopoR_PCB_Classes

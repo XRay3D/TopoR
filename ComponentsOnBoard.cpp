@@ -2,7 +2,7 @@
 
 namespace TopoR_PCB_Classes {
 
-bool ComponentsOnBoard::CompInstance::CompInstance_Pin::ShouldSerialize_PadstackRef() { return _PadstackRef.has_value(); }
+bool ComponentsOnBoard::CompInstance::CompInstance_Pin::ShouldSerialize_PadstackRef() { return {}; } //_PadstackRef.has_value(); }
 
 bool ComponentsOnBoard::CompInstance::CompInstance_Attribute::CompInstance_Attribute_Label::getMirrorSpecified() const { return _mirror != Bool::off; }
 
@@ -18,7 +18,7 @@ bool ComponentsOnBoard::CompInstance::ShouldSerialize_Mntholes() { return _Mntho
 
 bool ComponentsOnBoard::CompInstance::ShouldSerialize_Attributes() { return _Attributes.size(); }
 
-std::string ComponentsOnBoard::CompInstance::ToString() { return _name; }
+QString ComponentsOnBoard::CompInstance::ToString() { return _name; }
 
 bool ComponentsOnBoard::FreePad::getFixedSpecified() const { return _fixed != Bool::off; }
 
@@ -26,7 +26,7 @@ bool ComponentsOnBoard::ShouldSerialize_Components() { return _Components.size()
 
 bool ComponentsOnBoard::ShouldSerialize_FreePads() { return _FreePads.size(); }
 
-std::string ComponentsOnBoard::AddComponent(const std::string& name, units units, const std::string& componentRef, const std::string& footprintRef) {
+QString ComponentsOnBoard::AddComponent(const QString& name, units units, const QString& componentRef, const QString& footprintRef) {
     /* float x = 0, y = 0; // координаты нового компонента
      if(_Components.empty()) return"";
      while(ComponentIndexOf(name) >= 0) // проверка на уникальность имени и добавление префикса
@@ -40,47 +40,47 @@ std::string ComponentsOnBoard::AddComponent(const std::string& name, units units
      x += offset; // добавление небольшого смещения
      y += offset;
 
-     std::optional<Org> tempVar = std::make_shared<Org>();
+     Org tempVar = std::make_shared<Org>();
      tempVar.value()._x = x;
      tempVar.value()._y = y;
-     std::optional<ComponentRef> tempVar2 = std::make_shared<ComponentRef>();
+     ComponentRef tempVar2 = std::make_shared<ComponentRef>();
      tempVar2.value()._ReferenceName = componentRef;
-     std::optional<FootprintRef> tempVar3 = std::make_shared<FootprintRef>();
+     FootprintRef tempVar3 = std::make_shared<FootprintRef>();
      tempVar3.value()._ReferenceName = footprintRef;
-     std::optional<CompInstance> c = {._name = name, ._side = side::Top, ._uniqueId = UniqueId(), ._angle = 0, ._fixed = Bool::off, ._Org = tempVar, ._ComponentRef = tempVar2, ._FootprintRef = tempVar3};
+     CompInstance c = {._name = name, ._side = side::Top, ._uniqueId = UniqueId(), ._angle = 0, ._fixed = Bool::off, ._Org = tempVar, ._ComponentRef = tempVar2, ._FootprintRef = tempVar3};
      _Components.push_back(c);
      return c.value()._name;*/
     return {};
 }
 
-bool ComponentsOnBoard::RemoveComponent(const std::string& name) {
+bool ComponentsOnBoard::RemoveComponent(const QString& name) {
     int x = ComponentIndexOf(name);
-    if(x >= 0) {
+    if (x >= 0) {
         _Components.erase(_Components.begin() + x);
         return true;
     }
     return false;
 }
 
-int ComponentsOnBoard::ComponentIndexOf(const std::string& name) {
+int ComponentsOnBoard::ComponentIndexOf(const QString& name) {
     /* forint.size(); x--)
          if(_Components[x - 1].value()._name == name)            return x - 1;*/
     return -1;
 }
 
-int ComponentsOnBoard::RenameComponent(const std::string& oldname, const std::string& newname) {
-    int x = ComponentIndexOf(oldname);
-    if(x >= 0) {
-        _Components[x].value()._name = newname;
-        return x;
-    }
+int ComponentsOnBoard::RenameComponent(const QString& oldname, const QString& newname) {
+    // int x = ComponentIndexOf(oldname);
+    // if (x >= 0) {
+    //     _Components[x].value()._name = newname;
+    //     return x;
+    // }
     return -1;
 }
 
-std::string ComponentsOnBoard::UniqueId() {
-    std::string ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    std::string uniqueId = "";
-    /*   std::optional<Random> rnd = std::make_shared<Random>();
+QString ComponentsOnBoard::UniqueId() {
+    QString ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    QString uniqueId = "";
+    /*   Random rnd = std::make_shared<Random>();
       for(int i = 0; i < 8; i++)
           uniqueId += ABC[rnd.value().Next(26)];
       if(_Components.size()) {
@@ -90,4 +90,5 @@ std::string ComponentsOnBoard::UniqueId() {
       }*/
     return uniqueId;
 }
+
 } // namespace TopoR_PCB_Classes

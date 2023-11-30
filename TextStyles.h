@@ -25,12 +25,12 @@ struct TextStyles {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Параметр стиля надписей: название шрифта.
 
         //[XmlAttribute("fontName")] public string _fontName;
-        std::string _fontName;
+        QString _fontName;
 
         // Параметр стиля надписей: высота символов в текущих единицах.
 
@@ -57,12 +57,12 @@ struct TextStyles {
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Стили надписей.
 
     //[XmlElement("TextStyle")] public List<TextStyle> _TextStyles;
-    std::vector<std::optional<TextStyle>> _TextStyles;
+    std::vector<TextStyle> _TextStyles;
     bool ShouldSerialize_TextStyles();
 
     /**********************************************************************
@@ -72,4 +72,5 @@ struct TextStyles {
 
     /**********************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes

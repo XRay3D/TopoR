@@ -229,4 +229,5 @@ bool DisplayControl::FilterNetlines::ShouldSerialize_Refs() {
 bool DisplayControl::ShouldSerialize_LayersVisualOptions() {
     return _LayersVisualOptions.size();
 }
+
 } // namespace TopoR_PCB_Classes

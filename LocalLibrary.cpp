@@ -94,7 +94,7 @@ bool LocalLibrary::Footprint::ShouldSerialize_Labels() {
     return _Labels.size();
 }
 
-std::string LocalLibrary::Footprint::ToString() {
+QString LocalLibrary::Footprint::ToString() {
     return _name;
 }
 
@@ -106,7 +106,7 @@ bool LocalLibrary::Component::ShouldSerialize_Attributes() {
     return _Attributes.size();
 }
 
-std::string LocalLibrary::Component::ToString() {
+QString LocalLibrary::Component::ToString() {
     return _name;
 }
 
@@ -133,4 +133,5 @@ bool LocalLibrary::ShouldSerialize_Components() {
 bool LocalLibrary::ShouldSerialize_Packages() {
     return _Packages.size();
 }
+
 } // namespace TopoR_PCB_Classes

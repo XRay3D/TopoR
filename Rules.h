@@ -54,7 +54,7 @@ struct Rules {
         // <remarks>! При null необходимо смотреть _LayersRef - там описаны ссылки остальных типов. </remarks>
 
         //[XmlElement("LayerRef")] public List<LayerRef> _LayersRefs;
-        std::vector<std::optional<LayerRef>> _LayersRefs;
+        std::vector<LayerRef> _LayersRefs;
         bool ShouldSerialize_LayersRefs();
 
         // Объекты воздействия правила.
@@ -98,7 +98,7 @@ struct Rules {
         // <remarks>! При null необходимо смотреть _LayersRef - там описаны ссылки остальных типов. </remarks>
 
         //[XmlElement("LayerRef")] public List<LayerRef> _LayersRefs;
-        std::vector<std::optional<LayerRef>> _LayersRefs;
+        std::vector<LayerRef> _LayersRefs;
         bool ShouldSerialize_LayersRefs();
 
         // Объекты воздействия правила.
@@ -196,13 +196,13 @@ struct Rules {
         // <remarks>! При null необходимо смотреть _LayersRef - там описаны ссылки остальных типов. </remarks>
 
         //[XmlElement("LayerRef")] public List<LayerRef> _LayersRefs;
-        std::vector<std::optional<LayerRef>> _LayersRefs;
+        std::vector<LayerRef> _LayersRefs;
         bool ShouldSerialize_LayersRefs();
 
         // Объекты воздействия правила.
 
         //[XmlArray("ObjectsAffected")][XmlArrayItem("NetRef")] public List<NetRef> _ObjectsAffected;
-        std::vector<std::optional<NetRef>> _ObjectsAffected;
+        std::vector<NetRef> _ObjectsAffected;
         bool ShouldSerialize_ObjectsAffected();
     };
 
@@ -230,7 +230,7 @@ struct Rules {
         // <remarks>! При null необходимо смотреть _LayersRef - там описаны ссылки остальных типов. </remarks>
 
         //[XmlElement("LayerRef")] public List<LayerRef> _LayersRefs;
-        std::vector<std::optional<LayerRef>> _LayersRefs;
+        std::vector<LayerRef> _LayersRefs;
         bool ShouldSerialize_LayersRefs();
 
         // Объекты воздействия правила.
@@ -263,7 +263,7 @@ struct Rules {
         // Ссылка на цепь.
 
         //[XmlElement("NetRef")] public List<NetRef> _NetRefs;
-        std::vector<std::optional<NetRef>> _NetRefs;
+        std::vector<NetRef> _NetRefs;
         bool ShouldSerialize_NetRefs();
     };
 
@@ -279,78 +279,78 @@ struct Rules {
         // Ссылки на стеки контактных площадок.
 
         //[XmlElement("PadstackRef")] public List<PadstackRef> _PadstackRefs;
-        std::vector<std::optional<PadstackRef>> _PadstackRefs;
+        std::vector<PadstackRef> _PadstackRefs;
         bool ShouldSerialize_PadstackRefs();
 
         // Ссылки на контакты.
 
         //[XmlElement("PinRef")] public List<PinRef> _PinRefs;
-        std::vector<std::optional<PinRef>> _PinRefs;
+        std::vector<PinRef> _PinRefs;
         bool ShouldSerialize_PinRefs();
 
         // Ссылки на выводы посадочных мест.
 
         //[XmlElement("PadRef")] public List<PadRef> _PadRefs;
-        std::vector<std::optional<PadRef>> _PadRefs;
+        std::vector<PadRef> _PadRefs;
         bool ShouldSerialize_PadRefs();
     };
 
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Правила ширин проводников.
 
     //[XmlArray("RulesWidthOfWires")][XmlArrayItem("WidthOfWires")] public List<WidthOfWires> _RulesWidthOfWires;
-    std::vector<std::optional<WidthOfWires>> _RulesWidthOfWires;
+    std::vector<WidthOfWires> _RulesWidthOfWires;
     bool ShouldSerialize_RulesWidthOfWires();
 
     // Правила зазоров между цепями.
 
     //[XmlArray("RulesClearancesNetToNet")][XmlArrayItem("ClearanceNetToNet")] public List<ClearanceNetToNet> _RulesClearancesNetToNet;
-    std::vector<std::optional<ClearanceNetToNet>> _RulesClearancesNetToNet;
+    std::vector<ClearanceNetToNet> _RulesClearancesNetToNet;
     bool ShouldSerialize_RulesClearancesNetToNet();
 
     // Правила зазоров между компонентами.
 
     //[XmlArray("RulesClearancesCompToComp")][XmlArrayItem("ClearanceCompToComp")] public List<ClearanceCompToComp> _RulesClearancesCompToComp;
-    std::vector<std::optional<ClearanceCompToComp>> _RulesClearancesCompToComp;
+    std::vector<ClearanceCompToComp> _RulesClearancesCompToComp;
     bool ShouldSerialize_RulesClearancesCompToComp();
 
     // Правило зазоров до края платы.
 
     //[XmlElement("RulesClearancesToBoard")] public RulesClearancesToBoard _RulesClearancesToBoard;
-    std::optional<RulesClearancesToBoard> _RulesClearancesToBoard;
+    RulesClearancesToBoard _RulesClearancesToBoard;
 
     // Правила назначения цепям стеков переходных отверстий.
 
     //[XmlArray("RulesViastacksOfNets")][XmlArrayItem("ViastacksOfNets")] public List<ViastacksOfNets> _RulesViastacksOfNets;
-    std::vector<std::optional<ViastacksOfNets>> _RulesViastacksOfNets;
+    std::vector<ViastacksOfNets> _RulesViastacksOfNets;
     bool ShouldSerialize_RulesViastacksOfNets();
 
     // Правила назначения цепям опорных слоёв.
 
     //[XmlArray("RulesPlaneLayersNets")][XmlArrayItem("PlaneLayerNets")] public List<PlaneLayerNets> _RulesPlaneLayersNets;
-    std::vector<std::optional<PlaneLayerNets>> _RulesPlaneLayersNets;
+    std::vector<PlaneLayerNets> _RulesPlaneLayersNets;
     bool ShouldSerialize_RulesPlaneLayersNets();
 
     // Правила назначения цепям сигнальных слоёв.
 
     //[XmlArray("RulesSignalLayersNets")][XmlArrayItem("SignalLayerNets")] public List<SignalLayerNets> _RulesSignalLayersNets;
-    std::vector<std::optional<SignalLayerNets>> _RulesSignalLayersNets;
+    std::vector<SignalLayerNets> _RulesSignalLayersNets;
     bool ShouldSerialize_RulesSignalLayersNets();
 
     // Свойства цепей
 
     //[XmlArray("NetProperties")][XmlArrayItem("NetProperty")] public List<NetProperty> _NetProperties;
-    std::vector<std::optional<NetProperty>> _NetProperties;
+    std::vector<NetProperty> _NetProperties;
     bool ShouldSerialize_NetProperties();
 
     // Настройки подключения к углам прямоугольных контактных площадок.
 
     //[XmlElement("PadConnectSettings")] public PadConnectSettings _PadConnectSettings;
-    std::optional<PadConnectSettings> _PadConnectSettings;
+    PadConnectSettings _PadConnectSettings;
 
     /*****************************************************************
      * Здесь находятся функции для работы с элементами класса Rules. *
@@ -361,6 +361,7 @@ struct Rules {
 
     // <param name="oldname">старое имя компонента</param>
     // <param name="newname">новое имя компонента</param>
-    void Rename_compName(const std::string& oldname, const std::string& newname);
+    void Rename_compName(const QString& oldname, const QString& newname);
 };
+
 } // namespace TopoR_PCB_Classes

@@ -35,7 +35,7 @@ struct DialogSettings {
         // </summary
 
         //[XmlAttribute("logFileName")] public string _logFileName;
-        std::string _logFileName;
+        QString _logFileName;
 
         // Настройка DRC: максимальное количество сообщений.
         // </summary
@@ -366,7 +366,7 @@ struct DialogSettings {
             // <remarks>! Имя не должно содержать путь к файлу.</remarks>
 
             //[XmlAttribute("fileName")] public string _fileName;
-            std::string _fileName;
+            QString _fileName;
 
             // Настройка вывода файла Gerber: выводить файл.
             // </summary
@@ -389,24 +389,24 @@ struct DialogSettings {
             // Ссылка на слой.
 
             //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-            std::optional<LayerRef> _LayerRef;
+            LayerRef _LayerRef;
 
             // Настройка экспорта Gerber файлов: список экспортируемых объектов для слоя.
 
             //[XmlElement("ExportObjects")] public ExportObjects_ExportFile _ExportObjects;
-            std::optional<ExportObjects_ExportFile> _ExportObjects;
+            ExportObjects_ExportFile _ExportObjects;
 
             // Настройка вывода файла Gerber: смещение объектов по осям x и y.
 
             //[XmlElement("Shift")] public Shift _Shift;
-            std::optional<Shift> _Shift;
+            Shift _Shift;
         };
 
         // Каталог для выходных файлов (Gerber, Drill).
         // </summary
 
         //[XmlAttribute("outPath")] public string _outPath;
-        std::string _outPath;
+        QString _outPath;
 
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
         // </summary
@@ -429,7 +429,7 @@ struct DialogSettings {
         // Настройки вывода файлов Gerber.
 
         //[XmlElement("ExportFile")] public List<ExportFile_GerberSettings> _ExportFiles;
-        std::vector<std::optional<ExportFile_GerberSettings>> _ExportFiles;
+        std::vector<ExportFile_GerberSettings> _ExportFiles;
         bool ShouldSerialize_ExportFiles();
     };
 
@@ -509,18 +509,18 @@ struct DialogSettings {
             // Ссылка на слой.
 
             //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-            std::optional<LayerRef> _LayerRef;
+            LayerRef _LayerRef;
 
             // Настройка экспорта слоя в файл DXF: список экспортируемых объектов для слоя.
 
             //[XmlElement("ExportObjects")] public ExportObjects_ExportLayer _ExportObjects;
-            std::optional<ExportObjects_ExportLayer> _ExportObjects;
+            ExportObjects_ExportLayer _ExportObjects;
         };
 
         // Имя выходного файла (ВОМ, DXF).
 
         //[XmlAttribute("outFile")] public string _outFile;
-        std::string _outFile;
+        QString _outFile;
 
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
 
@@ -546,7 +546,7 @@ struct DialogSettings {
         // Настройки вывода слоя в файл DXF.
 
         //[XmlElement("ExportLayer")] public List<ExportLayer> _ExportLayers;
-        std::vector<std::optional<ExportLayer>> _ExportLayers;
+        std::vector<ExportLayer> _ExportLayers;
         bool ShouldSerialize_ExportLayers();
     };
 
@@ -563,14 +563,14 @@ struct DialogSettings {
             // <remarks>! Имя не должно содержать путь к файлу.</remarks>
 
             //[XmlAttribute("fileName")] public string _fileName;
-            std::string _fileName;
+            QString _fileName;
         };
 
         // Каталог для выходных файлов (Gerber, Drill).
         // </summary
 
         //[XmlAttribute("outPath")] public string _outPath;
-        std::string _outPath;
+        QString _outPath;
 
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
         // </summary
@@ -593,7 +593,7 @@ struct DialogSettings {
         // Настройки вывода файлов Gerber.
 
         //[XmlElement("ExportFile")] public List<ExportFile_DrillSettings> _ExportFiles;
-        std::vector<std::optional<ExportFile_DrillSettings>> _ExportFiles;
+        std::vector<ExportFile_DrillSettings> _ExportFiles;
         bool ShouldSerialize_ExportFiles();
     };
 
@@ -604,7 +604,7 @@ struct DialogSettings {
         // Имя выходного файла (ВОМ, DXF).
 
         //[XmlAttribute("outFile")] public string _outFile;
-        std::string _outFile;
+        QString _outFile;
 
         // Настройка диалога вывода BOM файла: выводить количество компонентов.
 
@@ -641,7 +641,7 @@ struct DialogSettings {
         // Ссылка на атрибут.
 
         //[XmlElement("AttributeRef")] public List<AttributeRef> _AttributeRefs;
-        std::vector<std::optional<AttributeRef>> _AttributeRefs;
+        std::vector<AttributeRef> _AttributeRefs;
         bool ShouldSerialize_AttributeRefs();
     };
 
@@ -786,37 +786,37 @@ struct DialogSettings {
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Настройки DRC.
 
     //[XmlElement("DRCSettings")] public DRCSettings _DRCSettings;
-    std::optional<DRCSettings> _DRCSettings;
+    DRCSettings _DRCSettings;
 
     // Настройки вывода файлов Gerber.
 
     //[XmlElement("GerberSettings")] public GerberSettings _GerberSettings;
-    std::optional<GerberSettings> _GerberSettings;
+    GerberSettings _GerberSettings;
 
     // Настройки вывода файла DXF.
 
     //[XmlElement("DXFSettings")] public DXFSettings _DXFSettings;
-    std::optional<DXFSettings> _DXFSettings;
+    DXFSettings _DXFSettings;
 
     // Настройки вывода файлов Drill.
 
     //[XmlElement("DrillSettings")] public DrillSettings _DrillSettings;
-    std::optional<DrillSettings> _DrillSettings;
+    DrillSettings _DrillSettings;
 
     // Настройки вывода BOM файла.
 
     //[XmlElement("BOMSettings")] public BOMSettings _BOMSettings;
-    std::optional<BOMSettings> _BOMSettings;
+    BOMSettings _BOMSettings;
 
     // Настройка фильтра сообщений.
 
     //[XmlElement("MessagesFilter")] public MessagesFilter _MessagesFilter;
-    std::optional<MessagesFilter> _MessagesFilter;
+    MessagesFilter _MessagesFilter;
 
     /**************************************************************************
      * Здесь находятся функции для работы с элементами класса DialogSettings. *
@@ -825,4 +825,5 @@ struct DialogSettings {
 
     /**************************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes

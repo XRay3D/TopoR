@@ -128,7 +128,7 @@ void Constructive::UnitsConvert(dist in_units, dist out_units) {
                _Keepouts[i].value().UnitsConvert(in_units, out_units);*/
 }
 
-void Constructive::Add(std::optional<Constructive> a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts) {
+void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts) {
     /* int l;
      if (boardOutline)
      {
@@ -223,4 +223,5 @@ void Constructive::Add(std::optional<Constructive> a, bool boardOutline, bool mn
          }
      }*/
 }
+
 } // namespace TopoR_PCB_Classes

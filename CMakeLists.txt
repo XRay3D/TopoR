@@ -35,7 +35,10 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Xml REQUIRED)
 # file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 # file(GLOB_RECURSE UIS ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
 
-include_directories(pfr_non_boost/include)
+include_directories(
+    pfr_non_boost/include.
+    compile-time-regular-expressions/single-header
+)
 
 add_executable(${PROJECT_NAME}
     # ${HEADERS}
@@ -60,6 +63,7 @@ add_executable(${PROJECT_NAME}
     # topor_settingstab.cpp
     # topor_settingstab.h
     # topor_types.h
+    МАН2_МСИС_V2.1.fst
     Commons.cpp
     Commons.h
     ComponentsOnBoard.cpp
@@ -93,6 +97,9 @@ add_executable(${PROJECT_NAME}
     main.cpp
     mainwindow.cpp
     mainwindow.h
+    serializer.h
+    serializer.cpp
+    enumerator.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

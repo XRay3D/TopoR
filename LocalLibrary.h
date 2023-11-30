@@ -51,12 +51,12 @@ struct LocalLibrary {
         // Параметр овальной контактной площадки: вытягивание по осям x и y.
 
         //[XmlElement("Stretch")] public Stretch _Stretch;
-        std::optional<Stretch> _Stretch;
+        Stretch _Stretch;
 
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
 
         //[XmlElement("Shift")] public Shift _Shift;
-        std::optional<Shift> _Shift;
+        Shift _Shift;
     };
 
     // Описание прямоугольной контактной площадки.
@@ -142,7 +142,7 @@ struct LocalLibrary {
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
 
         //[XmlElement("Shift")] public Shift _Shift;
-        std::optional<Shift> _Shift;
+        Shift _Shift;
     };
 
     // Описание полигональной контактной площадки.
@@ -154,7 +154,7 @@ struct LocalLibrary {
         // <remarks>! Минимум 3 элемента</remarks>
 
         //[XmlElement("Dot")] public List<Dot> _Dots;
-        std::vector<std::optional<Dot>> _Dots;
+        std::vector<Dot> _Dots;
         bool ShouldSerialize_Dots();
     };
 
@@ -165,7 +165,7 @@ struct LocalLibrary {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Тип стека контактных площадок.
 
@@ -193,7 +193,7 @@ struct LocalLibrary {
         // Описание термобарьера.
 
         //[XmlElement("Thermal")] public Thermal _Thermal;
-        std::optional<Thermal> _Thermal;
+        Thermal _Thermal;
 
         // Контактные площадки стека.
 
@@ -219,21 +219,21 @@ struct LocalLibrary {
             // <remarks>! При null необходимо смотреть _LayersRefs - там описан список ссылок типа LayerRef. </remarks>
 
             //[XmlElement("AllLayers", typeof(AllLayers))] public AllLayers _AllLayers;
-            std::optional<AllLayers> _AllLayers;
+            AllLayers _AllLayers;
 
             // Диапазон слоёв. См. также _AllLayers
 
             // <remarks>! При null необходимо смотреть наличие _AllLayers. </remarks>
 
             //[XmlElement("LayerRef", typeof(LayerRef))] public List<LayerRef> _LayerRefs;
-            std::vector<std::optional<LayerRef>> _LayerRefs;
+            std::vector<LayerRef> _LayerRefs;
             bool ShouldSerialize_LayerRefs();
         };
 
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Диаметр отверстия.
 
@@ -253,12 +253,12 @@ struct LocalLibrary {
         // <value>AllLayers | [LayerRef]</value>
 
         //[XmlElement("LayerRange", typeof(LayerRange))] public LayerRange _LayerRange;
-        std::optional<LayerRange> _LayerRange;
+        LayerRange _LayerRange;
 
         // Описание площадок стека переходного отверстия.
 
         //[XmlArray("ViaPads")][XmlArrayItem("PadCircle", typeof(PadCircle))] public List<PadCircle> _ViaPads;
-        std::vector<std::optional<PadCircle>> _ViaPads;
+        std::vector<PadCircle> _ViaPads;
         bool ShouldSerialize_ViaPads();
     };
 
@@ -278,7 +278,7 @@ struct LocalLibrary {
             // Ссылка на слой.
 
             //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-            std::optional<LayerRef> _LayerRef;
+            LayerRef _LayerRef;
 
             // Описание фигуры.
 
@@ -295,7 +295,7 @@ struct LocalLibrary {
             // Ссылка на слой.
 
             //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-            std::optional<LayerRef> _LayerRef;
+            LayerRef _LayerRef;
 
             // Описание фигуры.
 
@@ -312,17 +312,17 @@ struct LocalLibrary {
             // Идентификатор неименованных объектов.
 
             //[XmlAttribute("id")] public string _id;
-            std::string _id;
+            QString _id;
 
             // Ссылка на стек контактных площадок.
 
             //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
-            std::optional<PadstackRef> _PadstackRef;
+            PadstackRef _PadstackRef;
 
             // Точка привязки объекта.
 
             //[XmlElement("Org")] public Org _Org;
-            std::optional<Org> _Org;
+            Org _Org;
         };
 
         // Описание ярлыка в посадочном месте.
@@ -332,7 +332,7 @@ struct LocalLibrary {
             // Имя объекта или ссылка на именованный объект.
 
             //[XmlAttribute("name")] public string _name;
-            std::string _name;
+            QString _name;
 
             // Параметр надписей (ярлыков): способ выравнивания текста.
 
@@ -355,17 +355,17 @@ struct LocalLibrary {
             // Ссылка на слой.
 
             //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-            std::optional<LayerRef> _LayerRef;
+            LayerRef _LayerRef;
 
             // Ссылка на стиль надписей.
 
             //[XmlElement("TextStyleRef")] public TextStyleRef _TextStyleRef;
-            std::optional<TextStyleRef> _TextStyleRef;
+            TextStyleRef _TextStyleRef;
 
             // Точка привязки объекта.
 
             //[XmlElement("Org")] public Org _Org;
-            std::optional<Org> _Org;
+            Org _Org;
         };
 
         // Описание контактной площадки (вывода) посадочного места.
@@ -388,7 +388,7 @@ struct LocalLibrary {
             // Имя объекта или ссылка на именованный объект.
 
             //[XmlAttribute("name")] public string _name;
-            std::string _name;
+            QString _name;
 
             // Задаёт угол в градусах c точностью до тысячных долей.
 
@@ -408,68 +408,68 @@ struct LocalLibrary {
             // Ссылка на стек контактных площадок.
 
             //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
-            std::optional<PadstackRef> _PadstackRef;
+            PadstackRef _PadstackRef;
 
             // Точка привязки объекта.
 
             //[XmlElement("Org")] public Org _Org;
-            std::optional<Org> _Org;
+            Org _Org;
         };
 
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Описание контактных площадок посадочного места.
 
         //[XmlArray("Pads")][XmlArrayItem("Pad")] public List<Pad> _Pads;
-        std::vector<std::optional<Pad>> _Pads;
+        std::vector<Pad> _Pads;
         bool ShouldSerialize_Pads();
 
         // Надписи.
 
         //[XmlArray("Texts")][XmlArrayItem("Text")] public List<Text> _Texts;
-        std::vector<std::optional<Text>> _Texts;
+        std::vector<Text> _Texts;
         bool ShouldSerialize_Texts();
 
         // Детали посадочного места.
 
         //[XmlArray("Details")][XmlArrayItem("Detail")] public List<Detail> _Details;
-        std::vector<std::optional<Detail>> _Details;
+        std::vector<Detail> _Details;
         bool ShouldSerialize_Details();
 
         // Области металлизации (полигонов) в посадочных местах компонентов.
 
         //[XmlArray("Coppers")][XmlArrayItem("Copper")] public List<Copper_Footprint> _Coppers;
-        std::vector<std::optional<Copper_Footprint>> _Coppers;
+        std::vector<Copper_Footprint> _Coppers;
         bool ShouldSerialize_Coppers();
 
         // Запреты размещения в посадочном месте.
 
         //[XmlArray("KeepoutsPlace")][XmlArrayItem("Keepout")] public List<Keepout_Place_Trace> _KeepoutsPlace;
-        std::vector<std::optional<Keepout_Place_Trace>> _KeepoutsPlace;
+        std::vector<Keepout_Place_Trace> _KeepoutsPlace;
         bool ShouldSerialize_KeepoutsPlace();
 
         // Запреты трассировки в посадочном месте.
 
         //[XmlArray("KeepoutsTrace")][XmlArrayItem("Keepout")] public List<Keepout_Place_Trace> _KeepoutsTrace;
-        std::vector<std::optional<Keepout_Place_Trace>> _KeepoutsTrace;
+        std::vector<Keepout_Place_Trace> _KeepoutsTrace;
         bool ShouldSerialize_KeepoutsTrace();
 
         // Монтажные отверстия.
 
         //[XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<Mnthole> _Mntholes;
-        std::vector<std::optional<Mnthole>> _Mntholes;
+        std::vector<Mnthole> _Mntholes;
         bool ShouldSerialize_Mntholes();
 
         // Ярлыки.
 
         //[XmlArray("Labels")][XmlArrayItem("Label")] public List<Label_Footprint> _Labels;
-        std::vector<std::optional<Label_Footprint>> _Labels;
+        std::vector<Label_Footprint> _Labels;
         bool ShouldSerialize_Labels();
 
-        std::string ToString();
+        QString ToString();
     };
 
     // Описание схемного компонента.
@@ -488,12 +488,12 @@ struct LocalLibrary {
             // Имя объекта или ссылка на именованный объект.
 
             //[XmlAttribute("name")] public string _name;
-            std::string _name;
+            QString _name;
 
             // Схемотехническое имя контакта компонента.
 
             //[XmlAttribute("pinSymName")] public string _pinSymName;
-            std::string _pinSymName;
+            QString _pinSymName;
 
             // Параметр контакта компонента: эквивалентность.
 
@@ -518,32 +518,32 @@ struct LocalLibrary {
             // Имя объекта или ссылка на именованный объект.
 
             //[XmlAttribute("name")] public string _name;
-            std::string _name;
+            QString _name;
 
             // Значение атрибута.
 
             //[XmlAttribute("value")] public string _value;
-            std::string _value;
+            QString _value;
         };
 
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Контакты схемного компонента.
 
         //[XmlArray("Pins")][XmlArrayItem("Pin")] public List<Pin_Component> _Pins;
-        std::vector<std::optional<Pin_Component>> _Pins;
+        std::vector<Pin_Component> _Pins;
         bool ShouldSerialize_Pins();
 
         // Атрибуты компонента.
 
         //[XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<Attribute_Component> _Attributes;
-        std::vector<std::optional<Attribute_Component>> _Attributes;
+        std::vector<Attribute_Component> _Attributes;
         bool ShouldSerialize_Attributes();
 
-        std::string ToString();
+        QString ToString();
     };
 
     // Описание упаковки (соответствие контактов компонента и выводов посадочного места).
@@ -578,53 +578,53 @@ struct LocalLibrary {
         // Ссылка на схемный компонент.
 
         //[XmlElement("ComponentRef")] public ComponentRef _ComponentRef;
-        std::optional<ComponentRef> _ComponentRef;
+        ComponentRef _ComponentRef;
 
         // Ссылка на посадочное место.
 
         //[XmlElement("FootprintRef")] public FootprintRef _FootprintRef;
-        std::optional<FootprintRef> _FootprintRef;
+        FootprintRef _FootprintRef;
 
         // Соответствие контакта схемного компонента и вывода посадочного места.
 
         //[XmlElement("Pinpack")] public List<Pinpack> _Pinpacks;
-        std::vector<std::optional<Pinpack>> _Pinpacks;
+        std::vector<Pinpack> _Pinpacks;
         bool ShouldSerialize_Pinpacks();
     };
 
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Стеки контактных площадок.
 
     //[XmlArray("Padstacks")][XmlArrayItem("Padstack")] public List<Padstack> _Padstacks;
-    std::vector<std::optional<Padstack>> _Padstacks;
+    std::vector<Padstack> _Padstacks;
     bool ShouldSerialize_Padstacks();
 
     // Типы (стеки) переходных отверстий.
 
     //[XmlArray("Viastacks")][XmlArrayItem("Viastack")] public List<Viastack> _Viastacks;
-    std::vector<std::optional<Viastack>> _Viastacks;
+    std::vector<Viastack> _Viastacks;
     bool ShouldSerialize_Viastacks();
 
     // Посадочные места.
 
     //[XmlArray("Footprints")][XmlArrayItem("Footprint")] public List<Footprint> _Footprints;
-    std::vector<std::optional<Footprint>> _Footprints;
+    std::vector<Footprint> _Footprints;
     bool ShouldSerialize_Footprints();
 
     // Схемные компоненты.
 
     //[XmlArray("Components")][XmlArrayItem("Component")] public List<Component> _Components;
-    std::vector<std::optional<Component>> _Components;
+    std::vector<Component> _Components;
     bool ShouldSerialize_Components();
 
     // Упаковки.
 
     //[XmlArray("Packages")][XmlArrayItem("Package")] public List<Package> _Packages;
-    std::vector<std::optional<Package>> _Packages;
+    std::vector<Package> _Packages;
     bool ShouldSerialize_Packages();
 
     /************************************************************************
@@ -634,4 +634,5 @@ struct LocalLibrary {
 
     /************************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes

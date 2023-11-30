@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <QString>
 #include <any>
 #include <memory>
 #include <optional>
@@ -25,7 +26,7 @@ struct NetList {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Ссылка на контакт или вывод посадочного места (объект класса PinRef или PadRef).
 
@@ -37,12 +38,12 @@ struct NetList {
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Описания цепей.
 
     //[XmlElement("Net")] public List<Net> _Nets;
-    std::vector<std::optional<Net>> _Nets;
+    std::vector<Net> _Nets;
     bool ShouldSerialize_Nets();
 
     /*******************************************************************
@@ -54,7 +55,8 @@ struct NetList {
 
     // <param name="oldname">старое имя компонента</param>
     // <param name="newname">новое имя компонента</param>
-    void Rename_compName(const std::string& oldname, const std::string& newname);
+    void Rename_compName(const QString& oldname, const QString& newname);
     /*******************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes

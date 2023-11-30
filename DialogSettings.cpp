@@ -109,4 +109,5 @@ bool DialogSettings::MessagesFilter::getW5037Specified() const { return _W5037 !
 bool DialogSettings::MessagesFilter::getWClrnBtwCompsSpecified() const { return _WClrnBtwComps != Bool::off; }
 
 bool DialogSettings::MessagesFilter::getWClrnBtwObjSameNetSpecified() const { return _WClrnBtwObjSameNet != Bool::off; }
+
 } // namespace TopoR_PCB_Classes

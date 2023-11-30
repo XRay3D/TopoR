@@ -7,7 +7,7 @@ bool Groups::LayerGroup::ShouldSerialize_LayerRefs() {
     return _LayerRefs.size();
 }
 
-std::string Groups::LayerGroup::ToString() {
+QString Groups::LayerGroup::ToString() {
     return _name;
 }
 
@@ -31,13 +31,14 @@ bool Groups::ShouldSerialize_CompGroups() {
     return _CompGroups.size();
 }
 
-void Groups::Rename_compName(const std::string& oldname, const std::string& newname) {
+void Groups::Rename_compName(const QString& oldname, const QString& newname) {
     /*  for(auto a: (_CompGroups.empty() ? nullptr : _CompGroups.Where([&](std::any aa) {
               return aa::_CompRefs != nullptr;
           })))
-          for(auto b: a::_CompRefs::OfType<std::optional<CompInstanceRef>>().Where([&](std::any bb) {
+          for(auto b: a::_CompRefs::OfType<CompInstanceRef>().Where([&](std::any bb) {
                   return bb.value()._ReferenceName == oldname;
               }))
               b->_ReferenceName = newname;*/
 }
+
 } // namespace TopoR_PCB_Classes

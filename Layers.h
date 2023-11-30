@@ -25,7 +25,7 @@ struct Layers {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Тип слоя. Значение по умолчанию – Signal.
 
@@ -58,28 +58,28 @@ struct Layers {
          * ***************************************************************/
         Layer();
 
-        Layer(const std::string& name, layer_type type, Bool compsOutline, float thickness);
+        Layer(const QString& name, layer_type type, Bool compsOutline, float thickness);
 
-        std::string ToString();
+        QString ToString();
         /*****************************************************************/
     };
 
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Описание слоёв в стеке. Порядок описания должен соответствовать порядку слоёв в стеке.
 
     //[XmlArray("StackUpLayers")][XmlArrayItem("Layer")] public List<Layer> _StackUpLayers;
-    std::vector<std::optional<Layer>> _StackUpLayers;
-    bool ShouldSerialize_StackUpLayers();
+    std::vector<Layer> _StackUpLayers;
+    bool ShouldSerialize_StackUpLayers() { return _StackUpLayers.size(); }
 
     // Описание слоёв вне стека.
 
     //[XmlArray("UnStackLayers")][XmlArrayItem("Layer")] public List<Layer> _UnStackLayers;
-    std::vector<std::optional<Layer>> _UnStackLayers;
-    bool ShouldSerialize_UnStackLayers();
+    std::vector<Layer> _UnStackLayers;
+    bool ShouldSerialize_UnStackLayers() { return _UnStackLayers.size(); }
 
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Layers. *
@@ -90,13 +90,14 @@ struct Layers {
 
     // <param name="lref">Ссылка на слой</param>
     // <returns>true, если слой существует</returns>
-    bool LayerStackUpContains(std::optional<LayerRef> lref);
+    bool LayerStackUpContains(LayerRef lref);
 
     // Проверяет существование слоя, на который ссылается ссылка
 
     // <param name="lref">Ссылка на слой</param>
     // <returns>true, если слой существует</returns>
-    bool LayerUnStackContain(std::optional<LayerRef> lref);
+    bool LayerUnStackContain(LayerRef lref);
     /******************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes

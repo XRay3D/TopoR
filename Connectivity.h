@@ -35,17 +35,17 @@ struct Connectivity {
         // Ссылка на тип переходного отверстия.
 
         //[XmlElement("ViastackRef")] public ViastackRef _ViastackRef;
-        std::optional<ViastackRef> _ViastackRef;
+        ViastackRef _ViastackRef;
 
         // Ссылка на цепь.
 
         //[XmlElement("NetRef")] public NetRef _NetRef;
-        std::optional<NetRef> _NetRef;
+        NetRef _NetRef;
 
         // Точка привязки объекта.
 
         //[XmlElement("Org")] public Org _Org;
-        std::optional<Org> _Org;
+        Org _Org;
     };
 
     // Описание змейки.
@@ -57,7 +57,7 @@ struct Connectivity {
         // Идентификатор неименованных объектов.
 
         //[XmlAttribute("id")] public string _id;
-        std::string _id;
+        QString _id;
 
         // Параметр змейки: требуемая длина.
 
@@ -99,7 +99,7 @@ struct Connectivity {
         // Идентификатор неименованных объектов.
 
         //[XmlAttribute("id")] public string _id;
-        std::string _id;
+        QString _id;
 
         // Признак фиксации.
 
@@ -112,17 +112,17 @@ struct Connectivity {
         // Ссылка на слой.
 
         //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-        std::optional<LayerRef> _LayerRef;
+        LayerRef _LayerRef;
 
         // Ссылка на дифференциальный сигнал.
 
         //[XmlElement("DiffSignalRef")] public DiffSignalRef _DiffSignalRef;
-        std::optional<DiffSignalRef> _DiffSignalRef;
+        DiffSignalRef _DiffSignalRef;
 
         // Начальная точка линии, дуги.
 
         //[XmlElement("Start")] public Start _Start;
-        std::optional<Start> _Start;
+        Start _Start;
 
         // Описание(я) сегмента проводника.
 
@@ -152,7 +152,7 @@ struct Connectivity {
                 // координаты точки, вершины.
 
                 //[XmlElement("Dot")] public List<Dot> _Dots;
-                std::vector<std::optional<Dot>> _Dots;
+                std::vector<Dot> _Dots;
                 bool ShouldSerialize_Dots();
             };
 
@@ -172,20 +172,20 @@ struct Connectivity {
             // Ссылка на застёгнутую пару проводников. Строка должна содержать идентификатор описанной застёгнутой пары проводников ZippedWire.
 
             //[XmlAttribute("zipwireRef")] public string _zipwireRef;
-            std::string _zipwireRef;
+            QString _zipwireRef;
 
             // Описание «капелек» для Subwire.
 
             // <remarks>От KilkennyCat: сделал как массив, в спецификации не так, но так удобней</remarks>
 
             //[XmlArray("Teardrops")][XmlArrayItem("Teardrop")] public List<Teardrop> _Teardrops;
-            std::vector<std::optional<Teardrop>> _Teardrops;
+            std::vector<Teardrop> _Teardrops;
             bool ShouldSerialize_Teardrops();
 
             // Начальная точка линии, дуги.
 
             //[XmlElement("Start")] public Start _Start;
-            std::optional<Start> _Start;
+            Start _Start;
 
             // Описание(я) сегмента проводника.
 
@@ -199,17 +199,17 @@ struct Connectivity {
         // Ссылка на слой.
 
         //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-        std::optional<LayerRef> _LayerRef;
+        LayerRef _LayerRef;
 
         // Ссылка на цепь.
 
         //[XmlElement("NetRef")] public NetRef _NetRef;
-        std::optional<NetRef> _NetRef;
+        NetRef _NetRef;
 
         // Части проводника (последовательность сегментов с одной шириной и одинаковым признаком фиксации).
 
         //[XmlElement("Subwire")] public List<Subwire> _Subwires;
-        std::vector<std::optional<Subwire>> _Subwires;
+        std::vector<Subwire> _Subwires;
         bool ShouldSerialize_Subwires();
     };
 
@@ -226,7 +226,7 @@ struct Connectivity {
             // Описание термобарьера.
 
             //[XmlElement("Thermal")] public Thermal _Thermal;
-            std::optional<Thermal> _Thermal;
+            Thermal _Thermal;
         };
 
         // Описание термобарьера для подключения площадок переходных отверстий к области металлизации.
@@ -236,7 +236,7 @@ struct Connectivity {
             // Описание термобарьера.
 
             //[XmlElement("Thermal")] public Thermal _Thermal;
-            std::optional<Thermal> _Thermal;
+            Thermal _Thermal;
         };
 
         // Описание контура заливаемой области металлизации.
@@ -267,7 +267,7 @@ struct Connectivity {
                 // <remarks>! В случае отсутствия - весь ThermalSpoke будет проигнорирован.</remarks>
 
                 //[XmlElement("Dot")] public List<Dot> _Dots;
-                std::vector<std::optional<Dot>> _Dots;
+                std::vector<Dot> _Dots;
                 bool ShouldSerialize_Dots();
             };
 
@@ -286,7 +286,7 @@ struct Connectivity {
             // Описание спиц термобарьеров, присутствующих на плате
 
             //[XmlElement("ThermalSpoke")] public List<ThermalSpoke> _ThermalSpokes;
-            std::vector<std::optional<ThermalSpoke>> _ThermalSpokes;
+            std::vector<ThermalSpoke> _ThermalSpokes;
             bool ShouldSerialize_ThermalSpokes();
         };
 
@@ -359,33 +359,33 @@ struct Connectivity {
         // Ссылка на слой.
 
         //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-        std::optional<LayerRef> _LayerRef;
+        LayerRef _LayerRef;
 
         // Ссылка на цепь.
 
         //[XmlElement("NetRef")] public NetRef _NetRef;
-        std::optional<NetRef> _NetRef;
+        NetRef _NetRef;
 
         // Описание термобарьера для подключения контактных площадок к области металлизации.
 
         // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
 
         //[XmlElement("ThermalPad")] public ThermalPad _ThermalPad;
-        std::optional<ThermalPad> _ThermalPad;
+        ThermalPad _ThermalPad;
 
         // Описание термобарьера для подключения площадок переходных отверстий к области металлизации.
 
         // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
 
         //[XmlElement("ThermalVia")] public ThermalVia _ThermalVia;
-        std::optional<ThermalVia> _ThermalVia;
+        ThermalVia _ThermalVia;
 
         // Описание контура заливаемой области металлизации..
 
         // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
 
         //[XmlElement("Shape")] public Shape_Copper _Shape;
-        std::optional<Shape_Copper> _Shape;
+        Shape_Copper _Shape;
 
         // Вырезы в областях металлизации (полигонах) заданные пользователем.
 
@@ -399,14 +399,14 @@ struct Connectivity {
         // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
 
         //[XmlArray("Islands")][XmlArrayItem("Island")] public List<Island> _Islands;
-        std::vector<std::optional<Island>> _Islands;
+        std::vector<Island> _Islands;
 
         // Заливка областей металлизации (полигонов) линиями.
 
         // <remarks>! TopoR при импорте игнорирует эту информацию и строит заливку заново.</remarks>
 
         //[XmlArray("Fill")][XmlArrayItem("Line")] public List<Line> _Fill_lines;
-        std::vector<std::optional<Line>> _Fill_lines;
+        std::vector<Line> _Fill_lines;
         bool ShouldSerialize_Fill_lines();
     };
 
@@ -432,58 +432,58 @@ struct Connectivity {
         // Ссылка на слой.
 
         //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-        std::optional<LayerRef> _LayerRef;
+        LayerRef _LayerRef;
 
         // Ссылка на цепь.
 
         //[XmlElement("NetRef")] public NetRef _NetRef;
-        std::optional<NetRef> _NetRef;
+        NetRef _NetRef;
 
         // Описание контура незаливаемой области металлизации.
 
         //[XmlElement("Shape")] public Shape_NonfilledCopper _Shape;
-        std::optional<Shape_NonfilledCopper> _Shape;
+        Shape_NonfilledCopper _Shape;
     };
 
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Переходные отверстия на плате.
 
     //[XmlArray("Vias")][XmlArrayItem("Via")] public List<Via> _Vias;
-    std::vector<std::optional<Via>> _Vias;
+    std::vector<Via> _Vias;
     bool ShouldSerialize_Vias();
 
     // Змейки
 
     //[XmlArray("Serpents")][XmlArrayItem("Serpent")] public List<Serpent> _Serpents;
-    std::vector<std::optional<Serpent>> _Serpents;
+    std::vector<Serpent> _Serpents;
     bool ShouldSerialize_Serpents();
 
     // Застёгнутые пары проводников.
 
     //[XmlArray("ZippedWires")][XmlArrayItem("ZippedWire")] public List<ZippedWire> _ZippedWires;
-    std::vector<std::optional<ZippedWire>> _ZippedWires;
+    std::vector<ZippedWire> _ZippedWires;
     bool ShouldSerialize_ZippedWires();
 
     // Проводники.
 
     //[XmlArray("Wires")][XmlArrayItem("Wire")] public List<Wire> _Wires;
-    std::vector<std::optional<Wire>> _Wires;
+    std::vector<Wire> _Wires;
     bool ShouldSerialize_Wires();
 
     // Oбласти металлизации (полигонов).
 
     //[XmlArray("Coppers")][XmlArrayItem("Copper")] public List<Copper_Connectivity> _Coppers;
-    std::vector<std::optional<Copper_Connectivity>> _Coppers;
+    std::vector<Copper_Connectivity> _Coppers;
     bool ShouldSerialize_Coppers();
 
     // Незаливаемые области металлизации.
 
     //[XmlArray("NonfilledCoppers")][XmlArrayItem("NonfilledCopper")] public List<NonfilledCopper> _NonfilledCoppers;
-    std::vector<std::optional<NonfilledCopper>> _NonfilledCoppers;
+    std::vector<NonfilledCopper> _NonfilledCoppers;
     bool ShouldSerialize_NonfilledCoppers();
 
     /************************************************************************
@@ -493,4 +493,5 @@ struct Connectivity {
 
     /************************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes

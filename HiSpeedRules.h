@@ -33,13 +33,13 @@ struct HiSpeedRules {
             // Ссылка на слой.
 
             //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-            std::optional<LayerRef> _LayerRef;
+            LayerRef _LayerRef;
         };
 
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
 
@@ -49,7 +49,7 @@ struct HiSpeedRules {
         // Правило разводки сигнала для слоя.
 
         //[XmlElement("LayerRule")] public List<LayerRule_Impendance> _LayerImpedanceRules;
-        std::vector<std::optional<LayerRule_Impendance>> _LayerImpedanceRules;
+        std::vector<LayerRule_Impendance> _LayerImpedanceRules;
         bool ShouldSerialize_LayerImpedanceRules();
     };
 
@@ -72,13 +72,13 @@ struct HiSpeedRules {
             // Ссылка на слой.
 
             //[XmlElement("LayerRef")] public LayerRef _LayerRef;
-            std::optional<LayerRef> _LayerRef;
+            LayerRef _LayerRef;
         };
 
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
 
@@ -88,7 +88,7 @@ struct HiSpeedRules {
         // Правило разводки дифференциальной пары для слоя.
 
         //[XmlElement("LayerRule")] public List<LayerRule_ImpendanceDiff> _LayerImpedanceDiffRules;
-        std::vector<std::optional<LayerRule_ImpendanceDiff>> _LayerImpedanceDiffRules;
+        std::vector<LayerRule_ImpendanceDiff> _LayerImpedanceDiffRules;
         bool ShouldSerialize_LayerImpedanceDiffRules();
     };
 
@@ -103,7 +103,7 @@ struct HiSpeedRules {
             // Ссылка на контакт источника сигнала.
 
             //[XmlElement("PinRef")] public List<PinRef> _PinRefs;
-            std::vector<std::optional<PinRef>> _PinRefs;
+            std::vector<PinRef> _PinRefs;
             bool ShouldSerialize_PinRefs();
         };
 
@@ -114,17 +114,17 @@ struct HiSpeedRules {
             // Имя объекта или ссылка на именованный объект.
 
             //[XmlAttribute("name")] public string _name;
-            std::string _name;
+            QString _name;
 
             // Ссылка на контакт источника сигнала.
 
             //[XmlElement("ReceiverPinRef")] public ReceiverPinRef _ReceiverPinRef;
-            std::optional<ReceiverPinRef> _ReceiverPinRef;
+            ReceiverPinRef _ReceiverPinRef;
 
             // Пассивные компоненты на пути следования сигнала.
 
             //[XmlArray("Components")][XmlArrayItem("CompInstanceRef")] public List<CompInstanceRef> _Components;
-            std::vector<std::optional<CompInstanceRef>> _Components;
+            std::vector<CompInstanceRef> _Components;
             /*   public bool ShouldSerialize_Components()
                {
                    return _Components?.Count > 0;
@@ -134,17 +134,17 @@ struct HiSpeedRules {
         // Ссылка на волновое сопротивление.
 
         //[XmlElement("ImpedanceRef")] public ImpedanceRef _ImpedanceRef;
-        std::optional<ImpedanceRef> _ImpedanceRef;
+        ImpedanceRef _ImpedanceRef;
 
         // Ссылка на контакт источника сигнала.
 
         //[XmlElement("SourcePinRef")] public SourcePinRef _SourcePinRef;
-        std::optional<SourcePinRef> _SourcePinRef;
+        SourcePinRef _SourcePinRef;
 
         // Цепи сигнального кластера.
 
         //[XmlArray("Nets")][XmlArrayItem("NetRef")] public List<NetRef> _Nets;
-        std::vector<std::optional<NetRef>> _Nets;
+        std::vector<NetRef> _Nets;
         /*     public bool ShouldSerialize_Nets()
              {
                  return _Nets?.Count > 0;
@@ -154,7 +154,7 @@ struct HiSpeedRules {
         // Описание заданных связей сигнального кластера.
 
         //[XmlArray("PinPairs")][XmlArrayItem("PinPair")] public List<PinPair> _PinPairs;
-        std::vector<std::optional<PinPair>> _PinPairs;
+        std::vector<PinPair> _PinPairs;
         /*   public bool ShouldSerialize_PinPairs()
            {
                return _PinPairs?.Count > 0;
@@ -164,7 +164,7 @@ struct HiSpeedRules {
         // Ссылки на сигналы.
 
         //[XmlElement("Signal")] public List<Signal> _Signals;
-        std::vector<std::optional<Signal>> _Signals;
+        std::vector<Signal> _Signals;
         /*    public bool ShouldSerialize_Signals()
             {
                 return _Signals?.Count > 0;
@@ -179,7 +179,7 @@ struct HiSpeedRules {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Параметр дифференциальной пары: допустимый разброс длины между проводниками пары.
 
@@ -189,12 +189,12 @@ struct HiSpeedRules {
         // Ссылка на волновое сопротивление.
 
         //[XmlElement("ImpedanceRef")] public ImpedanceRef _ImpedanceRef;
-        std::optional<ImpedanceRef> _ImpedanceRef;
+        ImpedanceRef _ImpedanceRef;
 
         // Ссылки на сигналы.
 
         //[XmlElement("SignalRef")] public List<SignalRef> _SignalRefs;
-        std::vector<std::optional<SignalRef>> _SignalRefs;
+        std::vector<SignalRef> _SignalRefs;
         bool ShouldSerialize_SignalRefs();
     };
 
@@ -205,7 +205,7 @@ struct HiSpeedRules {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Ссылки на сигнал, диф.сигнал, или группу сигналов
 
@@ -247,7 +247,7 @@ struct HiSpeedRules {
             // Объекты воздействия правила.
 
             //[XmlArray("ObjectsAffected")][XmlArrayItem("SignalGroupRef")] public List<SignalGroupRef> _ObjectsAffected;
-            std::vector<std::optional<SignalGroupRef>> _ObjectsAffected;
+            std::vector<SignalGroupRef> _ObjectsAffected;
             bool ShouldSerialize_ObjectsAffected();
         };
 
@@ -339,24 +339,24 @@ struct HiSpeedRules {
             // Первый объект воздействия правила взаимного выравнивания задержек.
 
             //[XmlElement("ObjectLeft")] public ObjectSignal _ObjectLeft;
-            std::optional<ObjectSignal> _ObjectLeft;
+            ObjectSignal _ObjectLeft;
 
             // Второй объект воздействия правила взаимного выравнивания задержек.
 
             //[XmlElement("ObjectRight")] public ObjectSignal _ObjectRight;
-            std::optional<ObjectSignal> _ObjectRight;
+            ObjectSignal _ObjectRight;
         };
 
         // Правила выравнивания задержек для группы цепей или группы дифференциальных пар.
 
         //[XmlElement("DelayEqual")] public List<DelayEqual> _DelayEquals;
-        std::vector<std::optional<DelayEqual>> _DelayEquals;
+        std::vector<DelayEqual> _DelayEquals;
         bool ShouldSerialize_DelayEquals();
 
         // Правила задания абсолютного значения задержки.
 
         //[XmlElement("DelayConstant")] public List<DelayConstant> _DelayConstants;
-        std::vector<std::optional<DelayConstant>> _DelayConstants;
+        std::vector<DelayConstant> _DelayConstants;
         bool ShouldSerialize_DelayConstants();
 
         // Правила взаимного выравнивания задержек.
@@ -364,7 +364,7 @@ struct HiSpeedRules {
         // <remarks>! Правила несимметричны относительно ObjectLeft и ObjectRight</remarks>
 
         //[XmlElement("DelayRelation")] public List<DelayRelation> _DelayRelations;
-        std::vector<std::optional<DelayRelation>> _DelayRelations;
+        std::vector<DelayRelation> _DelayRelations;
         bool ShouldSerialize_DelayRelations();
     };
 
@@ -387,12 +387,12 @@ struct HiSpeedRules {
             // Параметр правила именования цепей дифференциальных сигналов: подстрока, определяющая цепь позитивного сигнала.
 
             //[XmlAttribute("posStr")] public string _posStr;
-            std::string _posStr;
+            QString _posStr;
 
             // Параметр правила именования цепей дифференциальных сигналов: подстрока, определяющая цепь негативного сигнала.
 
             //[XmlAttribute("negStr")] public string _negStr;
-            std::string _negStr;
+            QString _negStr;
         };
 
         // Список цепей, исключённых из поиска сигналов.
@@ -407,7 +407,7 @@ struct HiSpeedRules {
             // Cсылки на цепи.
 
             //[XmlElement("NetRef")] public List<NetRef> _NetRefs;
-            std::vector<std::optional<NetRef>> _NetRefs;
+            std::vector<NetRef> _NetRefs;
             bool ShouldSerialize_NetRefs();
         };
 
@@ -429,19 +429,19 @@ struct HiSpeedRules {
         // <remarks>! Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.</remarks>
 
         //[XmlArray("RulesDiffSignalNetsNames")][XmlArrayItem("RuleDiffSignalNetsNames")] public List<RuleDiffSignalNetsNames> _RulesDiffSignalNetsNames;
-        std::vector<std::optional<RuleDiffSignalNetsNames>> _RulesDiffSignalNetsNames;
+        std::vector<RuleDiffSignalNetsNames> _RulesDiffSignalNetsNames;
         bool ShouldSerialize_RulesDiffSignalNetsNames();
 
         // Список цепей, исключённых из поиска сигналов.
 
         //[XmlElement("ExcludedNets")] public ExcludedNets _ExcludedNets;
-        std::optional<ExcludedNets> _ExcludedNets;
+        ExcludedNets _ExcludedNets;
     };
 
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Волновые сопротивления и правила разводки сигналов.
 
@@ -452,30 +452,30 @@ struct HiSpeedRules {
     // Сигнальные кластеры цепей.
 
     //[XmlArray("SignalClusters")][XmlArrayItem("SignalCluster")] public List<SignalCluster> _SignalClusters;
-    std::vector<std::optional<SignalCluster>> _SignalClusters;
+    std::vector<SignalCluster> _SignalClusters;
     bool ShouldSerialize_SignalClusters();
 
     // Дифференциальные сигналы.
 
     //[XmlArray("DiffSignals")][XmlArrayItem("DiffSignal")] public List<DiffSignal> _DiffSignals;
-    std::vector<std::optional<DiffSignal>> _DiffSignals;
+    std::vector<DiffSignal> _DiffSignals;
     bool ShouldSerialize_DiffSignals();
 
     // Группы сигналов.
 
     //[XmlArray("SignalGroups")][XmlArrayItem("SignalGroup")] public List<SignalGroup> _SignalGroups;
-    std::vector<std::optional<SignalGroup>> _SignalGroups;
+    std::vector<SignalGroup> _SignalGroups;
     bool ShouldSerialize_SignalGroups();
 
     // Правила выравнивания задержек.
 
     //[XmlElement("RulesDelay")] public RulesDelay _RulesDelay;
-    std::optional<RulesDelay> _RulesDelay;
+    RulesDelay _RulesDelay;
 
     // Настройки автоматического поиска сигналов.
 
     //[XmlElement("SignalSearchSettings")] public SignalSearchSettings _SignalSearchSettings;
-    std::optional<SignalSearchSettings> _SignalSearchSettings;
+    SignalSearchSettings _SignalSearchSettings;
 
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса HiSpeedRules. *
@@ -486,7 +486,8 @@ struct HiSpeedRules {
 
     // <param name="oldname">старое имя компонента</param>
     // <param name="newname">новое имя компонента</param>
-    void Rename_compName(const std::string& oldname, const std::string& newname);
+    void Rename_compName(const QString& oldname, const QString& newname);
     /***********************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes

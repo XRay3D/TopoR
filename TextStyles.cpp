@@ -13,4 +13,5 @@ bool TextStyles::TextStyle::getItalicSpecified() const {
 bool TextStyles::ShouldSerialize_TextStyles() {
     return _TextStyles.size();
 }
+
 } // namespace TopoR_PCB_Classes

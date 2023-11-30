@@ -86,7 +86,7 @@ bool HiSpeedRules::ShouldSerialize_SignalGroups() {
     return _SignalGroups.size();
 }
 
-void HiSpeedRules::Rename_compName(const std::string& oldname, const std::string& newname) {
+void HiSpeedRules::Rename_compName(const QString& oldname, const QString& newname) {
     /* for(auto a: _SignalClusters) {
          if(a->_SourcePinRef.value()._compName == oldname)
              a->_SourcePinRef.value()._compName = newname;
@@ -105,4 +105,5 @@ void HiSpeedRules::Rename_compName(const std::string& oldname, const std::string
                  c->_compName = newname;
      }*/
 }
+
 } // namespace TopoR_PCB_Classes

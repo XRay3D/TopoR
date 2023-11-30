@@ -39,4 +39,5 @@ bool Connectivity::ShouldSerialize_Wires() { return _Wires.size(); }
 bool Connectivity::ShouldSerialize_Coppers() { return _Coppers.size(); }
 
 bool Connectivity::ShouldSerialize_NonfilledCoppers() { return _NonfilledCoppers.size(); }
+
 } // namespace TopoR_PCB_Classes

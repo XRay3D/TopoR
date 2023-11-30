@@ -62,16 +62,17 @@ bool Rules::ShouldSerialize_RulesSignalLayersNets() { return _RulesSignalLayersN
 
 bool Rules::ShouldSerialize_NetProperties() { return _NetProperties.size(); }
 
-void Rules::Rename_compName(const std::string& oldname, const std::string& newname) {
+void Rules::Rename_compName(const QString& oldname, const QString& newname) {
     // for(auto a: (_PadConnectSettings == nullptr ? nullptr : ((_PadConnectSettings->_PadRefs.empty() ? nullptr : _PadConnectSettings->_PadRefs.Where([&](std::any aa) { return aa.value()._compName == oldname; })))))
     //     a->_compName = newname;
     // for(auto a: (_PadConnectSettings == nullptr ? nullptr : ((_PadConnectSettings->_PinRefs.empty() ? nullptr : _PadConnectSettings->_PinRefs.Where([&](std::any aa) { return aa.value()._compName == oldname; })))))
     //     a->_compName = newname;
 
     // for(auto a: (_RulesClearancesCompToComp.empty() ? nullptr : _RulesClearancesCompToComp.Where([&](std::any aa) { return aa::_ObjectsAffected != nullptr; })))
-    //     for(auto b: a::_ObjectsAffected::OfType<std::optional<ComponentRef>>().Where([&](std::any bb) { return bb.value()._ReferenceName == oldname; }))
+    //     for(auto b: a::_ObjectsAffected::OfType<ComponentRef>().Where([&](std::any bb) { return bb.value()._ReferenceName == oldname; }))
     //         b->_ReferenceName = newname;
 
     /****************************************************************/
 }
+
 } // namespace TopoR_PCB_Classes

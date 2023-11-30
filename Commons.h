@@ -1,9 +1,16 @@
 ﻿#pragma once
 
+// #include "enumerator.h"
+#include "ctre.hpp"
+#include <QString>
+#include <algorithm>
 #include <any>
-#include <memory>
+#include <array>
+#include <limits>
 #include <optional>
+#include <ranges>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace TopoR_PCB_Classes {
@@ -18,610 +25,477 @@ struct Shift;
 
 namespace TopoR_PCB_Classes {
 
+template <typename T>
+struct Attribute {
+    T value{};
+    operator T&() noexcept { return value; }
+    operator const T&() const noexcept { return value; }
+    T& operator=(const T& val) noexcept { return value = val; }
+    T& operator=(T&& val) noexcept { return value = val; }
+};
+
 //	#region Enumerations //Все enum в алфавитном порядке
 
+using std::operator""sv;
+
+template <class Ty>
+inline constexpr bool isEnum = false;
+
+namespace Impl {
+
+using sv = std::string_view;
+namespace ranges = std::ranges;
+
+template <class Ty>
+inline constexpr Ty Max = Ty{};
+
+template <class Ty>
+inline constexpr Ty Tokens = Ty{};
+
+template <class Ty>
+inline constexpr sv str = "";
+
+inline consteval auto trim(sv str) {
+    auto is_space = [](auto ch) {
+        // return std::set{' ', ',', '\f', '\n', '\r', '\t', '\v'}.contains(ch);
+        return ch == ' ' || ch == ',' || ch == '\f' || ch == '\n' || ch == '\r' || ch == '\t' || ch == '\v';
+    };
+    while (is_space(str.front())) str = str.substr(1);
+    while (is_space(str.back())) str = str.substr(0, str.size() - 1);
+    return str;
+};
+
+template <class E>
+inline consteval auto to_num(sv str) {
+    std::underlying_type_t<E> val{};
+    for (auto var: str) {
+        if (var == '-') continue;
+        val *= 10, val += var - '0';
+    }
+    return str.starts_with('-') ? -val : val;
+};
+
+consteval size_t enum_size(sv enums) { return ranges::count(enums, ',') + !enums.ends_with(','); }
+
+template <size_t N, class T>
+inline consteval auto tokenize_enum(sv base) {
+    size_t count{};
+    std::array<std::pair<sv, T>, N> tokens;
+    std::underlying_type_t<T> val{};
+    sv name;
+
+    for (auto&& word: ranges::views::split(base, ", "sv)) {
+        for (int i{}; auto&& tok: ranges::views::split(word, "="sv)) {
+            sv token{tok.begin(), tok.end()};
+            if (!i)
+                name = trim(token);
+            else if (token.size())
+                val = to_num<T>(trim(token));
+            ++i;
+        }
+        tokens[count++] = {name, static_cast<T>(val++)};
+    }
+    return tokens;
+}
+
+} // namespace Impl
+
+#define ENUM(Enum, ...)                                                    \
+    enum class Enum : int {                                                \
+        __VA_ARGS__                                                        \
+    };                                                                     \
+    template <> inline constexpr Impl::sv Impl::str<Enum> = #__VA_ARGS__;  \
+    template <>                                                            \
+    inline constexpr bool isEnum<Enum> = true;                             \
+    template <>                                                            \
+    inline constexpr auto Impl::Max<Enum> = Impl::enum_size(#__VA_ARGS__); \
+    template <>                                                            \
+    inline constexpr auto Impl::Tokens<Enum> = Impl::tokenize_enum<Impl::Max<Enum>, Enum>(#__VA_ARGS__);
+
+template <class E>
+    requires isEnum<E>
+constexpr auto enumToString(E e) {
+    auto it = std::ranges::find(Impl::Tokens<E>, e, &std::pair<Impl::sv, E>::second);
+    return it == Impl::Tokens<E>.end() ? Impl::sv{} : it->first;
+}
+
+template <class E>
+inline constexpr Impl::sv enumToString(E e) { return {}; }
+
+template <class E>
+    requires isEnum<E>
+inline constexpr E stringToEnum(Impl::sv str) {
+    auto it = std::ranges::find(Impl::Tokens<E>, str, &std::pair<Impl::sv, E>::first);
+    return it == Impl::Tokens<E>.end()
+        ? static_cast<E>(
+            std::numeric_limits<std::underlying_type_t<E>>::min())
+        : it->second;
+}
+
+template <class E>
+inline constexpr E stringToEnum(Impl::sv str) { return {}; }
+
 // Параметр надписей (ярлыков): способ выравнивания текста. Значение по умолчанию – CM.
-
-enum class align {
-
+ENUM(align,
     // по центру
-
     // [XmlEnum("CM")] CM,
     CM,
-
     // по левому верхнему углу
-
     // [XmlEnum("LT")] LT,
     LT,
-
     // по верхнему краю
-
     // [XmlEnum("CT")] CT,
     CT,
-
     // по правому верхнему углу
-
     // [XmlEnum("RT")] RT,
     RT,
-
     // по левому краю
-
     // [XmlEnum("LM")] LM,
     LM,
-
     // по правому краю
-
     // [XmlEnum("RM")] RM,
     RM,
-
     // по левому нижнему углу
-
     // [XmlEnum("LB")] LB,
     LB,
-
     // по нижнему краю
-
     // [XmlEnum("CB")] CB,
     CB,
-
     // по правому нижнему углу
-
     // [XmlEnum("RB")] RB
-    RB
-};
+    RB)
 
 // Параметр автоматической трассировки: использование функциональной эквивалентности. Значение по умолчанию – None.
-
-enum class autoEqu {
-
+ENUM(autoEqu,
     // не использовать функциональную эквивалентность
-
     // [XmlEnum("None")] None,
     None,
-
     // переназначать выводы компонента
-
     // [XmlEnum("Pins")] Pins,
     Pins,
-
     // переназначать вентили компонентов (не поддерживается)
-
     // [XmlEnum("Gates")] Gates,
     Gates,
-
     // разрешить все переназначения (не поддерживается)
-
     // [XmlEnum("Full")] Full
-    Full
-};
+    Full)
 
 // Настройка автоматической подвижки. Значение по умолчанию – MoveVias.
-
-enum class automove {
-
+ENUM(automove,
     // двигаются только переходы
-
     // [XmlEnum("MoveVias")] MoveVias,
     MoveVias,
-
     // двигаются только переходы; в процессе движения выполняется перекладка проводников
-
     // [XmlEnum("MoveViasWithRefine")] MoveViasWithRefine,
     MoveViasWithRefine,
-
     // двигаются компоненты и переходы; в процессе движения выполняется перекладка проводников
-
     // [XmlEnum("MoveCompsWithRefine")] MoveCompsWithRefine
-    MoveCompsWithRefine
-};
+    MoveCompsWithRefine)
 
 // Флаг, значение по умолчанию – off.
-
-enum class Bool {
-
+ENUM(Bool,
     // [XmlEnum("off")] off,
     off,
-
     // [XmlEnum("on")] on
-    on
-};
+    on)
 
 // Параметр области металлизации (полигона) стека: подключение контактных площадок. Значение по умолчанию – Direct.
-
-enum class connectPad {
-
+ENUM(connectPad,
     // прямое подключение
-
     // [XmlEnum("Direct")] Direct,
     Direct,
-
     // подключение с помощью термобарьера
-
     // [XmlEnum("Thermal")] Thermal
-    Thermal
-};
+    Thermal)
 
 // Параметр области металлизации (полигона): подключение площадок переходных отверстий. Значение по умолчанию – Direct.
-
-enum class connectVia {
-
+ENUM(connectVia,
     // прямое подключение
-
     // [XmlEnum("Direct")] Direct,
     Direct,
-
     // подключение с помощью термобарьера
-
     // [XmlEnum("Thermal")] Thermal
-    Thermal
-};
+    Thermal)
 
 // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
-
-enum class dist {
-
+ENUM(dist,
     // миллиметр
-
     // [XmlEnum("mm")] mm,
     mm,
-
     // микрометр
-
     // [XmlEnum("mkm")] mkm,
     mkm,
-
     // сантиметр
-
     // [XmlEnum("cm")] cm,
     cm,
-
     // дециметр
-
     // [XmlEnum("dm")] dm,
     dm,
-
     // метр
-
     // [XmlEnum("m")] m,
     m,
-
     // мил(тысячная дюйма)
-
     // [XmlEnum("mil")] mil,
     mil,
-
     // дюйм
-
     // [XmlEnum("inch")] inch
-    inch
-};
+    inch)
 
 // Параметр области металлизации (полигона): тип заливки. Значение по умолчанию – Solid.
-
-enum class fillType {
-
+ENUM(fillType,
     // сплошная заливка
-
     // [XmlEnum("Solid")] Solid,
     Solid,
-
     // штриховка сеткой
-
     // [XmlEnum("Hatched")] Hatched,
     Hatched,
-
     // диагональная штриховка сеткой
-
     // [XmlEnum("CRHatched")] CRHatched
-    CRHatched
-};
+    CRHatched)
 
 // Настройка отображения сетки: тип сетки.
-
-enum class gridKind {
-
+ENUM(gridKind,
     // [XmlEnum("Dots")] Dots,
     Dots,
-
     // [XmlEnum("Lines")] Lines
-    Lines
-};
+    Lines)
 
 // Тип слоя. Значение по умолчанию – Signal.
-
-enum class layer_type {
-
+ENUM(layer_type,
     // сигнальный слой
-
     // [XmlEnum("Signal")] Signal,
     Signal,
-
     // сборочный слой (слой очертаний компонентов)
-
     // [XmlEnum("Assy")] Assy,
     Assy,
-
     // слой паяльной пасты
-
     // [XmlEnum("Paste")] Paste,
     Paste,
-
     // слой шелкографии
-
     // [XmlEnum("Silk")] Silk,
     Silk,
-
     // слой маски
-
     // [XmlEnum("Mask")] Mask,
     Mask,
-
     // опорный слой
-
     // [XmlEnum("Plane")] Plane,
     Plane,
-
     // механический слой
-
     // [XmlEnum("Mechanical")] Mechanical,
     Mechanical,
-
     // документирующий слой
-
     // [XmlEnum("Doc")] Doc,
     Doc,
-
     // диэлектрический слой
-
     // [XmlEnum("Dielectric")] Dielectric
-    Dielectric
-};
+    Dielectric)
 
 // Настройка автоматической трассировки: режим трассировки. Значение по умолчанию – Multilayer.
-
-enum class mode_Autoroute {
-
+ENUM(mode_Autoroute,
     // многослойная трассировка
-
     // [XmlEnum("Multilayer")] Multilayer,
     Multilayer,
-
     // однослойная трассировка на верхнем слое
-
     // [XmlEnum("SinglelayerTop")] SinglelayerTop,
     SinglelayerTop,
-
     // однослойная трассировка на нижнем слое
-
     // [XmlEnum("SinglelayerBottom")] SinglelayerBottom
-    SinglelayerBottom
-};
+    SinglelayerBottom)
 
 // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
-
-enum class mode_PadConnectSettings {
-
+ENUM(mode_PadConnectSettings,
     // возможность подключения к углам КП определяется автоматически.
-
     // [XmlEnum("AutoConnect")] AutoConnect,
     AutoConnect,
-
     // разрешено подключаться к углам всех КП
-
     // [XmlEnum("AllPads")] AllPads
-    AllPads
-};
+    AllPads)
 
 // Параметр области металлизации (полигона): точность аппроксимации контура. Значение по умолчанию – Med.
-
-enum class precision {
-
+ENUM(precision,
     // средняя точность
-
     // [XmlEnum("Med")] Med,
     Med,
-
     // низкая точность
-
     // [XmlEnum("Low")] Low,
     Low,
-
     // высокая точность
-
     // [XmlEnum("High")] High
-    High
-};
+    High)
 
 // Настройка отображения: единицы измерения. Значение по умолчанию – Metric.
-
-enum class preference {
-
+ENUM(preference,
     // метрические (конкретные единицы выбираются в зависимости от параметра)
-
     // [XmlEnum("Metric")] Metric,
     Metric,
-
     // микрометр
-
     // [XmlEnum("mkm")] mkm,
     mkm,
-
     // миллиметр
-
     // [XmlEnum("mm")] mm,
     mm,
-
     // сантиметр
-
     // [XmlEnum("cm")] cm,
     cm,
-
     // дециметр
-
     // [XmlEnum("dm")] dm,
     dm,
-
     // метр
-
     // [XmlEnum("m")] m,
     m,
-
     // английские (конкретные единицы выбираются в зависимости от параметра)
-
     // [XmlEnum("Imperial")] Imperial,
     Imperial,
-
     // мил(тысячная дюйма)
-
     // [XmlEnum("mil")] mil,
     mil,
-
     // дюйм
-
     // [XmlEnum("inch")] inch
-    inch
-};
+    inch)
 
 // Настройка автоматической перекладки проводников. Значение по умолчанию – ChangeLayer.
-
-enum class refine {
-
+ENUM(refine,
     // разрешён перенос проводников на другой слой.
-
     // [XmlEnum("ChangeLayer")] ChangeLayer,
     ChangeLayer,
-
     // без переноса проводников на другой слой.
-
     // [XmlEnum("NoChangeLayer")] NoChangeLayer
-    NoChangeLayer
-};
+    NoChangeLayer)
 
 // Тип запрета трассировки. Значение по умолчанию – Wires
-
-enum class role {
-
+ENUM(role,
     // запрет проводников
-
     // [XmlEnum("Wires")] Wires,
     Wires,
-
     // запрет переходных отверстий
-
     // [XmlEnum("Vias")] Vias,
     Vias,
-
     // запрет проводников и переходных отверстий
-
     // [XmlEnum("Wires and Vias")] WiresАndVias
-    WiresАndVias
-};
-
+    WiresАndVias)
 // Настройка фильтра сообщений: режим показа предупреждений. Значение по умолчанию – ShowChecked.
-
-enum class showWarnings {
-
+ENUM(showWarnings,
     // показывать только отмеченные предупреждения
-
     // [XmlEnum("ShowChecked")] ShowChecked,
     ShowChecked,
-
     // показывать все предупреждения
-
     // [XmlEnum("ShowAll")] ShowAll,
     ShowAll,
-
     // ничего не показывать
-
     // [XmlEnum("ShowNothing")] ShowNothing
-    ShowNothing
-};
+    ShowNothing)
 
 // Сторона объекта.
-
 // <remarks>! Значение Both возможно только при описании запретов размещения.</remarks>
-enum class side {
-
+ENUM(side,
     // верх
-
     // [XmlEnum("Top")] Top,
     Top,
-
     // низ
-
     // [XmlEnum("Bottom")] Bottom,
     Bottom,
-
     // обе стороны
-
     // [XmlEnum("Both")] Both
-    Both
-};
+    Both)
 
 // Параметр области металлизации (полигона): состояние. Значение по умолчанию – Unpoured.
-
-enum class state {
-
+ENUM(state,
     // незалитая
-
     // [XmlEnum("Unpoured")] Unpoured,
     Unpoured,
-
     // залитая
-
     // [XmlEnum("Poured")] Poured,
     Poured,
-
     // залитая и зафиксированная
-
     // [XmlEnum("Locked")] Locked
-    Locked
-};
+    Locked)
 
 // Единица измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
-
-enum class time {
-
+ENUM(time,
     // пикосекунда
-
     // [XmlEnum("ps")] ps,
     ps,
-
     // фемтосекунда
-
     // [XmlEnum("fs")] fs,
     fs,
-
     // наносекунда
-
     // [XmlEnum("ns")] ns,
     ns,
-
     // микросекунда
-
     // [XmlEnum("us")] us
-    us
-};
+    us)
 
 // Тип предопределённого атрибута компонента. Значение по умолчанию - RefDes
-
-enum class type {
-
+ENUM(type,
     // позиционное обозначение
-
     // [XmlEnum("RefDes")] RefDes,
     RefDes,
-
     // PartName
-
     // [XmlEnum("PartName")] PartName
-    PartName
-};
+    PartName)
 
 // Параметр стека контактной площадки: подключение к области металлизации (полигону). Значение по умолчанию – NoneConnect.
-
-enum class type_connectToCopper {
-
+ENUM(type_connectToCopper,
     // тип подключения не задан(используются настройки полигона)
-
     // [XmlEnum("NoneConnect")] NoneConnect,
     NoneConnect,
-
     // прямое подключение
-
     // [XmlEnum("Direct")] Direct,
     Direct,
-
     // подключение с помощью термобарьера
-
     // [XmlEnum("Thermal")] Thermal
-    Thermal
-};
+    Thermal)
 
 // Тип обработки углов прямоугольной контактной площадки.
-
-enum class type_handling {
-
+ENUM(type_handling,
     // без обработки
-
     // [XmlEnum("None")] None,
     None,
-
     // скругление
-
     // [XmlEnum("Rounding")] Rounding,
     Rounding,
-
     // срез
-
     // [XmlEnum("Chamfer")] Chamfer
-    Chamfer
-};
+    Chamfer)
 
 // Тип стека контактных площадок. Значение по умолчанию – Through.
-
-enum class type_padstack {
-
+ENUM(type_padstack,
     // сквозной
-
     // [XmlEnum("Through")] Through,
     Through,
-
     // планарный
-
     // [XmlEnum("SMD")] SMD,
     SMD,
-
     // монтажное отверстие
-
     // [XmlEnum("MountHole")] MountHole
-    MountHole
-};
+    MountHole)
 
 // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения. Значение по умолчанию – mm.
-
-enum class units {
-
+ENUM(units,
     // миллиметр
-
     // [XmlEnum("mm")] mm,
     mm,
-
     // мил (тысячная дюйма)
-
     // [XmlEnum("mil")] mil
-    mil
-};
+    mil)
 
 // Параметр правил выравнивания задержек: тип значений констант и допусков. Значение по умолчанию: Dist
-
-enum class valueType {
-
+ENUM(valueType,
     // длина
-
     // [XmlEnum("Dist")] Dist,
     Dist,
-
     // время
-
     // [XmlEnum("Time")] Time
-    Time
-};
+    Time)
 
 // Параметр автоматической трассировки: форма проводников.
-
-enum class wireShape {
-
+ENUM(wireShape,
     // Polyline
-
     // [XmlEnum("Polyline")] Polyline,
     Polyline,
-
     // Arcs
-
     // [XmlEnum("Arcs")] Arcs
-    Arcs
-};
+    Arcs)
 
 //	#endregion Enumerations
 

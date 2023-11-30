@@ -68,13 +68,13 @@ struct Constructive {
         // Описание контура платы.
 
         //[XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> _Contours;
-        std::vector<std::optional<Shape_Contour>> _Contours;
+        std::vector<Shape_Contour> _Contours;
         bool ShouldSerialize_Contours();
 
         // Вырезы в плате.
 
         //[XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> _Voids;
-        std::vector<std::optional<Shape_Voids>> _Voids;
+        std::vector<Shape_Voids> _Voids;
         bool ShouldSerialize_Voids();
     };
 
@@ -98,17 +98,17 @@ struct Constructive {
         // Ссылка на стек контактных площадок.
 
         //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
-        std::optional<PadstackRef> _PadstackRef;
+        PadstackRef _PadstackRef;
 
         // ссылка на цепь.
 
         //[XmlElement("NetRef")] public NetRef _NetRef;
-        std::optional<NetRef> _NetRef;
+        NetRef _NetRef;
 
         // Точка привязки объекта.
 
         //[XmlElement("Org")] public Org _Org;
-        std::optional<Org> _Org;
+        Org _Org;
 
         void Shift(float x, float y);
         void UnitsConvert(dist in_units, dist out_units);
@@ -143,7 +143,7 @@ struct Constructive {
                 // <remarks>! При null необходимо смотреть _LayersRef - там описаны ссылки остальных типов. </remarks>
 
                 //[XmlElement("LayerRef")] public List<LayerRef> _LayersRefs;
-                std::vector<std::optional<LayerRef>> _LayersRefs;
+                std::vector<LayerRef> _LayersRefs;
                 bool ShouldSerialize_LayersRefs();
             };
 
@@ -160,14 +160,14 @@ struct Constructive {
             // Тип запрета: запрет трассировки.
 
             //[XmlElement("Trace", typeof(Trace))] public Trace _Trace;
-            std::optional<Trace> _Trace;
+            Trace _Trace;
 
             //[XmlElement("Place", typeof(Place))] public Place _Place;
-            std::optional<Place> _Place;
+            Place _Place;
         };
 
         //[XmlElement("Role", typeof(Role))] public Role _Role;
-        std::optional<Role> _Role;
+        Role _Role;
 
         // Описание фигуры.
 
@@ -186,29 +186,29 @@ struct Constructive {
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Контур платы и вырезы в плате.
 
     //[XmlElement("BoardOutline")] public BoardOutline _BoardOutline;
-    std::optional<BoardOutline> _BoardOutline;
+    BoardOutline _BoardOutline;
 
     // Монтажные отверстия на плате.
 
     //[XmlArray("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> _Mntholes;
-    std::vector<std::optional<MntholeInstance>> _Mntholes;
+    std::vector<MntholeInstance> _Mntholes;
     bool ShouldSerialize_Mntholes();
 
     // Детали на механических слоях.
 
     //[XmlArray("MechLayerObjects"), DefaultValue(null)][XmlArrayItem("Detail")] public List<Detail> _MechLayerObjects;
-    std::vector<std::optional<Detail>> _MechLayerObjects;
+    std::vector<Detail> _MechLayerObjects;
     bool ShouldSerialize_MechLayerObjects();
 
     // Описание надписей.
 
     //[XmlArray("Texts"), DefaultValue(null)][XmlArrayItem("Text")] public List<Text> _Texts;
-    std::vector<std::optional<Text>> _Texts;
+    std::vector<Text> _Texts;
     bool ShouldSerialize_Texts();
 
     // Описание запретов.
@@ -226,7 +226,8 @@ struct Constructive {
 
     void UnitsConvert(dist in_units, dist out_units);
 
-    void Add(std::optional<Constructive> a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts);
+    void Add(Constructive a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts);
     /************************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes

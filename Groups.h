@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <QString>
 #include <any>
 #include <memory>
 #include <optional>
@@ -25,7 +26,7 @@ struct Groups {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Ссылка на слой или ссылка на группу слоёв.
 
@@ -36,7 +37,7 @@ struct Groups {
          * Здесь находятся функции для работы с элементами класса LayerGroup. *
          * Они не являются частью формата TopoR PCB.                          *
          * *******************************************************************/
-        std::string ToString();
+        QString ToString();
         /*********************************************************************/
     };
 
@@ -47,7 +48,7 @@ struct Groups {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Ссылка на цепь или ссылка на группу цепей.
 
@@ -63,7 +64,7 @@ struct Groups {
         // Имя объекта или ссылка на именованный объект.
 
         //[XmlAttribute("name")] public string _name;
-        std::string _name;
+        QString _name;
 
         // Ссылка на компонент на плате или ссылка на группу компонентов.
 
@@ -75,24 +76,24 @@ struct Groups {
     // Версия раздела.
 
     //[XmlAttribute("version")] public string _version;
-    std::string _version;
+    QString _version;
 
     // Группы слоёв.
 
     //[XmlArray("LayerGroups")][XmlArrayItem("LayerGroup")] public List<LayerGroup> _LayerGroups;
-    std::vector<std::optional<LayerGroup>> _LayerGroups;
+    std::vector<LayerGroup> _LayerGroups;
     bool ShouldSerialize_LayerGroups();
 
     // Группы цепей.
 
     //[XmlArray("NetGroups")][XmlArrayItem("NetGroup")] public List<NetGroup> _NetGroups;
-    std::vector<std::optional<NetGroup>> _NetGroups;
+    std::vector<NetGroup> _NetGroups;
     bool ShouldSerialize_NetGroups();
 
     // Группы компонентов.
 
     //[XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> _CompGroups;
-    std::vector<std::optional<CompGroup>> _CompGroups;
+    std::vector<CompGroup> _CompGroups;
     bool ShouldSerialize_CompGroups();
 
     /******************************************************************
@@ -104,7 +105,8 @@ struct Groups {
 
     // <param name="oldname">старое имя компонента</param>
     // <param name="newname">новое имя компонента</param>
-    void Rename_compName(const std::string& oldname, const std::string& newname);
+    void Rename_compName(const QString& oldname, const QString& newname);
     /******************************************************************/
 };
+
 } // namespace TopoR_PCB_Classes
