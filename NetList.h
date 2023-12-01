@@ -1,11 +1,6 @@
 ﻿#pragma once
 
-#include <QString>
-#include <any>
-#include <memory>
-#include <optional>
-#include <string>
-#include <vector>
+#include "Commons.h"
 
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
@@ -16,33 +11,28 @@
 namespace TopoR_PCB_Classes {
 
 // Раздел «Текущий список соединений».
-
 struct NetList {
 
     // Раздел «Текущий список соединени
-
     struct Net {
 
         // Имя объекта или ссылка на именованный объект.
-
-        //[XmlAttribute("name")] public string _name;
+        /* [XmlAttribute("name")] public string _name; */
         QString _name;
 
         // Ссылка на контакт или вывод посадочного места (объект класса PinRef или PadRef).
-
-        //[XmlElement("PinRef", typeof(PinRef)), XmlElement("PadRef", typeof(PadRef))] public List<Object> _refs;
-        std::vector<std::any> _refs;
+        /* [XmlElement("PinRef", typeof(PinRef)),
+XmlElement("PadRef", typeof(PadRef))] public List<Object> _refs; */
+        std::vector<std::variant<PinRef, PadRef>> _refs;
         bool ShouldSerialize_refs();
     };
 
     // Версия раздела.
-
-    //[XmlAttribute("version")] public string _version;
+    /* [XmlAttribute("version")] public string _version; */
     QString _version;
 
     // Описания цепей.
-
-    //[XmlElement("Net")] public List<Net> _Nets;
+    /* [XmlElement("Net")] public List<Net> _Nets; */
     std::vector<Net> _Nets;
     bool ShouldSerialize_Nets();
 

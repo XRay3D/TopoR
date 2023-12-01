@@ -33,18 +33,19 @@ struct ComponentsOnBoard {
 
             // Номер контакта компонента.
 
-            //[XmlAttribute("padNum", DataType = "int")] public int _padNum;
+            /* [XmlAttribute("padNum", DataType = "int")] public int _padNum; */
+Attribute<int>padNum;
             int _padNum = 0;
 
             // Ссылка на стек контактных площадок.
 
-            //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
+            /* [XmlElement("PadstackRef")] public PadstackRef _PadstackRef; */
             PadstackRef _PadstackRef;
             bool ShouldSerialize_PadstackRef();
 
             // Точка привязки объекта.
 
-            //[XmlElement("Org")] public Org _Org;
+            /* [XmlElement("Org")] public Org _Org; */
             Org _Org;
         };
 
@@ -54,22 +55,23 @@ struct ComponentsOnBoard {
 
             // Ссылка на монтажное отверстие в посадочном месте.
 
-            //[XmlAttribute("mntholeRef")] public string _mntholeRef;
+            /* [XmlAttribute("mntholeRef")] public string _mntholeRef; */
             QString _mntholeRef;
 
             // Задаёт угол в градусах c точностью до тысячных долей.
 
-            //[XmlAttribute("angle", DataType = "float")] public float _angle;
+            /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
+Attribute<float>angle;
             float _angle = 0.0F;
 
             // Ссылка на стек контактных площадок.
 
-            //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
+            /* [XmlElement("PadstackRef")] public PadstackRef _PadstackRef; */
             PadstackRef _PadstackRef;
 
             // Cсылка на цепь.
 
-            //[XmlElement("NetRef")] public NetRef _NetRef;
+            /* [XmlElement("NetRef")] public NetRef _NetRef; */
             NetRef _NetRef;
         };
 
@@ -83,129 +85,131 @@ struct ComponentsOnBoard {
 
                 // Задаёт угол в градусах c точностью до тысячных долей.
 
-                //[XmlAttribute("angle", DataType = "float")] public float _angle;
+                /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
+Attribute<float>angle;
                 float _angle = 0.0F;
 
                 // Параметр надписей и ярлыков: зеркальность отображения.
 
-                //[XmlAttribute("mirror")] public Bool _mirror;
+                /* [XmlAttribute("mirror")] public Bool _mirror; */
                 Bool _mirror{};
 
-                //[XmlIgnore] public bool _mirrorSpecified
+                /* [XmlIgnore] public bool _mirrorSpecified */
                 bool getMirrorSpecified() const;
 
                 // Параметр надписей (ярлыков): способ выравнивания текста.
 
-                //[XmlAttribute("align")] public align _align;
+                /* [XmlAttribute("align")] public align _align; */
                 align _align{};
 
                 // Флаг видимости.
 
-                //[XmlAttribute("visible")] public Bool _visible;
+                /* [XmlAttribute("visible")] public Bool _visible; */
                 Bool _visible{};
 
-                //[XmlIgnore] public bool _visibleSpecified
+                /* [XmlIgnore] public bool _visibleSpecified */
                 bool getVisibleSpecified() const;
 
                 // Ссылка на слой.
 
-                //[XmlElement("LayerRef")] public LayerRef _LayerRef;
+                /* [XmlElement("LayerRef")] public LayerRef _LayerRef; */
                 LayerRef _LayerRef;
 
                 // Ссылка на стиль надписей.
 
-                //[XmlElement("TextStyleRef")] public TextStyleRef _TextStyleRef;
+                /* [XmlElement("TextStyleRef")] public TextStyleRef _TextStyleRef; */
                 TextStyleRef _TextStyleRef;
 
                 // Точка привязки объекта.
 
-                //[XmlElement("Org")] public Org _Org;
+                /* [XmlElement("Org")] public Org _Org; */
                 Org _Org;
             };
 
             // Тип предопределённого атрибута компонента.
 
-            //[XmlAttribute("type")] public type _type;
+            /* [XmlAttribute("type")] public type _type; */
             type _type{};
 
             // Имя объекта или ссылка на именованный объект.
 
-            //[XmlAttribute("name")] public string _name;
+            /* [XmlAttribute("name")] public string _name; */
             QString _name;
 
             // Значение атрибута.
 
-            //[XmlAttribute("value")] public string _value;
+            /* [XmlAttribute("value")] public string _value; */
             QString _value;
 
             // Ярлыки.
 
-            //[XmlElement("Label")] public List<CompInstance_Attribute_Label> _Labels;
+            /* [XmlElement("Label")] public List<CompInstance_Attribute_Label> _Labels; */
             std::vector<CompInstance_Attribute_Label> _Labels;
             bool ShouldSerialize_Labels();
         };
 
         // Имя объекта или ссылка на именованный объект.
 
-        //[XmlAttribute("name")] public string _name;
+        /* [XmlAttribute("name")] public string _name; */
         QString _name;
 
         // Уникальный идентификатор компонента. Используется при синхронизации. Необязательный атрибут.
         // Если не задан, то будет создан при импорте файла.
 
-        //[XmlAttribute("uniqueId")] public string _uniqueId;
+        /* [XmlAttribute("uniqueId")] public string _uniqueId; */
         QString _uniqueId;
 
         // Сторона объекта.
 
         // <remarks>!Значение Both возможно только при описании запретов размещения.</remarks>
 
-        //[XmlAttribute("side")] public side _side;
+        /* [XmlAttribute("side")] public side _side; */
         side _side{};
 
         // Задаёт угол в градусах c точностью до тысячных долей.
 
-        //[XmlAttribute("angle", DataType = "float")] public float _angle;
+        /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
+Attribute<float>angle;
         float _angle = 0.0F;
 
         // Признак фиксации.
 
-        //[XmlAttribute("fixed")] public Bool _fixed;
+        /* [XmlAttribute("fixed")] public Bool _fixed; */
         Bool _fixed{};
 
-        //[XmlIgnore] public bool _fixedSpecified
+        /* [XmlIgnore] public bool _fixedSpecified */
         bool getFixedSpecified() const;
 
         // Ссылка на схемный компонент.
 
-        //[XmlElement("ComponentRef")] public ComponentRef _ComponentRef;
+        /* [XmlElement("ComponentRef")] public ComponentRef _ComponentRef; */
         ComponentRef _ComponentRef;
 
         // Ссылка на посадочное место.
 
-        //[XmlElement("FootprintRef")] public FootprintRef _FootprintRef;
+        /* [XmlElement("FootprintRef")] public FootprintRef _FootprintRef; */
         FootprintRef _FootprintRef;
 
         // Точка привязки объекта.
 
-        //[XmlElement("Org")] public Org _Org;
+        /* [XmlElement("Org")] public Org _Org; */
         Org _Org;
 
         // Контакты компонента на плате.
 
-        //[XmlArray("Pins")][XmlArrayItem("Pin")] public List<CompInstance_Pin> _Pins;
+        /* [XmlArray("Pins")][XmlArrayItem("Pin")] public List<CompInstance_Pin> _Pins; */
         std::vector<CompInstance_Pin> _Pins;
         bool ShouldSerialize_Pins();
 
         // Монтажные отверстия.
 
-        //[XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<CompInstance_Mnthole> _Mntholes;
+        /* [XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<CompInstance_Mnthole> _Mntholes; */
         std::vector<CompInstance_Mnthole> _Mntholes;
         bool ShouldSerialize_Mntholes();
 
         // Атрибуты компонента.
 
-        //[XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<CompInstance_Attribute> _Attributes;
+        /* [XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<CompInstance_Attribute> _Attributes; */
         std::vector<CompInstance_Attribute> _Attributes;
         bool ShouldSerialize_Attributes();
 
@@ -227,52 +231,53 @@ struct ComponentsOnBoard {
 
         // Сторона объекта.
 
-        //[XmlAttribute("side")] public side _side;
+        /* [XmlAttribute("side")] public side _side; */
         side _side{};
 
         // Задаёт угол в градусах c точностью до тысячных долей.
 
-        //[XmlAttribute("angle", DataType = "float")] public float _angle;
+        /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
+Attribute<float>angle;
         float _angle = 0.0F;
 
         // Признак фиксации.
 
-        //[XmlAttribute("fixed")] public Bool _fixed;
+        /* [XmlAttribute("fixed")] public Bool _fixed; */
         Bool _fixed{};
 
-        //[XmlIgnore] public bool _fixedSpecified
+        /* [XmlIgnore] public bool _fixedSpecified */
         bool getFixedSpecified() const;
 
         // Ссылка на стек контактных площадок.
 
-        //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
+        /* [XmlElement("PadstackRef")] public PadstackRef _PadstackRef; */
         PadstackRef _PadstackRef;
 
         // Cсылка на цепь.
 
-        //[XmlElement("NetRef")] public NetRef _NetRef;
+        /* [XmlElement("NetRef")] public NetRef _NetRef; */
         NetRef _NetRef;
 
         // Точка привязки объекта.
 
-        //[XmlElement("Org")] public Org _Org;
+        /* [XmlElement("Org")] public Org _Org; */
         Org _Org;
     };
 
     // Версия раздела.
 
-    //[XmlAttribute("version")] public string _version;
+    /* [XmlAttribute("version")] public string _version; */
     QString _version;
 
     // Описание компонентов на плате (инстанции компонентов)
 
-    //[XmlArray("Components")][XmlArrayItem("CompInstance")] public List<CompInstance> _Components;
+    /* [XmlArray("Components")][XmlArrayItem("CompInstance")] public List<CompInstance> _Components; */
     std::vector<CompInstance> _Components;
     bool ShouldSerialize_Components();
 
     // Описание одиночных контактов.(инстанции компонентов)
 
-    //[XmlArray("FreePads")][XmlArrayItem("FreePad")] public List<FreePad> _FreePads;
+    /* [XmlArray("FreePads")][XmlArrayItem("FreePad")] public List<FreePad> _FreePads; */
     std::vector<FreePad> _FreePads;
     bool ShouldSerialize_FreePads();
 

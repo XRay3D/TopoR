@@ -16,43 +16,43 @@ namespace TopoR_PCB_Classes {
 struct Header {
 
     // Единицы измерений для всего файла.
-    struct Units_Header {
+    struct Units {
         // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
-        // [XmlAttribute("dist")] public dist _dist;
-        Attribute<dist> _dist{};
+        /* [XmlAttribute("dist")] public dist _dist; */
+        Attribute<dist> dist{};
 
         // Единицы измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
-        // [XmlAttribute("time")] public time _time;
-        Attribute<time> _time{};
+        /* [XmlAttribute("time")] public time _time; */
+        Attribute<time> time{};
     };
 
     // Название формата файла.
-    // [XmlElement("Format")] public string _Format;
-    QString _Format;
+    /* [XmlElement("Format")] public string _Format; */
+    QString Format;
 
     // Версия формата.
-    // [XmlElement("Version")] public string _Version;
-    QString _Version;
+    /* [XmlElement("Version")] public string _Version; */
+    QString Version;
 
     // Название программы, создавшей файл.
-    // [XmlElement("Program")] public string _Program;
-    QString _Program;
+    /* [XmlElement("Program")] public string _Program; */
+    QString Program;
 
     // Дата и время создания файла (в произвольной форме).
-    // [XmlElement("Date")] public string _Date;
-    QString _Date;
+    /* [XmlElement("Date")] public string _Date; */
+    QString Date;
 
     // Формат импортированного файла, из которого был получен дизайн.
-    // [XmlElement("OriginalFormat")] public string _OriginalFormat;
-    QString _OriginalFormat;
+    /* [XmlElement("OriginalFormat")] public string _OriginalFormat; */
+    QString OriginalFormat;
 
     // Импортированный файл. Путь к файлу задаётся относительно каталога содержащего файл проекта.
-    // [XmlElement("OriginalFile")] public string _OriginalFile;
-    QString _OriginalFile;
+    /* [XmlElement("OriginalFile")] public string _OriginalFile; */
+    QString OriginalFile;
 
     // Единицы измерения для всего файла.
-    // [XmlElement("Units")] public Units_Header _Units;
-    Units_Header _Units;
+    /* [XmlElement("Units")] public Units_Header _Units; */
+    Units _Units;
 };
 
 } // namespace TopoR_PCB_Classes

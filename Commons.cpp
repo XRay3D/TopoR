@@ -3,13 +3,13 @@
 namespace TopoR_PCB_Classes {
 
 void base_coordinat::Shift(float x, float y) {
-    _x += x;
-    _y += y;
+    this->x += x;
+    this->y += y;
 }
 
 void base_coordinat::UnitsConvert(dist in_units, dist out_units) {
-    _x = Ut::UnitsConvert(_x, in_units, out_units);
-    _y = Ut::UnitsConvert(_y, in_units, out_units);
+    x = Ut::UnitsConvert(x, in_units, out_units);
+    y = Ut::UnitsConvert(y, in_units, out_units);
 }
 
 void SegmentLine::Shift(float x, float y) {
@@ -79,7 +79,7 @@ void Circle::Shift(float x, float y) {
 }
 
 void Circle::UnitsConvert(dist in_units, dist out_units) {
-    _diameter = Ut::UnitsConvert(_diameter, in_units, out_units);
+    diameter = Ut::UnitsConvert(diameter, in_units, out_units);
     /* if (_Center) _Center.value().UnitsConvert(in_units, out_units);*/
 }
 
@@ -100,7 +100,7 @@ void Line::UnitsConvert(dist in_units, dist out_units) {
 }
 
 bool Polyline::ShouldSerialize_Segments() {
-    return _Segments.size();
+    return {}; //_Segments.size();
 }
 
 void Polyline::Shift(float x, float y) {
@@ -136,7 +136,7 @@ void TrackLine::UnitsConvert(dist in_units, dist out_units) {
 }
 
 void Thermal::UnitsConvert(dist in_units, dist out_units) {
-    _spokeWidth = Ut::UnitsConvert(_spokeWidth, in_units, out_units);
+    spokeWidth = Ut::UnitsConvert(spokeWidth, in_units, out_units);
 }
 
 void Detail::Shift(float x, float y) {
@@ -144,7 +144,7 @@ void Detail::Shift(float x, float y) {
 }
 
 void Detail::UnitsConvert(dist in_units, dist out_units) {
-    _lineWidth = Ut::UnitsConvert(_lineWidth, in_units, out_units);
+    lineWidth = Ut::UnitsConvert(lineWidth, in_units, out_units);
     /*  if((std::dynamic_pointer_cast<IBaseFigure>(_Figure)) != nullptr)          (std::dynamic_pointer_cast<IBaseFigure>(_Figure)).value().UnitsConvert(in_units, out_units);*/
 }
 
@@ -161,49 +161,30 @@ void Text::UnitsConvert(dist in_units, dist out_units) {
 }
 
 float Ut::UnitsConvert(float value, dist in_units, dist out_units) {
-    double k;
-    switch (in_units) {
-    case dist::mkm:
-        k = 0.001;
-        break;
-    case dist::cm:
-        k = 10;
-        break;
-    case dist::dm:
-        k = 100;
-        break;
-    case dist::m:
-        k = 1000;
-        break;
-    case dist::mil:
-        k = 0.0254000000000000002032;
-        break;
-    case dist::inch:
-        k = 25.4000000000000002032;
-        break;
-    case dist::mm:
-    default:
-        k = 1;
-        break;
-    }
+    // clang-format off
+    auto k = [](dist in_units) {
+        switch (in_units) {
+        case dist::mkm:  return 0.001;
+        case dist::cm:   return 10.0;
+        case dist::dm:   return 100.0;
+        case dist::m:    return 1000.0;
+        case dist::mil:  return 0.0254;
+        case dist::inch: return 25.4;
+        case dist::mm:
+        default:         return 1.0;
+        }
+    };
     switch (out_units) {
-    case dist::mkm:
-        return static_cast<float>(value * k * 1000);
-    case dist::cm:
-        return static_cast<float>(value * k * 0.1);
-    case dist::dm:
-        return static_cast<float>(value * k * 0.01);
-    case dist::m:
-        return static_cast<float>(value * k * 0.001);
-    case dist::mil:
-        return static_cast<float>(value * k * 39.37007874015748);
-    case dist::inch:
-        return static_cast<float>(value * k * 0.03937007874015748);
-    case dist::mm:
-        return static_cast<float>(value * k);
-    default:
-        return value;
+    case dist::mkm:  return static_cast<float>(value * k(in_units) * 1000);
+    case dist::cm:   return static_cast<float>(value * k(in_units) * 0.1);
+    case dist::dm:   return static_cast<float>(value * k(in_units) * 0.01);
+    case dist::m:    return static_cast<float>(value * k(in_units) * 0.001);
+    case dist::mil:  return static_cast<float>(value * k(in_units) * 39.37007874015748);
+    case dist::inch: return static_cast<float>(value * k(in_units) * 0.03937007874015748);
+    case dist::mm:   return static_cast<float>(value * k(in_units));
+    default:         return value;
     }
+    // clang-format on
 }
 
 } // namespace TopoR_PCB_Classes

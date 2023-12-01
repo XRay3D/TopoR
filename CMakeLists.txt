@@ -22,6 +22,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+
 add_definitions(
     -DQT_MESSAGELOGCONTEXT# qDebug()
     -DQT_DISABLE_DEPRECATED_BEFORE=0x060000
@@ -30,13 +34,18 @@ add_definitions(
 find_package(QT NAMES #[[Qt6]] Qt5 Core)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Xml REQUIRED)
 
+add_compile_options(
+    -fconstexpr-depth=50
+    # -fpermissive
+)
+
 # file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 # file(GLOB_RECURSE JSONS ${CMAKE_CURRENT_SOURCE_DIR}/*.json)
 # file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 # file(GLOB_RECURSE UIS ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
 
 include_directories(
-    pfr_non_boost/include.
+    pfr_non_boost/include
     compile-time-regular-expressions/single-header
 )
 
@@ -45,8 +54,6 @@ add_executable(${PROJECT_NAME}
     # ${JSONS}
     # ${SOURCES}
     # ${UIS}
-    # Settings.cpp
-    # Settings.h
     # qserializer.h
     # topor_cellon.h
     # topor_file.cpp
@@ -63,7 +70,6 @@ add_executable(${PROJECT_NAME}
     # topor_settingstab.cpp
     # topor_settingstab.h
     # topor_types.h
-    МАН2_МСИС_V2.1.fst
     Commons.cpp
     Commons.h
     ComponentsOnBoard.cpp
@@ -76,6 +82,7 @@ add_executable(${PROJECT_NAME}
     DialogSettings.h
     DisplayControl.cpp
     DisplayControl.h
+    Enums.h
     Groups.cpp
     Groups.h
     Header.cpp
@@ -90,16 +97,20 @@ add_executable(${PROJECT_NAME}
     NetList.h
     Rules.cpp
     Rules.h
+    Settings.cpp
+    Settings.h
     TextStyles.cpp
     TextStyles.h
     TopoR_PCB_File.cpp
     TopoR_PCB_File.h
+    enumerator.h
     main.cpp
     mainwindow.cpp
     mainwindow.h
-    serializer.h
     serializer.cpp
-    enumerator.h
+    serializer.h
+    Coordinates.h
+    МАН2_МСИС_V2.1.fst
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

@@ -1,27 +1,17 @@
 ﻿#include "Layers.h"
 
+/*****************************************************************
+ * Здесь находятся функции для работы с элементами класса Layer. *
+ * Они не являются частью формата TopoR PCB.                     *
+ * ***************************************************************/
 namespace TopoR_PCB_Classes {
 
 bool Layers::Layer::getCompsOutlineSpecified() const {
-    return _type == layer_type::Assy;
+    return type == layer_type::Assy;
 }
 
 bool Layers::Layer::getThicknessSpecified() const {
-    return _type != layer_type::Assy;
-}
-
-Layers::Layer::Layer() {
-}
-
-Layers::Layer::Layer(const QString& name, layer_type type, Bool compsOutline, float thickness) {
-    _name = name;
-    _type = type;
-    _compsOutline = compsOutline;
-    _thickness = thickness;
-}
-
-QString Layers::Layer::ToString() {
-    return _name;
+    return type != layer_type::Assy;
 }
 
 bool Layers::LayerStackUpContains(LayerRef lref) {

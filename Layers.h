@@ -15,71 +15,67 @@
 namespace TopoR_PCB_Classes {
 
 // Раздел «Слои». (Обязательный раздел)
-
 struct Layers {
 
     // Описание слоя.
-
     struct Layer {
 
         // Имя объекта или ссылка на именованный объект.
-
-        //[XmlAttribute("name")] public string _name;
-        QString _name;
+        /* [XmlAttribute("name")] public string _name; */
+        Attribute<QString> name;
 
         // Тип слоя. Значение по умолчанию – Signal.
-
-        //[XmlAttribute("type")] public layer_type _type;
-        layer_type _type{};
+        /* [XmlAttribute("type")] public layer_type _type; */
+        Attribute<layer_type> type{};
 
         // Параметр слоя: слой содержит очертания компонентов.
-
         // <remarks>! Для сигнальных, опорных, диэлектрических и документирующих слоёв параметр compsOutline отсутствует.</remarks>
+        /* [XmlAttribute("compsOutline")] public Bool _compsOutline; */
+        Attribute<Bool> compsOutline{};
 
-        //[XmlAttribute("compsOutline")] public Bool _compsOutline;
-        Bool _compsOutline{};
-
-        //[XmlIgnore] public bool _compsOutlineSpecified
+        /* [XmlIgnore] public bool _compsOutlineSpecified */
         bool getCompsOutlineSpecified() const;
 
         // Параметр слоя: толщина.
-
         // <remarks>! Для документирующих слоёв и слоёв с типом Assy параметр thickness отсутствует.</remarks>
+        /* [XmlAttribute("thickness", DataType = "float")] public float _thickness; */
+        Attribute<float> thickness{};
 
-        //[XmlAttribute("thickness", DataType = "float")] public float _thickness;
-        float _thickness = 0.0F;
-
-        //[XmlIgnore] public bool _thicknessSpecified
+        /* [XmlIgnore] public bool _thicknessSpecified */
         bool getThicknessSpecified() const;
 
         /*****************************************************************
          * Здесь находятся функции для работы с элементами класса Layer. *
          * Они не являются частью формата TopoR PCB.                     *
          * ***************************************************************/
-        Layer();
+        // Layer() { }
+        // Layer(const QString& name, layer_type type, Bool compsOutline, float thickness) {
+        //     _name = name;
+        //     _type = type;
+        //     _compsOutline = compsOutline;
+        //     _thickness = thickness;
+        // }
 
-        Layer(const QString& name, layer_type type, Bool compsOutline, float thickness);
-
-        QString ToString();
+        QString ToString() { return name; }
         /*****************************************************************/
     };
 
     // Версия раздела.
 
-    //[XmlAttribute("version")] public string _version;
-    QString _version;
+    /* [XmlAttribute("version")] public string _version; */
+    Attribute<QString> version;
 
     // Описание слоёв в стеке. Порядок описания должен соответствовать порядку слоёв в стеке.
 
-    //[XmlArray("StackUpLayers")][XmlArrayItem("Layer")] public List<Layer> _StackUpLayers;
-    std::vector<Layer> _StackUpLayers;
-    bool ShouldSerialize_StackUpLayers() { return _StackUpLayers.size(); }
+    /* [XmlArray("StackUpLayers")][XmlArrayItem("Layer")] public List<Layer> _StackUpLayers; */
+    std::vector<Layer> StackUpLayers;
+    bool ShouldSerialize_StackUpLayers() { return StackUpLayers.size(); }
 
     // Описание слоёв вне стека.
 
-    //[XmlArray("UnStackLayers")][XmlArrayItem("Layer")] public List<Layer> _UnStackLayers;
-    std::vector<Layer> _UnStackLayers;
-    bool ShouldSerialize_UnStackLayers() { return _UnStackLayers.size(); }
+    /* [XmlArray("UnStackLayers")][XmlArrayItem("Layer")] public List<Layer> _UnStackLayers; */
+    std::vector<Layer> UnStackLayers;
+    bool ShouldSerialize_UnStackLayers() { return UnStackLayers.size(); }
 
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Layers. *

@@ -27,13 +27,32 @@ struct Constructive {
 
             // Толщина линии.
 
-            //[XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth;
+            /* [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth; */
+            Attribute<float> lineWidth;
             float _lineWidth = 0.0F;
 
             // Незалитая фигура.
 
-            //[XmlElement("ArcCCW", typeof(ArcCCW)), XmlElement("ArcCW", typeof(ArcCW)), XmlElement("ArcByAngle", typeof(ArcByAngle)), XmlElement("ArcByMiddle", typeof(ArcByMiddle)), XmlElement("Circle", typeof(Circle)), XmlElement("Line", typeof(Line)), XmlElement("Polyline", typeof(Polyline)), XmlElement("Rect", typeof(Rect)), XmlElement("Contour", typeof(Contour))] public Object _NonfilledFigure;
-            std::any _NonfilledFigure;
+            /* [XmlElement("ArcCCW", typeof(ArcCCW)),
+                XmlElement("ArcCW", typeof(ArcCW)),
+                XmlElement("ArcByAngle", typeof(ArcByAngle)),
+                XmlElement("ArcByMiddle", typeof(ArcByMiddle)),
+                XmlElement("Circle", typeof(Circle)),
+                XmlElement("Line", typeof(Line)),
+                XmlElement("Polyline", typeof(Polyline)),
+                XmlElement("Rect", typeof(Rect)),
+                XmlElement("Contour", typeof(Contour))] public Object _NonfilledFigure; */
+            std::variant<
+                ArcCCW,
+                ArcCW,
+                ArcByAngle,
+                ArcByMiddle,
+                Circle,
+                Line,
+                Polyline,
+                Rect,
+                Contour>
+                _NonfilledFigure;
 
             /*************************************************************************
              * Здесь находятся функции для работы с элементами класса Shape_Contour. *
@@ -48,13 +67,17 @@ struct Constructive {
 
             // Толщина линии.
 
-            //[XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth;
+            /* [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth; */
+            Attribute<float> lineWidth;
             float _lineWidth = 0.0F;
 
             // Описание залитой фигуры.
 
-            //[XmlElement("FilledCircle", typeof(FilledCircle)), XmlElement("FilledRect", typeof(FilledRect)), XmlElement("Polygon", typeof(Polygon)), XmlElement("FilledContour", typeof(FilledContour))] public Object _FilledFigure;
-            std::any _FilledFigure;
+            /* [XmlElement("FilledCircle", typeof(FilledCircle)),
+                XmlElement("FilledRect", typeof(FilledRect)),
+                XmlElement("Polygon", typeof(Polygon)),
+                XmlElement("FilledContour", typeof(FilledContour))] public Object _FilledFigure; */
+            std::variant<FilledCircle, FilledRect, Polygon, FilledContour> _FilledFigure;
 
             /**********************************************************************
              * Здесь находятся функции для работы с элементами класса Shape_Voids. *
@@ -67,13 +90,13 @@ struct Constructive {
 
         // Описание контура платы.
 
-        //[XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> _Contours;
+        /* [XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> _Contours; */
         std::vector<Shape_Contour> _Contours;
         bool ShouldSerialize_Contours();
 
         // Вырезы в плате.
 
-        //[XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> _Voids;
+        /* [XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> _Voids; */
         std::vector<Shape_Voids> _Voids;
         bool ShouldSerialize_Voids();
     };
@@ -84,30 +107,31 @@ struct Constructive {
 
         // Задаёт угол в градусах c точностью до тысячных долей.
 
-        //[XmlAttribute("angle", DataType = "float")] public float _angle;
+        /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
+        Attribute<float> angle;
         float _angle = 0.0F;
 
         // Признак фиксации.
 
-        //[XmlAttribute("fixed")] public Bool _fixed;
+        /* [XmlAttribute("fixed")] public Bool _fixed; */
         Bool _fixed{};
 
-        //[XmlIgnore] public bool _fixedSpecified
+        /* [XmlIgnore] public bool _fixedSpecified */
         bool getFixedSpecified() const;
 
         // Ссылка на стек контактных площадок.
 
-        //[XmlElement("PadstackRef")] public PadstackRef _PadstackRef;
+        /* [XmlElement("PadstackRef")] public PadstackRef _PadstackRef; */
         PadstackRef _PadstackRef;
 
         // ссылка на цепь.
 
-        //[XmlElement("NetRef")] public NetRef _NetRef;
+        /* [XmlElement("NetRef")] public NetRef _NetRef; */
         NetRef _NetRef;
 
         // Точка привязки объекта.
 
-        //[XmlElement("Org")] public Org _Org;
+        /* [XmlElement("Org")] public Org _Org; */
         Org _Org;
 
         void Shift(float x, float y);
@@ -128,21 +152,26 @@ struct Constructive {
 
                 // Тип запрета трассировки.
 
-                //[XmlAttribute("role")] public role _role;
+                /* [XmlAttribute("role")] public role _role; */
                 role _role{};
 
                 // Ссылка на слои. См. также _LayersRefs
 
                 // <remarks>! При null необходимо смотреть _LayersRefs - там описан список ссылок типа LayerRef. </remarks>
 
-                //[XmlElement("AllLayers", typeof(AllLayers)), XmlElement("AllLayersInner", typeof(AllLayersInner)), XmlElement("AllLayersInnerSignal", typeof(AllLayersInnerSignal)), XmlElement("AllLayersSignal", typeof(AllLayersSignal)), XmlElement("AllLayersOuter", typeof(AllLayersOuter)), XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public Object _LayersRef;
-                std::any _LayersRef;
+                /* [XmlElement("AllLayers", typeof(AllLayers)),
+                    XmlElement("AllLayersInner", typeof(AllLayersInner)),
+                    XmlElement("AllLayersInnerSignal", typeof(AllLayersInnerSignal)),
+                    XmlElement("AllLayersSignal", typeof(AllLayersSignal)),
+                    XmlElement("AllLayersOuter", typeof(AllLayersOuter)),
+                    XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public Object _LayersRef; */
+                std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> _LayersRef;
 
                 // Ссылка на слои. См. также _LayersRef
 
                 // <remarks>! При null необходимо смотреть _LayersRef - там описаны ссылки остальных типов. </remarks>
 
-                //[XmlElement("LayerRef")] public List<LayerRef> _LayersRefs;
+                /* [XmlElement("LayerRef")] public List<LayerRef> _LayersRefs; */
                 std::vector<LayerRef> _LayersRefs;
                 bool ShouldSerialize_LayersRefs();
             };
@@ -153,26 +182,51 @@ struct Constructive {
 
                 // Сторона объекта.
 
-                //[XmlAttribute("side")] public side _side;
+                /* [XmlAttribute("side")] public side _side; */
                 side _side{};
             };
 
             // Тип запрета: запрет трассировки.
 
-            //[XmlElement("Trace", typeof(Trace))] public Trace _Trace;
+            /* [XmlElement("Trace", typeof(Trace))] public Trace _Trace; */
             Trace _Trace;
 
-            //[XmlElement("Place", typeof(Place))] public Place _Place;
+            /* [XmlElement("Place", typeof(Place))] public Place _Place; */
             Place _Place;
         };
 
-        //[XmlElement("Role", typeof(Role))] public Role _Role;
+        /* [XmlElement("Role", typeof(Role))] public Role _Role; */
         Role _Role;
 
         // Описание фигуры.
 
-        //[XmlElement("ArcCCW", typeof(ArcCCW)), XmlElement("ArcCW", typeof(ArcCW)), XmlElement("ArcByAngle", typeof(ArcByAngle)), XmlElement("ArcByMiddle", typeof(ArcByMiddle)), XmlElement("Line", typeof(Line)), XmlElement("Circle", typeof(Circle)), XmlElement("Rect", typeof(Rect)), XmlElement("FilledCircle", typeof(FilledCircle)), XmlElement("FilledRect", typeof(FilledRect)), XmlElement("Polygon", typeof(Polygon)), XmlElement("Contour", typeof(Contour)), XmlElement("FilledContour", typeof(FilledContour)), XmlElement("Polyline", typeof(Polyline))] public Object _FigureContPolyline;
-        std::any _FigureContPolyline;
+        /* [XmlElement("ArcCCW", typeof(ArcCCW)),
+            XmlElement("ArcCW", typeof(ArcCW)),
+            XmlElement("ArcByAngle", typeof(ArcByAngle)),
+            XmlElement("ArcByMiddle", typeof(ArcByMiddle)),
+            XmlElement("Line", typeof(Line)),
+            XmlElement("Circle", typeof(Circle)),
+            XmlElement("Rect", typeof(Rect)),
+            XmlElement("FilledCircle", typeof(FilledCircle)),
+            XmlElement("FilledRect", typeof(FilledRect)),
+            XmlElement("Polygon", typeof(Polygon)),
+            XmlElement("Contour", typeof(Contour)),
+            XmlElement("FilledContour", typeof(FilledContour)),
+            XmlElement("Polyline", typeof(Polyline))] public Object _FigureContPolyline; */
+        std::variant<ArcCCW,
+            ArcCW,
+            ArcByAngle,
+            ArcByMiddle,
+            Line,
+            Circle,
+            Rect,
+            FilledCircle,
+            FilledRect,
+            Polygon,
+            Contour,
+            FilledContour,
+            Polyline>
+            _FigureContPolyline;
 
         /********************************************************************************
          * Здесь находятся функции для работы с элементами класса Keepout_Сonstructive. *
@@ -185,35 +239,35 @@ struct Constructive {
 
     // Версия раздела.
 
-    //[XmlAttribute("version")] public string _version;
+    /* [XmlAttribute("version")] public string _version; */
     QString _version;
 
     // Контур платы и вырезы в плате.
 
-    //[XmlElement("BoardOutline")] public BoardOutline _BoardOutline;
+    /* [XmlElement("BoardOutline")] public BoardOutline _BoardOutline; */
     BoardOutline _BoardOutline;
 
     // Монтажные отверстия на плате.
 
-    //[XmlArray("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> _Mntholes;
+    /* [XmlArray("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> _Mntholes; */
     std::vector<MntholeInstance> _Mntholes;
     bool ShouldSerialize_Mntholes();
 
     // Детали на механических слоях.
 
-    //[XmlArray("MechLayerObjects"), DefaultValue(null)][XmlArrayItem("Detail")] public List<Detail> _MechLayerObjects;
+    /* [XmlArray("MechLayerObjects"), DefaultValue(null)][XmlArrayItem("Detail")] public List<Detail> _MechLayerObjects; */
     std::vector<Detail> _MechLayerObjects;
     bool ShouldSerialize_MechLayerObjects();
 
     // Описание надписей.
 
-    //[XmlArray("Texts"), DefaultValue(null)][XmlArrayItem("Text")] public List<Text> _Texts;
+    /* [XmlArray("Texts"), DefaultValue(null)][XmlArrayItem("Text")] public List<Text> _Texts; */
     std::vector<Text> _Texts;
     bool ShouldSerialize_Texts();
 
     // Описание запретов.
 
-    //[XmlArray("Keepouts"), DefaultValue(null)][XmlArrayItem("Keepout")] public List<Keepout_Сonstructive> _Keepouts;
+    /* [XmlArray("Keepouts"), DefaultValue(null)][XmlArrayItem("Keepout")] public List<Keepout_Сonstructive> _Keepouts; */
     std::vector<std::optional<Keepout_Сonstructive>> _Keepouts;
     bool ShouldSerialize_Keepouts();
 
