@@ -25,7 +25,7 @@ struct HiSpeedRules {
             // Ширина проводника.
 
             /* [XmlAttribute("width", DataType = "float")] public float _width; */
-            Attribute<float> width;
+            XmlAttr<float> width;
             float _width = 0.0F;
 
             // Ссылка на слой.
@@ -42,7 +42,7 @@ struct HiSpeedRules {
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
 
         /* [XmlAttribute("Z0", DataType = "float")] public float _z0; */
-        Attribute<float> Z0;
+        XmlAttr<float> Z0;
         float _z0 = 0.0F;
 
         // Правило разводки сигнала для слоя.
@@ -59,13 +59,13 @@ struct HiSpeedRules {
             // Ширина проводника.
 
             /* [XmlAttribute("width", DataType = "float")] public float _width; */
-            Attribute<float> width;
+            XmlAttr<float> width;
             float _width = 0.0F;
 
             // Параметр правила разводки дифференциальных пар: зазор между проводниками пары.
 
             /* [XmlAttribute("gap", DataType = "float")] public float _gap; */
-            Attribute<float> gap;
+            XmlAttr<float> gap;
             float _gap = 0.0F;
 
             // Ссылка на слой.
@@ -82,7 +82,7 @@ struct HiSpeedRules {
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
 
         /* [XmlAttribute("Z0", DataType = "float")] public float _z0; */
-        Attribute<float> Z0;
+        XmlAttr<float> Z0;
         float _z0 = 0.0F;
 
         // Правило разводки дифференциальной пары для слоя.
@@ -180,7 +180,7 @@ struct HiSpeedRules {
         // Параметр дифференциальной пары: допустимый разброс длины между проводниками пары.
 
         /* [XmlAttribute("mismatch", DataType = "float")] public float _mismatch; */
-        Attribute<float> mismatch;
+        XmlAttr<float> mismatch;
         float _mismatch = 0.0F;
 
         // Ссылка на волновое сопротивление.
@@ -221,7 +221,7 @@ struct HiSpeedRules {
             /* [XmlAttribute("enabled")] public Bool _enabled; */
             Bool _enabled{};
 
-            /* [XmlIgnore] public bool _enabledSpecified */
+            /* public bool _enabledSpecified */
             bool getEnabledSpecified() const;
 
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
@@ -234,7 +234,7 @@ struct HiSpeedRules {
             // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
 
             /* [XmlAttribute("tolerance", DataType = "float")] public float _tolerance; */
-            Attribute<float> tolerance;
+            XmlAttr<float> tolerance;
             float _tolerance = 0.0F;
 
             // Объекты воздействия правила.
@@ -252,34 +252,34 @@ struct HiSpeedRules {
             /* [XmlAttribute("enabled")] public Bool _enabled; */
             Bool _enabled{};
 
-            /* [XmlIgnore] public bool _enabledSpecified */
+            /* public bool _enabledSpecified */
             bool getEnabledSpecified() const;
 
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
 
             /* [XmlAttribute("valueType")] public valueType _valueType; */
-            Attribute<valueType> _valueType{};
+            XmlAttr<valueType> _valueType{};
 
             // Значение константы в правилах выравнивания задержек.
 
             // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
 
             /* [XmlAttribute("constant", DataType = "float")] public float _constant; */
-            Attribute<float> constant;
+            XmlAttr<float> constant;
 
             // Параметр правила выравнивания задержек: нижний допуск.
 
             // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
 
             /* [XmlAttribute("toleranceUnder", DataType = "float")] public float _toleranceUnder; */
-            Attribute<float> toleranceUnder;
+            XmlAttr<float> toleranceUnder;
 
             // Параметр правила выравнивания задержек: верхний допуск.
 
             // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
 
             /* [XmlAttribute("toleranceOver", DataType = "float")] public float _toleranceOver; */
-            Attribute<float> toleranceOver;
+            XmlAttr<float> toleranceOver;
 
             // Объекты воздействия правила.
 
@@ -300,7 +300,7 @@ struct HiSpeedRules {
             /* [XmlAttribute("enabled")] public Bool _enabled; */
             Bool _enabled{};
 
-            /* [XmlIgnore] public bool _enabledSpecified */
+            /* public bool _enabledSpecified */
             bool getEnabledSpecified() const;
 
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
@@ -313,7 +313,7 @@ struct HiSpeedRules {
             // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
 
             /* [XmlAttribute("constant", DataType = "float")] public float _constant; */
-            Attribute<float> constant;
+            XmlAttr<float> constant;
             float _constant = 0.0F;
 
             // Параметр правила выравнивания задержек: нижний допуск.
@@ -321,7 +321,7 @@ struct HiSpeedRules {
             // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
 
             /* [XmlAttribute("toleranceUnder", DataType = "float")] public float _toleranceUnder; */
-            Attribute<float> toleranceUnder;
+            XmlAttr<float> toleranceUnder;
             float _toleranceUnder = 0.0F;
 
             // Параметр правила выравнивания задержек: верхний допуск.
@@ -329,7 +329,7 @@ struct HiSpeedRules {
             // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
 
             /* [XmlAttribute("toleranceOver", DataType = "float")] public float _toleranceOver; */
-            Attribute<float> toleranceOver;
+            XmlAttr<float> toleranceOver;
             float _toleranceOver = 0.0F;
 
             // Первый объект воздействия правила взаимного выравнивания задержек.
@@ -375,7 +375,7 @@ struct HiSpeedRules {
             /* [XmlAttribute("enabled")] public Bool _enabled; */
             Bool _enabled{};
 
-            /* [XmlIgnore] public bool _enabledSpecified */
+            /* public bool _enabledSpecified */
             bool getEnabledSpecified() const;
 
             // Параметр правила именования цепей дифференциальных сигналов: подстрока, определяющая цепь позитивного сигнала.
@@ -395,7 +395,7 @@ struct HiSpeedRules {
             // Минимальное количество контактов в силовой цепи. Параметр используется для автоматического определения силовых цепей.
 
             /* [XmlAttribute("minPinsNumber", DataType = "int")] public int _minPinsNumber; */
-            Attribute<int> minPinsNumber;
+            XmlAttr<int> minPinsNumber;
             int _minPinsNumber = 0;
 
             // Cсылки на цепи.
@@ -408,7 +408,7 @@ struct HiSpeedRules {
         // Максимальное число цепей в сигнальном кластере. Параметр используется при автоматическом определении цепей сигнального кластера.
 
         /* [XmlAttribute("maxNetsInCluster", DataType = "int")] public int _maxNetsInCluster; */
-        Attribute<int> maxNetsInCluster;
+        XmlAttr<int> maxNetsInCluster;
         int _maxNetsInCluster = 0;
 
         // Автоматически задавать связи.
@@ -416,7 +416,7 @@ struct HiSpeedRules {
         /* [XmlAttribute("createPinPairs")] public Bool _createPinPairs; */
         Bool _createPinPairs{};
 
-        /* [XmlIgnore] public bool _createPinPairsSpecified */
+        /* public bool _createPinPairsSpecified */
         bool getCreatePinPairsSpecified() const;
 
         // Правила именования цепей дифференциальных сигналов.

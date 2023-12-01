@@ -7,6 +7,7 @@
 #include <QTextStream>
 #include <QTimer>
 #include <iostream>
+#include <set>
 #include <source_location>
 #include <stack>
 #include <string>
@@ -19,11 +20,13 @@ inline QString demangle(const std::type_info& ti) {
     int status;
     char* const realname = abi::__cxa_demangle(ti.name(), NULL, NULL, &status);
     QString ret{realname};
-    if (auto&& [whole, stl, name] = ctre::match<R"(std::(\w+)<.+:(\w+),.+)">(realname); whole)
+    if(auto&& [whole, stl, name] = ctre::match<R"(std::(\w+)<.+:(\w+),.+)">(realname); whole)
         ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    if (auto&& [whole, stl, name] = ctre::match<R"(\S+::(\w+)<.+:(\w+)(?:,?.*))">(realname); whole)
+    else if(auto&& [whole, name] = ctre::match<R"(\S+:XmlAttr<.+:(\w+)>)">(realname); whole)
+        ret = QString::fromStdString(name.to_string());
+    else if(auto&& [whole, stl, name] = ctre::match<R"(\S+::(\w+)<.+:(\w+)(?:,?.*))">(realname); whole)
         ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    if (auto&& [whole, name] = ctre::match<R"(.+:(\w+))">(realname); whole)
+    else if(auto&& [whole, name] = ctre::match<R"(.+:(\w+))">(realname); whole)
         ret = QString::fromStdString(name.to_string());
     std::free(realname);
     return ret;
@@ -35,16 +38,16 @@ inline QString demangle(const std::type_info& ti) {
 }
 #endif
 
-int indent;
-
 QString i(int i = {}) {
-    if (i > 0)
+    static int indent;
+    if(i > 0)
         return QString{indent++ * 4, QChar{' '}};
-    if (i < 0)
+    if(i < 0)
         return QString{--indent * 4, QChar{' '}};
     return QString{indent * 4, QChar{' '}};
 }
 
+bool loging{1};
 QByteArray data;
 QTextStream out{stdout}; //&data, QIODevice::WriteOnly};
 
@@ -57,6 +60,23 @@ QDebug operator<<(QDebug d, std::string_view sv) {
     return d << QByteArray{sv.data(), static_cast<int>(sv.size())};
 }
 
+QDebug operator<<(QDebug d, std::set<QString> c) {
+    const bool oldSetting = d.autoInsertSpaces();
+    d.nospace() << "set" << '(';
+    auto it = c.begin(), end = c.end();
+    if(it != end) {
+        d << *it;
+        ++it;
+    }
+    while(it != end) {
+        d << ", " << *it;
+        ++it;
+    }
+    d << ')';
+    d.setAutoInsertSpaces(oldSetting);
+    return d.maybeSpace();
+}
+
 QTextStream& operator<<(QTextStream& d, std::string_view sv) {
     return d << QByteArray{sv.data(), static_cast<int>(sv.size())};
 }
@@ -66,7 +86,7 @@ struct Xml {
 
     Xml(const QString& name = "../МАН2_МСИС_V2.1.fst") {
         QFile file{name};
-        if (!file.open(QIODevice::ReadOnly)) {
+        if(!file.open(QIODevice::ReadOnly)) {
             qWarning() << file.errorString();
             return;
         }
@@ -74,61 +94,87 @@ struct Xml {
         QString errorMsg{};
         int errorLine{};
         int errorColumn{};
-        if (!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn)) {
+        if(!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn)) {
             qWarning() << errorMsg << errorLine << errorColumn;
             return;
         }
         file.close();
     }
 
-    void push(sl sl_ = sl::current()) {
-        if (skipArray) return;
+    auto top() const {
+        if(!stack.size()) throw names;
+        return stack.top().toElement();
+    }
+
+    bool push(sl sl_ = sl::current()) {
+        // if(loging) qWarning() << "1> stack" << stack.size() << names << sl_.function_name();
+        if(skipPushArray || isAttr) {
+            skipPushArray = false;
+            return true;
+        }
+
         auto getNode = [this](const QDomNode& node_) {
             QDomNode node;
-            for (auto&& name: names) {
-                node = isAttr ? node_.attributes().namedItem(name) : node_.firstChildElement(name);
-                if (!node.isNull()) break;
+            for(auto&& name: names) {
+                node = /*isAttr ? node_.attributes().namedItem(name) :*/ node_.firstChildElement(name);
+                if(!node.isNull()) break;
             }
             return node;
         };
         QDomNode node = getNode(stack.empty() ? doc : stack.top());
-        if (node.isNull())
+        if(node.isNull()) {
             qCritical() << names << sl_.function_name();
+            return skipPop = names.contains(top().tagName());
+        } else
+            stack.push(node);
+        if(loging) qWarning() << "R> stack" << stack.size() << names << sl_.function_name();
+        return !node.isNull();
+    }
+
+    void push(const QDomNode& node, sl sl_ = sl::current()) {
+        skipPushArray = true;
+        if(loging) qWarning() << "F> stack" << stack.size() << names << sl_.function_name();
         stack.push(node);
     }
 
-    void push(const QDomNode& node) { stack.push(node); }
-
-    void pop() {
-        if (stack.size()) stack.pop();
-        isAttr = false;
-        skipArray = false;
+    void pop(sl sl_ = sl::current()) {
+        // if(loging) qWarning() << "3> stack" << stack.size() << names << sl_.function_name();
+        if(isAttr) return;
+        if(skipPop) {
+            skipPop = false;
+            return;
+        }
+        if(!stack.size()) throw names;
+        stack.pop();
+        if(loging) qWarning() << "-< stack" << stack.size() << names << sl_.function_name();
     }
-
-    auto top() const { return (stack.top()); }
 
     auto value(sl sl_ = sl::current()) -> QString {
         QString str;
-        if (stack.size()) {
-            if (top().isElement())
-                str = top().toElement().text();
-            else if (top().isAttr())
-                str = top().toAttr().value();
-        }
-        qDebug() << str << isAttr << sl_.function_name();
+        if(isAttr) {
+            for(auto&& name: names)
+                if(str = top().attribute(name); str.size())
+                    break;
+        } else if(top().isElement())
+            str = top().text();
+
+        // qWarning() << str << isAttr << sl_.function_name();
+        hasValue = str.size();
         return str;
     }
 
-    std::vector<QString> names;
+    std::set<QString> names;
     bool isAttr{};
-    bool skipArray{};
+    bool skipPushArray{};
+    bool skipPop{};
+    bool isptional{};
+    bool hasValue{};
 
-private:
     std::stack<QDomNode> stack;
 };
 
 void read(Xml& xml, QString& str) {
-    xml.push();
+    if(!xml.push()) return;
     out << '"' << (str = xml.value()) << '"';
     xml.pop();
 }
@@ -155,7 +201,8 @@ template <size_t Is, typename T>
 void readField(Xml& xml, T& str) {
     auto name = pfr::get_name<Is, T>();
     xml.names = {QString::fromUtf8(name.data(), name.size()), demangle(typeid(pfr::get<Is>(str)))};
-    out << i() << xml.names.front() << "<" << xml.names.back() << ">";
+    auto it = xml.names.begin();
+    out << i() << *it++ << "<" << *it << ">";
     out << " = ";
     read(xml, pfr::get<Is>(str));
     out << '\n';
@@ -171,12 +218,12 @@ template <typename T>
     requires(std::is_standard_layout_v<T> && std::is_aggregate_v<T>)
 void read(Xml& xml, T& str) {
     xml.names = {demangle(typeid(T))};
-    xml.push();
-    qWarning() << xml.top().nodeName() << xml.top().nodeValue();
+    if(!xml.push()) return;
+    // qWarning() << xml.top().nodeName() << xml.top().nodeValue();
     out << demangle(typeid(T)) << " {\n";
     i(+1);
     read(xml, str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
-    out << i(-1) << "}\n";
+    out << i(-1) << "}";
     xml.pop();
 }
 
@@ -194,16 +241,20 @@ void read(Xml& xml, T& value) {
 }
 
 template <typename T>
-void read(Xml& xml, std::optional<T>& optional) { // FIXME optional
-    if (optional) read(xml, optional.value());
+void read(Xml& xml, std::optional<T>& optional) {
+    T value{};
+    read(xml, value);
+    if(xml.hasValue)
+        optional = value;
 }
 
 template <typename T>
-void read(Xml& xml, Attribute<T>& optional) {
+void read(Xml& xml, XmlAttr<T>& optional) {
     xml.isAttr = true;
-    xml.push();
+    // if(!xml.push()) return;
     read(xml, optional.value);
-    xml.pop();
+    // xml.pop();
+    xml.isAttr = false;
 }
 
 template <typename... Ts>
@@ -213,16 +264,20 @@ void read(Xml& xml, std::variant<Ts...>& optional) { // FIXME variant
 
 template <typename T>
 void read(Xml& xml, std::vector<T>& vector) { // FIXME vector
+    // loging = true;
     out << "{";
-    xml.push();
+    if(!xml.push()) return;
+    std::stack<QDomNode> stack;
+    // std::swap(stack, xml.stack);
     auto childNodes = xml.top().childNodes();
     vector.resize(childNodes.size());
-    for (int index{}; index < childNodes.size(); ++index) {
-        xml.skipArray = true;
-        qInfo() << childNodes.at(index).toElement().attribute("name");
+    for(int index{}; index < childNodes.size(); ++index) {
+        // xml.skipPushArray = true; // skip push in read(struct) because force pushed in this for
         xml.push(childNodes.at(index));
         read(xml, vector[index]);
+        // xml.pop(); // skip pop because read(struct) pop it
     }
+    // std::swap(stack, xml.stack);
     xml.pop();
     out << "}";
 }
@@ -249,9 +304,14 @@ MainWindow::MainWindow(QWidget* parent)
     T t{};
 
     Xml xml;
-    read(xml, t);
+    try {
+        read(xml, t);
+    } catch(const std::set<QString>& names) {
+        qCritical() << names;
+    } catch(...) {
+    }
 
-    if (0) {
+    if(0) {
         qInfo() << std::is_abstract_v<T> << "is_abstract";
         qInfo() << std::is_aggregate_v<T> << "is_aggregate";
         qInfo() << std::is_arithmetic_v<T> << "is_arithmetic";

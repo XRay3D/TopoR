@@ -24,19 +24,19 @@ struct Rules {
         /* [XmlAttribute("enabled")] public Bool _enabled; */
         Bool _enabled{};
 
-        /* [XmlIgnore] public bool _enabledSpecified */
+        /* public bool _enabledSpecified */
         bool getEnabledSpecified() const;
 
         // Параметр правила ширины проводников: минимальная ширина проводника.
 
         /* [XmlAttribute("widthMin", DataType = "float")] public float _widthMin; */
-        Attribute<float> widthMin;
+        XmlAttr<float> widthMin;
         float _widthMin = 0.0F;
 
         // Параметр правила ширины проводников: номинальная ширина проводника.
 
         /* [XmlAttribute("widthNom", DataType = "float")] public float _widthNom; */
-        Attribute<float> widthNom;
+        XmlAttr<float> widthNom;
         float _widthNom = 0.0F;
 
         // Ссылка на слои. См. также _LayersRefs
@@ -84,19 +84,19 @@ struct Rules {
         /* [XmlAttribute("enabled")] public Bool _enabled; */
         Bool _enabled{};
 
-        /* [XmlIgnore] public bool _enabledSpecified */
+        /* public bool _enabledSpecified */
         bool getEnabledSpecified() const;
 
         // Параметр правила зазоров между цепями: минимальный зазор.
 
         /* [XmlAttribute("clrnMin", DataType = "float")] public float _clrnMin; */
-        Attribute<float> clrnMin;
+        XmlAttr<float> clrnMin;
         float _clrnMin = 0.0F;
 
         // Параметр правила зазоров между цепями: номинальный зазор.
 
         /* [XmlAttribute("clrnNom", DataType = "float")] public float _clrnNom; */
-        Attribute<float> clrnNom;
+        XmlAttr<float> clrnNom;
         float _clrnNom = 0.0F;
 
         // Ссылка на слои. См. также _LayersRefs
@@ -140,13 +140,13 @@ struct Rules {
         /* [XmlAttribute("enabled")] public Bool _enabled; */
         Bool _enabled{};
 
-        /* [XmlIgnore] public bool _enabledSpecified */
+        /* public bool _enabledSpecified */
         bool getEnabledSpecified() const;
 
         // Параметр правила зазоров между цепями: минимальный зазор.
 
         /* [XmlAttribute("clrn", DataType = "float")] public float _clrn; */
-        Attribute<float> clrn;
+        XmlAttr<float> clrn;
         float _clrn = 0.0F;
 
         // Объекты воздействия правила.
@@ -165,13 +165,13 @@ struct Rules {
         // Устанавливает зазор от проводников до края платы.
 
         /* [XmlAttribute("wires", DataType = "float")] public float _clrn; */
-        Attribute<float> wires;
+        XmlAttr<float> wires;
         float _clrn = 0.0F;
 
         // Устанавливает зазор от компонентов до края платы.
 
         /* [XmlAttribute("comps", DataType = "float")] public float _comps; */
-        Attribute<float> comps;
+        XmlAttr<float> comps;
         float _comps = 0.0F;
     };
 
@@ -184,7 +184,7 @@ struct Rules {
         /* [XmlAttribute("enabled")] public Bool _enabled; */
         Bool _enabled{};
 
-        /* [XmlIgnore] public bool _enabledSpecified */
+        /* public bool _enabledSpecified */
         bool getEnabledSpecified() const;
 
         // Объекты воздействия правила.
@@ -217,7 +217,7 @@ struct Rules {
         /* [XmlAttribute("enabled")] public Bool _enabled; */
         Bool _enabled{};
 
-        /* [XmlIgnore] public bool _enabledSpecified */
+        /* public bool _enabledSpecified */
         bool getEnabledSpecified() const;
 
         // Ссылка на слои. См. также _LayersRefs
@@ -262,7 +262,7 @@ struct Rules {
         /* [XmlAttribute("enabled")] public Bool _enabled; */
         Bool _enabled{};
 
-        /* [XmlIgnore] public bool _enabledSpecified */
+        /* public bool _enabledSpecified */
         bool getEnabledSpecified() const;
 
         // Ссылка на слои. См. также _LayersRefs
@@ -309,7 +309,7 @@ struct Rules {
         /* [XmlAttribute("flexfix")] public Bool _flexfix; */
         Bool _flexfix{};
 
-        /* [XmlIgnore] public bool _flexfixSpecified */
+        /* public bool _flexfixSpecified */
         bool getFlexfixSpecified() const;
 
         // Свойство цепи: флаг трассировки для автоматического трассировщика.
@@ -317,7 +317,7 @@ struct Rules {
         /* [XmlAttribute("route")] public Bool _route; */
         Bool _route{};
 
-        /* [XmlIgnore] public bool _routeSpecified */
+        /* public bool _routeSpecified */
         bool getRouteSpecified() const;
 
         // Ссылка на цепь.

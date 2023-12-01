@@ -28,7 +28,7 @@ struct DialogSettings {
         /* [XmlAttribute("createLog")] public Bool _createLog; */
         Bool _createLog{};
 
-        /* [XmlIgnore] public bool _createLogSpecified */
+        /* public bool _createLogSpecified */
         bool getCreateLogSpecified() const;
 
         // Настройка DRC: файл для вывода отчета.
@@ -41,14 +41,14 @@ struct DialogSettings {
         // </summary
 
         /* [XmlAttribute("messageLimit", DataType = "int")] public int _messageLimit; */
-Attribute<int>messageLimit;
+        XmlAttr<int>messageLimit;
         int _messageLimit = 0;
 
         // Настройка DRC: допуск.
         // </summary
 
         /* [XmlAttribute("tolerance", DataType = "float")] public float _tolerance; */
-Attribute<float>tolerance;
+        XmlAttr<float>tolerance;
         float _tolerance = 0.0F;
 
         // Настройка DRC: проверка целостности цепей.
@@ -57,7 +57,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("checkNetIntegrity")] public Bool _checkNetIntegrity; */
         Bool _checkNetIntegrity{};
 
-        /* [XmlIgnore] public bool _checkNetIntegritySpecified */
+        /* public bool _checkNetIntegritySpecified */
         bool getCheckNetIntegritySpecified() const;
 
         // Настройка DRC: проверка ширины проводников.
@@ -66,7 +66,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("checkNetWidth")] public Bool _checkNetWidth; */
         Bool _checkNetWidth{};
 
-        /* [XmlIgnore] public bool _checkNetWidthSpecified */
+        /* public bool _checkNetWidthSpecified */
         bool getCheckNetWidthSpecified() const;
 
         // Настройка DRC: проверка зазоров.
@@ -75,7 +75,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("checkClearances")] public Bool _checkClearances; */
         Bool _checkClearances{};
 
-        /* [XmlIgnore] public bool _checkClearancesSpecified */
+        /* public bool _checkClearancesSpecified */
         bool getCheckClearancesSpecified() const;
 
         // Настройка DRC: проверять зазоры между надписями и областями металлизации (полигонами).
@@ -84,7 +84,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("textToCopper")] public Bool _textToCopper; */
         Bool _textToCopper{};
 
-        /* [XmlIgnore] public bool _textToCopperSpecified */
+        /* public bool _textToCopperSpecified */
         bool getTextToCopperSpecified() const;
 
         // Настройка DRC: проверять зазоры между надписями и запретами.
@@ -93,7 +93,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("textToKeepout")] public Bool _textToKeepout; */
         Bool _textToKeepout{};
 
-        /* [XmlIgnore] public bool _textToKeepoutSpecified */
+        /* public bool _textToKeepoutSpecified */
         bool getTextToKeepoutSpecified() const;
 
         // Настройка DRC: проверять зазоры между надписями и переходными отверстиями.
@@ -102,7 +102,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("textToVia")] public Bool _textToVia; */
         Bool _textToVia{};
 
-        /* [XmlIgnore] public bool _textToViaSpecified */
+        /* public bool _textToViaSpecified */
         bool getTextToViaSpecified() const;
 
         // Настройка DRC: проверять зазоры между надписями и проводниками.
@@ -111,7 +111,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("textToWire")] public Bool _textToWire; */
         Bool _textToWire{};
 
-        /* [XmlIgnore] public bool _textToWireSpecified */
+        /* public bool _textToWireSpecified */
         bool getTextToWireSpecified() const;
 
         // Настройка DRC: проверять зазоры между надписями и контактными площадками.
@@ -120,7 +120,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("textToPad")] public Bool _textToPad; */
         Bool _textToPad{};
 
-        /* [XmlIgnore] public bool _textToPadSpecified */
+        /* public bool _textToPadSpecified */
         bool getTextToPadSpecified() const;
 
         // Настройка DRC: проверять зазоры от надписей до края платы.
@@ -129,7 +129,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("textToBoard")] public Bool _textToBoard; */
         Bool _textToBoard{};
 
-        /* [XmlIgnore] public bool _textToBoardSpecified */
+        /* public bool _textToBoardSpecified */
         bool getTextToBoardSpecified() const;
 
         // Настройка DRC: проверять зазор между полигонами.
@@ -138,7 +138,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("copperToCopper")] public Bool _copperToCopper; */
         Bool _copperToCopper{};
 
-        /* [XmlIgnore] public bool _copperToCopperSpecified */
+        /* public bool _copperToCopperSpecified */
         bool getCopperToCopperSpecified() const;
 
         // Настройка DRC: проверять зазор между полигонами и запретами.
@@ -147,7 +147,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("copperToKeepout")] public Bool _copperToKeepout; */
         Bool _copperToKeepout{};
 
-        /* [XmlIgnore] public bool _copperToKeepoutSpecified */
+        /* public bool _copperToKeepoutSpecified */
         bool getCopperToKeepoutSpecified() const;
 
         // Настройка DRC: проверять зазор между полигонами и проводниками.
@@ -156,7 +156,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("copperToWire")] public Bool _copperToWire; */
         Bool _copperToWire{};
 
-        /* [XmlIgnore] public bool _copperToWireSpecified */
+        /* public bool _copperToWireSpecified */
         bool getCopperToWireSpecified() const;
 
         // Настройка DRC: проверять зазор между полигонами и переходными отверстиями.
@@ -165,7 +165,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("copperToVia")] public Bool _copperToVia; */
         Bool _copperToVia{};
 
-        /* [XmlIgnore] public bool _copperToViaSpecified */
+        /* public bool _copperToViaSpecified */
         bool getCopperToViaSpecified() const;
 
         // Настройка DRC: проверять зазор между полигонами и контактными площадками.
@@ -174,7 +174,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("copperToPad")] public Bool _copperToPad; */
         Bool _copperToPad{};
 
-        /* [XmlIgnore] public bool _copperToPadSpecified */
+        /* public bool _copperToPadSpecified */
         bool getCopperToPadSpecified() const;
 
         // Настройка DRC: проверять зазор между полигонами и краем платы.
@@ -183,7 +183,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("copperToBoard")] public Bool _copperToBoard; */
         Bool _copperToBoard{};
 
-        /* [XmlIgnore] public bool _copperToBoardSpecified */
+        /* public bool _copperToBoardSpecified */
         bool getCopperToBoardSpecified() const;
 
         // Настройка DRC: проверять зазоры между проводниками и запретами.
@@ -192,7 +192,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("wireToKeepout")] public Bool _wireToKeepout; */
         Bool _wireToKeepout{};
 
-        /* [XmlIgnore] public bool _wireToKeepoutSpecified */
+        /* public bool _wireToKeepoutSpecified */
         bool getWireToKeepoutSpecified() const;
 
         // Настройка DRC: проверять зазоры между переходными отверстиями и запретами.
@@ -201,7 +201,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("viaToKeepout")] public Bool _viaToKeepout; */
         Bool _viaToKeepout{};
 
-        /* [XmlIgnore] public bool _viaToKeepoutSpecified */
+        /* public bool _viaToKeepoutSpecified */
         bool getViaToKeepoutSpecified() const;
 
         // Настройка DRC: проверка зазоров между контактными площадками и запретами.
@@ -210,7 +210,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("padToKeepout")] public Bool _padToKeepout; */
         Bool _padToKeepout{};
 
-        /* [XmlIgnore] public bool _padToKeepoutSpecified */
+        /* public bool _padToKeepoutSpecified */
         bool getPadToKeepoutSpecified() const;
 
         // Настройка DRC: проверять зазоры между проводниками.
@@ -219,7 +219,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("wireToWire")] public Bool _wireToWire; */
         Bool _wireToWire{};
 
-        /* [XmlIgnore] public bool _wireToWireSpecified */
+        /* public bool _wireToWireSpecified */
         bool getWireToWireSpecified() const;
 
         // Настройка DRC: проверять зазоры между проводниками и переходными отверстиями.
@@ -228,7 +228,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("wireToVia")] public Bool _wireToVia; */
         Bool _wireToVia{};
 
-        /* [XmlIgnore] public bool _wireToViaSpecified */
+        /* public bool _wireToViaSpecified */
         bool getWireToViaSpecified() const;
 
         // Настройка DRC: проверять зазоры между проводниками и контактными площадками.
@@ -237,7 +237,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("wireToPad")] public Bool _wireToPad; */
         Bool _wireToPad{};
 
-        /* [XmlIgnore] public bool _wireToPadSpecified */
+        /* public bool _wireToPadSpecified */
         bool getWireToPadSpecified() const;
 
         // Настройка DRC: проверять зазоры от проводников до края платы.
@@ -246,7 +246,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("wireToBoard")] public Bool _wireToBoard; */
         Bool _wireToBoard{};
 
-        /* [XmlIgnore] public bool _wireToBoardSpecified */
+        /* public bool _wireToBoardSpecified */
         bool getWireToBoardSpecified() const;
 
         // Настройка DRC: проверять зазоры между переходными отверстиями.
@@ -255,7 +255,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("viaToVia")] public Bool _viaToVia; */
         Bool _viaToVia{};
 
-        /* [XmlIgnore] public bool _viaToViaSpecified */
+        /* public bool _viaToViaSpecified */
         bool getViaToViaSpecified() const;
 
         // Настройка DRC: проверять зазоры между переходными отверстиями и контактными площадками.
@@ -264,7 +264,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("viaToPad")] public Bool _viaToPad; */
         Bool _viaToPad{};
 
-        /* [XmlIgnore] public bool _viaToPadSpecified */
+        /* public bool _viaToPadSpecified */
         bool getViaToPadSpecified() const;
 
         // Настройка DRC: проверять зазоры от переходных отверстий до края платы.
@@ -273,7 +273,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("viaToBoard")] public Bool _viaToBoard; */
         Bool _viaToBoard{};
 
-        /* [XmlIgnore] public bool _viaToBoardSpecified */
+        /* public bool _viaToBoardSpecified */
         bool getViaToBoardSpecified() const;
 
         // Настройка DRC: проверка зазоров между контактными площадками.
@@ -282,7 +282,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("padToPad")] public Bool _padToPad; */
         Bool _padToPad{};
 
-        /* [XmlIgnore] public bool _padToPadSpecified */
+        /* public bool _padToPadSpecified */
         bool getPadToPadSpecified() const;
 
         // Настройка DRC: проверка зазоров между контактными площадками и краем платы.
@@ -291,7 +291,7 @@ Attribute<float>tolerance;
         /* [XmlAttribute("padToBoard")] public Bool _padToBoard; */
         Bool _padToBoard{};
 
-        /* [XmlIgnore] public bool _padToBoardSpecified */
+        /* public bool _padToBoardSpecified */
         bool getPadToBoardSpecified() const;
     };
 
@@ -420,14 +420,14 @@ Attribute<float>tolerance;
         // </summary
 
         /* [XmlAttribute("intNums", DataType = "int")] public int _intNums; */
-Attribute<int>intNums;
+        XmlAttr<int>intNums;
         int _intNums = 0;
 
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр после запятой.
         // </summary
 
         /* [XmlAttribute("fractNums", DataType = "int")] public int _fractNums; */
-Attribute<int>fractNums;
+        XmlAttr<int>fractNums;
         int _fractNums = 0;
 
         // Настройки вывода файлов Gerber.
@@ -536,7 +536,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("outputBoardLayer")] public Bool _outputBoardLayer; */
         Bool _outputBoardLayer{};
 
-        /* [XmlIgnore] public bool _outputBoardLayerSpecified */
+        /* public bool _outputBoardLayerSpecified */
         bool getOutputBoardLayerSpecified() const;
 
         // Настройка вывода файла DXF: выводить слой отверстий.
@@ -544,7 +544,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("outputDrillLayer")] public Bool _outputDrillLayer; */
         Bool _outputDrillLayer{};
 
-        /* [XmlIgnore] public bool _outputDrillLayerSpecified */
+        /* public bool _outputDrillLayerSpecified */
         bool getOutputDrillLayerSpecified() const;
 
         // Настройки вывода слоя в файл DXF.
@@ -586,14 +586,14 @@ Attribute<int>fractNums;
         // </summary
 
         /* [XmlAttribute("intNums", DataType = "int")] public int _intNums; */
-Attribute<int>intNums;
+        XmlAttr<int>intNums;
         int _intNums = 0;
 
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр после запятой.
         // </summary
 
         /* [XmlAttribute("fractNums", DataType = "int")] public int _fractNums; */
-Attribute<int>fractNums;
+        XmlAttr<int>fractNums;
         int _fractNums = 0;
 
         // Настройки вывода файлов Gerber.
@@ -617,7 +617,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("count")] public Bool _count; */
         Bool _count{};
 
-        /* [XmlIgnore] public bool _countSpecified */
+        /* public bool _countSpecified */
         bool getCountSpecified() const;
 
         // Настройка вывода BOM файла: выводить наименование компонентов.
@@ -625,7 +625,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("partName")] public Bool _partName; */
         Bool _partName{};
 
-        /* [XmlIgnore] public bool _partNameSpecified */
+        /* public bool _partNameSpecified */
         bool getPartNameSpecified() const;
 
         // Настройка вывода BOM файла: выводить наименование посадочных мест.
@@ -633,7 +633,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("footprint")] public Bool _footprint; */
         Bool _footprint{};
 
-        /* [XmlIgnore] public bool _footprintSpecified */
+        /* public bool _footprintSpecified */
         bool getFootprintSpecified() const;
 
         // Настройка вывода BOM файла: выводить позиционные обозначения компонентов.
@@ -641,7 +641,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("refDes")] public Bool _refDes; */
         Bool _refDes{};
 
-        /* [XmlIgnore] public bool _refDesSpecified */
+        /* public bool _refDesSpecified */
         bool getRefDesSpecified() const;
 
         // Ссылка на атрибут.
@@ -665,7 +665,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5003")] public Bool _W5003; */
         Bool _W5003{};
 
-        /* [XmlIgnore] public bool _W5003Specified */
+        /* public bool _W5003Specified */
         bool getW5003Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5012.
@@ -673,7 +673,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5012")] public Bool _W5012; */
         Bool _W5012{};
 
-        /* [XmlIgnore] public bool _W5012Specified */
+        /* public bool _W5012Specified */
         bool getW5012Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5013.
@@ -681,7 +681,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5013")] public Bool _W5013; */
         Bool _W5013{};
 
-        /* [XmlIgnore] public bool _W5013Specified */
+        /* public bool _W5013Specified */
         bool getW5013Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5014.
@@ -689,7 +689,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5014")] public Bool _W5014; */
         Bool _W5014{};
 
-        /* [XmlIgnore] public bool _W5014Specified */
+        /* public bool _W5014Specified */
         bool getW5014Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5015.
@@ -697,7 +697,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5015")] public Bool _W5015; */
         Bool _W5015{};
 
-        /* [XmlIgnore] public bool _W5015Specified */
+        /* public bool _W5015Specified */
         bool getW5015Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5016.
@@ -705,7 +705,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5016")] public Bool _W5016; */
         Bool _W5016{};
 
-        /* [XmlIgnore] public bool _W5016Specified */
+        /* public bool _W5016Specified */
         bool getW5016Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5017.
@@ -713,7 +713,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5017")] public Bool _W5017; */
         Bool _W5017{};
 
-        /* [XmlIgnore] public bool _W5017Specified */
+        /* public bool _W5017Specified */
         bool getW5017Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5018.
@@ -721,7 +721,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5018")] public Bool _W5018; */
         Bool _W5018{};
 
-        /* [XmlIgnore] public bool _W5018Specified */
+        /* public bool _W5018Specified */
         bool getW5018Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5023.
@@ -729,7 +729,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5023")] public Bool _W5023; */
         Bool _W5023{};
 
-        /* [XmlIgnore] public bool _W5023Specified */
+        /* public bool _W5023Specified */
         bool getW5023Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5024.
@@ -737,7 +737,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5024")] public Bool _W5024; */
         Bool _W5024{};
 
-        /* [XmlIgnore] public bool _W5024Specified */
+        /* public bool _W5024Specified */
         bool getW5024Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5026.
@@ -745,7 +745,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5026")] public Bool _W5026; */
         Bool _W5026{};
 
-        /* [XmlIgnore] public bool _W5026Specified */
+        /* public bool _W5026Specified */
         bool getW5026Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5034.
@@ -753,7 +753,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5034")] public Bool _W5034; */
         Bool _W5034{};
 
-        /* [XmlIgnore] public bool _W5034Specified */
+        /* public bool _W5034Specified */
         bool getW5034Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5036.
@@ -761,7 +761,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5036")] public Bool _W5036; */
         Bool _W5036{};
 
-        /* [XmlIgnore] public bool _W5036Specified */
+        /* public bool _W5036Specified */
         bool getW5036Specified() const;
 
         // Настройка фильтра сообщений: выводить сообщение 5037.
@@ -769,7 +769,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("W5037")] public Bool _W5037; */
         Bool _W5037{};
 
-        /* [XmlIgnore] public bool _W5037Specified */
+        /* public bool _W5037Specified */
         bool getW5037Specified() const;
 
         // Настройка фильтра сообщений: быстрая проверка зазоров между компонентами.
@@ -777,7 +777,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("WClrnBtwComps")] public Bool _WClrnBtwComps; */
         Bool _WClrnBtwComps{};
 
-        /* [XmlIgnore] public bool _WClrnBtwCompsSpecified */
+        /* public bool _WClrnBtwCompsSpecified */
         bool getWClrnBtwCompsSpecified() const;
 
         // Настройка фильтра сообщений: быстрая проверка зазоров между объектами одной цепи.
@@ -785,7 +785,7 @@ Attribute<int>fractNums;
         /* [XmlAttribute("WClrnBtwObjSameNet")] public Bool _WClrnBtwObjSameNet; */
         Bool _WClrnBtwObjSameNet{};
 
-        /* [XmlIgnore] public bool _WClrnBtwObjSameNetSpecified */
+        /* public bool _WClrnBtwObjSameNetSpecified */
         bool getWClrnBtwObjSameNetSpecified() const;
     };
 

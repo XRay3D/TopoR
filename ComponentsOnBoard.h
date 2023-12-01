@@ -34,7 +34,7 @@ struct ComponentsOnBoard {
             // Номер контакта компонента.
 
             /* [XmlAttribute("padNum", DataType = "int")] public int _padNum; */
-Attribute<int>padNum;
+            XmlAttr<int>padNum;
             int _padNum = 0;
 
             // Ссылка на стек контактных площадок.
@@ -61,7 +61,7 @@ Attribute<int>padNum;
             // Задаёт угол в градусах c точностью до тысячных долей.
 
             /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-Attribute<float>angle;
+            XmlAttr<float>angle;
             float _angle = 0.0F;
 
             // Ссылка на стек контактных площадок.
@@ -86,7 +86,7 @@ Attribute<float>angle;
                 // Задаёт угол в градусах c точностью до тысячных долей.
 
                 /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-Attribute<float>angle;
+                XmlAttr<float>angle;
                 float _angle = 0.0F;
 
                 // Параметр надписей и ярлыков: зеркальность отображения.
@@ -94,7 +94,7 @@ Attribute<float>angle;
                 /* [XmlAttribute("mirror")] public Bool _mirror; */
                 Bool _mirror{};
 
-                /* [XmlIgnore] public bool _mirrorSpecified */
+                /* public bool _mirrorSpecified */
                 bool getMirrorSpecified() const;
 
                 // Параметр надписей (ярлыков): способ выравнивания текста.
@@ -107,7 +107,7 @@ Attribute<float>angle;
                 /* [XmlAttribute("visible")] public Bool _visible; */
                 Bool _visible{};
 
-                /* [XmlIgnore] public bool _visibleSpecified */
+                /* public bool _visibleSpecified */
                 bool getVisibleSpecified() const;
 
                 // Ссылка на слой.
@@ -169,7 +169,7 @@ Attribute<float>angle;
         // Задаёт угол в градусах c точностью до тысячных долей.
 
         /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-Attribute<float>angle;
+        XmlAttr<float>angle;
         float _angle = 0.0F;
 
         // Признак фиксации.
@@ -177,7 +177,7 @@ Attribute<float>angle;
         /* [XmlAttribute("fixed")] public Bool _fixed; */
         Bool _fixed{};
 
-        /* [XmlIgnore] public bool _fixedSpecified */
+        /* public bool _fixedSpecified */
         bool getFixedSpecified() const;
 
         // Ссылка на схемный компонент.
@@ -237,7 +237,7 @@ Attribute<float>angle;
         // Задаёт угол в градусах c точностью до тысячных долей.
 
         /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-Attribute<float>angle;
+        XmlAttr<float>angle;
         float _angle = 0.0F;
 
         // Признак фиксации.
@@ -245,7 +245,7 @@ Attribute<float>angle;
         /* [XmlAttribute("fixed")] public Bool _fixed; */
         Bool _fixed{};
 
-        /* [XmlIgnore] public bool _fixedSpecified */
+        /* public bool _fixedSpecified */
         bool getFixedSpecified() const;
 
         // Ссылка на стек контактных площадок.

@@ -6,7 +6,7 @@ void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const Q
     auto file = context.file;
     QMessageLogContext& context_ = const_cast<QMessageLogContext&>(context);
     while (*file)
-        if (*file++ == '\\')
+        if (*file++ == '/')
             context_.file = file;
     messageHandler(type, context, message);
 }

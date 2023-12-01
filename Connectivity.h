@@ -29,7 +29,7 @@ struct Connectivity {
         /* [XmlAttribute("fixed")] public Bool _fixed; */
         Bool _fixed{};
 
-        /* [XmlIgnore] public bool _fixedSpecified */
+        /* public bool _fixedSpecified */
         bool getFixedSpecified() const;
 
         // Ссылка на тип переходного отверстия.
@@ -67,31 +67,31 @@ struct Connectivity {
         // Параметр змейки: зазор между соседними изломами.
 
         /* [XmlAttribute("gap", DataType = "float")] public float _gap; */
-        Attribute<float> gap;
+        XmlAttr<float> gap;
         float _gap = 0.0F;
 
         // Параметр змейки: высота h1 (см. описание змейки Serpent).
 
         /* [XmlAttribute("h1", DataType = "float")] public float _h1; */
-        Attribute<float> h1;
+        XmlAttr<float> h1;
         float _h1 = 0.0F;
 
         // Параметр змейки: высота h2 (см. описание змейки Serpent).
 
         /* [XmlAttribute("h2", DataType = "float")] public float _h2; */
-        Attribute<float> h2;
+        XmlAttr<float> h2;
         float _h2 = 0.0F;
 
         // Параметр змейки: высота h3 (см. описание змейки Serpent).
 
         /* [XmlAttribute("h3", DataType = "float")] public float _h3; */
-        Attribute<float> h3;
+        XmlAttr<float> h3;
         float _h3 = 0.0F;
 
         // Параметр змейки: высота h4 (см. описание змейки Serpent).
 
         /* [XmlAttribute("h4", DataType = "float")] public float _h4; */
-        Attribute<float> h4;
+        XmlAttr<float> h4;
         float _h4 = 0.0F;
     };
 
@@ -111,7 +111,7 @@ struct Connectivity {
         /* [XmlAttribute("fixed")] public Bool _fixed; */
         Bool _fixed{};
 
-        /* [XmlIgnore] public bool _fixedSpecified */
+        /* public bool _fixedSpecified */
         bool getFixedSpecified() const;
 
         // Ссылка на слой.
@@ -168,13 +168,13 @@ struct Connectivity {
             /* [XmlAttribute("fixed")] public Bool _fixed; */
             Bool _fixed{};
 
-            /* [XmlIgnore] public bool _fixedSpecified */
+            /* public bool _fixedSpecified */
             bool getFixedSpecified() const;
 
             // Ширина проводника.
 
             /* [XmlAttribute("width", DataType = "float")] public float _width; */
-            Attribute<float> width;
+            XmlAttr<float> width;
             float _width = 0.0F;
 
             // Ссылка на застёгнутую пару проводников. Строка должна содержать идентификатор описанной застёгнутой пары проводников ZippedWire.
@@ -273,7 +273,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> _Tracks; */
                 // Толщина линии.
 
                 /* [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth; */
-                Attribute<float> lineWidth;
+                XmlAttr<float> lineWidth;
                 float _lineWidth = 0.0F;
 
                 // Описания координат точек, вершин.
@@ -315,7 +315,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> _Tracks; */
         /* [XmlAttribute("useBackoff")] public Bool _useBackoff; */
         Bool _useBackoff{};
 
-        /* [XmlIgnore] public bool _useBackoffSpecified */
+        /* public bool _useBackoffSpecified */
         bool getUseBackoffSpecified() const;
 
         // Параметр области металлизации (полигона): зазор до области металлизации.
@@ -336,19 +336,19 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> _Tracks; */
         // Толщина линии.
 
         /* [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth; */
-        Attribute<float> lineWidth;
+        XmlAttr<float> lineWidth;
         float _lineWidth = 0.0F;
 
         // Параметр области металлизации (полигона): зазор между линиями штриховки.
 
         /* [XmlAttribute("lineClr", DataType = "float")] public float _lineClr; */
-        Attribute<float> lineClr;
+        XmlAttr<float> lineClr;
         float _lineClr = 0.0F;
 
         // Параметр области металлизации (полигона): минимальная площадь островка.
 
         /* [XmlAttribute("minSquare", DataType = "float")] public float _minSquare; */
-        Attribute<float> minSquare;
+        XmlAttr<float> minSquare;
         float _minSquare = 0.0F;
 
         // Параметр области металлизации (полигона): точность аппроксимации контура.
@@ -361,7 +361,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> _Tracks; */
         /* [XmlAttribute("deleteUnconnected")] public Bool _deleteUnconnected; */
         Bool _deleteUnconnected{};
 
-        /* [XmlIgnore] public bool _deleteUnconnectedSpecified */
+        /* public bool _deleteUnconnectedSpecified */
         bool getDeleteUnconnectedSpecified() const;
 
         // Параметр области металлизации (полигона): состояние.
@@ -472,7 +472,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> _Tracks; */
         // Толщина линии.
 
         /* [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth; */
-        Attribute<float> lineWidth;
+        XmlAttr<float> lineWidth;
         float _lineWidth = 0.0F;
 
         // Ссылка на слой.

@@ -17,53 +17,42 @@ namespace TopoR_PCB_Classes {
 // Раздел «Стили надписей».
 
 struct TextStyles {
-
     // Описание стиля надписей.
-
     struct TextStyle {
-
         // Имя объекта или ссылка на именованный объект.
-
         /* [XmlAttribute("name")] public string _name; */
-        QString _name;
+        XmlAttr<QString> name;
 
         // Параметр стиля надписей: название шрифта.
-
         /* [XmlAttribute("fontName")] public string _fontName; */
-        QString _fontName;
+        XmlAttr<QString> fontName;
 
         // Параметр стиля надписей: высота символов в текущих единицах.
-
         /* [XmlAttribute("height", DataType = "float")] public float _height; */
-Attribute<float>height;
-        float _height = 0.0F;
+        XmlAttr<float> height; //        float _height = 0.0F;
 
         // Параметр стиля надписей: жирность шрифта.
-
         /* [XmlAttribute("bold")] public Bool _bold; */
-        Bool _bold{};
+        XmlAttr<Bool> bold{};
 
-        /* [XmlIgnore] public bool _boldSpecified */
+        /* public bool _boldSpecified */
         bool getBoldSpecified() const;
 
         // Параметр стиля надписей: курсив.
-
         /* [XmlAttribute("italic")] public Bool _italic; */
-        Bool _italic{};
+        XmlAttr<Bool> italic{};
 
-        /* [XmlIgnore] public bool _italicSpecified */
+        /* public bool _italicSpecified */
         bool getItalicSpecified() const;
     };
 
     // Версия раздела.
-
     /* [XmlAttribute("version")] public string _version; */
-    QString _version;
+    XmlAttr<QString> version;
 
     // Стили надписей.
-
     /* [XmlElement("TextStyle")] public List<TextStyle> _TextStyles; */
-    std::vector<TextStyle> _TextStyles;
+    std::vector<TextStyle> TextStyles;
     bool ShouldSerialize_TextStyles();
 
     /**********************************************************************

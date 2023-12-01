@@ -37,18 +37,20 @@ struct TopoR_PCB_File /*: std::true_type*/ {
     // Раздел «Слои». (Обязательный раздел)
     /* [XmlElement("Layers")] public Layers _Layers; */
     Layers _Layers;
-#if 0
-    // Раздел «Стили надписей».
+
+    //  Раздел «Стили надписей».
     /* [XmlElement("TextStyles")] public TextStyles _TextStyles; */
     TextStyles _TextStyles;
 
     // Раздел «Библиотечные элементы». (Обязательный раздел)
     /* [XmlElement("LocalLibrary")] public LocalLibrary _LocalLibrary; */
     LocalLibrary _LocalLibrary;
+
     // Раздел «Конструктив платы».
     /* [XmlElement("Constructive")] public Constructive _Constructive; */
-    Constructive _Constructive;
+    // Constructive _Constructive;
 
+#if 0
     // Раздел «Компоненты на плате». (Обязательный раздел).
     /* [XmlElement("ComponentsOnBoard")] public ComponentsOnBoard _ComponentsOnBoard; */
     ComponentsOnBoard _ComponentsOnBoard;

@@ -22,7 +22,7 @@ namespace TopoR_PCB_Classes {
 struct base_coordinat;
 
 template <typename T>
-struct Attribute {
+struct XmlAttr {
     T value{};
     operator T&() noexcept { return value; }
     operator const T&() const noexcept { return value; }
@@ -222,7 +222,7 @@ struct PadRef {
     std::string _compName;
     // Номер контактной площадки (вывода) посадочного места.
     /* [XmlAttribute("padNum", DataType = "int")] public int _padNum; */
-    Attribute<int> padNum; // int _padNum = 0;
+    XmlAttr<int> padNum; // int _padNum = 0;
 };
 //	#endregion Reference Type
 
@@ -230,9 +230,9 @@ struct PadRef {
 
 struct base_coordinat {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
     void Shift(float x, float y);
     void UnitsConvert(dist in_units, dist out_units);
 };
@@ -240,65 +240,65 @@ struct base_coordinat {
 // координаты точки, вершины.
 struct Dot /*: public base_coordinat*/ {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
 };
 
 // Центр круга (окружности), овала.
 struct Center /*: public base_coordinat*/ {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
 };
 
 // Начальная точка линии, дуги.
 struct Start /*: public base_coordinat*/ {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
 };
 
 // Средняя точка дуги.
 struct Middle /*: public base_coordinat*/ {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
 };
 
 // Конечная точка линии, дуги.
 struct End /*: public base_coordinat*/ {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
 };
 
 // Точка привязки объекта.
 struct Org /*: public base_coordinat*/ {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
 };
 
 // Cмещение точки привязки или объекта по осям x и y.
 struct Shift /*: public base_coordinat*/ {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
 };
 
 // Вытягивание по осям x и y.
 struct Stretch /*: public base_coordinat*/ {
     /* [XmlAttribute("x", DataType = "float")] public float _x; */
-    Attribute<float> x; // float _x = 0.0F;
+    XmlAttr<float> x; // float _x = 0.0F;
     /* [XmlAttribute("y", DataType = "float")] public float _y; */
-    Attribute<float> y; // float _y = 0.0F;
+    XmlAttr<float> y; // float _y = 0.0F;
 };
 
 //	#endregion Coordinates
@@ -343,7 +343,7 @@ struct SegmentArcByAngle : public SegmentLine {
 
     // Задаёт угол в градусах c точностью до тысячных долей.
     /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-    Attribute<float> angle; // float _angle = 0.0F;
+    XmlAttr<float> angle; // float _angle = 0.0F;
 };
 
 // Описание дугообразного сегмента контура.
@@ -403,7 +403,7 @@ struct ArcByAngle /*: public IBaseFigure*/ {
 
     // Задаёт угол в градусах c точностью до тысячных долей.
     /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-    Attribute<float> angle; // float _angle = 0.0F;
+    XmlAttr<float> angle; // float _angle = 0.0F;
 
     // Начальная точка линии, дуги.
     /* [XmlElement("Start")] public Start _Start; */
@@ -445,7 +445,7 @@ struct Circle /*: public IBaseFigure*/ {
 
     // Диаметр окружности, круга, овала.
     /* [XmlAttribute("diameter", DataType = "float")] public float _diameter; */
-    Attribute<float> diameter; // float _diameter = 0.0F;
+    XmlAttr<float> diameter; // float _diameter = 0.0F;
 
     // Центр круга (окружности), овала.
     /* [XmlElement("Center")] public Center _Center; */
@@ -661,23 +661,23 @@ struct Thermal {
 
     // Параметр термобарьера: число спиц.! В TopoR поддерживается только одно значение – 4.
     /* [XmlAttribute("spokeNum", DataType = "int")] public int _spokeNum; */
-    Attribute<int> spokeNum; // int _spokeNum = 0;
+    XmlAttr<int> spokeNum; // int _spokeNum = 0;
 
     // Параметр термобарьера: минимальное число спиц.
     /* [XmlAttribute("minSpokeNum", DataType = "int")] public int _minSpokeNum; */
-    Attribute<int> minSpokeNum; // int _minSpokeNum = 0;
+    XmlAttr<int> minSpokeNum; // int _minSpokeNum = 0;
 
     // Задаёт угол в градусах c точностью до тысячных долей.
     /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-    Attribute<float> angle; // float _angle = 0.0F;
+    XmlAttr<float> angle; // float _angle = 0.0F;
 
     // Параметр термобарьера: ширина спицы.
     /* [XmlAttribute("spokeWidth", DataType = "float")] public float _spokeWidth; */
-    Attribute<float> spokeWidth; // float _spokeWidth = 0.0F;
+    XmlAttr<float> spokeWidth; // float _spokeWidth = 0.0F;
 
     // Параметр термобарьера: зазор между контактной площадкой и областью металлизации.
     /* [XmlAttribute("backoff", DataType = "float")] public float _backoff; */
-    Attribute<float> backoff; // float _backoff = 0.0F;
+    XmlAttr<float> backoff; // float _backoff = 0.0F;
 
     void UnitsConvert(dist in_units, dist out_units);
 };
@@ -688,7 +688,7 @@ struct Detail {
 
     // Толщина линии.
     /* [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth; */
-    Attribute<float> lineWidth; // float _lineWidth = 0.0F;
+    XmlAttr<float> lineWidth; // float _lineWidth = 0.0F;
 
     // Ссылка на слой.
     /* [XmlElement("LayerRef")] public LayerRef _LayerRef; */
@@ -739,12 +739,12 @@ struct Text {
 
     // Задаёт угол в градусах c точностью до тысячных долей.
     /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-    Attribute<float> angle; // float _angle = 0.0F;
+    XmlAttr<float> angle; // float _angle = 0.0F;
 
     // Параметр надписей и ярлыков: зеркальность отображения.
     /* [XmlAttribute("mirror")] public Bool _mirror; */
     Bool _mirror{};
-    /* [XmlIgnore] public bool _mirrorSpecified */
+    /* public bool _mirrorSpecified */
     bool getMirrorSpecified() const;
 
     // Ссылка на слой.

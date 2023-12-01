@@ -22,26 +22,26 @@ struct Layers {
 
         // Имя объекта или ссылка на именованный объект.
         /* [XmlAttribute("name")] public string _name; */
-        Attribute<QString> name;
+        XmlAttr<QString> name;
 
         // Тип слоя. Значение по умолчанию – Signal.
         /* [XmlAttribute("type")] public layer_type _type; */
-        Attribute<layer_type> type{};
+        XmlAttr<layer_type> type{};
 
         // Параметр слоя: слой содержит очертания компонентов.
         // <remarks>! Для сигнальных, опорных, диэлектрических и документирующих слоёв параметр compsOutline отсутствует.</remarks>
         /* [XmlAttribute("compsOutline")] public Bool _compsOutline; */
-        Attribute<Bool> compsOutline{};
-
-        /* [XmlIgnore] public bool _compsOutlineSpecified */
-        bool getCompsOutlineSpecified() const;
+        std::optional<XmlAttr<Bool>> compsOutline{};
 
         // Параметр слоя: толщина.
         // <remarks>! Для документирующих слоёв и слоёв с типом Assy параметр thickness отсутствует.</remarks>
         /* [XmlAttribute("thickness", DataType = "float")] public float _thickness; */
-        Attribute<float> thickness{};
+        std::optional<XmlAttr<float>> thickness{};
 
-        /* [XmlIgnore] public bool _thicknessSpecified */
+        /* public bool _compsOutlineSpecified */
+        bool getCompsOutlineSpecified() const;
+
+        /* public bool _thicknessSpecified */
         bool getThicknessSpecified() const;
 
         /*****************************************************************
@@ -63,7 +63,7 @@ struct Layers {
     // Версия раздела.
 
     /* [XmlAttribute("version")] public string _version; */
-    Attribute<QString> version;
+    XmlAttr<QString> version;
 
     // Описание слоёв в стеке. Порядок описания должен соответствовать порядку слоёв в стеке.
 

@@ -28,7 +28,7 @@ struct Constructive {
             // Толщина линии.
 
             /* [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth; */
-            Attribute<float> lineWidth;
+            XmlAttr<float> lineWidth;
             float _lineWidth = 0.0F;
 
             // Незалитая фигура.
@@ -68,7 +68,7 @@ struct Constructive {
             // Толщина линии.
 
             /* [XmlAttribute("lineWidth", DataType = "float")] public float _lineWidth; */
-            Attribute<float> lineWidth;
+            XmlAttr<float> lineWidth;
             float _lineWidth = 0.0F;
 
             // Описание залитой фигуры.
@@ -108,7 +108,7 @@ struct Constructive {
         // Задаёт угол в градусах c точностью до тысячных долей.
 
         /* [XmlAttribute("angle", DataType = "float")] public float _angle; */
-        Attribute<float> angle;
+        XmlAttr<float> angle;
         float _angle = 0.0F;
 
         // Признак фиксации.
@@ -116,7 +116,7 @@ struct Constructive {
         /* [XmlAttribute("fixed")] public Bool _fixed; */
         Bool _fixed{};
 
-        /* [XmlIgnore] public bool _fixedSpecified */
+        /* public bool _fixedSpecified */
         bool getFixedSpecified() const;
 
         // Ссылка на стек контактных площадок.
