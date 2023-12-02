@@ -52,7 +52,7 @@ struct TextStyles {
 
     // Стили надписей.
     /* [XmlElement("TextStyle")] public List<TextStyle> TextStyles_; */
-    std::vector<TextStyle> TextStyles;
+    XmlAarray<TextStyle> TextStyles;
     bool ShouldSerialize_TextStyles();
 
     /**********************************************************************

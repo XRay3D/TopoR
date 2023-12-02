@@ -1,5 +1,6 @@
 #pragma once
 
+#include "treeitem.h"
 #include <QBuffer>
 #include <QDebug>
 #include <QDomDocument>
@@ -17,7 +18,7 @@ QDebug operator<<(QDebug d, std::set<QString> c);
 
 struct Xml {
     QDomDocument doc{"mydocument"};
-
+    TreeItem* const item{new TreeItem};
     Xml(const QString& name = "../МАН2_МСИС_V2.1.fst");
 
     QDomElement top() const;
@@ -29,7 +30,7 @@ struct Xml {
     bool push(sl sl_ = sl::current());
     void push(const QDomNode& node, sl sl_ = sl::current());
 
-    std::set<QString> names;
+    std::vector<QString> names;
     bool isAttr{};
     bool skipPushArray{};
     bool skipPop{};
@@ -46,4 +47,5 @@ struct Xml {
     QTextStream out{&buffer};
 
     std::stack<QDomNode> stack;
+    TreeItem* tree{item};
 };

@@ -26,10 +26,10 @@ public:
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role = Qt::EditRole) override;
 
-    bool insertColumns(int position, int columns, const QModelIndex& parent = QModelIndex()) override;
-    bool removeColumns(int position, int columns, const QModelIndex& parent = QModelIndex()) override;
-    bool insertRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
-    bool removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
+    // bool insertColumns(int position, int columns, const QModelIndex& parent = QModelIndex()) override;
+    // bool removeColumns(int position, int columns, const QModelIndex& parent = QModelIndex()) override;
+    // bool insertRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
+    // bool removeRows(int position, int rows, const QModelIndex& parent = QModelIndex()) override;
 
 private:
     TreeItem* getItem(const QModelIndex& index) const;

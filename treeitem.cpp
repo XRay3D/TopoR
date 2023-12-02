@@ -1,8 +1,8 @@
 #include "treeitem.h"
 
-TreeItem::TreeItem(const QVector<QVariant>& data, TreeItem* parent)
-    : itemData(data)
-    , parentItem(parent) { }
+// TreeItem::TreeItem(const QVector<QVariant>& data, TreeItem* parent)
+//     : itemData(data)
+//     , parentItem(parent) { }
 
 TreeItem::~TreeItem() { qDeleteAll(childItems); }
 
@@ -18,35 +18,35 @@ TreeItem* TreeItem::child(int number) {
 
 TreeItem* TreeItem::parent() { return parentItem; }
 
-bool TreeItem::insertChildren(int position, int count, int columns) {
-    if(position < 0 || position > childItems.size()) return false;
-    for(int row = 0; row < count; ++row) {
-        QVector<QVariant> data(columns);
-        TreeItem* item = new TreeItem(data, this);
-        childItems.insert(position, item);
-    }
-    return true;
-}
+// bool TreeItem::insertChildren(int position, int count, int columns) {
+//     if(position < 0 || position > childItems.size()) return false;
+//     for(int row = 0; row < count; ++row) {
+//         QVector<QVariant> data(columns);
+//         TreeItem* item = new TreeItem(data, this);
+//         childItems.insert(position, item);
+//     }
+//     return true;
+// }
 
-bool TreeItem::insertColumns(int position, int columns) {
-    if(position < 0 || position > itemData.size()) return false;
-    for(int column = 0; column < columns; ++column) itemData.insert(position, QVariant());
-    for(TreeItem* child: std::as_const(childItems)) child->insertColumns(position, columns);
-    return true;
-}
+// bool TreeItem::insertColumns(int position, int columns) {
+//     if(position < 0 || position > itemData.size()) return false;
+//     for(int column = 0; column < columns; ++column) itemData.insert(position, QVariant());
+//     for(TreeItem* child: std::as_const(childItems)) child->insertColumns(position, columns);
+//     return true;
+// }
 
-bool TreeItem::removeChildren(int position, int count) {
-    if(position < 0 || position + count > childItems.size()) return false;
-    for(int row = 0; row < count; ++row) delete childItems.takeAt(position);
-    return true;
-}
+// bool TreeItem::removeChildren(int position, int count) {
+//     if(position < 0 || position + count > childItems.size()) return false;
+//     for(int row = 0; row < count; ++row) delete childItems.takeAt(position);
+//     return true;
+// }
 
-bool TreeItem::removeColumns(int position, int columns) {
-    if(position < 0 || position + columns > itemData.size()) return false;
-    for(int column = 0; column < columns; ++column) itemData.erase(itemData.begin() + position);
-    for(TreeItem* child: std::as_const(childItems)) child->removeColumns(position, columns);
-    return true;
-}
+// bool TreeItem::removeColumns(int position, int columns) {
+//     if(position < 0 || position + columns > itemData.size()) return false;
+//     for(int column = 0; column < columns; ++column) itemData.erase(itemData.begin() + position);
+//     for(TreeItem* child: std::as_const(childItems)) child->removeColumns(position, columns);
+//     return true;
+// }
 
 bool TreeItem::setData(int column, const QVariant& value) {
     if(column < 0 || column >= itemData.size()) return false;
@@ -54,11 +54,13 @@ bool TreeItem::setData(int column, const QVariant& value) {
     return true;
 }
 
-int TreeItem::childCount() const { return childItems.count(); }
+int TreeItem::childCount() const { return childItems.size(); }
 
 int TreeItem::childNumber() const {
-    if(parentItem) return parentItem->childItems.indexOf(const_cast<TreeItem*>(this));
+    if(parentItem)
+        if(auto it = std::ranges::find(parentItem->childItems, this); it != parentItem->childItems.end())
+            return std::distance(parentItem->childItems.begin(), it);
     return 0;
 }
 
-int TreeItem::columnCount() const { return itemData.count(); }
+int TreeItem::columnCount() const { return itemData.size(); }

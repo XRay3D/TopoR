@@ -44,10 +44,10 @@ struct XmlAarray : std::vector<T>, std::false_type {
     using std::vector<T>::vector;
 };
 
-template <typename T>
-struct XmlAarrayElem : std::vector<T>, std::true_type {
-    using std::vector<T>::vector;
-};
+// template <typename T>
+// struct XmlAarrayElem : std::vector<T>, std::true_type {
+//     using std::vector<T>::vector;
+// };
 
 template <typename... Ts>
 struct XmlVariant : std::variant<Ts...> {

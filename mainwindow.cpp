@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "treemodel.h"
 #include "ui_mainwindow.h"
 
 #include "TopoR_PCB_File.h"
@@ -97,6 +98,14 @@ MainWindow::MainWindow(QWidget* parent)
         }
     });
 
+    const QStringList headers({tr("Title"), tr("Description")});
+    TreeModel* model = new TreeModel{xml.item, headers, this};
+
+    ui->treeView->setModel(model);
+    ui->treeView->expandAll();
+    for(int column = 0; column < model->columnCount(); ++column)
+        ui->treeView->resizeColumnToContents(column);
+
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->setModel(new Model(file->NetList_.Nets, ui->tableView));
@@ -108,6 +117,10 @@ MainWindow::MainWindow(QWidget* parent)
             if(name == Padstack.name) return Padstack;
         return LocalLibrary::Padstack{};
     };
+
+    ui->treeView->setModel(model);
+    for(int column = 0; column < model->columnCount(); ++column)
+        ui->treeView->resizeColumnToContents(column);
 
     for(auto&& Footprint: file->LocalLibrary_.Footprints) {
         auto group = new QGraphicsItemGroup;
