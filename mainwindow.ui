@@ -22,6 +22,8 @@
       </property>
       <widget class="QTableView" name="tableView"/>
       <widget class="GraphicsView" name="graphicsView"/>
+      <widget class="QPlainTextEdit" name="plainTextEdit"/>
+      <widget class="QTreeView" name="treeView"/>
      </widget>
     </item>
    </layout>

@@ -42,7 +42,7 @@ struct Constructive {
                 XmlElement("Polyline", typeof(Polyline)),
                 XmlElement("Rect", typeof(Rect)),
                 XmlElement("Contour", typeof(Contour))] public Object NonfilledFigure_; */
-            std::variant<
+            XmlVariant<
                 ArcCCW,
                 ArcCW,
                 ArcByAngle,
@@ -77,7 +77,7 @@ struct Constructive {
                 XmlElement("FilledRect", typeof(FilledRect)),
                 XmlElement("Polygon", typeof(Polygon)),
                 XmlElement("FilledContour", typeof(FilledContour))] public Object FilledFigure_; */
-            std::variant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure_;
+            XmlVariant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure_;
 
             /**********************************************************************
              * Здесь находятся функции для работы с элементами класса Shape_Voids. *
@@ -91,13 +91,13 @@ struct Constructive {
         // Описание контура платы.
 
         /* [XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> Contours_; */
-        std::vector<Shape_Contour> Contours_;
+        std::vector<Shape_Contour> Contours;
         bool ShouldSerialize_Contours();
 
         // Вырезы в плате.
 
         /* [XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> Voids_; */
-        std::vector<Shape_Voids> Voids_;
+        std::vector<Shape_Voids> Voids;
         bool ShouldSerialize_Voids();
     };
 
@@ -165,14 +165,14 @@ struct Constructive {
                     XmlElement("AllLayersSignal", typeof(AllLayersSignal)),
                     XmlElement("AllLayersOuter", typeof(AllLayersOuter)),
                     XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public Object LayersRef_; */
-                std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef_;
+                XmlVariant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef_;
 
                 // Ссылка на слои. См. также _LayersRef
 
                 // <remarks>! При null необходимо смотреть _LayersRef - там описаны ссылки остальных типов. </remarks>
 
                 /* [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_; */
-                std::vector<LayerRef> LayersRefs_;
+                std::vector<LayerRef> LayersRefs;
                 bool ShouldSerialize_LayersRefs();
             };
 
@@ -213,7 +213,7 @@ struct Constructive {
             XmlElement("Contour", typeof(Contour)),
             XmlElement("FilledContour", typeof(FilledContour)),
             XmlElement("Polyline", typeof(Polyline))] public Object FigureContPolyline_; */
-        std::variant<ArcCCW,
+        XmlVariant<ArcCCW,
             ArcCW,
             ArcByAngle,
             ArcByMiddle,
@@ -240,7 +240,7 @@ struct Constructive {
     // Версия раздела.
 
     /* [XmlAttribute("version")] public string version_; */
-    QString version_;
+    QString version;
 
     // Контур платы и вырезы в плате.
 
@@ -250,25 +250,25 @@ struct Constructive {
     // Монтажные отверстия на плате.
 
     /* [XmlArray("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> Mntholes_; */
-    std::vector<MntholeInstance> Mntholes_;
+    std::vector<MntholeInstance> Mntholes;
     bool ShouldSerialize_Mntholes();
 
     // Детали на механических слоях.
 
     /* [XmlArray("MechLayerObjects"), DefaultValue(null)][XmlArrayItem("Detail")] public List<Detail> MechLayerObjects_; */
-    std::vector<Detail> MechLayerObjects_;
+    std::vector<Detail> MechLayerObjects;
     bool ShouldSerialize_MechLayerObjects();
 
     // Описание надписей.
 
     /* [XmlArray("Texts"), DefaultValue(null)][XmlArrayItem("Text")] public List<Text> Texts_; */
-    std::vector<Text> Texts_;
+    std::vector<Text> Texts;
     bool ShouldSerialize_Texts();
 
     // Описание запретов.
 
     /* [XmlArray("Keepouts"), DefaultValue(null)][XmlArrayItem("Keepout")] public List<Keepout_Сonstructive> Keepouts_; */
-    std::vector<std::optional<Keepout_Сonstructive>> Keepouts_;
+    std::vector<std::optional<Keepout_Сonstructive>> Keepouts;
     bool ShouldSerialize_Keepouts();
 
     /************************************************************************

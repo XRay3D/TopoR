@@ -32,15 +32,15 @@ struct TopoR_PCB_File /*: std::true_type*/ {
 
     // Раздел «Заголовок файла».
     /* [XmlElement("Header")] public Header Header_; */
-    // Header Header_;
+    Header Header_;
 
     // Раздел «Слои». (Обязательный раздел)
     /* [XmlElement("Layers")] public Layers Layers_; */
-    // Layers Layers_;
+    Layers Layers_;
 
     //  Раздел «Стили надписей».
     /* [XmlElement("TextStyles")] public TextStyles TextStyles_; */
-    // TextStyles TextStyles_;
+    TextStyles TextStyles_;
 
     // Раздел «Библиотечные элементы». (Обязательный раздел)
     /* [XmlElement("LocalLibrary")] public LocalLibrary LocalLibrary_; */
@@ -48,45 +48,45 @@ struct TopoR_PCB_File /*: std::true_type*/ {
 
     // Раздел «Конструктив платы».
     /* [XmlElement("Constructive")] public Constructive Constructive_; */
-    // Constructive Constructive_;
+    Constructive Constructive_;
 
     // Раздел «Компоненты на плате». (Обязательный раздел).
     /* [XmlElement("ComponentsOnBoard")] public ComponentsOnBoard ComponentsOnBoard_; */
-    // ComponentsOnBoard ComponentsOnBoard_;
+    ComponentsOnBoard ComponentsOnBoard_;
 
     // Раздел «Текущий список соединений».
     /* [XmlElement("NetList")] public NetList NetList_; */
-    // NetList NetList_;
+    NetList NetList_;
 
     // Раздел «Группировка объектов».
     /* [XmlElement("Groups")] public Groups Groups_; */
-    // Groups Groups_;
+    Groups Groups_;
 
     // Раздел «Правила для высокоскоростных устройств».
     /* [XmlElement("HiSpeedRules")] public HiSpeedRules HiSpeedRules_; */
-    // HiSpeedRules HiSpeedRules_;
+    HiSpeedRules HiSpeedRules_;
 
     // Раздел «Правила».
     // <remarks>! Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.</remarks>
     /* [XmlElement("Rules")] public Rules Rules_; */
-    // Rules Rules_;
+    Rules Rules_;
 
     // Раздел «Соединения на плате».
     // <remarks>В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.</remarks>
     /* [XmlElement("Connectivity")] public Connectivity Connectivity_; */
-    // Connectivity Connectivity_;
+    Connectivity Connectivity_;
 
     // Раздел «Настройки дизайна».
     /* [XmlElement("Settings")] public Settings Settings_; */
-    // Settings Settings_;
+    Settings Settings_;
 
     // Раздел «Настройки отображения».
     /* [XmlElement("DisplayControl")] public DisplayControl DisplayControl_; */
-    // DisplayControl DisplayControl_;
+    DisplayControl DisplayControl_;
 
     // Раздел «Настройки диалогов».
     /* [XmlElement("DialogSettings")] public DialogSettings DialogSettings_; */
-    // DialogSettings DialogSettings_;
+    DialogSettings DialogSettings_;
 };
 
 } // namespace TopoR_PCB_Classes

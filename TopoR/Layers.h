@@ -84,13 +84,13 @@ struct Layers {
 
     // Проверяет существование слоя, на который ссылается ссылка
 
-    // <param name="lref">Ссылка на слой</param>
+    /// \param '1 \brief Ссылка на слой
     // <returns>true, если слой существует</returns>
     bool LayerStackUpContains(LayerRef lref);
 
     // Проверяет существование слоя, на который ссылается ссылка
 
-    // <param name="lref">Ссылка на слой</param>
+    /// \param '1 \brief Ссылка на слой
     // <returns>true, если слой существует</returns>
     bool LayerUnStackContain(LayerRef lref);
     /******************************************************************/

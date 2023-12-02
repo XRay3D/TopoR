@@ -10,7 +10,7 @@
 #include <variant>
 #include <vector>
 
-/* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
+/* Мною, Константином aka KilkennyCat,05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
@@ -26,12 +26,12 @@ struct LocalLibrary {
         // <value>LayerTypeRef | LayerRef</value>
         /* [XmlElement("LayerTypeRef", typeof(LayerTypeRef)),
             XmlElement("LayerRef", typeof(LayerRef))] public Object Reference_; */
-        std::variant<LayerTypeRef, LayerRef> Reference;
+        XmlVariant<LayerTypeRef, LayerRef> Reference;
     };
 
     // Описание круглой контактной площадки.
     struct PadCircle /*: public BasePad {*/ {
-        std::variant<LayerTypeRef, LayerRef> Reference;
+        XmlVariant<LayerTypeRef, LayerRef> Reference;
         // Диаметр окружности, круга, овала.
         /* [XmlAttribute("diameter", DataType = "float")] public float diameter_; */
         XmlAttr<float> diameter;
@@ -44,7 +44,7 @@ struct LocalLibrary {
 
     // Описание овальной контактной площадки.
     struct PadOval /*: public BasePad {*/ {
-        std::variant<LayerTypeRef, LayerRef> Reference;
+        XmlVariant<LayerTypeRef, LayerRef> Reference;
 
         // Диаметр окружности, круга, овала.
         /* [XmlAttribute("diameter", DataType = "float")] public float diameter_; */
@@ -75,14 +75,14 @@ struct LocalLibrary {
     // В качестве типа обработки допускается скругление или срез.
     // Тип для всех углов должен быть одинаковым: нельзя скруглять один угол и срезать другой.
     // Если флаг custom не установлен, обрабатываются все углы, иначе будут обработаны только углы,
-    // соответствующие установленным флагам - cornerLB, cornerRB, cornerRT, cornerLT.
+    // соответствующие установленным флагам - cornerLB,cornerRB,cornerRT,cornerLT.
     // Основные формы КП, которые данный формат позволяет описать:
     // прямоугольные КП;
     // прямоугольные КП со скруглёнными углами;
     // прямоугольные КП со срезанными углами;
     // Finger pads.
     struct PadRect /*: public BasePad {*/ {
-        std::variant<LayerTypeRef, LayerRef> Reference;
+        XmlVariant<LayerTypeRef, LayerRef> Reference;
 
         // Ширина прямоугольной контактной площадки.
         /* [XmlAttribute("width", DataType = "float")] public float width_; */
@@ -146,7 +146,7 @@ struct LocalLibrary {
 
     // Описание полигональной контактной площадки.
     struct PadPoly /*: public BasePad {*/ {
-        std::variant<LayerTypeRef, LayerRef> Reference;
+        XmlVariant<LayerTypeRef, LayerRef> Reference;
 
         // Массив координат точек, вершин.
         // <remarks>! Минимум 3 элемента</remarks>
@@ -196,9 +196,9 @@ struct LocalLibrary {
         Thermal Thermal_;
 
         // Контактные площадки стека.
-        // <value>PadCircle, PadOval, PadRect, PadPoly</value>
+        // <value>PadCircle,PadOval,PadRect,PadPoly</value>
         /* [XmlArray("Pads")][XmlArrayItem("PadCircle", typeof(PadCircle)), XmlArrayItem("PadOval", typeof(PadOval)), XmlArrayItem("PadRect", typeof(PadRect)), XmlArrayItem("PadPoly", typeof(PadPoly))] public List<Object> Pads; */
-        std::vector<std::variant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
+        std::vector<XmlVariant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
         bool ShouldSerialize_Pads() { return Pads.size(); }
     };
 
@@ -215,7 +215,7 @@ struct LocalLibrary {
             AllLayers AllLayers_;
 
             // Диапазон слоёв. См. также _AllLayers
-            // <remarks>! При null необходимо смотреть наличие AllLayers_. </remarks>
+            // <remarks>! При null необходимо смотреть наличие AllLayers. </remarks>
             /* [XmlElement("LayerRef", typeof(LayerRef))] public List<LayerRef> LayerRefs; */
             std::vector<LayerRef> LayerRefs;
             bool ShouldSerialize_LayerRefs() { return LayerRefs.size(); }
@@ -265,7 +265,7 @@ struct LocalLibrary {
             LayerRef LayerRef_;
 
             // Описание фигуры.
-            // <value>ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon</value>
+            // <value>ArcCCW,ArcCW,ArcByAngle,ArcByMiddle,Line,Circle,Rect,FilledCircle,FilledRect,Polygon</value>
             /* [XmlElement("ArcCCW", typeof(ArcCCW)),
                 XmlElement("ArcCW", typeof(ArcCW)),
                 XmlElement("ArcByAngle", typeof(ArcByAngle)),
@@ -277,17 +277,7 @@ struct LocalLibrary {
                 XmlElement("FilledRect", typeof(FilledRect)),
                 XmlElement("Polygon", typeof(Polygon)),
                 XmlElement("FilledContour", typeof(FilledContour))] public Object Figure_; */
-            std::variant<ArcCCW,
-                ArcCW,
-                ArcByAngle,
-                ArcByMiddle,
-                Line,
-                Circle,
-                Rect,
-                FilledCircle,
-                FilledRect,
-                Polygon,
-                FilledContour>
+            XmlVariant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour>
                 Figure_;
         };
 
@@ -300,7 +290,7 @@ struct LocalLibrary {
 
             // Описание фигуры.
 
-            // <value>ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon</value>
+            // <value>ArcCCW,ArcCW,ArcByAngle,ArcByMiddle,Line,Circle,Rect,FilledCircle,FilledRect,Polygon</value>
             /* [XmlElement("ArcCCW", typeof(ArcCCW)),
                 XmlElement("ArcCW", typeof(ArcCW)),
                 XmlElement("ArcByAngle", typeof(ArcByAngle)),
@@ -312,18 +302,7 @@ struct LocalLibrary {
                 XmlElement("FilledRect", typeof(FilledRect)),
                 XmlElement("Polygon", typeof(Polygon)),
                 XmlElement("FilledContour", typeof(FilledContour))] public Object Figure_; */
-            std::variant<ArcCCW,
-                ArcCW,
-                ArcByAngle,
-                ArcByMiddle,
-                Line,
-                Circle,
-                Rect,
-                FilledCircle,
-                FilledRect,
-                Polygon,
-                FilledContour>
-                Figure_;
+            XmlVariant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour> Figure_;
         };
 
         // Описание монтажного отверстия в посадочном месте.
@@ -532,20 +511,17 @@ struct LocalLibrary {
         // Соответствие контакта схемного компонента и вывода посадочного места.
         struct Pinpack {
             // Номер контакта компонента.
-            /* [XmlAttribute("pinNum", DataType = "int")] public int pinNum_; */
-            XmlAttr<int> pinNum; // int _pinNum = 0;
+            XmlAttr<int> pinNum;
 
             // Номер контактной площадки (вывода) посадочного места.
-            /* [XmlAttribute("padNum", DataType = "int")] public int padNum_; */
-            XmlAttr<int> padNum; // int _padNum = 0;
+            XmlAttr<int> padNum;
 
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
             /* [XmlAttribute("valueType")] public valueType valueType_; */
             XmlAttr<valueType> valueType_;
 
             // Параметр контакта компонента в посадочном месте: задержка сигнала в посадочном месте.
-            /* [XmlAttribute("delay", DataType = "float")] public float delay_; */
-            XmlAttr<float> delay; // float _delay = 0.0F;
+            XmlAttr<float> delay;
         };
 
         // Ссылка на схемный компонент.
@@ -595,7 +571,6 @@ struct LocalLibrary {
      * Здесь находятся функции для работы с элементами класса LocalLibrary. *
      * Они не являются частью формата TopoR PCB.                            *
      * **********************************************************************/
-
     /************************************************************************/
 };
 

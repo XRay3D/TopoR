@@ -1,5 +1,6 @@
 ﻿#include "Commons.h"
 
+
 namespace TopoR_PCB_Classes {
 
 void base_coordinat::Shift(float x, float y) {
@@ -13,89 +14,89 @@ void base_coordinat::UnitsConvert(dist in_units, dist out_units) {
 }
 
 void SegmentLine::Shift(float x, float y) {
-    /* if (_End) End_.value().Shift(x, y);*/
+    /* if (_End) End.value().Shift(x, y);*/
 }
 
 void SegmentLine::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_End) End_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_End) End.value().UnitsConvert(in_units, out_units);*/
 }
 
 void SegmentArcCCW::Shift(float x, float y) {
-    /* if (_Center) Center_.value().Shift(x, y);*/
-    /* if (_End) End_.value().Shift(x, y);*/
+    /* if (_Center) Center.value().Shift(x, y);*/
+    /* if (_End) End.value().Shift(x, y);*/
 }
 
 void SegmentArcCCW::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_Center) Center_.value().UnitsConvert(in_units, out_units);*/
-    /* if (_End) End_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Center) Center.value().UnitsConvert(in_units, out_units);*/
+    /* if (_End) End.value().UnitsConvert(in_units, out_units);*/
 }
 
 void SegmentArcByMiddle::Shift(float x, float y) {
-    /* if (_Middle) Middle_.value().Shift(x, y);*/
-    /* if (_End) End_.value().Shift(x, y);*/
+    /* if (_Middle) Middle.value().Shift(x, y);*/
+    /* if (_End) End.value().Shift(x, y);*/
 }
 
 void SegmentArcByMiddle::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_Middle) Middle_.value().UnitsConvert(in_units, out_units);*/
-    /* if (_End) End_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Middle) Middle.value().UnitsConvert(in_units, out_units);*/
+    /* if (_End) End.value().UnitsConvert(in_units, out_units);*/
 }
 
 void ArcCCW::Shift(float x, float y) {
-    /* if (_Start) Start_.value().Shift(x, y);*/
-    /* if (_Center) Center_.value().Shift(x, y);*/
-    /* if (_End) End_.value().Shift(x, y);*/
+    /* if (_Start) Start.value().Shift(x, y);*/
+    /* if (_Center) Center.value().Shift(x, y);*/
+    /* if (_End) End.value().Shift(x, y);*/
 }
 
 void ArcCCW::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_Start) Start_.value().UnitsConvert(in_units, out_units);*/
-    /* if (_Center) Center_.value().UnitsConvert(in_units, out_units);*/
-    /* if (_End) End_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Start) Start.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Center) Center.value().UnitsConvert(in_units, out_units);*/
+    /* if (_End) End.value().UnitsConvert(in_units, out_units);*/
 }
 
 void ArcByAngle::Shift(float x, float y) {
-    /* if (_Start) Start_.value().Shift(x, y);*/
-    /* if (_End) End_.value().Shift(x, y);*/
+    /* if (_Start) Start.value().Shift(x, y);*/
+    /* if (_End) End.value().Shift(x, y);*/
 }
 
 void ArcByAngle::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_Start) Start_.value().UnitsConvert(in_units, out_units);*/
-    /* if (_End) End_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Start) Start.value().UnitsConvert(in_units, out_units);*/
+    /* if (_End) End.value().UnitsConvert(in_units, out_units);*/
 }
 
 void ArcByMiddle::Shift(float x, float y) {
-    /* if (_Start) Start_.value().Shift(x, y);*/
-    /* if (_Middle) Middle_.value().Shift(x, y);*/
-    /* if (_End) End_.value().Shift(x, y);*/
+    /* if (_Start) Start.value().Shift(x, y);*/
+    /* if (_Middle) Middle.value().Shift(x, y);*/
+    /* if (_End) End.value().Shift(x, y);*/
 }
 
 void ArcByMiddle::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_Start) Start_.value().UnitsConvert(in_units, out_units);*/
-    /* if (_Middle) Middle_.value().UnitsConvert(in_units, out_units);*/
-    /* if (_End) End_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Start) Start.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Middle) Middle.value().UnitsConvert(in_units, out_units);*/
+    /* if (_End) End.value().UnitsConvert(in_units, out_units);*/
 }
 
 void Circle::Shift(float x, float y) {
-    /* if (_Center) Center_.value().Shift(x, y);*/
+    /* if (_Center) Center.value().Shift(x, y);*/
 }
 
 void Circle::UnitsConvert(dist in_units, dist out_units) {
     diameter = Ut::UnitsConvert(diameter, in_units, out_units);
-    /* if (_Center) Center_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Center) Center.value().UnitsConvert(in_units, out_units);*/
 }
 
 bool Line::ShouldSerialize_Dots() {
-    return Dots_.size();
+    return Dots.size();
 }
 
 void Line::Shift(float x, float y) {
     /* if (_Dots.size())
-    for (int i = 0; i < Dots_.size(); i++)
+    for (int i = 0; i < Dots.size(); i++)
         _Dots[i].value().Shift(x, y);*/
 }
 
 void Line::UnitsConvert(dist in_units, dist out_units) {
     /* if (_Dots.size())
-    for (int i = 0; i < Dots_.size(); i++)
+    for (int i = 0; i < Dots.size(); i++)
         _Dots[i].value().UnitsConvert(in_units, out_units);*/
 }
 
@@ -104,35 +105,35 @@ bool Polyline::ShouldSerialize_Segments() {
 }
 
 void Polyline::Shift(float x, float y) {
-    /* if (_Start) Start_.value().Shift(x, y);*/
+    /* if (_Start) Start.value().Shift(x, y);*/
 
-    /*  if(_Segments.size())          for(int i = 0; i < Segments_.size(); i++)
+    /*  if(_Segments.size())          for(int i = 0; i < Segments.size(); i++)
               (std::dynamic_pointer_cast<IBaseSegment>(_Segments[i])).value().Shift(x, y);*/
 }
 
 void Polyline::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_Start) Start_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Start) Start.value().UnitsConvert(in_units, out_units);*/
 
-    /*  if(_Segments.size())          for(int i = 0; i < Segments_.size(); i++)
+    /*  if(_Segments.size())          for(int i = 0; i < Segments.size(); i++)
               (std::dynamic_pointer_cast<IBaseSegment>(_Segments[i])).value().UnitsConvert(in_units, out_units);*/
 }
 
 void TrackArcCW::Shift(float x, float y) {
-    /* if (_Center) Center_.value().Shift(x, y);*/
-    /* if (_End) End_.value().Shift(x, y);*/
+    /* if (_Center) Center.value().Shift(x, y);*/
+    /* if (_End) End.value().Shift(x, y);*/
 }
 
 void TrackArcCW::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_Center) Center_.value().UnitsConvert(in_units, out_units);*/
-    /* if (_End) End_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Center) Center.value().UnitsConvert(in_units, out_units);*/
+    /* if (_End) End.value().UnitsConvert(in_units, out_units);*/
 }
 
 void TrackLine::Shift(float x, float y) {
-    /* if (_End) End_.value().Shift(x, y);*/
+    /* if (_End) End.value().Shift(x, y);*/
 }
 
 void TrackLine::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_End) End_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_End) End.value().UnitsConvert(in_units, out_units);*/
 }
 
 void Thermal::UnitsConvert(dist in_units, dist out_units) {
@@ -153,11 +154,11 @@ bool Text::getMirrorSpecified() const {
 }
 
 void Text::Shift(float x, float y) {
-    /* if (_Org) Org_.value().Shift(x, y);*/
+    /* if (_Org) Org.value().Shift(x, y);*/
 }
 
 void Text::UnitsConvert(dist in_units, dist out_units) {
-    /* if (_Org) Org_.value().UnitsConvert(in_units, out_units);*/
+    /* if (_Org) Org.value().UnitsConvert(in_units, out_units);*/
 }
 
 float Ut::UnitsConvert(float value, dist in_units, dist out_units) {

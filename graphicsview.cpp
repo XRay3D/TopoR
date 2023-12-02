@@ -429,8 +429,8 @@ void GraphicsView::drawRuller(QPainter* painter, const QRectF& rect_) const {
     // auto pt{rect.center()};
     // pt.rx() -= size.width() * 0.5 * scaleFactor;
     // pt.ry() += size.height() * 0.5 * scaleFactor;
-    // pt.rx() = std::clamp(pt.x(), rect_.left(), rect_.right() - size.width() * scaleFactor);
-    // pt.ry() = std::clamp(pt.y(), rect_.top() + size.height() * scaleFactor, rect_.bottom());
+    // pt.rx() = std::clamp(pt.x(), rect.left(), rect.right() - size.width() * scaleFactor);
+    // pt.ry() = std::clamp(pt.y(), rect.top() + size.height() * scaleFactor, rect.bottom());
     // painter->translate(pt);
     // painter->scale(scaleFactor, -scaleFactor);
     // painter->setFont(font());
@@ -1000,20 +1000,20 @@ void GraphicsView::animate(QObject* target, const QByteArray& propertyName, T be
 
 //    //    if (0) {
 //    //        if (frameCount_ == 0) {
-//    //            time_.start();
-//    //            time2_ = time_.elapsed() + 1000;
+//    //            time.start();
+//    //            time2_ = time.elapsed() + 1000;
 
 //    //        } else {
-//    //            if (time_.elapsed() > time2_) {
+//    //            if (time.elapsed() > time2_) {
 
-//    //                time2_ = time_.elapsed() + 1000;
+//    //                time2_ = time.elapsed() + 1000;
 //    //                frameCount2_ = frameCount_;
 //    //                frameCount_ = 0;
 //    //            }
 
 //    //            painter->setRenderHint(QPainter::Antialiasing, true);
 //    //            QString str(QString("FPS %1").arg(frameCount2_));
-//    //            painter->translate(rect_.center());
+//    //            painter->translate(rect.center());
 //    //            const double scaleFactor = App::grView().scaleFactor();
 //    //            painter->scale(scaleFactor, -scaleFactor);
 //    //            QFont f;

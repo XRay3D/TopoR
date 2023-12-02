@@ -25,38 +25,46 @@ QVariant toVariant(const std::vector<T>& val) {
 template <typename T>
 class Model : public QAbstractTableModel {
     T& data_;
+    int columnCount_{1};
 
 public:
     Model(T& data, QObject* parent = nullptr)
         : QAbstractTableModel{parent}
-        , data_{data} { }
+        , data_{data} {
+
+        for(NetList::Net& net: data_)
+            if(columnCount_ < net.refs.size())
+                columnCount_ = net.refs.size();
+        columnCount_ += 1;
+    }
     virtual ~Model() { }
 
     // QAbstractItemModel interface
     int rowCount(const QModelIndex& parent) const override { return data_.size(); }
 
     int columnCount(const QModelIndex& parent) const override {
-        return 3; // pfr::tuple_size_v<std::remove_cvref_t<decltype(data_.front())>>;
+        return columnCount_; // pfr::tuple_size_v<std::remove_cvref_t<decltype(data.front())>>;
     }
 
     QVariant data(const QModelIndex& index, int role) const override {
-
         QString str;
+        NetList::Net& net = data_[index.row()];
+
         if(role == Qt::DisplayRole)
             // return get_at(data_[index.row()], index.column());
             switch(index.column()) {
             case 0:
-                return data_[index.row()].name.value;
-            case 1:
-                // for(auto&& val: data_[index.row()].Attributes)
-                //     str += val.name.value + '|';
-                return str;
-            case 2:
-                // for(auto&& val: data_[index.row()].Attributes)
-                //     str += val.value.value + '|';
-                return str;
+                return {net.name};
             default:
-                break;
+                if(index.column() <= net.refs.size())
+                    return net.refs[index.column() - 1].visit(
+                        Overload{
+                            [](const PinRef& ref) -> QVariant {
+                                return {ref.compName + "{" + ref.pinName + "}"};
+                            },
+                            [](const PadRef& ref) -> QVariant {
+                                return {ref.compName + "{" + ref.padNum + "}"};
+                            }});
             }
         return {};
     }
@@ -80,10 +88,18 @@ MainWindow::MainWindow(QWidget* parent)
     } catch(...) {
     }
     // qInfo() << xml.byteArray.data();
+    ui->plainTextEdit->appendPlainText(xml.byteArray);
+
+    connect(new QLineEdit{ui->plainTextEdit}, &QLineEdit::textEdited, [this](const QString& str) {
+        if(!ui->plainTextEdit->find(str)) {
+            ui->plainTextEdit->moveCursor(QTextCursor::Start);
+            ui->plainTextEdit->find(str);
+        }
+    });
 
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->setModel(new Model(file->LocalLibrary_.Footprints, ui->tableView));
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView->setModel(new Model(file->NetList_.Nets, ui->tableView));
 
     // auto graphicsView = new QGraphicsView{new QGraphicsScene};
 

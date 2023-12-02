@@ -34,7 +34,7 @@ struct ComponentsOnBoard {
             // Номер контакта компонента.
 
             /* [XmlAttribute("padNum", DataType = "int")] public int padNum_; */
-            XmlAttr<int>padNum;
+            XmlAttr<int> padNum;
             int _padNum = 0;
 
             // Ссылка на стек контактных площадок.
@@ -56,12 +56,12 @@ struct ComponentsOnBoard {
             // Ссылка на монтажное отверстие в посадочном месте.
 
             /* [XmlAttribute("mntholeRef")] public string mntholeRef_; */
-            QString mntholeRef_;
+            QString mntholeRef;
 
             // Задаёт угол в градусах c точностью до тысячных долей.
 
             /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
-            XmlAttr<float>angle;
+            XmlAttr<float> angle;
             float _angle = 0.0F;
 
             // Ссылка на стек контактных площадок.
@@ -86,7 +86,7 @@ struct ComponentsOnBoard {
                 // Задаёт угол в градусах c точностью до тысячных долей.
 
                 /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
-                XmlAttr<float>angle;
+                XmlAttr<float> angle;
                 float _angle = 0.0F;
 
                 // Параметр надписей и ярлыков: зеркальность отображения.
@@ -134,30 +134,30 @@ struct ComponentsOnBoard {
             // Имя объекта или ссылка на именованный объект.
 
             /* [XmlAttribute("name")] public string name_; */
-            QString name_;
+            QString name;
 
             // Значение атрибута.
 
             /* [XmlAttribute("value")] public string value_; */
-            QString value_;
+            QString value;
 
             // Ярлыки.
 
             /* [XmlElement("Label")] public List<CompInstance_Attribute_Label> Labels_; */
-            std::vector<CompInstance_Attribute_Label> Labels_;
+            std::vector<CompInstance_Attribute_Label> Labels;
             bool ShouldSerialize_Labels();
         };
 
         // Имя объекта или ссылка на именованный объект.
 
         /* [XmlAttribute("name")] public string name_; */
-        QString name_;
+        QString name;
 
         // Уникальный идентификатор компонента. Используется при синхронизации. Необязательный атрибут.
         // Если не задан, то будет создан при импорте файла.
 
         /* [XmlAttribute("uniqueId")] public string uniqueId_; */
-        QString uniqueId_;
+        QString uniqueId;
 
         // Сторона объекта.
 
@@ -169,7 +169,7 @@ struct ComponentsOnBoard {
         // Задаёт угол в градусах c точностью до тысячных долей.
 
         /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
-        XmlAttr<float>angle;
+        XmlAttr<float> angle;
         float _angle = 0.0F;
 
         // Признак фиксации.
@@ -198,19 +198,19 @@ struct ComponentsOnBoard {
         // Контакты компонента на плате.
 
         /* [XmlArray("Pins")][XmlArrayItem("Pin")] public List<CompInstance_Pin> Pins_; */
-        std::vector<CompInstance_Pin> Pins_;
+        std::vector<CompInstance_Pin> Pins;
         bool ShouldSerialize_Pins();
 
         // Монтажные отверстия.
 
         /* [XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<CompInstance_Mnthole> Mntholes_; */
-        std::vector<CompInstance_Mnthole> Mntholes_;
+        std::vector<CompInstance_Mnthole> Mntholes;
         bool ShouldSerialize_Mntholes();
 
         // Атрибуты компонента.
 
         /* [XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<CompInstance_Attribute> Attributes_; */
-        std::vector<CompInstance_Attribute> Attributes_;
+        std::vector<CompInstance_Attribute> Attributes;
         bool ShouldSerialize_Attributes();
 
         /************************************************************************
@@ -237,13 +237,13 @@ struct ComponentsOnBoard {
         // Задаёт угол в градусах c точностью до тысячных долей.
 
         /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
-        XmlAttr<float>angle;
+        XmlAttr<float> angle;
         float _angle = 0.0F;
 
         // Признак фиксации.
 
         /* [XmlAttribute("fixed")] public Bool fixed_; */
-        Bool _fixed{};
+        XmlAttr<Bool> fixed;
 
         /* public bool _fixedSpecified */
         bool getFixedSpecified() const;
@@ -267,18 +267,18 @@ struct ComponentsOnBoard {
     // Версия раздела.
 
     /* [XmlAttribute("version")] public string version_; */
-    QString version_;
+    QString version;
 
     // Описание компонентов на плате (инстанции компонентов)
 
     /* [XmlArray("Components")][XmlArrayItem("CompInstance")] public List<CompInstance> Components_; */
-    std::vector<CompInstance> Components_;
+    std::vector<CompInstance> Components;
     bool ShouldSerialize_Components();
 
     // Описание одиночных контактов.(инстанции компонентов)
 
     /* [XmlArray("FreePads")][XmlArrayItem("FreePad")] public List<FreePad> FreePads_; */
-    std::vector<FreePad> FreePads_;
+    std::vector<FreePad> FreePads;
     bool ShouldSerialize_FreePads();
 
     /*****************************************************************************
@@ -288,29 +288,29 @@ struct ComponentsOnBoard {
 
     // Добавление компонента
 
-    // <param name="name">Имя нового компонента. Если имя неуникально, будет добавлен префикс _</param>
-    // <param name="units">текущие единицы измерения</param>
-    // <param name="componentRef">ссылка на библиотеку компонентов</param>
-    // <param name="footprintRef">ссылка на библиотеку посадочных мест</param>
+    /// \param '1 \brief Имя нового компонента. Если имя неуникально, будет добавлен префикс _
+    /// \param '1 \brief текущие единицы измерения
+    /// \param '1 \brief ссылка на библиотеку компонентов
+    /// \param '1 \brief ссылка на библиотеку посадочных мест
     // <returns>Имя нового компонента</returns>
     QString AddComponent(const QString& name, units units, const QString& componentRef, const QString& footprintRef);
 
     // Удаление компонента по имени
 
-    // <param name="name">уникальный имя компонента</param>
+    /// \param '1 \brief уникальный имя компонента
     // <returns>true - если было произведено удаление, иначе (компонент не найден) - false</returns>
     bool RemoveComponent(const QString& name);
 
     // Индекс компонента
 
-    // <param name="name">уникальное имя компонента</param>
+    /// \param '1 \brief уникальное имя компонента
     // <returns>индекс компонента или -1, если компонент отсутствует</returns>
     int ComponentIndexOf(const QString& name);
 
     // Переименование компонента
 
-    // <param name="oldname">старое имя компонента</param>
-    // <param name="newname">новое имя компонента</param>
+    /// \param '1 \brief старое имя компонента
+    /// \param '1 \brief новое имя компонента
     // <returns>индекс компонента, если было произведено переименование, -1, если компонент не найден</returns>
     int RenameComponent(const QString& oldname, const QString& newname);
 

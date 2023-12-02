@@ -111,11 +111,17 @@ add_executable(${PROJECT_NAME}
     xmlserializer.cpp
     xmlserializer.h
     МАН2_МСИС_V2.1.fst
+    formated_МАН2_МСИС_V2.1.fst
     mainwindow.h
     mainwindow.cpp
     mainwindow.ui
     graphicsview.h
     graphicsview.cpp
+
+    treeitem.h
+    treemodel.h
+    treeitem.cpp
+    treemodel.cpp
 
 )
 

@@ -15,7 +15,7 @@ bool Layers::Layer::getThicknessSpecified() const {
 }
 
 bool Layers::LayerStackUpContains(LayerRef lref) {
-    return /*(_StackUpLayers.empty() ? nullptr : StackUpLayers_.Where([&](std::any r) {
+    return /*(_StackUpLayers.empty() ? nullptr : StackUpLayers.Where([&](std::any r) {
                                                                  return r->_name == lref.value()._ReferenceName;
                                                              })
                                                    ->Count())
@@ -24,7 +24,7 @@ bool Layers::LayerStackUpContains(LayerRef lref) {
 }
 
 bool Layers::LayerUnStackContain(LayerRef lref) {
-    return /* (_UnStackLayers.empty() ? nullptr : UnStackLayers_.Where([&](std::any r) {
+    return /* (_UnStackLayers.empty() ? nullptr : UnStackLayers.Where([&](std::any r) {
                                                                   return r->_name == lref.value()._ReferenceName;
                                                               })
                                                     ->Count())

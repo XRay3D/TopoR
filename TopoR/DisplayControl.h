@@ -41,7 +41,7 @@ struct DisplayControl {
 
         // Наименование слоя.
         /* [XmlAttribute("name")] public string name_; */
-        QString name_;
+        QString name;
     };
 
     // Настройка отображения: единицы измерения.
@@ -57,7 +57,7 @@ struct DisplayControl {
 
         // Настройка отображения: текущая цветовая схема.
         /* [XmlAttribute("colorScheme")] public string colorScheme_; */
-        QString colorScheme_;
+        QString colorScheme;
 
         // Настройка отображения: яркость выделенных объектов.
         /* [XmlAttribute("hilightRate", DataType = "int")] public int hilightRate_; */
@@ -71,79 +71,79 @@ struct DisplayControl {
 
         // Настройка отображения: цвет фона.
         /* [XmlAttribute("background")] public string background_; */
-        QString background_;
+        QString background;
 
         // Настройка отображения: цвет контура платы.
         /* [XmlAttribute("board")] public string board_; */
-        QString board_;
+        QString board;
 
         // Настройка отображения: цвет линий связей.
         /* [XmlAttribute("netLines")] public string netLines_; */
-        QString netLines_;
+        QString netLines;
 
         // Настройка отображения: цвет запрета размещения на обеих сторонах платы.
         /* [XmlAttribute("keepoutPlaceBoth")] public string keepoutPlaceBoth_; */
-        QString keepoutPlaceBoth_;
+        QString keepoutPlaceBoth;
 
         // Настройка отображения: цвет запрета трассировки на всех слоях.
         /* [XmlAttribute("keepoutWireAll")] public string keepoutWireAll_; */
-        QString keepoutWireAll_;
+        QString keepoutWireAll;
 
         // Настройка отображения: цвет запрета размещения на верхней стороне платы.
         /* [XmlAttribute("keepoutPlaceTop")] public string keepoutPlaceTop_; */
-        QString keepoutPlaceTop_;
+        QString keepoutPlaceTop;
 
         // Настройка отображения: цвет запрета размещения на нижней стороне платы.
         /* [XmlAttribute("keepoutPlaceBot")] public string keepoutPlaceBot_; */
-        QString keepoutPlaceBot_;
+        QString keepoutPlaceBot;
 
         // Настройка отображения: цвет габаритов компонентов.
         /* [XmlAttribute("compsBound")] public string compsBound_; */
-        QString compsBound_;
+        QString compsBound;
 
         // Настройка отображения: цвет позиционных обозначений компонентов.
         /* [XmlAttribute("compsName")] public string compsName_; */
-        QString compsName_;
+        QString compsName;
 
         // Настройка отображения: цвет имён контактов.
         /* [XmlAttribute("pinsName")] public string pinsName_; */
-        QString pinsName_;
+        QString pinsName;
 
         // Настройка отображения: цвет имён цепей контактов.
         /* [XmlAttribute("pinsNet")] public string pinsNet_; */
-        QString pinsNet_;
+        QString pinsNet;
 
         // Настройка отображения: цвет сквозных контактных площадок.
         /* [XmlAttribute("clrThroughPads")] public string clrThroughPads_; */
-        QString clrThroughPads_;
+        QString clrThroughPads;
 
         // Настройка отображения: цвет сквозных переходных отверстий.
         /* [XmlAttribute("clrThroughVias")] public string clrThroughVias_; */
-        QString clrThroughVias_;
+        QString clrThroughVias;
 
         // Настройка отображения: цвет скрытых переходных отверстий.
         /* [XmlAttribute("clrBurriedVias")] public string clrBurriedVias_; */
-        QString clrBurriedVias_;
+        QString clrBurriedVias;
 
         // Настройка отображения: цвет глухих переходных отверстий.
         /* [XmlAttribute("clrBlindVias")] public string clrBlindVias_; */
-        QString clrBlindVias_;
+        QString clrBlindVias;
 
         // Настройка отображения: цвет зафиксированных переходных отверстий.
         /* [XmlAttribute("clrFixedVias")] public string clrFixedVias_; */
-        QString clrFixedVias_;
+        QString clrFixedVias;
 
         // Настройка отображения: цвет нарушений DRC.
         /* [XmlAttribute("drcViolation")] public string drcViolation_; */
-        QString drcViolation_;
+        QString drcViolation;
 
         // Настройка отображения: цвет индикации уменьшения номинального зазора.
         /* [XmlAttribute("narrow")] public string narrow_; */
-        QString narrow_;
+        QString narrow;
 
         // Настройка отображения: цвет индикации уменьшения ширины проводника.
         /* [XmlAttribute("trimmed")] public string trimmed_; */
-        QString trimmed_;
+        QString trimmed;
     };
 
     // Настройка отображения: настройки видимости объектов.
@@ -151,7 +151,7 @@ struct DisplayControl {
 
         // Настройка отображения: текущая схема отображения.
         /* [XmlAttribute("displayScheme")] public string displayScheme_; */
-        QString displayScheme_;
+        QString displayScheme;
 
         // Настройка отображения: показывать контур платы.
         /* [XmlAttribute("showBoardOutline")] public Bool showBoardOutline_; */
@@ -418,7 +418,7 @@ struct DisplayControl {
 
         // Настройка отображения сетки: цвет сетки.
         /* [XmlAttribute("gridColor")] public string gridColor_; */
-        QString gridColor_;
+        QString gridColor;
 
         // Настройка отображения сетки: тип сетки.
         /* [XmlAttribute("gridKind")] public gridKind gridKind_; */
@@ -455,15 +455,15 @@ struct DisplayControl {
 
             // Настройка отображения слоя: цвет деталей, проводников (основной цвет слоя).
             /* [XmlAttribute("details")] public string details_; */
-            QString details_;
+            QString details;
 
             // Настройка отображения слоя: цвет контактных площадок.
             /* [XmlAttribute("pads")] public string pads_; */
-            QString pads_;
+            QString pads;
 
             // Настройка отображения слоя: цвет зафиксированных объектов.
             /* [XmlAttribute("fix")] public string fix_; */
-            QString fix_;
+            QString fix;
         };
 
         // Настройка отображения слоя: настройки видимости.
@@ -509,7 +509,7 @@ struct DisplayControl {
 
             // Отображение цепей особым цветом: задание цвета.
             /* [XmlAttribute("color")] public string color_; */
-            QString color_;
+            QString color;
 
             // Ссылка на цепь или сигнал
             /* [XmlElement("NetRef", typeof(NetRef)),
@@ -518,7 +518,7 @@ struct DisplayControl {
                 XmlElement("SignalRef", typeof(SignalRef)),
                 XmlElement("DiffSignalRef", typeof(DiffSignalRef)),
                 XmlElement("SignalGroupRef", typeof(SignalGroupRef)),] public Object Refs_; */
-            std::variant<
+            XmlVariant<
                 NetRef,
                 NetGroupRef,
                 AllNets,
@@ -566,7 +566,7 @@ struct DisplayControl {
 
         // Отображение цепей особым цветом: установить цвет для цепи / сигнала / группы цепей / группы сигналов.
         /* [XmlElement("SetColor")] public List<SetColor> SetColors_; */
-        std::vector<SetColor> SetColors_;
+        std::vector<SetColor> SetColors;
         bool ShouldSerialize_SetColors();
     };
 
@@ -586,7 +586,7 @@ struct DisplayControl {
         XmlElement("SignalRef", typeof(SignalRef)),
         XmlElement("DiffSignalRef", typeof(DiffSignalRef)),
         XmlElement("SignalGroupRef", typeof(SignalGroupRef)),] public List<Object> Refs_; */
-        std::vector<std::variant<
+        std::vector<XmlVariant<
             AllNets,
             DiffSignalRef,
             NetGroupRef,
@@ -599,7 +599,7 @@ struct DisplayControl {
 
     // Версия раздела.
     /* [XmlAttribute("version")] public string version_; */
-    QString version_;
+    QString version;
 
     // Настройка отображения: параметры текущего вида.
     /* [XmlElement("View")] public View View_; */
@@ -627,7 +627,7 @@ struct DisplayControl {
 
     // Настройка отображения: настройки видимости слоёв.
     /* [XmlArray("LayersVisualOptions")][XmlArrayItem("LayerOptions")] public List<LayerOptions> LayersVisualOptions_; */
-    std::vector<LayerOptions> LayersVisualOptions_;
+    std::vector<LayerOptions> LayersVisualOptions;
     bool ShouldSerialize_LayersVisualOptions();
 
     // Отображение цепей особым цветом.

@@ -19,16 +19,15 @@ struct Xml {
     QDomDocument doc{"mydocument"};
 
     Xml(const QString& name = "../МАН2_МСИС_V2.1.fst");
-    //~Xml() { qCritical() << byteArray; }
+
     QDomElement top() const;
 
-    bool push(sl sl_ = sl::current());
-
-    void push(const QDomNode& node, sl sl_ = sl::current());
+    auto value(sl sl_ = sl::current()) -> QString;
 
     void pop(sl sl_ = sl::current());
 
-    auto value(sl sl_ = sl::current()) -> QString;
+    bool push(sl sl_ = sl::current());
+    void push(const QDomNode& node, sl sl_ = sl::current());
 
     std::set<QString> names;
     bool isAttr{};

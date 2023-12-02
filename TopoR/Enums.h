@@ -25,16 +25,21 @@ namespace ranges = std::ranges;
 template <class Ty>
 inline constexpr Ty Tokens = Ty{};
 
-consteval size_t enum_size(sv enums) { return ranges::count(enums, ',') + !enums.ends_with(','); }
+consteval size_t enum_size(sv enums) {
+    return ranges::count(enums, ',') + !enums.ends_with(',');
+}
 
 template <size_t N, class Enum>
 inline consteval auto tokenize_enum(sv base) {
     std::array<std::pair<sv, Enum>, N> tokens;
     std::underlying_type_t<Enum> val{};
-    sv name;
-    for(auto it = tokens.begin(); auto&& [whole, name, value]: ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
-        if(value) val = value.to_number();
-        if(it != tokens.end()) *it++ = {name.to_view(), static_cast<Enum>(val++)};
+    for(auto it = tokens.begin();
+        auto&& [whole, name, value]:
+        ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
+        if(value)
+            val = value.to_number();
+        if(it != tokens.end())
+            *it++ = {name.to_view(), static_cast<Enum>(val++)};
     }
     return tokens;
 }
@@ -46,8 +51,10 @@ inline consteval auto tokenize_enum(sv base) {
         __VA_ARGS__                                                                    \
     };                                                                                 \
     inline auto operator+(Enum e) noexcept { return std::underlying_type_t<Enum>(e); } \
-    template <> inline constexpr auto isEnum<Enum> = true;                             \
-    template <> inline constexpr auto Impl::Tokens<Enum> = Impl::tokenize_enum<Impl::enum_size(#__VA_ARGS__), Enum>(#__VA_ARGS__);
+    template <>                                                                        \
+    inline constexpr auto isEnum<Enum> = true;                                         \
+    template <>                                                                        \
+    inline constexpr auto Impl::Tokens<Enum> = Impl::tokenize_enum<Impl::enum_size(#__VA_ARGS__), Enum>(#__VA_ARGS__);
 
 template <class E>
     requires isEnum<E>

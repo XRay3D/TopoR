@@ -8,23 +8,23 @@ bool ComponentsOnBoard::CompInstance::CompInstance_Attribute::CompInstance_Attri
 
 bool ComponentsOnBoard::CompInstance::CompInstance_Attribute::CompInstance_Attribute_Label::getVisibleSpecified() const { return _visible != Bool::off; }
 
-bool ComponentsOnBoard::CompInstance::CompInstance_Attribute::ShouldSerialize_Labels() { return Labels_.size(); }
+bool ComponentsOnBoard::CompInstance::CompInstance_Attribute::ShouldSerialize_Labels() { return Labels.size(); }
 
 bool ComponentsOnBoard::CompInstance::getFixedSpecified() const { return _fixed != Bool::off; }
 
-bool ComponentsOnBoard::CompInstance::ShouldSerialize_Pins() { return Pins_.size(); }
+bool ComponentsOnBoard::CompInstance::ShouldSerialize_Pins() { return Pins.size(); }
 
-bool ComponentsOnBoard::CompInstance::ShouldSerialize_Mntholes() { return Mntholes_.size(); }
+bool ComponentsOnBoard::CompInstance::ShouldSerialize_Mntholes() { return Mntholes.size(); }
 
-bool ComponentsOnBoard::CompInstance::ShouldSerialize_Attributes() { return Attributes_.size(); }
+bool ComponentsOnBoard::CompInstance::ShouldSerialize_Attributes() { return Attributes.size(); }
 
-QString ComponentsOnBoard::CompInstance::ToString() { return name_; }
+QString ComponentsOnBoard::CompInstance::ToString() { return name; }
 
-bool ComponentsOnBoard::FreePad::getFixedSpecified() const { return _fixed != Bool::off; }
+bool ComponentsOnBoard::FreePad::getFixedSpecified() const { return fixed != Bool::off; }
 
-bool ComponentsOnBoard::ShouldSerialize_Components() { return Components_.size(); }
+bool ComponentsOnBoard::ShouldSerialize_Components() { return Components.size(); }
 
-bool ComponentsOnBoard::ShouldSerialize_FreePads() { return FreePads_.size(); }
+bool ComponentsOnBoard::ShouldSerialize_FreePads() { return FreePads.size(); }
 
 QString ComponentsOnBoard::AddComponent(const QString& name, units units, const QString& componentRef, const QString& footprintRef) {
     /* float x = 0, y = 0; // координаты нового компонента
@@ -48,7 +48,7 @@ QString ComponentsOnBoard::AddComponent(const QString& name, units units, const 
      FootprintRef tempVar3 = std::make_shared<FootprintRef>();
      tempVar3.value()._ReferenceName = footprintRef;
      CompInstance c = {._name = name, ._side = side::Top, ._uniqueId = UniqueId(), ._angle = 0, ._fixed = Bool::off, ._Org = tempVar, ._ComponentRef = tempVar2, ._FootprintRef = tempVar3};
-     Components_.push_back(c);
+     Components.push_back(c);
      return c.value()._name;*/
     return {};
 }
@@ -56,7 +56,7 @@ QString ComponentsOnBoard::AddComponent(const QString& name, units units, const 
 bool ComponentsOnBoard::RemoveComponent(const QString& name) {
     int x = ComponentIndexOf(name);
     if (x >= 0) {
-        Components_.erase(Components_.begin() + x);
+        Components.erase(Components.begin() + x);
         return true;
     }
     return false;

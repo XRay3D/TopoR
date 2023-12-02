@@ -12,7 +12,7 @@ bool Settings::Autoroute::getDirectConnectSMDSpecified() const { return _directC
 
 bool Settings::Autoroute::getDontStretchWireToPolypinSpecified() const { return _dontStretchWireToPolypin != Bool::off; }
 
-bool Settings::Placement::PlacementArea::ShouldSerialize_Dots() { return Dots_.size(); }
+bool Settings::Placement::PlacementArea::ShouldSerialize_Dots() { return Dots.size(); }
 
 bool Settings::Labels_Settings::getRotateWithCompSpecified() const { return _rotateWithComp != Bool::off; }
 

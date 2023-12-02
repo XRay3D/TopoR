@@ -57,7 +57,7 @@ struct Connectivity {
         // Идентификатор неименованных объектов.
 
         /* [XmlAttribute("id")] public string id_; */
-        QString id_;
+        QString id;
 
         // Параметр змейки: требуемая длина.
 
@@ -104,7 +104,7 @@ struct Connectivity {
         // Идентификатор неименованных объектов.
 
         /* [XmlAttribute("id")] public string id_; */
-        QString id_;
+        QString id;
 
         // Признак фиксации.
 
@@ -136,7 +136,7 @@ struct Connectivity {
         /* [XmlElement("TrackLine", typeof(TrackLine)),
         XmlElement("TrackArc", typeof(TrackArc)),
         XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
-        std::vector<std::variant<TrackLine, TrackArc, TrackArcCW>> Tracks_;
+        std::vector<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
         bool ShouldSerialize_Tracks();
     };
 
@@ -159,7 +159,7 @@ struct Connectivity {
                 // координаты точки, вершины.
 
                 /* [XmlElement("Dot")] public List<Dot> Dots_; */
-                std::vector<Dot> Dots_;
+                std::vector<Dot> Dots;
                 bool ShouldSerialize_Dots();
             };
 
@@ -180,14 +180,14 @@ struct Connectivity {
             // Ссылка на застёгнутую пару проводников. Строка должна содержать идентификатор описанной застёгнутой пары проводников ZippedWire.
 
             /* [XmlAttribute("zipwireRef")] public string zipwireRef_; */
-            QString zipwireRef_;
+            QString zipwireRef;
 
             // Описание «капелек» для Subwire.
 
             // <remarks>От KilkennyCat: сделал как массив, в спецификации не так, но так удобней</remarks>
 
             /* [XmlArray("Teardrops")][XmlArrayItem("Teardrop")] public List<Teardrop> Teardrops_; */
-            std::vector<Teardrop> Teardrops_;
+            std::vector<Teardrop> Teardrops;
             bool ShouldSerialize_Teardrops();
 
             // Начальная точка линии, дуги.
@@ -202,7 +202,7 @@ struct Connectivity {
             /* [XmlElement("TrackLine", typeof(TrackLine)),
 XmlElement("TrackArc", typeof(TrackArc)),
 XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
-            std::vector<std::variant<TrackLine, TrackArc, TrackArcCW>> Tracks_;
+            std::vector<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
             bool ShouldSerialize_Tracks();
         };
 
@@ -219,7 +219,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
         // Части проводника (последовательность сегментов с одной шириной и одинаковым признаком фиксации).
 
         /* [XmlElement("Subwire")] public List<Subwire> Subwires_; */
-        std::vector<Subwire> Subwires_;
+        std::vector<Subwire> Subwires;
         bool ShouldSerialize_Subwires();
     };
 
@@ -259,7 +259,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
                 XmlElement("FilledRect", typeof(FilledRect)),
                 XmlElement("Polygon", typeof(Polygon)),
                 XmlElement("FilledContour", typeof(FilledContour))] public Object FilledFigure_; */
-            std::variant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure_;
+            XmlVariant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure_;
         };
 
         // Описание островка области металлизации.
@@ -281,7 +281,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
                 // <remarks>! В случае отсутствия - весь ThermalSpoke будет проигнорирован.</remarks>
 
                 /* [XmlElement("Dot")] public List<Dot> Dots_; */
-                std::vector<Dot> Dots_;
+                std::vector<Dot> Dots;
                 bool ShouldSerialize_Dots();
             };
 
@@ -289,19 +289,19 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
 
             /* [XmlElement("Polygon", typeof(Polygon)),
                 XmlElement("FilledContour", typeof(FilledContour))] public Object Polygon_; */
-            std::variant<Polygon, FilledContour> Polygon_;
+            XmlVariant<Polygon, FilledContour> Polygon_;
 
             // Вырезы в островке области металлизации.
 
             // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
 
             /* [XmlArray("Voids")][XmlArrayItem("Polygon", typeof(Polygon)), XmlArrayItem("FilledContour", typeof(FilledContour))] public List<Object> Voids_; */
-            std::vector<std::variant<Polygon, FilledContour>> Voids_;
+            std::vector<XmlVariant<Polygon, FilledContour>> Voids;
 
             // Описание спиц термобарьеров, присутствующих на плате
 
             /* [XmlElement("ThermalSpoke")] public List<ThermalSpoke> ThermalSpokes_; */
-            std::vector<ThermalSpoke> ThermalSpokes_;
+            std::vector<ThermalSpoke> ThermalSpokes;
             bool ShouldSerialize_ThermalSpokes();
         };
 
@@ -410,7 +410,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
         // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
 
         /* [XmlArray("Voids")][XmlArrayItem("FilledCircle", typeof(FilledCircle)), XmlArrayItem("FilledRect", typeof(FilledRect)), XmlArrayItem("Polygon", typeof(Polygon)), XmlArrayItem("FilledContour", typeof(FilledContour))] public List<Object> Voids_; */
-        std::vector<std::variant<
+        std::vector<XmlVariant<
             ArcCCW,
             ArcCW,
             ArcByAngle,
@@ -427,14 +427,14 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
         // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
 
         /* [XmlArray("Islands")][XmlArrayItem("Island")] public List<Island> Islands_; */
-        std::vector<Island> Islands_;
+        std::vector<Island> Islands;
 
         // Заливка областей металлизации (полигонов) линиями.
 
         // <remarks>! TopoR при импорте игнорирует эту информацию и строит заливку заново.</remarks>
 
         /* [XmlArray("Fill")][XmlArrayItem("Line")] public List<Line> Fill_lines_; */
-        std::vector<Line> Fill_lines_;
+        std::vector<Line> Fill_lines;
         bool ShouldSerialize_Fill_lines();
     };
 
@@ -457,7 +457,7 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
                 XmlElement("Polyline", typeof(Polyline)),
                 XmlElement("Rect", typeof(Rect)),
                 XmlElement("Contour", typeof(Contour))] public Object FigureContPoliline_; */
-            std::variant<ArcCCW,
+            XmlVariant<ArcCCW,
                 ArcCW,
                 ArcByAngle,
                 ArcByMiddle,
@@ -494,42 +494,42 @@ XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
     // Версия раздела.
 
     /* [XmlAttribute("version")] public string version_; */
-    QString version_;
+    QString version;
 
     // Переходные отверстия на плате.
 
     /* [XmlArray("Vias")][XmlArrayItem("Via")] public List<Via> Vias_; */
-    std::vector<Via> Vias_;
+    std::vector<Via> Vias;
     bool ShouldSerialize_Vias();
 
     // Змейки
 
     /* [XmlArray("Serpents")][XmlArrayItem("Serpent")] public List<Serpent> Serpents_; */
-    std::vector<Serpent> Serpents_;
+    std::vector<Serpent> Serpents;
     bool ShouldSerialize_Serpents();
 
     // Застёгнутые пары проводников.
 
     /* [XmlArray("ZippedWires")][XmlArrayItem("ZippedWire")] public List<ZippedWire> ZippedWires_; */
-    std::vector<ZippedWire> ZippedWires_;
+    std::vector<ZippedWire> ZippedWires;
     bool ShouldSerialize_ZippedWires();
 
     // Проводники.
 
     /* [XmlArray("Wires")][XmlArrayItem("Wire")] public List<Wire> Wires_; */
-    std::vector<Wire> Wires_;
+    std::vector<Wire> Wires;
     bool ShouldSerialize_Wires();
 
     // Oбласти металлизации (полигонов).
 
     /* [XmlArray("Coppers")][XmlArrayItem("Copper")] public List<Copper_Connectivity> Coppers_; */
-    std::vector<Copper_Connectivity> Coppers_;
+    std::vector<Copper_Connectivity> Coppers;
     bool ShouldSerialize_Coppers();
 
     // Незаливаемые области металлизации.
 
     /* [XmlArray("NonfilledCoppers")][XmlArrayItem("NonfilledCopper")] public List<NonfilledCopper> NonfilledCoppers_; */
-    std::vector<NonfilledCopper> NonfilledCoppers_;
+    std::vector<NonfilledCopper> NonfilledCoppers;
     bool ShouldSerialize_NonfilledCoppers();
 
     /************************************************************************

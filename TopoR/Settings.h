@@ -78,7 +78,7 @@ struct Settings {
         struct PlacementArea {
             // Координаты точек, вершин
             // [XmlElement("Dot")] public List<Dot> Dots_;
-            std::vector<Dot> Dots_;
+            std::vector<Dot> Dots;
             bool ShouldSerialize_Dots();
         };
 
@@ -128,7 +128,7 @@ struct Settings {
 
     // Версия раздела.
     // [XmlAttribute("version")] public string version_;
-    QString version_;
+    QString version;
 
     // Настройки автоматической трассировки.
     // [XmlElement("Autoroute")] public Autoroute Autoroute_;

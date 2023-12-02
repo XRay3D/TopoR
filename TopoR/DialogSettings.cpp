@@ -58,15 +58,15 @@ bool DialogSettings::DRCSettings::getPadToPadSpecified() const { return _padToPa
 
 bool DialogSettings::DRCSettings::getPadToBoardSpecified() const { return _padToBoard != Bool::off; }
 
-bool DialogSettings::GerberSettings::ShouldSerialize_ExportFiles() { return ExportFiles_.size(); }
+bool DialogSettings::GerberSettings::ShouldSerialize_ExportFiles() { return ExportFiles.size(); }
 
 bool DialogSettings::DXFSettings::getOutputBoardLayerSpecified() const { return _outputBoardLayer != Bool::off; }
 
 bool DialogSettings::DXFSettings::getOutputDrillLayerSpecified() const { return _outputDrillLayer != Bool::off; }
 
-bool DialogSettings::DXFSettings::ShouldSerialize_ExportLayers() { return ExportLayers_.size(); }
+bool DialogSettings::DXFSettings::ShouldSerialize_ExportLayers() { return ExportLayers.size(); }
 
-bool DialogSettings::DrillSettings::ShouldSerialize_ExportFiles() { return ExportFiles_.size(); }
+bool DialogSettings::DrillSettings::ShouldSerialize_ExportFiles() { return ExportFiles.size(); }
 
 bool DialogSettings::BOMSettings::getCountSpecified() const { return _count != Bool::off; }
 
@@ -76,7 +76,7 @@ bool DialogSettings::BOMSettings::getFootprintSpecified() const { return _footpr
 
 bool DialogSettings::BOMSettings::getRefDesSpecified() const { return _refDes != Bool::off; }
 
-bool DialogSettings::BOMSettings::ShouldSerialize_AttributeRefs() { return AttributeRefs_.size(); }
+bool DialogSettings::BOMSettings::ShouldSerialize_AttributeRefs() { return AttributeRefs.size(); }
 
 bool DialogSettings::MessagesFilter::getW5003Specified() const { return _W5003 != Bool::off; }
 

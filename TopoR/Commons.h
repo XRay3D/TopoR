@@ -17,6 +17,14 @@
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
 
+template <typename... Ts>
+struct Overload : Ts... {
+    using Ts::operator()...;
+};
+
+template <typename... Ts>
+Overload(Ts...) -> Overload<Ts...>;
+
 namespace TopoR_PCB_Classes {
 
 // struct Shift;
@@ -31,7 +39,32 @@ struct XmlAttr {
     T& operator=(T&& val) noexcept { return value = val; }
 };
 
-//	#region Reference Types
+template <typename T>
+struct XmlAarray : std::vector<T>, std::false_type {
+    using std::vector<T>::vector;
+};
+
+template <typename T>
+struct XmlAarrayElem : std::vector<T>, std::true_type {
+    using std::vector<T>::vector;
+};
+
+template <typename... Ts>
+struct XmlVariant : std::variant<Ts...> {
+    using std::variant<Ts...>::variant;
+
+    template <typename Func>
+    auto visit(Func&& func) {
+        return std::visit(std::forward<Func>(func), *this);
+    }
+
+    template <typename... Func>
+    auto visit(Overload<Func...>&& overload) {
+        return std::visit(std::forward<Overload<Func...>>(overload), *this);
+    }
+};
+
+// #region Reference Types
 
 // базовый класс ссылок.
 struct BaseRef {
@@ -42,134 +75,148 @@ struct BaseRef {
 
 // Ссылка на атрибут.
 struct AttributeRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на тип слоя.
 struct LayerTypeRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на группу слоёв.
 struct LayerGroupRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на слой.
 // <remarks>! Если в дизайне определён только один слой с заданным именем, то тип слоя не указывается.</remarks>
 struct LayerRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 
     // Тип слоя или ссылка на именованный cлой
     // <remarks>В документации сказано ещё и про возможность установки типа, если имя слоя неуникально, в данный момент это отключено</remarks>
     // TODO:
-    //   XmlAttribute("type", typeof(type_layer)),
+    // XmlAttribute("type", typeof(type_layer)),
 };
 
 // Ссылка на тип переходного отверстия.
 struct ViastackRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на стек контактных площадок.
 struct NetRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на группу компонентов.
 struct CompGroupRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на компонент на плате.
 struct CompInstanceRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на группу цепей.
 struct NetGroupRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на волновое сопротивление.
 struct ImpedanceRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на сигнал.
 struct SignalRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на группу сигналов..
 struct SignalGroupRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на дифференциальный сигнал.
 struct DiffSignalRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на контакт.
 struct PinRef {
     // Имя компонента, используется для ссылки на компонент.
     /* [XmlAttribute("compName")] public string compName_; */
-    XmlAttr<QString> compName_;
+    XmlAttr<QString> compName;
     // Имя контакта компонента, используется для ссылки.
     /* [XmlAttribute("pinName")] public string pinName_; */
-    XmlAttr<QString> pinName_;
+    XmlAttr<QString> pinName;
 };
 
 // Ссылка на контакт источника сигнала.
-struct SourcePinRef : public PinRef {
-    using PinRef::PinRef;
+struct SourcePinRef /*: public PinRef*/ {
+    // using PinRef::PinRef;
+    XmlAttr<QString> compName;
+    XmlAttr<QString> pinName;
 };
 
 // Ссылка на контакт приёмника сигнала.
-
-struct ReceiverPinRef : public PinRef {
-    using PinRef::PinRef;
+struct ReceiverPinRef /*: public PinRef*/ {
+    // using PinRef::PinRef;
+    XmlAttr<QString> compName;
+    XmlAttr<QString> pinName;
 };
 
 // Ссылка на стек контактных площадок.
-
 struct PadstackRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на стиль надписей.
-
 struct TextStyleRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на схемный компонент.
-
 struct ComponentRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на посадочное место.
-
 struct FootprintRef /*: public BaseRef*/ {
-    XmlAttr<QString> name; //    using BaseRef::BaseRef;
+    // using BaseRef::BaseRef;
+    XmlAttr<QString> name;
 };
 
 // Ссылка на вывод посадочного места.
-
 struct PadRef {
     // Ссылка на имя компонента
     /* [XmlAttribute("compName")] public string compName_; */
-    XmlAttr<QString> compName_;
+    XmlAttr<QString> compName;
     // Номер контактной площадки (вывода) посадочного места.
     /* [XmlAttribute("padNum", DataType = "int")] public int padNum_; */
     XmlAttr<int> padNum; // int _padNum = 0;
 };
-//	#endregion Reference Type
+// #endregion Reference Type
 
-//	#region Coordinates
-
+// #region Coordinates
 struct base_coordinat {
     /* [XmlAttribute("x", DataType = "float")] public float x_; */
     XmlAttr<float> x; // float _x = 0.0F;
@@ -244,12 +291,12 @@ struct Stretch /*: public base_coordinat*/ {
     operator QPointF() const { return {x, y}; }
 };
 
-//	#endregion Coordinates
+// #endregion Coordinates
 
-//	#region Segments
+// #region Segments
 // struct IBaseSegment {
-//     virtual void Shift(float x, float y) = 0;
-//     virtual void UnitsConvert(dist in_units, dist out_units) = 0;
+// virtual void Shift(float x, float y) = 0;
+// virtual void UnitsConvert(dist in_units, dist out_units) = 0;
 // };
 
 // Описание прямолинейного сегмента контура.
@@ -301,9 +348,9 @@ struct SegmentArcByMiddle : public SegmentLine {
 
     void UnitsConvert(dist in_units, dist out_units);
 };
-//	#endregion Segments
+// #endregion Segments
 
-//	#region Figures
+// #region Figures
 // Интерфейс BaseFigure создан для реализации удобного доступа к одинаковым методам разных объектов
 struct IBaseFigure {
 
@@ -397,7 +444,7 @@ struct Line /*: public IBaseFigure*/
 {
     // Массив координат точек, вершин.
     /* [XmlElement("Dot")] public List<Dot> Dots_; */
-    std::vector<std::optional<Dot>> Dots_;
+    std::vector<std::optional<Dot>> Dots;
     bool ShouldSerialize_Dots();
 
     void Shift(float x, float y) /*override*/;
@@ -420,13 +467,7 @@ XmlElement("SegmentArcCCW", typeof(SegmentArcCCW)),
 XmlElement("SegmentArcCW", typeof(SegmentArcCW)),
 XmlElement("SegmentArcByMiddle", typeof(SegmentArcByMiddle))
 ] public List<Object> Segments_; */
-    std::vector<std::variant<
-        SegmentArcByAngle,
-        SegmentArcByMiddle,
-        SegmentArcCCW,
-        SegmentArcCW,
-        SegmentLine>>
-        Segments_;
+    std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
     bool ShouldSerialize_Segments();
     void Shift(float x, float y) /*override*/;
     void UnitsConvert(dist in_units, dist out_units) /*override*/;
@@ -434,8 +475,10 @@ XmlElement("SegmentArcByMiddle", typeof(SegmentArcByMiddle))
 
 // Описание незалитого контура.
 // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
-struct Contour : public Polyline {
-    using Polyline::Polyline;
+struct Contour /*: public Polyline*/ {
+    // using Polyline::Polyline;
+    std::optional<Start> Start_;
+    std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
 };
 
 // Описание незалитого прямоугольника. Указываются верхняя левая и правая нижняя вершины
@@ -445,8 +488,10 @@ struct Rect : public Line {
 
 // Описание залитого контура.
 // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
-struct FilledContour : public Polyline {
-    using Polyline::Polyline;
+struct FilledContour /*: public Polyline*/ {
+    // using Polyline::Polyline;
+    std::optional<Start> Start_;
+    std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
 }; // TODO: требует уточнения
 
 // Описание круга.
@@ -480,7 +525,7 @@ struct TrackArcCW /*: public IBaseFigure*/
 
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
     /* [XmlAttribute("serpRef")] public string serpRef_; */
-    XmlAttr<QString> serpRef_;
+    XmlAttr<QString> serpRef;
 
     void Shift(float x, float y) /*override*/;
     void UnitsConvert(dist in_units, dist out_units) /*override*/;
@@ -503,77 +548,77 @@ struct TrackLine /*: public IBaseFigure*/
 
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
     /* [XmlAttribute("serpRef")] public string serpRef_; */
-    XmlAttr<QString> serpRef_;
+    XmlAttr<QString> serpRef;
 
     void Shift(float x, float y) /*override*/;
 
     void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
-//	#endregion Figures
+// #endregion Figures
 
-//	#region Rules area
+// #region Rules area
 // Устанавливает область действия правила: все слои.
 struct AllLayers {
     /* [XmlElement("AllLayers")] public string AllLayers_; */
-    QString AllLayers_;
+    QString AllLayers;
 };
 
 // Устанавливает область действия правила: все компоненты.
 struct AllComps {
     /* [XmlElement("AllComps")] public string AllComps_; */
-    QString AllComps_;
+    QString AllComps;
 };
 
 // Устанавливает область действия правила: все цепи.
 struct AllNets {
     /* [XmlElement("AllNets")] public string AllNets_; */
-    QString AllNets_;
+    QString AllNets;
 };
 
 // Устанавливает область действия правила: все внутренние слои.
 struct AllLayersInner {
     /* [XmlElement("AllLayersInner")] public string AllLayersInner_; */
-    QString AllLayersInner_;
+    QString AllLayersInner;
 };
 
 // Устанавливает область действия правила: все внутренние сигнальные слои.
 struct AllLayersInnerSignal {
     /* [XmlElement("AllLayersInnerSignal")] public string AllLayersInnerSignal_; */
-    QString AllLayersInnerSignal_;
+    QString AllLayersInnerSignal;
 };
 
 // Устанавливает область действия правила: все сигнальные слои.
 struct AllLayersSignal {
     /* [XmlElement("AllLayersSignal")] public string AllLayersSignal_; */
-    QString AllLayersSignal_;
+    QString AllLayersSignal;
 };
 
 // Устанавливает область действия правила: все внешние слои.
 struct AllLayersOuter {
     /* [XmlElement("AllLayersOuter")] public string AllLayersOuter_; */
-    QString AllLayersOuter_;
+    QString AllLayersOuter;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все типы.
 struct AllViastacks {
     /* [XmlElement("AllViastacks")] public string AllViastacks_; */
-    QString AllViastacks_;
+    QString AllViastacks;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все сквозные типы.
 struct AllViastacksThrough {
     /* [XmlElement("AllViastacksThrough")] public string AllViastacksThrough_; */
-    QString AllViastacksThrough_;
+    QString AllViastacksThrough;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все несквозные типы.
 struct AllViastacksNotThrough {
     /* [XmlElement("AllViastacksNotThrough")] public string AllViastacksNotThrough_; */
-    QString AllViastacksNotThrough_;
+    QString AllViastacksNotThrough;
 };
-//	#endregion Rules area
+// #endregion Rules area
 
-//	#region Thermal Detail Text ObjectSignal
+// #region Thermal Detail Text ObjectSignal
 // Описание термобарьера.
 struct Thermal {
 
@@ -625,19 +670,7 @@ struct Detail {
         XmlElement("Polygon", typeof(Polygon)),
         XmlElement("Polyline", typeof(Polyline)),
         XmlElement("FilledContour", typeof(FilledContour))] public Object Figure_; */
-    std::variant<ArcCCW,
-        ArcCW,
-        ArcByAngle,
-        ArcByMiddle,
-        Line,
-        Circle,
-        Rect,
-        FilledCircle,
-        FilledRect,
-        Polygon,
-        Polyline,
-        FilledContour>
-        Figure_;
+    XmlVariant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Polyline, FilledContour> Figure_;
 
     void Shift(float x, float y);
 
@@ -649,7 +682,7 @@ struct Text {
 
     // Параметр надписи: текст надписи.
     /* [XmlAttribute("text")] public string text_; */
-    XmlAttr<QString> text_;
+    XmlAttr<QString> text;
 
     // Параметр надписей (ярлыков): способ выравнивания текста.
     /* [XmlAttribute("align")] public align align_; */
@@ -691,21 +724,18 @@ struct ObjectSignal {
     /* [XmlElement("SignalRef", typeof(SignalRef)),
         XmlElement("DiffSignalRef", typeof(DiffSignalRef)),
         XmlElement("SignalGroupRef", typeof(SignalGroupRef)),] public Object Refs_; */
-    std::variant<SignalRef, DiffSignalRef, SignalGroupRef> Refs_;
+    XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef> Refs_;
 };
 
-//	#endregion
+// #endregion
 
 // Различные сервисные функции
 struct Ut final {
-
     // Конвертация единиц измерения
-
-    // <param name="value">значение</param>
-    // <param name="in_units">текущие единицы измерения</param>
-    // <param name="out_units">выходные единицы измерения</param>
+    /// \param value \brief значение
+    /// \param in_units \brief текущие единицы измерения
+    /// \param out_units \brief выходные единицы измерения
     // <returns>Возвращает сконвертированное значение</returns>
-
     static float UnitsConvert(float value, dist in_units, dist out_units);
 };
 

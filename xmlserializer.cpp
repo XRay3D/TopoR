@@ -9,6 +9,8 @@
 #include <QTextStream>
 #include <set>
 
+using namespace TopoR_PCB_Classes;
+
 #if __has_include(<cxxabi.h>)
 #include <cxxabi.h>
 QString demangle(const std::type_info& ti) {
@@ -33,11 +35,6 @@ QString demangle(const std::type_info& ti) {
 }
 #endif
 
-// #define out qInfo().nospace()
-
-// template <class Stream, class T>
-// inline void print(Stream&, T&&);
-
 Xml::Xml(const QString& name) {
     buffer.open(QIODevice::WriteOnly);
 
@@ -55,54 +52,19 @@ Xml::Xml(const QString& name) {
         return;
     }
     file.close();
+    return;
+    file.setFileName(file.fileName().replace("/", "/formated_"));
+    qWarning() << file.fileName();
+    if(!file.open(QIODevice::WriteOnly)) {
+        qWarning() << file.errorString();
+        return;
+    }
+    file.write(doc.toString(4).toUtf8());
 }
 
 QDomElement Xml::top() const {
     if(!stack.size()) throw names;
     return stack.top().toElement();
-}
-
-bool Xml::push(sl sl_) {
-    // if(loging) qWarning() << "1> stack" << stack.size() << names << sl_.function_name();
-    if(skipPushArray || isAttr) {
-        skipPushArray = false;
-        return true;
-    }
-
-    auto getNode = [this](const QDomNode& node_) {
-        QDomNode node;
-        for(auto&& name: names) {
-            node = /*isAttr ? node_.attributes().namedItem(name) :*/ node_.firstChildElement(name);
-            if(!node.isNull()) break;
-        }
-        return node;
-    };
-    QDomNode node = getNode(stack.empty() ? doc : stack.top());
-    if(node.isNull()) {
-        qCritical() << names << sl_.function_name();
-        return skipPop = names.contains(top().tagName());
-    } else
-        stack.push(node);
-    if(loging) qWarning() << "R> stack" << stack.size() << names << sl_.function_name();
-    return !node.isNull();
-}
-
-void Xml::push(const QDomNode& node, sl sl_) {
-    skipPushArray = true;
-    if(loging) qWarning() << "F> stack" << stack.size() << names << sl_.function_name();
-    stack.push(node);
-}
-
-void Xml::pop(sl sl_) {
-    // if(loging) qWarning() << "3> stack" << stack.size() << names << sl_.function_name();
-    if(isAttr) return;
-    if(skipPop) {
-        skipPop = false;
-        return;
-    }
-    if(!stack.size()) throw names;
-    stack.pop();
-    if(loging) qWarning() << "-< stack" << stack.size() << names << sl_.function_name();
 }
 
 auto Xml::value(sl sl_) -> QString {
@@ -117,6 +79,49 @@ auto Xml::value(sl sl_) -> QString {
     // qWarning() << str << isAttr << sl_.function_name();
     hasValue = str.size();
     return str;
+}
+
+void Xml::pop(sl sl_) {
+    // if(loging) qWarning() << "3> stack" << stack.size() << names << sl_.function_name();
+    if(isAttr) return;
+    if(skipPop) {
+        skipPop = false;
+        return;
+    }
+    if(!stack.size()) throw names;
+    stack.pop();
+    if(loging) qWarning() << "-< stack" << stack.size() << names << sl_.function_name();
+}
+
+bool Xml::push(sl sl_) {
+    // if(loging) qWarning() << "1> stack" << stack.size() << names << sl_.function_name();
+    if(skipPushArray || isAttr) {
+        skipPushArray = false;
+        return true;
+    }
+
+    auto getNode = [this](const QDomNode& node) {
+        QDomNode retNode;
+        for(auto&& name: names) {
+            retNode = node.firstChildElement(name);
+            if(!retNode.isNull()) break;
+        }
+        return retNode;
+    };
+    QDomNode node = getNode(stack.empty() ? doc : stack.top());
+    if(node.isNull()) {
+        qWarning() << names << sl_.function_name();
+        return skipPop = names.contains(top().tagName());
+    } else
+        stack.push(node);
+    if(loging) qWarning() << "R> stack" << stack.size() << names << sl_.function_name();
+    return !node.isNull();
+}
+
+void Xml::push(const QDomNode& node, sl sl_) {
+    skipPushArray = true;
+    if(loging) qWarning() << "F> stack" << stack.size() << names << sl_.function_name();
+    stack.push(node);
 }
 
 QString i(int i = {}) {
@@ -183,12 +188,15 @@ void read(Xml& xml, T& value) {
     xml.out << '"' << (value = QVariant{xml.value()}.value<T>()) << '"';
 }
 
-namespace TopoR_PCB_Classes {
+// namespace TopoR_PCB_Classes {
 
 template <size_t Is, typename T>
 void readField(Xml& xml, T& str) {
     auto name = pfr::get_name<Is, T>();
-    xml.names = {QString::fromUtf8(name.data(), name.size()), demangle(typeid(pfr::get<Is>(str)))};
+    xml.names = {
+        QString::fromUtf8(name.data(), name.size()),
+        demangle(typeid(pfr::get<Is>(str))),
+    };
     auto it = xml.names.begin();
     xml.out << i() << *it++ << "<" << *it << ">";
     xml.out << " = ";
@@ -220,14 +228,12 @@ void read(Xml& xml, std::optional<T>& optional) {
 template <typename T>
 void read(Xml& xml, XmlAttr<T>& optional) {
     xml.isAttr = true;
-    // if(!xml.push()) return;
     read(xml, optional.value);
-    // xml.pop();
     xml.isAttr = false;
 }
 
 template <typename... Ts>
-void read(Xml& xml, std::variant<Ts...>& variant) { // FIXME variant
+void read(Xml& xml, XmlVariant<Ts...>& variant) { // FIXME variant
     auto reader = [&xml, &variant]<typename T>(T&& val) {
         if(xml.top().tagName() == demangle(typeid(T))) {
             qInfo() << xml.top().tagName();
@@ -259,16 +265,38 @@ void read(Xml& xml, std::vector<T>& vector) { // FIXME vector
 }
 
 template <typename T>
+void read(Xml& xml, XmlAarray<T>& vector) { // FIXME vector
+    // loging = true;
+    xml.out << "{";
+    // if(!xml.push()) return;
+    std::stack<QDomNode> stack;
+    // std::swap(stack, xml.stack);
+    auto childNodes = xml.top().childNodes();
+    vector.resize(childNodes.size());
+    for(int index{}; index < childNodes.size(); ++index) {
+        // xml.skipPushArray = true; // skip push in read(struct) because force pushed in this for
+        xml.push(childNodes.at(index));
+        read(xml, vector[index]);
+        // xml.pop(); // skip pop because read(struct) pop it
+    }
+    // std::swap(stack, xml.stack);
+    // xml.pop();
+    xml.out << "}";
+}
+
+template <typename T>
     requires(!std::is_standard_layout_v<T> && !std::is_aggregate_v<T>)
 void read(Xml& xml, T& str) {
+    qCritical() << __PRETTY_FUNCTION__ << demangle(typeid(T));
     xml.out << "<<ERR>>: " << demangle(typeid(T));
 }
 
-} // namespace TopoR_PCB_Classes
+// } // namespace TopoR_PCB_Classes
 
 template <typename T>
 // requires(std::is_enum_v<T> == 0 && std::is_standard_layout_v<T> && std::is_trivial_v<T>)
 void read(Xml& xml, T& str) {
+    qCritical() << __PRETTY_FUNCTION__ << demangle(typeid(T));
     xml.out << "ERR: " << demangle(typeid(T));
 }
 

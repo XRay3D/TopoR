@@ -25,11 +25,11 @@ void Constructive::BoardOutline::Shape_Voids::UnitsConvert(dist in_units, dist o
 }
 
 bool Constructive::BoardOutline::ShouldSerialize_Contours() {
-    return Contours_.size();
+    return Contours.size();
 }
 
 bool Constructive::BoardOutline::ShouldSerialize_Voids() {
-    return Voids_.size();
+    return Voids.size();
 }
 
 bool Constructive::MntholeInstance::getFixedSpecified() const {
@@ -38,16 +38,16 @@ bool Constructive::MntholeInstance::getFixedSpecified() const {
 
 void Constructive::MntholeInstance::Shift(float x, float y) {
     /**  if(_Org)
-          Org_.value().Shift(x, y);*/
+          Org.value().Shift(x, y);*/
 }
 
 void Constructive::MntholeInstance::UnitsConvert(dist in_units, dist out_units) {
     /*  if(_Org)
-          Org_.value().UnitsConvert(in_units, out_units);*/
+          Org.value().UnitsConvert(in_units, out_units);*/
 }
 
 bool Constructive::Keepout_Сonstructive::Role::Trace::ShouldSerialize_LayersRefs() {
-    return LayersRefs_.size();
+    return LayersRefs.size();
 }
 
 void Constructive::Keepout_Сonstructive::Shift(float x, float y) {
@@ -61,70 +61,70 @@ void Constructive::Keepout_Сonstructive::UnitsConvert(dist in_units, dist out_u
 }
 
 bool Constructive::ShouldSerialize_Mntholes() {
-    return Mntholes_.size();
+    return Mntholes.size();
 }
 
 bool Constructive::ShouldSerialize_MechLayerObjects() {
-    return MechLayerObjects_.size();
+    return MechLayerObjects.size();
 }
 
 bool Constructive::ShouldSerialize_Texts() {
-    return Texts_.size();
+    return Texts.size();
 }
 
 bool Constructive::ShouldSerialize_Keepouts() {
-    return Keepouts_.size();
+    return Keepouts.size();
 }
 
 void Constructive::Shift(float x, float y) {
     /*  if(_BoardOutline) {
            if(_BoardOutline.size())
-               for(int i = 0; i < BoardOutline_.value()._Contours.size(); i++)
+               for(int i = 0; i < BoardOutline.value()._Contours.size(); i++)
                    _BoardOutline->_Contours[i].value().Shift(x, y);
            if(_BoardOutline.size())
-               for(int i = 0; i < BoardOutline_.value()._Voids.size(); i++)
+               for(int i = 0; i < BoardOutline.value()._Voids.size(); i++)
                    _BoardOutline->_Voids[i].value().Shift(x, y);
        }
 
        if(_Mntholes.size())
-           for(int i = 0; i < Mntholes_.size(); i++)
+           for(int i = 0; i < Mntholes.size(); i++)
                _Mntholes[i].value().Shift(x, y);
 
        if(_MechLayerObjects.size())
-           for(int i = 0; i < MechLayerObjects_.size(); i++)
+           for(int i = 0; i < MechLayerObjects.size(); i++)
                _MechLayerObjects[i].value().Shift(x, y);
 
        if(_Texts.size())
-           for(int i = 0; i < Texts_.size(); i++)
+           for(int i = 0; i < Texts.size(); i++)
                _Texts[i].value().Shift(x, y);
 
        if(_Keepouts.size())
-           for(int i = 0; i < Keepouts_.size(); i++)
+           for(int i = 0; i < Keepouts.size(); i++)
                _Keepouts[i].value().Shift(x, y);*/
 }
 
 void Constructive::UnitsConvert(dist in_units, dist out_units) {
     /*   if(_BoardOutline.size())
-           for(int i = 0; i < BoardOutline_.value()._Contours.size(); i++)
+           for(int i = 0; i < BoardOutline.value()._Contours.size(); i++)
                _BoardOutline->_Contours[i].value().UnitsConvert(in_units, out_units);
        if(_BoardOutline.size())
-           for(int i = 0; i < BoardOutline_.value()._Voids.size(); i++)
+           for(int i = 0; i < BoardOutline.value()._Voids.size(); i++)
                _BoardOutline->_Voids[i].value().UnitsConvert(in_units, out_units);
 
        if(_Mntholes.size())
-           for(int i = 0; i < Mntholes_.size(); i++)
+           for(int i = 0; i < Mntholes.size(); i++)
                _Mntholes[i].value().UnitsConvert(in_units, out_units);
 
        if(_MechLayerObjects.size())
-           for(int i = 0; i < MechLayerObjects_.size(); i++)
+           for(int i = 0; i < MechLayerObjects.size(); i++)
                _MechLayerObjects[i].value().UnitsConvert(in_units, out_units);
 
        if(_Texts.size())
-           for(int i = 0; i < Texts_.size(); i++)
+           for(int i = 0; i < Texts.size(); i++)
                _Texts[i].value().UnitsConvert(in_units, out_units);
 
        if(_Keepouts.size())
-           for(int i = 0; i < Keepouts_.size(); i++)
+           for(int i = 0; i < Keepouts.size(); i++)
                _Keepouts[i].value().UnitsConvert(in_units, out_units);*/
 }
 
@@ -138,11 +138,11 @@ void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances,
                  _BoardOutline = new BoardOutline();
 
              if (_BoardOutline._Contours == null)
-                 BoardOutline_._Contours = (BoardOutline.Shape_Contour[])a._BoardOutline._Contours.Clone();
+                 BoardOutline._Contours = (BoardOutline.Shape_Contour[])a._BoardOutline._Contours.Clone();
              else
              {
-                 l = BoardOutline_._Contours.Count;
-                 Array.Resize(ref BoardOutline_._Contours, l + a._BoardOutline._Contours.Count);
+                 l = BoardOutline._Contours.Count;
+                 Array.Resize(ref BoardOutline._Contours, l + a._BoardOutline._Contours.Count);
                  a._BoardOutline._Contours.CopyTo(_BoardOutline._Contours, l);
              }
          }
@@ -153,11 +153,11 @@ void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances,
                  _BoardOutline = new BoardOutline();
 
              if (_BoardOutline._Voids == null)
-                 BoardOutline_._Voids = (BoardOutline.Shape_Voids[])a._BoardOutline._Voids.Clone();
+                 BoardOutline._Voids = (BoardOutline.Shape_Voids[])a._BoardOutline._Voids.Clone();
              else
              {
-                 l = BoardOutline_._Voids.Count;
-                 Array.Resize(ref BoardOutline_._Voids, l + a._BoardOutline._Voids.Count);
+                 l = BoardOutline._Voids.Count;
+                 Array.Resize(ref BoardOutline._Voids, l + a._BoardOutline._Voids.Count);
                  a._BoardOutline._Voids.CopyTo(_BoardOutline._Voids, l);
              }
          }
@@ -171,7 +171,7 @@ void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances,
                  _Mntholes = (MntholeInstance[])a._Mntholes.Clone();
              else
              {
-                 l = Mntholes_.Count;
+                 l = Mntholes.Count;
                  Array.Resize(ref _Mntholes, l + a._Mntholes.Count);
                  a._Mntholes.CopyTo(_Mntholes, l);
              }
@@ -186,7 +186,7 @@ void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances,
                  _MechLayerObjects = (Detail[])a._MechLayerObjects.Clone();
              else
              {
-                 l = MechLayerObjects_.Count;
+                 l = MechLayerObjects.Count;
                  Array.Resize(ref _MechLayerObjects, l + a._MechLayerObjects.Count);
                  a._MechLayerObjects.CopyTo(_MechLayerObjects, l);
              }
@@ -201,7 +201,7 @@ void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances,
                  _Texts = (Text[])a._Texts.Clone();
              else
              {
-                 l = Texts_.Count;
+                 l = Texts.Count;
                  Array.Resize(ref _Texts, l + a._Texts.Count);
                  a._Texts.CopyTo(_Texts, l);
              }
@@ -216,7 +216,7 @@ void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances,
                  _Keepouts = (Keepout_Сonstructive[])a._Keepouts.Clone();
              else
              {
-                 l = Keepouts_.Count;
+                 l = Keepouts.Count;
                  Array.Resize(ref _Keepouts, l + a._Keepouts.Count);
                  a._Keepouts.CopyTo(_Keepouts, l);
              }
