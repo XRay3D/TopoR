@@ -32,9 +32,9 @@ inline consteval auto tokenize_enum(sv base) {
     std::array<std::pair<sv, Enum>, N> tokens;
     std::underlying_type_t<Enum> val{};
     sv name;
-    for (auto it = tokens.begin(); auto&& [whole, name, value]: ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
-        if (value) val = value.to_number();
-        if (it != tokens.end()) *it++ = {name.to_view(), static_cast<Enum>(val++)};
+    for(auto it = tokens.begin(); auto&& [whole, name, value]: ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
+        if(value) val = value.to_number();
+        if(it != tokens.end()) *it++ = {name.to_view(), static_cast<Enum>(val++)};
     }
     return tokens;
 }
@@ -51,7 +51,7 @@ inline consteval auto tokenize_enum(sv base) {
 
 template <class E>
     requires isEnum<E>
-constexpr auto enumToString(E e) {
+inline constexpr auto enumToString(E e) {
     auto it = std::ranges::find(Impl::Tokens<E>, e, &std::pair<Impl::sv, E>::second);
     return it == Impl::Tokens<E>.end() ? Impl::sv{} : it->first;
 }
@@ -310,6 +310,7 @@ ENUM(role,
     // запрет проводников и переходных отверстий
     /* [XmlEnum("Wires and Vias")] WiresАndVias */
     WiresАndVias)
+
 // Настройка фильтра сообщений: режим показа предупреждений. Значение по умолчанию – ShowChecked.
 ENUM(showWarnings,
     // показывать только отмеченные предупреждения

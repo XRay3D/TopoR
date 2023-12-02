@@ -25,7 +25,7 @@ struct DialogSettings {
         // Настройка DRC: выводить отчёт в указанный файл.
         // </summary
 
-        /* [XmlAttribute("createLog")] public Bool _createLog; */
+        /* [XmlAttribute("createLog")] public Bool createLog_; */
         Bool _createLog{};
 
         /* public bool _createLogSpecified */
@@ -34,27 +34,27 @@ struct DialogSettings {
         // Настройка DRC: файл для вывода отчета.
         // </summary
 
-        /* [XmlAttribute("logFileName")] public string _logFileName; */
-        QString _logFileName;
+        /* [XmlAttribute("logFileName")] public string logFileName_; */
+        QString logFileName_;
 
         // Настройка DRC: максимальное количество сообщений.
         // </summary
 
-        /* [XmlAttribute("messageLimit", DataType = "int")] public int _messageLimit; */
+        /* [XmlAttribute("messageLimit", DataType = "int")] public int messageLimit_; */
         XmlAttr<int>messageLimit;
         int _messageLimit = 0;
 
         // Настройка DRC: допуск.
         // </summary
 
-        /* [XmlAttribute("tolerance", DataType = "float")] public float _tolerance; */
+        /* [XmlAttribute("tolerance", DataType = "float")] public float tolerance_; */
         XmlAttr<float>tolerance;
         float _tolerance = 0.0F;
 
         // Настройка DRC: проверка целостности цепей.
         // </summary
 
-        /* [XmlAttribute("checkNetIntegrity")] public Bool _checkNetIntegrity; */
+        /* [XmlAttribute("checkNetIntegrity")] public Bool checkNetIntegrity_; */
         Bool _checkNetIntegrity{};
 
         /* public bool _checkNetIntegritySpecified */
@@ -63,7 +63,7 @@ struct DialogSettings {
         // Настройка DRC: проверка ширины проводников.
         // </summary
 
-        /* [XmlAttribute("checkNetWidth")] public Bool _checkNetWidth; */
+        /* [XmlAttribute("checkNetWidth")] public Bool checkNetWidth_; */
         Bool _checkNetWidth{};
 
         /* public bool _checkNetWidthSpecified */
@@ -72,7 +72,7 @@ struct DialogSettings {
         // Настройка DRC: проверка зазоров.
         // </summary
 
-        /* [XmlAttribute("checkClearances")] public Bool _checkClearances; */
+        /* [XmlAttribute("checkClearances")] public Bool checkClearances_; */
         Bool _checkClearances{};
 
         /* public bool _checkClearancesSpecified */
@@ -81,7 +81,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между надписями и областями металлизации (полигонами).
         // </summary
 
-        /* [XmlAttribute("textToCopper")] public Bool _textToCopper; */
+        /* [XmlAttribute("textToCopper")] public Bool textToCopper_; */
         Bool _textToCopper{};
 
         /* public bool _textToCopperSpecified */
@@ -90,7 +90,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между надписями и запретами.
         // </summary
 
-        /* [XmlAttribute("textToKeepout")] public Bool _textToKeepout; */
+        /* [XmlAttribute("textToKeepout")] public Bool textToKeepout_; */
         Bool _textToKeepout{};
 
         /* public bool _textToKeepoutSpecified */
@@ -99,7 +99,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между надписями и переходными отверстиями.
         // </summary
 
-        /* [XmlAttribute("textToVia")] public Bool _textToVia; */
+        /* [XmlAttribute("textToVia")] public Bool textToVia_; */
         Bool _textToVia{};
 
         /* public bool _textToViaSpecified */
@@ -108,7 +108,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между надписями и проводниками.
         // </summary
 
-        /* [XmlAttribute("textToWire")] public Bool _textToWire; */
+        /* [XmlAttribute("textToWire")] public Bool textToWire_; */
         Bool _textToWire{};
 
         /* public bool _textToWireSpecified */
@@ -117,7 +117,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между надписями и контактными площадками.
         // </summary
 
-        /* [XmlAttribute("textToPad")] public Bool _textToPad; */
+        /* [XmlAttribute("textToPad")] public Bool textToPad_; */
         Bool _textToPad{};
 
         /* public bool _textToPadSpecified */
@@ -126,7 +126,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры от надписей до края платы.
         // </summary
 
-        /* [XmlAttribute("textToBoard")] public Bool _textToBoard; */
+        /* [XmlAttribute("textToBoard")] public Bool textToBoard_; */
         Bool _textToBoard{};
 
         /* public bool _textToBoardSpecified */
@@ -135,7 +135,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазор между полигонами.
         // </summary
 
-        /* [XmlAttribute("copperToCopper")] public Bool _copperToCopper; */
+        /* [XmlAttribute("copperToCopper")] public Bool copperToCopper_; */
         Bool _copperToCopper{};
 
         /* public bool _copperToCopperSpecified */
@@ -144,7 +144,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазор между полигонами и запретами.
         // </summary
 
-        /* [XmlAttribute("copperToKeepout")] public Bool _copperToKeepout; */
+        /* [XmlAttribute("copperToKeepout")] public Bool copperToKeepout_; */
         Bool _copperToKeepout{};
 
         /* public bool _copperToKeepoutSpecified */
@@ -153,7 +153,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазор между полигонами и проводниками.
         // </summary
 
-        /* [XmlAttribute("copperToWire")] public Bool _copperToWire; */
+        /* [XmlAttribute("copperToWire")] public Bool copperToWire_; */
         Bool _copperToWire{};
 
         /* public bool _copperToWireSpecified */
@@ -162,7 +162,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазор между полигонами и переходными отверстиями.
         // </summary
 
-        /* [XmlAttribute("copperToVia")] public Bool _copperToVia; */
+        /* [XmlAttribute("copperToVia")] public Bool copperToVia_; */
         Bool _copperToVia{};
 
         /* public bool _copperToViaSpecified */
@@ -171,7 +171,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазор между полигонами и контактными площадками.
         // </summary
 
-        /* [XmlAttribute("copperToPad")] public Bool _copperToPad; */
+        /* [XmlAttribute("copperToPad")] public Bool copperToPad_; */
         Bool _copperToPad{};
 
         /* public bool _copperToPadSpecified */
@@ -180,7 +180,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазор между полигонами и краем платы.
         // </summary
 
-        /* [XmlAttribute("copperToBoard")] public Bool _copperToBoard; */
+        /* [XmlAttribute("copperToBoard")] public Bool copperToBoard_; */
         Bool _copperToBoard{};
 
         /* public bool _copperToBoardSpecified */
@@ -189,7 +189,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между проводниками и запретами.
         // </summary
 
-        /* [XmlAttribute("wireToKeepout")] public Bool _wireToKeepout; */
+        /* [XmlAttribute("wireToKeepout")] public Bool wireToKeepout_; */
         Bool _wireToKeepout{};
 
         /* public bool _wireToKeepoutSpecified */
@@ -198,7 +198,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между переходными отверстиями и запретами.
         // </summary
 
-        /* [XmlAttribute("viaToKeepout")] public Bool _viaToKeepout; */
+        /* [XmlAttribute("viaToKeepout")] public Bool viaToKeepout_; */
         Bool _viaToKeepout{};
 
         /* public bool _viaToKeepoutSpecified */
@@ -207,7 +207,7 @@ struct DialogSettings {
         // Настройка DRC: проверка зазоров между контактными площадками и запретами.
         // </summary
 
-        /* [XmlAttribute("padToKeepout")] public Bool _padToKeepout; */
+        /* [XmlAttribute("padToKeepout")] public Bool padToKeepout_; */
         Bool _padToKeepout{};
 
         /* public bool _padToKeepoutSpecified */
@@ -216,7 +216,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между проводниками.
         // </summary
 
-        /* [XmlAttribute("wireToWire")] public Bool _wireToWire; */
+        /* [XmlAttribute("wireToWire")] public Bool wireToWire_; */
         Bool _wireToWire{};
 
         /* public bool _wireToWireSpecified */
@@ -225,7 +225,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между проводниками и переходными отверстиями.
         // </summary
 
-        /* [XmlAttribute("wireToVia")] public Bool _wireToVia; */
+        /* [XmlAttribute("wireToVia")] public Bool wireToVia_; */
         Bool _wireToVia{};
 
         /* public bool _wireToViaSpecified */
@@ -234,7 +234,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между проводниками и контактными площадками.
         // </summary
 
-        /* [XmlAttribute("wireToPad")] public Bool _wireToPad; */
+        /* [XmlAttribute("wireToPad")] public Bool wireToPad_; */
         Bool _wireToPad{};
 
         /* public bool _wireToPadSpecified */
@@ -243,7 +243,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры от проводников до края платы.
         // </summary
 
-        /* [XmlAttribute("wireToBoard")] public Bool _wireToBoard; */
+        /* [XmlAttribute("wireToBoard")] public Bool wireToBoard_; */
         Bool _wireToBoard{};
 
         /* public bool _wireToBoardSpecified */
@@ -252,7 +252,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между переходными отверстиями.
         // </summary
 
-        /* [XmlAttribute("viaToVia")] public Bool _viaToVia; */
+        /* [XmlAttribute("viaToVia")] public Bool viaToVia_; */
         Bool _viaToVia{};
 
         /* public bool _viaToViaSpecified */
@@ -261,7 +261,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры между переходными отверстиями и контактными площадками.
         // </summary
 
-        /* [XmlAttribute("viaToPad")] public Bool _viaToPad; */
+        /* [XmlAttribute("viaToPad")] public Bool viaToPad_; */
         Bool _viaToPad{};
 
         /* public bool _viaToPadSpecified */
@@ -270,7 +270,7 @@ struct DialogSettings {
         // Настройка DRC: проверять зазоры от переходных отверстий до края платы.
         // </summary
 
-        /* [XmlAttribute("viaToBoard")] public Bool _viaToBoard; */
+        /* [XmlAttribute("viaToBoard")] public Bool viaToBoard_; */
         Bool _viaToBoard{};
 
         /* public bool _viaToBoardSpecified */
@@ -279,7 +279,7 @@ struct DialogSettings {
         // Настройка DRC: проверка зазоров между контактными площадками.
         // </summary
 
-        /* [XmlAttribute("padToPad")] public Bool _padToPad; */
+        /* [XmlAttribute("padToPad")] public Bool padToPad_; */
         Bool _padToPad{};
 
         /* public bool _padToPadSpecified */
@@ -288,7 +288,7 @@ struct DialogSettings {
         // Настройка DRC: проверка зазоров между контактными площадками и краем платы.
         // </summary
 
-        /* [XmlAttribute("padToBoard")] public Bool _padToBoard; */
+        /* [XmlAttribute("padToBoard")] public Bool padToBoard_; */
         Bool _padToBoard{};
 
         /* public bool _padToBoardSpecified */
@@ -310,56 +310,56 @@ struct DialogSettings {
                 // Настройка вывода файла Gerber: выводить контур платы.
                 // </summary
 
-                /* [XmlAttribute("board")] public Bool _board; */
+                /* [XmlAttribute("board")] public Bool board_; */
                 Bool _board{};
 
                 // Настройка вывода файлов Geber, DXF: выводить проводники.
                 // </summary
 
-                /* [XmlAttribute("wires")] public Bool _wires; */
+                /* [XmlAttribute("wires")] public Bool wires_; */
                 Bool _wires{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить области металлизации (полигоны).
                 // </summary
 
-                /* [XmlAttribute("coppers")] public Bool _coppers; */
+                /* [XmlAttribute("coppers")] public Bool coppers_; */
                 Bool _coppers{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить контактные площадки.
                 // </summary
 
-                /* [XmlAttribute("padstacks")] public Bool _padstacks; */
+                /* [XmlAttribute("padstacks")] public Bool padstacks_; */
                 Bool _padstacks{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить переходные отверстия.
                 // </summary
 
-                /* [XmlAttribute("vias")] public Bool _vias; */
+                /* [XmlAttribute("vias")] public Bool vias_; */
                 Bool _vias{};
 
                 // Настройка вывода файлов Gerber и DXF: выводить надписи.
                 // </summary
 
-                /* [XmlAttribute("texts")] public Bool _texts; */
+                /* [XmlAttribute("texts")] public Bool texts_; */
                 Bool _texts{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить ярлыки.
                 // </summary
 
-                /* [XmlAttribute("labels")] public Bool _labels; */
+                /* [XmlAttribute("labels")] public Bool labels_; */
                 Bool _labels{};
 
                 // Настройка вывода файлов Gerber: выводить детали на механических слоях.
                 // </summary
 
-                /* [XmlAttribute("details")] public Bool _details; */
+                /* [XmlAttribute("details")] public Bool details_; */
                 Bool _details{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить реперные знаки.
                 // </summary
                 // <remarks>! В TopoR реперные знаки не поддерживаются.</remarks>
 
-                /* [XmlAttribute("fiducials")] public Bool _fiducials; */
+                /* [XmlAttribute("fiducials")] public Bool fiducials_; */
                 Bool _fiducials{};
             };
 
@@ -367,73 +367,73 @@ struct DialogSettings {
             // </summary
             // <remarks>! Имя не должно содержать путь к файлу.</remarks>
 
-            /* [XmlAttribute("fileName")] public string _fileName; */
-            QString _fileName;
+            /* [XmlAttribute("fileName")] public string fileName_; */
+            QString fileName_;
 
             // Настройка вывода файла Gerber: выводить файл.
             // </summary
 
-            /* [XmlAttribute("output")] public Bool _output; */
+            /* [XmlAttribute("output")] public Bool output_; */
             Bool _output{};
 
             // Настройка вывода файла Gerber: вывод слоя в зеркальном отображении.
             // </summary
 
-            /* [XmlAttribute("mirror")] public Bool _mirror; */
+            /* [XmlAttribute("mirror")] public Bool mirror_; */
             Bool _mirror{};
 
             // Настройка вывода файлов Gerber: инверсный вывод слоя.
             // </summary
 
-            /* [XmlAttribute("negative")] public Bool _negative; */
+            /* [XmlAttribute("negative")] public Bool negative_; */
             Bool _negative{};
 
             // Ссылка на слой.
 
-            /* [XmlElement("LayerRef")] public LayerRef _LayerRef; */
-            LayerRef _LayerRef;
+            /* [XmlElement("LayerRef")] public LayerRef LayerRef_; */
+            LayerRef LayerRef_;
 
             // Настройка экспорта Gerber файлов: список экспортируемых объектов для слоя.
 
-            /* [XmlElement("ExportObjects")] public ExportObjects_ExportFile _ExportObjects; */
-            ExportObjects_ExportFile _ExportObjects;
+            /* [XmlElement("ExportObjects")] public ExportObjects_ExportFile ExportObjects_; */
+            ExportObjects_ExportFile ExportObjects_;
 
             // Настройка вывода файла Gerber: смещение объектов по осям x и y.
 
-            /* [XmlElement("Shift")] public Shift _Shift; */
-            Shift _Shift;
+            /* [XmlElement("Shift")] public Shift Shift_; */
+            Shift Shift_;
         };
 
         // Каталог для выходных файлов (Gerber, Drill).
         // </summary
 
-        /* [XmlAttribute("outPath")] public string _outPath; */
-        QString _outPath;
+        /* [XmlAttribute("outPath")] public string outPath_; */
+        QString outPath_;
 
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
         // </summary
 
-        /* [XmlAttribute("units")] public units _units; */
+        /* [XmlAttribute("units")] public units units_; */
         units _units{};
 
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр перед запятой.
         // </summary
 
-        /* [XmlAttribute("intNums", DataType = "int")] public int _intNums; */
+        /* [XmlAttribute("intNums", DataType = "int")] public int intNums_; */
         XmlAttr<int>intNums;
         int _intNums = 0;
 
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр после запятой.
         // </summary
 
-        /* [XmlAttribute("fractNums", DataType = "int")] public int _fractNums; */
+        /* [XmlAttribute("fractNums", DataType = "int")] public int fractNums_; */
         XmlAttr<int>fractNums;
         int _fractNums = 0;
 
         // Настройки вывода файлов Gerber.
 
-        /* [XmlElement("ExportFile")] public List<ExportFile_GerberSettings> _ExportFiles; */
-        std::vector<ExportFile_GerberSettings> _ExportFiles;
+        /* [XmlElement("ExportFile")] public List<ExportFile_GerberSettings> ExportFiles_; */
+        std::vector<ExportFile_GerberSettings> ExportFiles_;
         bool ShouldSerialize_ExportFiles();
     };
 
@@ -452,88 +452,88 @@ struct DialogSettings {
                 // Настройка вывода файлов Geber, DXF: выводить проводники.
                 // </summary
 
-                /* [XmlAttribute("wires")] public Bool _wires; */
+                /* [XmlAttribute("wires")] public Bool wires_; */
                 Bool _wires{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить области металлизации (полигоны).
                 // </summary
 
-                /* [XmlAttribute("coppers")] public Bool _coppers; */
+                /* [XmlAttribute("coppers")] public Bool coppers_; */
                 Bool _coppers{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить контактные площадки.
                 // </summary
 
-                /* [XmlAttribute("padstacks")] public Bool _padstacks; */
+                /* [XmlAttribute("padstacks")] public Bool padstacks_; */
                 Bool _padstacks{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить переходные отверстия.
                 // </summary
 
-                /* [XmlAttribute("vias")] public Bool _vias; */
+                /* [XmlAttribute("vias")] public Bool vias_; */
                 Bool _vias{};
 
                 // Настройка вывода файлов Gerber и DXF: выводить надписи.
                 // </summary
 
-                /* [XmlAttribute("texts")] public Bool _texts; */
+                /* [XmlAttribute("texts")] public Bool texts_; */
                 Bool _texts{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить ярлыки.
                 // </summary
 
-                /* [XmlAttribute("labels")] public Bool _labels; */
+                /* [XmlAttribute("labels")] public Bool labels_; */
                 Bool _labels{};
 
                 // Настройка вывода файлов Gerber: выводить детали на механических слоях.
                 // </summary
 
-                /* [XmlAttribute("details")] public Bool _details; */
+                /* [XmlAttribute("details")] public Bool details_; */
                 Bool _details{};
 
                 // Настройка вывода слоя в файл DXF: выводить очертания компонентов.
                 // </summary
 
-                /* [XmlAttribute("compsOutline")] public Bool _compsOutline; */
+                /* [XmlAttribute("compsOutline")] public Bool compsOutline_; */
                 Bool _compsOutline{};
 
                 // Настройка вывода файлов Gerber, DXF: выводить реперные знаки.
                 // </summary
                 // <remarks>! В TopoR реперные знаки не поддерживаются.</remarks>
 
-                /* [XmlAttribute("fiducials")] public Bool _fiducials; */
+                /* [XmlAttribute("fiducials")] public Bool fiducials_; */
                 Bool _fiducials{};
             };
 
             // Настройка вывода слоя в файл DXF: выводить слой.
 
-            /* [XmlAttribute("output")] public Bool _output; */
+            /* [XmlAttribute("output")] public Bool output_; */
             Bool _output{};
 
             // Ссылка на слой.
 
-            /* [XmlElement("LayerRef")] public LayerRef _LayerRef; */
-            LayerRef _LayerRef;
+            /* [XmlElement("LayerRef")] public LayerRef LayerRef_; */
+            LayerRef LayerRef_;
 
             // Настройка экспорта слоя в файл DXF: список экспортируемых объектов для слоя.
 
-            /* [XmlElement("ExportObjects")] public ExportObjects_ExportLayer _ExportObjects; */
-            ExportObjects_ExportLayer _ExportObjects;
+            /* [XmlElement("ExportObjects")] public ExportObjects_ExportLayer ExportObjects_; */
+            ExportObjects_ExportLayer ExportObjects_;
         };
 
         // Имя выходного файла (ВОМ, DXF).
 
-        /* [XmlAttribute("outFile")] public string _outFile; */
-        QString _outFile;
+        /* [XmlAttribute("outFile")] public string outFile_; */
+        QString outFile_;
 
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
 
-        /* [XmlAttribute("units")] public units _units; */
+        /* [XmlAttribute("units")] public units units_; */
         units _units{};
 
         // Настройка вывода файла DXF: выводить слой с контуром платы.
 
-        /* [XmlAttribute("outputBoardLayer")] public Bool _outputBoardLayer; */
+        /* [XmlAttribute("outputBoardLayer")] public Bool outputBoardLayer_; */
         Bool _outputBoardLayer{};
 
         /* public bool _outputBoardLayerSpecified */
@@ -541,7 +541,7 @@ struct DialogSettings {
 
         // Настройка вывода файла DXF: выводить слой отверстий.
 
-        /* [XmlAttribute("outputDrillLayer")] public Bool _outputDrillLayer; */
+        /* [XmlAttribute("outputDrillLayer")] public Bool outputDrillLayer_; */
         Bool _outputDrillLayer{};
 
         /* public bool _outputDrillLayerSpecified */
@@ -549,8 +549,8 @@ struct DialogSettings {
 
         // Настройки вывода слоя в файл DXF.
 
-        /* [XmlElement("ExportLayer")] public List<ExportLayer> _ExportLayers; */
-        std::vector<ExportLayer> _ExportLayers;
+        /* [XmlElement("ExportLayer")] public List<ExportLayer> ExportLayers_; */
+        std::vector<ExportLayer> ExportLayers_;
         bool ShouldSerialize_ExportLayers();
     };
 
@@ -566,40 +566,40 @@ struct DialogSettings {
             // </summary
             // <remarks>! Имя не должно содержать путь к файлу.</remarks>
 
-            /* [XmlAttribute("fileName")] public string _fileName; */
-            QString _fileName;
+            /* [XmlAttribute("fileName")] public string fileName_; */
+            QString fileName_;
         };
 
         // Каталог для выходных файлов (Gerber, Drill).
         // </summary
 
-        /* [XmlAttribute("outPath")] public string _outPath; */
-        QString _outPath;
+        /* [XmlAttribute("outPath")] public string outPath_; */
+        QString outPath_;
 
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
         // </summary
 
-        /* [XmlAttribute("units")] public units _units; */
+        /* [XmlAttribute("units")] public units units_; */
         units _units{};
 
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр перед запятой.
         // </summary
 
-        /* [XmlAttribute("intNums", DataType = "int")] public int _intNums; */
+        /* [XmlAttribute("intNums", DataType = "int")] public int intNums_; */
         XmlAttr<int>intNums;
         int _intNums = 0;
 
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр после запятой.
         // </summary
 
-        /* [XmlAttribute("fractNums", DataType = "int")] public int _fractNums; */
+        /* [XmlAttribute("fractNums", DataType = "int")] public int fractNums_; */
         XmlAttr<int>fractNums;
         int _fractNums = 0;
 
         // Настройки вывода файлов Gerber.
 
-        /* [XmlElement("ExportFile")] public List<ExportFile_DrillSettings> _ExportFiles; */
-        std::vector<ExportFile_DrillSettings> _ExportFiles;
+        /* [XmlElement("ExportFile")] public List<ExportFile_DrillSettings> ExportFiles_; */
+        std::vector<ExportFile_DrillSettings> ExportFiles_;
         bool ShouldSerialize_ExportFiles();
     };
 
@@ -609,12 +609,12 @@ struct DialogSettings {
 
         // Имя выходного файла (ВОМ, DXF).
 
-        /* [XmlAttribute("outFile")] public string _outFile; */
-        QString _outFile;
+        /* [XmlAttribute("outFile")] public string outFile_; */
+        QString outFile_;
 
         // Настройка диалога вывода BOM файла: выводить количество компонентов.
 
-        /* [XmlAttribute("count")] public Bool _count; */
+        /* [XmlAttribute("count")] public Bool count_; */
         Bool _count{};
 
         /* public bool _countSpecified */
@@ -622,7 +622,7 @@ struct DialogSettings {
 
         // Настройка вывода BOM файла: выводить наименование компонентов.
 
-        /* [XmlAttribute("partName")] public Bool _partName; */
+        /* [XmlAttribute("partName")] public Bool partName_; */
         Bool _partName{};
 
         /* public bool _partNameSpecified */
@@ -630,7 +630,7 @@ struct DialogSettings {
 
         // Настройка вывода BOM файла: выводить наименование посадочных мест.
 
-        /* [XmlAttribute("footprint")] public Bool _footprint; */
+        /* [XmlAttribute("footprint")] public Bool footprint_; */
         Bool _footprint{};
 
         /* public bool _footprintSpecified */
@@ -638,7 +638,7 @@ struct DialogSettings {
 
         // Настройка вывода BOM файла: выводить позиционные обозначения компонентов.
 
-        /* [XmlAttribute("refDes")] public Bool _refDes; */
+        /* [XmlAttribute("refDes")] public Bool refDes_; */
         Bool _refDes{};
 
         /* public bool _refDesSpecified */
@@ -646,8 +646,8 @@ struct DialogSettings {
 
         // Ссылка на атрибут.
 
-        /* [XmlElement("AttributeRef")] public List<AttributeRef> _AttributeRefs; */
-        std::vector<AttributeRef> _AttributeRefs;
+        /* [XmlElement("AttributeRef")] public List<AttributeRef> AttributeRefs_; */
+        std::vector<AttributeRef> AttributeRefs_;
         bool ShouldSerialize_AttributeRefs();
     };
 
@@ -657,12 +657,12 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: режим показа предупреждений.
 
-        /* [XmlAttribute("showWarnings")] public showWarnings _showWarnings; */
+        /* [XmlAttribute("showWarnings")] public showWarnings showWarnings_; */
         showWarnings _showWarnings{};
 
         // Настройка фильтра сообщений: выводить сообщение 5003.
 
-        /* [XmlAttribute("W5003")] public Bool _W5003; */
+        /* [XmlAttribute("W5003")] public Bool W5003_; */
         Bool _W5003{};
 
         /* public bool _W5003Specified */
@@ -670,7 +670,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5012.
 
-        /* [XmlAttribute("W5012")] public Bool _W5012; */
+        /* [XmlAttribute("W5012")] public Bool W5012_; */
         Bool _W5012{};
 
         /* public bool _W5012Specified */
@@ -678,7 +678,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5013.
 
-        /* [XmlAttribute("W5013")] public Bool _W5013; */
+        /* [XmlAttribute("W5013")] public Bool W5013_; */
         Bool _W5013{};
 
         /* public bool _W5013Specified */
@@ -686,7 +686,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5014.
 
-        /* [XmlAttribute("W5014")] public Bool _W5014; */
+        /* [XmlAttribute("W5014")] public Bool W5014_; */
         Bool _W5014{};
 
         /* public bool _W5014Specified */
@@ -694,7 +694,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5015.
 
-        /* [XmlAttribute("W5015")] public Bool _W5015; */
+        /* [XmlAttribute("W5015")] public Bool W5015_; */
         Bool _W5015{};
 
         /* public bool _W5015Specified */
@@ -702,7 +702,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5016.
 
-        /* [XmlAttribute("W5016")] public Bool _W5016; */
+        /* [XmlAttribute("W5016")] public Bool W5016_; */
         Bool _W5016{};
 
         /* public bool _W5016Specified */
@@ -710,7 +710,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5017.
 
-        /* [XmlAttribute("W5017")] public Bool _W5017; */
+        /* [XmlAttribute("W5017")] public Bool W5017_; */
         Bool _W5017{};
 
         /* public bool _W5017Specified */
@@ -718,7 +718,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5018.
 
-        /* [XmlAttribute("W5018")] public Bool _W5018; */
+        /* [XmlAttribute("W5018")] public Bool W5018_; */
         Bool _W5018{};
 
         /* public bool _W5018Specified */
@@ -726,7 +726,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5023.
 
-        /* [XmlAttribute("W5023")] public Bool _W5023; */
+        /* [XmlAttribute("W5023")] public Bool W5023_; */
         Bool _W5023{};
 
         /* public bool _W5023Specified */
@@ -734,7 +734,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5024.
 
-        /* [XmlAttribute("W5024")] public Bool _W5024; */
+        /* [XmlAttribute("W5024")] public Bool W5024_; */
         Bool _W5024{};
 
         /* public bool _W5024Specified */
@@ -742,7 +742,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5026.
 
-        /* [XmlAttribute("W5026")] public Bool _W5026; */
+        /* [XmlAttribute("W5026")] public Bool W5026_; */
         Bool _W5026{};
 
         /* public bool _W5026Specified */
@@ -750,7 +750,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5034.
 
-        /* [XmlAttribute("W5034")] public Bool _W5034; */
+        /* [XmlAttribute("W5034")] public Bool W5034_; */
         Bool _W5034{};
 
         /* public bool _W5034Specified */
@@ -758,7 +758,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5036.
 
-        /* [XmlAttribute("W5036")] public Bool _W5036; */
+        /* [XmlAttribute("W5036")] public Bool W5036_; */
         Bool _W5036{};
 
         /* public bool _W5036Specified */
@@ -766,7 +766,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: выводить сообщение 5037.
 
-        /* [XmlAttribute("W5037")] public Bool _W5037; */
+        /* [XmlAttribute("W5037")] public Bool W5037_; */
         Bool _W5037{};
 
         /* public bool _W5037Specified */
@@ -774,7 +774,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: быстрая проверка зазоров между компонентами.
 
-        /* [XmlAttribute("WClrnBtwComps")] public Bool _WClrnBtwComps; */
+        /* [XmlAttribute("WClrnBtwComps")] public Bool WClrnBtwComps_; */
         Bool _WClrnBtwComps{};
 
         /* public bool _WClrnBtwCompsSpecified */
@@ -782,7 +782,7 @@ struct DialogSettings {
 
         // Настройка фильтра сообщений: быстрая проверка зазоров между объектами одной цепи.
 
-        /* [XmlAttribute("WClrnBtwObjSameNet")] public Bool _WClrnBtwObjSameNet; */
+        /* [XmlAttribute("WClrnBtwObjSameNet")] public Bool WClrnBtwObjSameNet_; */
         Bool _WClrnBtwObjSameNet{};
 
         /* public bool _WClrnBtwObjSameNetSpecified */
@@ -791,38 +791,38 @@ struct DialogSettings {
 
     // Версия раздела.
 
-    /* [XmlAttribute("version")] public string _version; */
-    QString _version;
+    /* [XmlAttribute("version")] public string version_; */
+    QString version_;
 
     // Настройки DRC.
 
-    /* [XmlElement("DRCSettings")] public DRCSettings _DRCSettings; */
-    DRCSettings _DRCSettings;
+    /* [XmlElement("DRCSettings")] public DRCSettings DRCSettings_; */
+    DRCSettings DRCSettings_;
 
     // Настройки вывода файлов Gerber.
 
-    /* [XmlElement("GerberSettings")] public GerberSettings _GerberSettings; */
-    GerberSettings _GerberSettings;
+    /* [XmlElement("GerberSettings")] public GerberSettings GerberSettings_; */
+    GerberSettings GerberSettings_;
 
     // Настройки вывода файла DXF.
 
-    /* [XmlElement("DXFSettings")] public DXFSettings _DXFSettings; */
-    DXFSettings _DXFSettings;
+    /* [XmlElement("DXFSettings")] public DXFSettings DXFSettings_; */
+    DXFSettings DXFSettings_;
 
     // Настройки вывода файлов Drill.
 
-    /* [XmlElement("DrillSettings")] public DrillSettings _DrillSettings; */
-    DrillSettings _DrillSettings;
+    /* [XmlElement("DrillSettings")] public DrillSettings DrillSettings_; */
+    DrillSettings DrillSettings_;
 
     // Настройки вывода BOM файла.
 
-    /* [XmlElement("BOMSettings")] public BOMSettings _BOMSettings; */
-    BOMSettings _BOMSettings;
+    /* [XmlElement("BOMSettings")] public BOMSettings BOMSettings_; */
+    BOMSettings BOMSettings_;
 
     // Настройка фильтра сообщений.
 
-    /* [XmlElement("MessagesFilter")] public MessagesFilter _MessagesFilter; */
-    MessagesFilter _MessagesFilter;
+    /* [XmlElement("MessagesFilter")] public MessagesFilter MessagesFilter_; */
+    MessagesFilter MessagesFilter_;
 
     /**************************************************************************
      * Здесь находятся функции для работы с элементами класса DialogSettings. *

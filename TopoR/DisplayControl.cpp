@@ -108,7 +108,7 @@ bool DisplayControl::ColorNets::getColorizeViaSpecified() const { return _colori
 
 bool DisplayControl::ColorNets::getColorizeNetlineSpecified() const { return _colorizeNetline != Bool::off; }
 
-bool DisplayControl::ColorNets::ShouldSerialize_SetColors() { return _SetColors.size(); }
+bool DisplayControl::ColorNets::ShouldSerialize_SetColors() { return SetColors_.size(); }
 
 bool DisplayControl::FilterNetlines::getEnabledSpecified() const { return _enabled != Bool::off; }
 
@@ -116,6 +116,6 @@ bool DisplayControl::FilterNetlines::ShouldSerialize_Refs() {
     return {}; //_Refs.size();
 }
 
-bool DisplayControl::ShouldSerialize_LayersVisualOptions() { return _LayersVisualOptions.size(); }
+bool DisplayControl::ShouldSerialize_LayersVisualOptions() { return LayersVisualOptions_.size(); }
 
 } // namespace TopoR_PCB_Classes

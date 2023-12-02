@@ -4,35 +4,35 @@
 namespace TopoR_PCB_Classes {
 
 bool Groups::LayerGroup::ShouldSerialize_LayerRefs() {
-    return _LayerRefs.size();
+    return LayerRefs_.size();
 }
 
 QString Groups::LayerGroup::ToString() {
-    return _name;
+    return name_;
 }
 
 bool Groups::NetGroup::ShouldSerialize_NetRefs() {
-    return _NetRefs.size();
+    return NetRefs_.size();
 }
 
 bool Groups::CompGroup::ShouldSerialize_CompRefs() {
-    return _CompRefs.size();
+    return CompRefs_.size();
 }
 
 bool Groups::ShouldSerialize_LayerGroups() {
-    return _LayerGroups.size();
+    return LayerGroups_.size();
 }
 
 bool Groups::ShouldSerialize_NetGroups() {
-    return _NetGroups.size();
+    return NetGroups_.size();
 }
 
 bool Groups::ShouldSerialize_CompGroups() {
-    return _CompGroups.size();
+    return CompGroups_.size();
 }
 
 void Groups::Rename_compName(const QString& oldname, const QString& newname) {
-    /*  for(auto a: (_CompGroups.empty() ? nullptr : _CompGroups.Where([&](std::any aa) {
+    /*  for(auto a: (_CompGroups.empty() ? nullptr : CompGroups_.Where([&](std::any aa) {
               return aa::_CompRefs != nullptr;
           })))
           for(auto b: a::_CompRefs::OfType<CompInstanceRef>().Where([&](std::any bb) {

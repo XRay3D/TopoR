@@ -20,26 +20,26 @@ struct TextStyles {
     // Описание стиля надписей.
     struct TextStyle {
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string _name; */
+        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
 
         // Параметр стиля надписей: название шрифта.
-        /* [XmlAttribute("fontName")] public string _fontName; */
+        /* [XmlAttribute("fontName")] public string fontName_; */
         XmlAttr<QString> fontName;
 
         // Параметр стиля надписей: высота символов в текущих единицах.
-        /* [XmlAttribute("height", DataType = "float")] public float _height; */
+        /* [XmlAttribute("height", DataType = "float")] public float height_; */
         XmlAttr<float> height; //        float _height = 0.0F;
 
         // Параметр стиля надписей: жирность шрифта.
-        /* [XmlAttribute("bold")] public Bool _bold; */
+        /* [XmlAttribute("bold")] public Bool bold_; */
         XmlAttr<Bool> bold{};
 
         /* public bool _boldSpecified */
         bool getBoldSpecified() const;
 
         // Параметр стиля надписей: курсив.
-        /* [XmlAttribute("italic")] public Bool _italic; */
+        /* [XmlAttribute("italic")] public Bool italic_; */
         XmlAttr<Bool> italic{};
 
         /* public bool _italicSpecified */
@@ -47,11 +47,11 @@ struct TextStyles {
     };
 
     // Версия раздела.
-    /* [XmlAttribute("version")] public string _version; */
+    /* [XmlAttribute("version")] public string version_; */
     XmlAttr<QString> version;
 
     // Стили надписей.
-    /* [XmlElement("TextStyle")] public List<TextStyle> _TextStyles; */
+    /* [XmlElement("TextStyle")] public List<TextStyle> TextStyles_; */
     std::vector<TextStyle> TextStyles;
     bool ShouldSerialize_TextStyles();
 

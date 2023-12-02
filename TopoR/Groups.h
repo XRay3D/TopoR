@@ -20,14 +20,14 @@ struct Groups {
 
         // Имя объекта или ссылка на именованный объект.
 
-        /* [XmlAttribute("name")] public string _name; */
-        QString _name;
+        /* [XmlAttribute("name")] public string name_; */
+        QString name_;
 
         // Ссылка на слой или ссылка на группу слоёв.
 
         /* [XmlElement("LayerRef", typeof(LayerRef)),
-            XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public List<Object> _LayerRefs; */
-        std::vector<std::variant<LayerRef, LayerGroupRef>> _LayerRefs;
+            XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public List<Object> LayerRefs_; */
+        std::vector<std::variant<LayerRef, LayerGroupRef>> LayerRefs_;
         bool ShouldSerialize_LayerRefs();
         /**********************************************************************
          * Здесь находятся функции для работы с элементами класса LayerGroup. *
@@ -43,14 +43,14 @@ struct Groups {
 
         // Имя объекта или ссылка на именованный объект.
 
-        /* [XmlAttribute("name")] public string _name; */
-        QString _name;
+        /* [XmlAttribute("name")] public string name_; */
+        QString name_;
 
         // Ссылка на цепь или ссылка на группу цепей.
 
         /* [XmlElement("NetRef", typeof(NetRef)),
-            XmlElement("NetGroupRef", typeof(NetGroupRef))] public List<Object> _NetRefs; */
-        std::vector<std::variant<NetRef, NetGroupRef>> _NetRefs;
+            XmlElement("NetGroupRef", typeof(NetGroupRef))] public List<Object> NetRefs_; */
+        std::vector<std::variant<NetRef, NetGroupRef>> NetRefs_;
         bool ShouldSerialize_NetRefs();
     };
 
@@ -60,38 +60,38 @@ struct Groups {
 
         // Имя объекта или ссылка на именованный объект.
 
-        /* [XmlAttribute("name")] public string _name; */
-        QString _name;
+        /* [XmlAttribute("name")] public string name_; */
+        QString name_;
 
         // Ссылка на компонент на плате или ссылка на группу компонентов.
 
         /* [XmlElement("CompInstanceRef", typeof(CompInstanceRef)),
-            XmlElement("CompGroupRef", typeof(CompGroupRef))] public List<Object> _CompRefs; */
-        std::vector<std::variant<CompInstanceRef, CompGroupRef>> _CompRefs;
+            XmlElement("CompGroupRef", typeof(CompGroupRef))] public List<Object> CompRefs_; */
+        std::vector<std::variant<CompInstanceRef, CompGroupRef>> CompRefs_;
         bool ShouldSerialize_CompRefs();
     };
 
     // Версия раздела.
 
-    /* [XmlAttribute("version")] public string _version; */
-    QString _version;
+    /* [XmlAttribute("version")] public string version_; */
+    QString version_;
 
     // Группы слоёв.
 
-    /* [XmlArray("LayerGroups")][XmlArrayItem("LayerGroup")] public List<LayerGroup> _LayerGroups; */
-    std::vector<LayerGroup> _LayerGroups;
+    /* [XmlArray("LayerGroups")][XmlArrayItem("LayerGroup")] public List<LayerGroup> LayerGroups_; */
+    std::vector<LayerGroup> LayerGroups_;
     bool ShouldSerialize_LayerGroups();
 
     // Группы цепей.
 
-    /* [XmlArray("NetGroups")][XmlArrayItem("NetGroup")] public List<NetGroup> _NetGroups; */
-    std::vector<NetGroup> _NetGroups;
+    /* [XmlArray("NetGroups")][XmlArrayItem("NetGroup")] public List<NetGroup> NetGroups_; */
+    std::vector<NetGroup> NetGroups_;
     bool ShouldSerialize_NetGroups();
 
     // Группы компонентов.
 
-    /* [XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> _CompGroups; */
-    std::vector<CompGroup> _CompGroups;
+    /* [XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> CompGroups_; */
+    std::vector<CompGroup> CompGroups_;
     bool ShouldSerialize_CompGroups();
 
     /******************************************************************

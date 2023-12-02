@@ -18,41 +18,41 @@ struct Header {
     // Единицы измерений для всего файла.
     struct Units {
         // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
-        /* [XmlAttribute("dist")] public dist _dist; */
-        XmlAttr<dist> _dist;
+        /* [XmlAttribute("dist")] public dist dist_; */
+        XmlAttr<dist> dist_;
 
         // Единицы измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
-        /* [XmlAttribute("time")] public time _time; */
-        XmlAttr<time> _time;
+        /* [XmlAttribute("time")] public time time_; */
+        XmlAttr<time> time_;
     };
 
     // Название формата файла.
-    /* [XmlElement("Format")] public string _Format; */
+    /* [XmlElement("Format")] public string Format_; */
     QString Format;
 
     // Версия формата.
-    /* [XmlElement("Version")] public string _Version; */
+    /* [XmlElement("Version")] public string Version_; */
     QString Version;
 
     // Название программы, создавшей файл.
-    /* [XmlElement("Program")] public string _Program; */
+    /* [XmlElement("Program")] public string Program_; */
     QString Program;
 
     // Дата и время создания файла (в произвольной форме).
-    /* [XmlElement("Date")] public string _Date; */
+    /* [XmlElement("Date")] public string Date_; */
     QString Date;
 
     // Формат импортированного файла, из которого был получен дизайн.
-    /* [XmlElement("OriginalFormat")] public string _OriginalFormat; */
+    /* [XmlElement("OriginalFormat")] public string OriginalFormat_; */
     QString OriginalFormat;
 
     // Импортированный файл. Путь к файлу задаётся относительно каталога содержащего файл проекта.
-    /* [XmlElement("OriginalFile")] public string _OriginalFile; */
+    /* [XmlElement("OriginalFile")] public string OriginalFile_; */
     QString OriginalFile;
 
     // Единицы измерения для всего файла.
-    /* [XmlElement("Units")] public Units_Header _Units; */
-    Units _Units;
+    /* [XmlElement("Units")] public Units_Header Units_; */
+    Units Units_;
 };
 
 } // namespace TopoR_PCB_Classes

@@ -21,21 +21,21 @@ struct Layers {
     struct Layer {
 
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string _name; */
+        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
 
         // Тип слоя. Значение по умолчанию – Signal.
-        /* [XmlAttribute("type")] public layer_type _type; */
+        /* [XmlAttribute("type")] public layer_type type_; */
         XmlAttr<layer_type> type{};
 
         // Параметр слоя: слой содержит очертания компонентов.
         // <remarks>! Для сигнальных, опорных, диэлектрических и документирующих слоёв параметр compsOutline отсутствует.</remarks>
-        /* [XmlAttribute("compsOutline")] public Bool _compsOutline; */
+        /* [XmlAttribute("compsOutline")] public Bool compsOutline_; */
         std::optional<XmlAttr<Bool>> compsOutline{};
 
         // Параметр слоя: толщина.
         // <remarks>! Для документирующих слоёв и слоёв с типом Assy параметр thickness отсутствует.</remarks>
-        /* [XmlAttribute("thickness", DataType = "float")] public float _thickness; */
+        /* [XmlAttribute("thickness", DataType = "float")] public float thickness_; */
         std::optional<XmlAttr<float>> thickness{};
 
         /* public bool _compsOutlineSpecified */
@@ -62,18 +62,18 @@ struct Layers {
 
     // Версия раздела.
 
-    /* [XmlAttribute("version")] public string _version; */
+    /* [XmlAttribute("version")] public string version_; */
     XmlAttr<QString> version;
 
     // Описание слоёв в стеке. Порядок описания должен соответствовать порядку слоёв в стеке.
 
-    /* [XmlArray("StackUpLayers")][XmlArrayItem("Layer")] public List<Layer> _StackUpLayers; */
+    /* [XmlArray("StackUpLayers")][XmlArrayItem("Layer")] public List<Layer> StackUpLayers_; */
     std::vector<Layer> StackUpLayers;
     bool ShouldSerialize_StackUpLayers() { return StackUpLayers.size(); }
 
     // Описание слоёв вне стека.
 
-    /* [XmlArray("UnStackLayers")][XmlArrayItem("Layer")] public List<Layer> _UnStackLayers; */
+    /* [XmlArray("UnStackLayers")][XmlArrayItem("Layer")] public List<Layer> UnStackLayers_; */
     std::vector<Layer> UnStackLayers;
     bool ShouldSerialize_UnStackLayers() { return UnStackLayers.size(); }
 

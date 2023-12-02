@@ -17,23 +17,23 @@ struct NetList {
     struct Net {
 
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string _name; */
-        QString _name;
+        /* [XmlAttribute("name")] public string name_; */
+        QString name_;
 
         // Ссылка на контакт или вывод посадочного места (объект класса PinRef или PadRef).
         /* [XmlElement("PinRef", typeof(PinRef)),
-XmlElement("PadRef", typeof(PadRef))] public List<Object> _refs; */
-        std::vector<std::variant<PinRef, PadRef>> _refs;
+XmlElement("PadRef", typeof(PadRef))] public List<Object> refs_; */
+        std::vector<std::variant<PinRef, PadRef>> refs_;
         bool ShouldSerialize_refs();
     };
 
     // Версия раздела.
-    /* [XmlAttribute("version")] public string _version; */
-    QString _version;
+    /* [XmlAttribute("version")] public string version_; */
+    QString version_;
 
     // Описания цепей.
-    /* [XmlElement("Net")] public List<Net> _Nets; */
-    std::vector<Net> _Nets;
+    /* [XmlElement("Net")] public List<Net> Nets_; */
+    std::vector<Net> Nets_;
     bool ShouldSerialize_Nets();
 
     /*******************************************************************
