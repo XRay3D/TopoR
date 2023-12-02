@@ -5,8 +5,8 @@ auto messageHandler = qInstallMessageHandler(nullptr);
 void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message) {
     auto file = context.file;
     QMessageLogContext& context_ = const_cast<QMessageLogContext&>(context);
-    while (*file)
-        if (*file++ == '\\')
+    while(*file)
+        if(*file++ == '/')
             context_.file = file;
     messageHandler(type, context, message);
 }
@@ -32,6 +32,8 @@ int main(int argc, char* argv[]) {
         "\x1b[38;2;32;32;32m\t%{function}\t%{file} : %{line}\x1b[0m"));
 
     QApplication a(argc, argv);
+    QApplication::setOrganizationName("XrSoft");
+    QApplication::setApplicationName("TopoR_File");
     MainWindow w;
     w.show();
     return a.exec();

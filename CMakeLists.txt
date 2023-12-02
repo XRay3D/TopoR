@@ -10,7 +10,6 @@
 #*******************************************************************************/
 cmake_minimum_required(VERSION 3.20)
 
-
 project(TopoR LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -27,19 +26,19 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 add_definitions(
-    -DQT_MESSAGELOGCONTEXT# qDebug()
-    -DQT_DISABLE_DEPRECATED_BEFORE=0x060000
+-DQT_MESSAGELOGCONTEXT #qDebug()
+-DQT_DISABLE_DEPRECATED_BEFORE=0x060000
 )
 
 find_package(QT NAMES #[[Qt6]] Qt5 Core)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Xml REQUIRED)
 
 add_compile_options(
-    -fconstexpr-depth=50
-    # -fpermissive
+#-fconstexpr-depth=50
+#- fpermissive
 )
 
-# file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+#file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 # file(GLOB_RECURSE JSONS ${CMAKE_CURRENT_SOURCE_DIR}/*.json)
 # file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 # file(GLOB_RECURSE UIS ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
@@ -47,7 +46,9 @@ add_compile_options(
 include_directories(
     pfr_non_boost/include
     compile-time-regular-expressions/single-header
+    TopoR
 )
+
 
 add_executable(${PROJECT_NAME}
     # ${HEADERS}
@@ -70,47 +71,58 @@ add_executable(${PROJECT_NAME}
     # topor_settingstab.cpp
     # topor_settingstab.h
     # topor_types.h
-    Commons.cpp
-    Commons.h
-    ComponentsOnBoard.cpp
-    ComponentsOnBoard.h
-    Connectivity.cpp
-    Connectivity.h
-    Constructive.cpp
-    Constructive.h
-    DialogSettings.cpp
-    DialogSettings.h
-    DisplayControl.cpp
-    DisplayControl.h
-    Enums.h
-    Groups.cpp
-    Groups.h
-    Header.cpp
-    Header.h
-    HiSpeedRules.cpp
-    HiSpeedRules.h
-    Layers.cpp
-    Layers.h
-    LocalLibrary.cpp
-    LocalLibrary.h
-    NetList.cpp
-    NetList.h
-    Rules.cpp
-    Rules.h
-    Settings.cpp
-    Settings.h
-    TextStyles.cpp
-    TextStyles.h
-    TopoR_PCB_File.cpp
-    TopoR_PCB_File.h
-    enumerator.h
+    TopoR/Commons.cpp
+    TopoR/Commons.h
+    TopoR/ComponentsOnBoard.cpp
+    TopoR/ComponentsOnBoard.h
+    TopoR/Connectivity.cpp
+    TopoR/Connectivity.h
+    TopoR/Constructive.cpp
+    TopoR/Constructive.h
+    TopoR/Coordinates.h
+    TopoR/DialogSettings.cpp
+    TopoR/DialogSettings.h
+    TopoR/DisplayControl.cpp
+    TopoR/DisplayControl.h
+    TopoR/Enums.h
+    TopoR/Groups.cpp
+    TopoR/Groups.h
+    TopoR/Header.cpp
+    TopoR/Header.h
+    TopoR/HiSpeedRules.cpp
+    TopoR/HiSpeedRules.h
+    TopoR/Layers.cpp
+    TopoR/Layers.h
+    TopoR/LocalLibrary.cpp
+    TopoR/LocalLibrary.h
+    TopoR/NetList.cpp
+    TopoR/NetList.h
+    TopoR/Rules.cpp
+    TopoR/Rules.h
+    TopoR/Settings.cpp
+    TopoR/Settings.h
+    TopoR/TextStyles.cpp
+    TopoR/TextStyles.h
+    TopoR/TopoR_PCB_File.cpp
+    TopoR/TopoR_PCB_File.h
+    # enumerator.h
+    magicgetruntime.h
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    serializer.cpp
-    serializer.h
-    Coordinates.h
+    xmlserializer.cpp
+    xmlserializer.h
     МАН2_МСИС_V2.1.fst
+    formated_МАН2_МСИС_V2.1.fst
+    mainwindow.h
+    mainwindow.cpp
+    mainwindow.ui
+    graphicsview.h
+    graphicsview.cpp
+
+    treeitem.h
+    treemodel.h
+    treeitem.cpp
+    treemodel.cpp
+
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
@@ -119,4 +131,3 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Xml
 )
-
