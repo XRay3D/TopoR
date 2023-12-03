@@ -29,7 +29,7 @@ struct Constructive {
 
             /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
             XmlAttr<float> lineWidth;
-            float _lineWidth = 0.0F;
+            float lineWidth_ = 0.0F;
 
             // Незалитая фигура.
 
@@ -69,7 +69,7 @@ struct Constructive {
 
             /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
             XmlAttr<float> lineWidth;
-            float _lineWidth = 0.0F;
+            float lineWidth_ = 0.0F;
 
             // Описание залитой фигуры.
 
@@ -92,13 +92,11 @@ struct Constructive {
 
         /* [XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> Contours_; */
         std::vector<Shape_Contour> Contours;
-        bool ShouldSerialize_Contours();
 
         // Вырезы в плате.
 
         /* [XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> Voids_; */
         std::vector<Shape_Voids> Voids;
-        bool ShouldSerialize_Voids();
     };
 
     // Описание монтажного отверстия на плате.
@@ -109,20 +107,19 @@ struct Constructive {
 
         /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
         XmlAttr<float> angle;
-        float _angle = 0.0F;
+        float angle_ = 0.0F;
 
         // Признак фиксации.
 
         /* [XmlAttribute("fixed")] public Bool fixed_; */
-        Bool _fixed{};
+        Bool fixed_{};
 
-        /* public bool _fixedSpecified */
-        bool getFixedSpecified() const;
+        /* public bool fixedSpecified_ */
 
         // Ссылка на стек контактных площадок.
 
-        /* [XmlElement("PadstackRef")] public PadstackRef PadstackRef_; */
-        PadstackRef PadstackRef_;
+        /* [XmlElement("PadstackRef")] public PadstackRef padstackRef; */
+        PadstackRef padstackRef;
 
         // ссылка на цепь.
 
@@ -131,8 +128,8 @@ struct Constructive {
 
         // Точка привязки объекта.
 
-        /* [XmlElement("Org")] public Org Org_; */
-        Org Org_;
+        /* [XmlElement("Org")] public Org org; */
+        Org org;
 
         void Shift(float x, float y);
         void UnitsConvert(dist in_units, dist out_units);
@@ -153,11 +150,11 @@ struct Constructive {
                 // Тип запрета трассировки.
 
                 /* [XmlAttribute("role")] public role role_; */
-                role _role{};
+                role role_{};
 
-                // Ссылка на слои. См. также _LayersRefs
+                // Ссылка на слои. См. также LayersRefs_
 
-                // <remarks>! При null необходимо смотреть _LayersRefs - там описан список ссылок типа LayerRef. </remarks>
+                // <remarks>! При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef. </remarks>
 
                 /* [XmlElement("AllLayers", typeof(AllLayers)),
                     XmlElement("AllLayersInner", typeof(AllLayersInner)),
@@ -167,13 +164,12 @@ struct Constructive {
                     XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public Object LayersRef_; */
                 XmlVariant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef_;
 
-                // Ссылка на слои. См. также _LayersRef
+                // Ссылка на слои. См. также LayersRef_
 
-                // <remarks>! При null необходимо смотреть _LayersRef - там описаны ссылки остальных типов. </remarks>
+                // <remarks>! При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов. </remarks>
 
                 /* [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_; */
                 std::vector<LayerRef> LayersRefs;
-                bool ShouldSerialize_LayersRefs();
             };
 
             // Тип запрета: запрет размещения.
@@ -183,7 +179,7 @@ struct Constructive {
                 // Сторона объекта.
 
                 /* [XmlAttribute("side")] public side side_; */
-                side _side{};
+                side side_{};
             };
 
             // Тип запрета: запрет трассировки.
@@ -251,25 +247,21 @@ struct Constructive {
 
     /* [XmlArray("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> Mntholes_; */
     std::vector<MntholeInstance> Mntholes;
-    bool ShouldSerialize_Mntholes();
 
     // Детали на механических слоях.
 
     /* [XmlArray("MechLayerObjects"), DefaultValue(null)][XmlArrayItem("Detail")] public List<Detail> MechLayerObjects_; */
     std::vector<Detail> MechLayerObjects;
-    bool ShouldSerialize_MechLayerObjects();
 
     // Описание надписей.
 
     /* [XmlArray("Texts"), DefaultValue(null)][XmlArrayItem("Text")] public List<Text> Texts_; */
     std::vector<Text> Texts;
-    bool ShouldSerialize_Texts();
 
     // Описание запретов.
 
     /* [XmlArray("Keepouts"), DefaultValue(null)][XmlArrayItem("Keepout")] public List<Keepout_Сonstructive> Keepouts_; */
     std::vector<std::optional<Keepout_Сonstructive>> Keepouts;
-    bool ShouldSerialize_Keepouts();
 
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Сonstructive. *

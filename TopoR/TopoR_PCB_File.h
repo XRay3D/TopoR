@@ -20,6 +20,8 @@
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
+ *
+ * NOTE std::vector<Package> пустые пропускать и не сериализовать.
  */
 
 namespace TopoR_PCB_Classes {
@@ -27,66 +29,66 @@ namespace TopoR_PCB_Classes {
 struct TopoR_PCB_File;
 
 // Корневой тег. Включает все разделы файла.
-/* [XmlRoot("TopoR_PCB_File")] public struct  TopoR_PCB_File */
+/* [XmlRoot("TopoR_PCB_File")] */
 struct TopoR_PCB_File /*: std::true_type*/ {
 
     // Раздел «Заголовок файла».
-    /* [XmlElement("Header")] public Header Header_; */
-    Header Header_;
+    /* [XmlElement("Header")] */
+    Header header;
 
     // Раздел «Слои». (Обязательный раздел)
-    /* [XmlElement("Layers")] public Layers Layers_; */
-    Layers Layers_;
+    /* [XmlElement("Layers")] */
+    Layers layers;
 
     //  Раздел «Стили надписей».
-    /* [XmlElement("TextStyles")] public TextStyles TextStyles_; */
-    TextStyles TextStyles_;
+    /* [XmlElement("TextStyles")] */
+    TextStyles textStyles;
 
     // Раздел «Библиотечные элементы». (Обязательный раздел)
-    /* [XmlElement("LocalLibrary")] public LocalLibrary LocalLibrary_; */
-    LocalLibrary LocalLibrary_;
-
+    /* [XmlElement("LocalLibrary")] */
+    LocalLibrary localLibrary;
     // Раздел «Конструктив платы».
-    /* [XmlElement("Constructive")] public Constructive Constructive_; */
-    Constructive Constructive_;
+    /* [XmlElement("Constructive")] */
+    Constructive constructive;
 
     // Раздел «Компоненты на плате». (Обязательный раздел).
-    /* [XmlElement("ComponentsOnBoard")] public ComponentsOnBoard ComponentsOnBoard_; */
-    ComponentsOnBoard ComponentsOnBoard_;
-
+    /* [XmlElement("ComponentsOnBoard")] */
+    ComponentsOnBoard componentsOnBoard;
+#if 0
     // Раздел «Текущий список соединений».
-    /* [XmlElement("NetList")] public NetList NetList_; */
-    NetList NetList_;
+    /* [XmlElement("NetList")] */
+    NetList netList;
 
     // Раздел «Группировка объектов».
-    /* [XmlElement("Groups")] public Groups Groups_; */
-    Groups Groups_;
+    /* [XmlElement("Groups")] */
+    Groups groups;
 
     // Раздел «Правила для высокоскоростных устройств».
-    /* [XmlElement("HiSpeedRules")] public HiSpeedRules HiSpeedRules_; */
-    HiSpeedRules HiSpeedRules_;
+    /* [XmlElement("HiSpeedRules")] */
+    HiSpeedRules hiSpeedRules;
 
     // Раздел «Правила».
     // <remarks>! Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.</remarks>
-    /* [XmlElement("Rules")] public Rules Rules_; */
-    Rules Rules_;
+    /* [XmlElement("Rules")] */
+    Rules rules;
 
     // Раздел «Соединения на плате».
     // <remarks>В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.</remarks>
-    /* [XmlElement("Connectivity")] public Connectivity Connectivity_; */
-    Connectivity Connectivity_;
+    /* [XmlElement("Connectivity")] */
+    Connectivity connectivity;
 
     // Раздел «Настройки дизайна».
-    /* [XmlElement("Settings")] public Settings Settings_; */
-    Settings Settings_;
+    /* [XmlElement("Settings")] */
+    Settings settings;
 
     // Раздел «Настройки отображения».
-    /* [XmlElement("DisplayControl")] public DisplayControl DisplayControl_; */
-    DisplayControl DisplayControl_;
+    /* [XmlElement("DisplayControl")] */
+    DisplayControl displayControl;
 
     // Раздел «Настройки диалогов».
-    /* [XmlElement("DialogSettings")] public DialogSettings DialogSettings_; */
-    DialogSettings DialogSettings_;
+    /* [XmlElement("DialogSettings")] */
+    DialogSettings dialogSettings;
+#endif
 };
 
 } // namespace TopoR_PCB_Classes

@@ -2,8 +2,11 @@
 
 // #include "enumerator.h"
 #include "Enums.h"
-#include "qpoint.h"
+
+#include <QPoint>
 #include <QString>
+#include <QTransform>
+
 #include <array>
 #include <limits>
 #include <optional>
@@ -11,6 +14,7 @@
 #include <variant>
 #include <vector>
 
+class QGraphicsItem;
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
@@ -25,9 +29,12 @@ struct Overload : Ts... {
 template <typename... Ts>
 Overload(Ts...) -> Overload<Ts...>;
 
+template <typename T>
+using Optional = std::optional<T>;
+
 namespace TopoR_PCB_Classes {
 
-// struct Shift;
+struct Shift;
 struct base_coordinat;
 
 template <typename T>
@@ -58,8 +65,18 @@ struct XmlVariant : std::variant<Ts...> {
         return std::visit(std::forward<Func>(func), *this);
     }
 
+    template <typename Func>
+    auto visit(Func&& func) const {
+        return std::visit(std::forward<Func>(func), *this);
+    }
+
     template <typename... Func>
     auto visit(Overload<Func...>&& overload) {
+        return std::visit(std::forward<Overload<Func...>>(overload), *this);
+    }
+
+    template <typename... Func>
+    auto visit(Overload<Func...>&& overload) const {
         return std::visit(std::forward<Overload<Func...>>(overload), *this);
     }
 };
@@ -74,26 +91,26 @@ struct BaseRef {
 };
 
 // Ссылка на атрибут.
-struct AttributeRef /*: public BaseRef*/ {
+struct AttributeRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на тип слоя.
-struct LayerTypeRef /*: public BaseRef*/ {
+struct LayerTypeRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на группу слоёв.
-struct LayerGroupRef /*: public BaseRef*/ {
+struct LayerGroupRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на слой.
 // <remarks>! Если в дизайне определён только один слой с заданным именем, то тип слоя не указывается.</remarks>
-struct LayerRef /*: public BaseRef*/ {
+struct LayerRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 
@@ -104,55 +121,55 @@ struct LayerRef /*: public BaseRef*/ {
 };
 
 // Ссылка на тип переходного отверстия.
-struct ViastackRef /*: public BaseRef*/ {
+struct ViastackRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на стек контактных площадок.
-struct NetRef /*: public BaseRef*/ {
+struct NetRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на группу компонентов.
-struct CompGroupRef /*: public BaseRef*/ {
+struct CompGroupRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на компонент на плате.
-struct CompInstanceRef /*: public BaseRef*/ {
+struct CompInstanceRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на группу цепей.
-struct NetGroupRef /*: public BaseRef*/ {
+struct NetGroupRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на волновое сопротивление.
-struct ImpedanceRef /*: public BaseRef*/ {
+struct ImpedanceRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на сигнал.
-struct SignalRef /*: public BaseRef*/ {
+struct SignalRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на группу сигналов..
-struct SignalGroupRef /*: public BaseRef*/ {
+struct SignalGroupRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на дифференциальный сигнал.
-struct DiffSignalRef /*: public BaseRef*/ {
+struct DiffSignalRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
@@ -168,39 +185,39 @@ struct PinRef {
 };
 
 // Ссылка на контакт источника сигнала.
-struct SourcePinRef /*: public PinRef*/ {
+struct SourcePinRef /*: PinRef*/ {
     // using PinRef::PinRef;
     XmlAttr<QString> compName;
     XmlAttr<QString> pinName;
 };
 
 // Ссылка на контакт приёмника сигнала.
-struct ReceiverPinRef /*: public PinRef*/ {
+struct ReceiverPinRef /*: PinRef*/ {
     // using PinRef::PinRef;
     XmlAttr<QString> compName;
     XmlAttr<QString> pinName;
 };
 
 // Ссылка на стек контактных площадок.
-struct PadstackRef /*: public BaseRef*/ {
+struct PadstackRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на стиль надписей.
-struct TextStyleRef /*: public BaseRef*/ {
+struct TextStyleRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на схемный компонент.
-struct ComponentRef /*: public BaseRef*/ {
+struct ComponentRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
 
 // Ссылка на посадочное место.
-struct FootprintRef /*: public BaseRef*/ {
+struct FootprintRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
     XmlAttr<QString> name;
 };
@@ -212,82 +229,82 @@ struct PadRef {
     XmlAttr<QString> compName;
     // Номер контактной площадки (вывода) посадочного места.
     /* [XmlAttribute("padNum", DataType = "int")] public int padNum_; */
-    XmlAttr<int> padNum; // int _padNum = 0;
+    XmlAttr<int> padNum; // int padNum_ = 0;
 };
 // #endregion Reference Type
 
 // #region Coordinates
 struct base_coordinat {
     /* [XmlAttribute("x", DataType = "float")] public float x_; */
-    XmlAttr<float> x; // float _x = 0.0F;
+    XmlAttr<float> x;
     /* [XmlAttribute("y", DataType = "float")] public float y_; */
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
-    void Shift(float x, float y);
-    void UnitsConvert(dist in_units, dist out_units);
+    // void Shift(float x, float y);
+    // void UnitsConvert(dist in_units, dist out_units);
 };
 
 // координаты точки, вершины.
-struct Dot /*: public base_coordinat*/ {
+struct Dot /*: base_coordinat*/ {
     // using base_coordinat::base_coordinat;
-    XmlAttr<float> x; // float _x = 0.0F;
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> x;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
 };
 
 // Центр круга (окружности), овала.
-struct Center /*: public base_coordinat*/ {
+struct Center /*: base_coordinat*/ {
     // using base_coordinat::base_coordinat;
-    XmlAttr<float> x; // float _x = 0.0F;
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> x;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
 };
 
 // Начальная точка линии, дуги.
-struct Start /*: public base_coordinat*/ {
+struct Start /*: base_coordinat*/ {
     // using base_coordinat::base_coordinat;
-    XmlAttr<float> x; // float _x = 0.0F;
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> x;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
 };
 
 // Средняя точка дуги.
-struct Middle /*: public base_coordinat*/ {
+struct Middle /*: base_coordinat*/ {
     // using base_coordinat::base_coordinat;
-    XmlAttr<float> x; // float _x = 0.0F;
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> x;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
 };
 
 // Конечная точка линии, дуги.
-struct End /*: public base_coordinat*/ {
+struct End /*: base_coordinat*/ {
     // using base_coordinat::base_coordinat;
-    XmlAttr<float> x; // float _x = 0.0F;
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> x;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
 };
 
 // Точка привязки объекта.
-struct Org /*: public base_coordinat*/ {
+struct Org /*: base_coordinat*/ {
     // using base_coordinat::base_coordinat;
-    XmlAttr<float> x; // float _x = 0.0F;
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> x;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
 };
 
 // Cмещение точки привязки или объекта по осям x и y.
-struct Shift /*: public base_coordinat*/ {
+struct Shift /*: base_coordinat*/ {
     // using base_coordinat::base_coordinat;
-    XmlAttr<float> x; // float _x = 0.0F;
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> x;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
 };
 
 // Вытягивание по осям x и y.
-struct Stretch /*: public base_coordinat*/ {
+struct Stretch /*: base_coordinat*/ {
     // using base_coordinat::base_coordinat;
-    XmlAttr<float> x; // float _x = 0.0F;
-    XmlAttr<float> y; // float _y = 0.0F;
+    XmlAttr<float> x;
+    XmlAttr<float> y;
     operator QPointF() const { return {x, y}; }
 };
 
@@ -300,53 +317,57 @@ struct Stretch /*: public base_coordinat*/ {
 // };
 
 // Описание прямолинейного сегмента контура.
-
-struct SegmentLine /*: public IBaseSegment*/
-{
+struct SegmentLine /*: IBaseSegment*/ {
     // Конечная точка линии, дуги.
-    /* [XmlElement("End")] public End End_; */
-    std::optional<End> End_;
-    void Shift(float x, float y) /*override*/;
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+    /* [XmlElement("End")] public End end; */
+    std::optional<End> end;
+    // void Shift(float x, float y) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся центром. Обход против часовой стрелки.
 
-struct SegmentArcCCW : public SegmentLine { // Центр круга (окружности), овала.
-    /* [XmlElement("Center")] public Center Center_; */
-    std::optional<Center> Center_;
-    void Shift(float x, float y);
-    void UnitsConvert(dist in_units, dist out_units);
+struct SegmentArcCCW /*: SegmentLine*/ {
+    std::optional<End> end;
+    // Центр круга (окружности), овала.
+    /* [XmlElement("Center")] public Center center; */
+    std::optional<Center> center;
+    // void Shift(float x, float y);
+    // void UnitsConvert(dist in_units, dist out_units);
 };
 
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся центром. Обход по часовой стрелки.
-
-struct SegmentArcCW : public SegmentArcCCW {
-    using SegmentArcCCW::SegmentArcCCW;
+struct SegmentArcCW /*: SegmentArcCCW*/ {
+    // using SegmentArcCCW::SegmentArcCCW;
+    std::optional<End> end;
+    // Центр круга (окружности), овала.
+    /* [XmlElement("Center")] public Center center; */
+    std::optional<Center> center;
 };
 
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся углом. Отрицательный угол означает обход по часовой стрелке.
-
-struct SegmentArcByAngle : public SegmentLine {
+struct SegmentArcByAngle /*: SegmentLine*/ {
+    std::optional<End> end;
     // Задаёт угол в градусах c точностью до тысячных долей.
     /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
-    XmlAttr<float> angle; // float _angle = 0.0F;
+    XmlAttr<float> angle; // float angle_ = 0.0F;
 };
 
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся тремя точками: начало, середина и конец.
 
-struct SegmentArcByMiddle : public SegmentLine {
+struct SegmentArcByMiddle /*: SegmentLine*/ {
+    std::optional<End> end;
     // Конечная точка линии, дуги.
     /* [XmlElement("Middle")] public Middle Middle_; */
     std::optional<Middle> Middle_;
 
-    void Shift(float x, float y);
+    // void Shift(float x, float y);
 
-    void UnitsConvert(dist in_units, dist out_units);
+    // void UnitsConvert(dist in_units, dist out_units);
 };
 // #endregion Segments
 
@@ -354,111 +375,112 @@ struct SegmentArcByMiddle : public SegmentLine {
 // Интерфейс BaseFigure создан для реализации удобного доступа к одинаковым методам разных объектов
 struct IBaseFigure {
 
-    virtual void UnitsConvert(dist in_units, dist out_units) = 0;
-    virtual void Shift(float x, float y) = 0;
+    // virtual void UnitsConvert(dist in_units, dist out_units) = 0;
+    // virtual void Shift(float x, float y) = 0;
 };
 
 // Дуга, заданная центром. Обход против часовой стрелки.
-struct ArcCCW /*: public IBaseFigure*/
-{
-
+struct ArcCCW /*: IBaseFigure*/ {
     // Центр круга (окружности), овала.
-    /* [XmlElement("Center")] public Center Center_; */
-    std::optional<Center> Center_;
+    /* [XmlElement("Center")] public Center center; */
+    std::optional<Center> center;
 
     // Начальная точка линии, дуги.
-    /* [XmlElement("Start")] public Start Start_; */
-    std::optional<Start> Start_;
+    /* [XmlElement("Start")] public Start start; */
+    std::optional<Start> start;
 
     // Конечная точка линии, дуги.
-    /* [XmlElement("End")] public End End_; */
-    std::optional<End> End_;
-
-    void Shift(float x, float y) /*override*/;
-
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+    /* [XmlElement("End")] public End end; */
+    std::optional<End> end;
+    // void Shift(float x, float y) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 
 // Дуга, заданная центром. Обход по часовой стрелке.
-struct ArcCW : public ArcCCW {
-    using ArcCCW::ArcCCW;
+struct ArcCW /*: ArcCCW*/ {
+    // using ArcCCW::ArcCCW;
+    // Центр круга (окружности), овала.
+    /* [XmlElement("Center")] public Center center; */
+    std::optional<Center> center;
+    // Начальная точка линии, дуги.
+    /* [XmlElement("Start")] public Start start; */
+    std::optional<Start> start;
+    // Конечная точка линии, дуги.
+    /* [XmlElement("End")] public End end; */
+    std::optional<End> end;
 };
 
 // Дуга, заданная углом. Отрицательный угол означает обход по часовой стрелке.
-struct ArcByAngle /*: public IBaseFigure*/
+struct ArcByAngle /*: IBaseFigure*/
 {
 
     // Задаёт угол в градусах c точностью до тысячных долей.
     /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
-    XmlAttr<float> angle; // float _angle = 0.0F;
+    XmlAttr<float> angle; // float angle_ = 0.0F;
 
     // Начальная точка линии, дуги.
-    /* [XmlElement("Start")] public Start Start_; */
-    std::optional<Start> Start_;
+    /* [XmlElement("Start")] public Start start; */
+    std::optional<Start> start;
 
     // Конечная точка линии, дуги.
-    /* [XmlElement("End")] public End End_; */
-    std::optional<End> End_;
+    /* [XmlElement("End")] public End end; */
+    std::optional<End> end;
 
-    void Shift(float x, float y) /*override*/;
+    // void Shift(float x, float y) /*override*/;
 
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 
 // Дуга, заданная тремя точками: начало, середина и конец.
-struct ArcByMiddle /*: public IBaseFigure*/ {
+struct ArcByMiddle /*: IBaseFigure*/ {
     // Начальная точка линии, дуги.
-    /* [XmlElement("Start")] public Start Start_; */
-    std::optional<Start> Start_;
+    /* [XmlElement("Start")] public Start start; */
+    std::optional<Start> start;
 
     // Конечная точка линии, дуги.
     /* [XmlElement("Middle")] public Middle Middle_; */
     std::optional<Middle> Middle_;
 
     // Конечная точка линии, дуги.
-    /* [XmlElement("End")] public End End_; */
-    std::optional<End> End_;
+    /* [XmlElement("End")] public End end; */
+    std::optional<End> end;
 
-    void Shift(float x, float y) /*override*/;
+    // void Shift(float x, float y) /*override*/;
 
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 
 // Описание окружности (незалитого круга).
-struct Circle /*: public IBaseFigure*/ {
+struct Circle /*: IBaseFigure*/ {
     // Диаметр окружности, круга, овала.
     /* [XmlAttribute("diameter", DataType = "float")] public float diameter_; */
-    XmlAttr<float> diameter; // float _diameter = 0.0F;
+    XmlAttr<float> diameter; // float diameter_ = 0.0F;
 
     // Центр круга (окружности), овала.
-    /* [XmlElement("Center")] public Center Center_; */
-    std::optional<Center> Center_;
+    /* [XmlElement("Center")] public Center center; */
+    std::optional<Center> center;
 
-    void Shift(float x, float y) /*override*/;
+    // void Shift(float x, float y) /*override*/;
 
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 
 // Описание линии.
-struct Line /*: public IBaseFigure*/
-{
+struct Line /*: IBaseFigure*/ {
     // Массив координат точек, вершин.
     /* [XmlElement("Dot")] public List<Dot> Dots_; */
     std::vector<std::optional<Dot>> Dots;
-    bool ShouldSerialize_Dots();
-
-    void Shift(float x, float y) /*override*/;
-
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+    // void Shift(float x, float y) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 
 // Описание полилинии.
-struct Polyline /*: public IBaseFigure*/
+struct Polyline /*: IBaseFigure*/
 {
 
     // Начальная точка линии, дуги.
-    /* [XmlElement("Start")] public Start Start_; */
-    std::optional<Start> Start_;
+    /* [XmlElement("Start")] public Start start; */
+    std::optional<Start> start;
 
     // Сегменты.
     /* [XmlElement("SegmentLine", typeof(SegmentLine)),
@@ -468,91 +490,97 @@ XmlElement("SegmentArcCW", typeof(SegmentArcCW)),
 XmlElement("SegmentArcByMiddle", typeof(SegmentArcByMiddle))
 ] public List<Object> Segments_; */
     std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
-    bool ShouldSerialize_Segments();
-    void Shift(float x, float y) /*override*/;
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+
+    // void Shift(float x, float y) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 
 // Описание незалитого контура.
 // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
-struct Contour /*: public Polyline*/ {
+struct Contour /*: Polyline*/ {
     // using Polyline::Polyline;
-    std::optional<Start> Start_;
+    std::optional<Start> start;
     std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
 };
 
 // Описание незалитого прямоугольника. Указываются верхняя левая и правая нижняя вершины
-struct Rect : public Line {
-    using Line::Line;
+struct Rect /*: Line*/ {
+    // using Line::Line;
+    std::vector<std::optional<Dot>> Dots;
 };
 
 // Описание залитого контура.
 // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
-struct FilledContour /*: public Polyline*/ {
+struct FilledContour /*: Polyline*/ {
     // using Polyline::Polyline;
-    std::optional<Start> Start_;
+    std::optional<Start> start;
     std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
 }; // TODO: требует уточнения
 
 // Описание круга.
-struct FilledCircle : public Circle {
-    using Circle::Circle;
+struct FilledCircle /*: Circle*/ {
+    // using Circle::Circle;
+    XmlAttr<float> diameter;
+    std::optional<Center> center;
 };
 
 // Описание залитого прямоугольника.
-struct FilledRect : public Rect {
-    using Rect::Rect;
+struct FilledRect /*: Rect*/ {
+    // using Rect::Rect;
+    std::vector<std::optional<Dot>> Dots;
 };
 
 // Описание многоугольника.
 // Тег поддерживается, но является устаревшим.Следует использовать тег FilledContour.
-struct Polygon : public Line {
-    using Line::Line;
+struct Polygon /*: Line*/ {
+    // using Line::Line;
+    std::vector<std::optional<Dot>> Dots;
 };
 
 // Описание дугообразного сегмента проводника (дуга по часовой стрелке).
 // <remarks>Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.</remarks>
-struct TrackArcCW /*: public IBaseFigure*/
-{
-
+struct TrackArcCW /*: IBaseFigure*/ {
     // Центр круга (окружности), овала.
-    /* [XmlElement("Center")] public Center Center_; */
-    std::optional<Center> Center_;
+    /* [XmlElement("Center")] public Center center; */
+    std::optional<Center> center;
 
     // Конечная точка линии, дуги.
-    /* [XmlElement("End")] public End End_; */
-    std::optional<End> End_;
+    /* [XmlElement("End")] public End end; */
+    std::optional<End> end;
 
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
     /* [XmlAttribute("serpRef")] public string serpRef_; */
     XmlAttr<QString> serpRef;
 
-    void Shift(float x, float y) /*override*/;
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+    // void Shift(float x, float y) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 
 // Описание дугообразного сегмента проводника (дуга против часовой стрелки).
 // <remarks>Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.</remarks>
-struct TrackArc : public TrackArcCW {
-    using TrackArcCW::TrackArcCW;
+struct TrackArc /*: TrackArcCW*/ {
+    // using TrackArcCW::TrackArcCW;
+    std::optional<Center> center;
+    std::optional<End> end;
+    XmlAttr<QString> serpRef;
 };
 
 // Описание прямолинейного сегмента проводника.
 // <remarks>Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.</remarks>
-struct TrackLine /*: public IBaseFigure*/
+struct TrackLine /*: IBaseFigure*/
 {
 
     // Конечная точка линии, дуги.
-    /* [XmlElement("End")] public End End_; */
-    std::optional<End> End_;
+    /* [XmlElement("End")] public End end; */
+    std::optional<End> end;
 
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
     /* [XmlAttribute("serpRef")] public string serpRef_; */
     XmlAttr<QString> serpRef;
 
-    void Shift(float x, float y) /*override*/;
+    // void Shift(float x, float y) /*override*/;
 
-    void UnitsConvert(dist in_units, dist out_units) /*override*/;
+    // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
 // #endregion Figures
 
@@ -624,25 +652,25 @@ struct Thermal {
 
     // Параметр термобарьера: число спиц.! В TopoR поддерживается только одно значение – 4.
     /* [XmlAttribute("spokeNum", DataType = "int")] public int spokeNum_; */
-    XmlAttr<int> spokeNum; // int _spokeNum = 0;
+    XmlAttr<int> spokeNum; // int spokeNum_ = 0;
 
     // Параметр термобарьера: минимальное число спиц.
     /* [XmlAttribute("minSpokeNum", DataType = "int")] public int minSpokeNum_; */
-    XmlAttr<int> minSpokeNum; // int _minSpokeNum = 0;
+    XmlAttr<int> minSpokeNum; // int minSpokeNum_ = 0;
 
     // Задаёт угол в градусах c точностью до тысячных долей.
     /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
-    XmlAttr<float> angle; // float _angle = 0.0F;
+    XmlAttr<float> angle; // float angle_ = 0.0F;
 
     // Параметр термобарьера: ширина спицы.
     /* [XmlAttribute("spokeWidth", DataType = "float")] public float spokeWidth_; */
-    XmlAttr<float> spokeWidth; // float _spokeWidth = 0.0F;
+    XmlAttr<float> spokeWidth; // float spokeWidth_ = 0.0F;
 
     // Параметр термобарьера: зазор между контактной площадкой и областью металлизации.
     /* [XmlAttribute("backoff", DataType = "float")] public float backoff_; */
-    XmlAttr<float> backoff; // float _backoff = 0.0F;
+    XmlAttr<float> backoff; // float backoff_ = 0.0F;
 
-    void UnitsConvert(dist in_units, dist out_units);
+    // void UnitsConvert(dist in_units, dist out_units);
 };
 
 // Описание детали.
@@ -651,7 +679,7 @@ struct Detail {
 
     // Толщина линии.
     /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
-    XmlAttr<float> lineWidth; // float _lineWidth = 0.0F;
+    XmlAttr<float> lineWidth; // float lineWidth_ = 0.0F;
 
     // Ссылка на слой.
     /* [XmlElement("LayerRef")] public LayerRef LayerRef_; */
@@ -672,9 +700,9 @@ struct Detail {
         XmlElement("FilledContour", typeof(FilledContour))] public Object Figure_; */
     XmlVariant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Polyline, FilledContour> Figure_;
 
-    void Shift(float x, float y);
+    // void Shift(float x, float y);
 
-    void UnitsConvert(dist in_units, dist out_units);
+    // void UnitsConvert(dist in_units, dist out_units);
 };
 
 // Описание надписи.
@@ -686,17 +714,16 @@ struct Text {
 
     // Параметр надписей (ярлыков): способ выравнивания текста.
     /* [XmlAttribute("align")] public align align_; */
-    XmlAttr<align> _align{};
+    XmlAttr<align> align_{};
 
     // Задаёт угол в градусах c точностью до тысячных долей.
     /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
-    XmlAttr<float> angle; // float _angle = 0.0F;
+    XmlAttr<float> angle; // float angle_ = 0.0F;
 
     // Параметр надписей и ярлыков: зеркальность отображения.
     /* [XmlAttribute("mirror")] public Bool mirror_; */
-    XmlAttr<Bool> _mirror{};
-    /* public bool _mirrorSpecified */
-    bool getMirrorSpecified() const;
+    XmlAttr<Bool> mirror_{};
+    /* public bool mirrorSpecified_ */
 
     // Ссылка на слой.
     /* [XmlElement("LayerRef")] public LayerRef LayerRef_; */
@@ -710,13 +737,13 @@ struct Text {
     /* [XmlElement("Org")] public Org Org_; */
     std::optional<Org> Org_;
 
-    void Shift(float x, float y);
+    // void Shift(float x, float y);
 
     // TODO: конвертировать текстовые стили по ссылке
 
     // <param name="in_units"></param>
     // <param name="out_units"></param>
-    void UnitsConvert(dist in_units, dist out_units);
+    // void UnitsConvert(dist in_units, dist out_units);
 };
 
 // Сигналы воздействия правила

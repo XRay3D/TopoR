@@ -36,6 +36,7 @@ struct Xml {
     bool skipPop{};
     bool isptional{};
     bool hasValue{};
+    bool hasElem{};
 
     bool loging{0};
 

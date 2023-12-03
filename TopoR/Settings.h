@@ -19,45 +19,40 @@ struct Settings {
         // Настройка автоматической трассировки: режим трассировки.
 
         // [XmlAttribute("mode")] public mode_Autoroute mode_;
-        mode_Autoroute _mode{};
+        mode_Autoroute mode_{};
 
         // Параметр автоматической трассировки: использование функциональной эквивалентности.
         // [XmlAttribute("autoEqu")] public autoEqu autoEqu_;
-        autoEqu _autoEqu{};
+        autoEqu autoEqu_{};
 
         // Параметр автоматической трассировки: форма проводников.
         // [XmlAttribute("wireShape")] public wireShape wireShape_;
-        wireShape _wireShape{};
+        wireShape wireShape_{};
 
         // Параметр автоматической трассировки: создавать «капельки».
         // [XmlAttribute("teardrops")] public Bool teardrops_;
-        Bool _teardrops{};
-        // public bool _teardropsSpecified
-        bool getTeardropsSpecified() const;
+        Bool teardrops_{};
+        // public bool teardropsSpecified_
 
         // Параметр автоматической трассировки: ослабленный контроль зазоров.
         // [XmlAttribute("weakCheck")] public Bool weakCheck_;
-        Bool _weakCheck{};
-        // public bool _weakCheckSpecified
-        bool getWeakCheckSpecified() const;
+        Bool weakCheck_{};
+        // public bool weakCheckSpecified_
 
         // Параметр автоматической трассировки: использовать имеющуюся разводку в качестве начального варианта.
         // [XmlAttribute("takeCurLayout")] public Bool takeCurLayout_;
-        Bool _takeCurLayout{};
-        // public bool _takeCurLayoutSpecified
-        bool getTakeCurLayoutSpecified() const;
+        Bool takeCurLayout_{};
+        // public bool takeCurLayoutSpecified_
 
         // Настройка автоматической трассировки: соединять планарные контакты напрямую.
         // [XmlAttribute("directConnectSMD")] public Bool directConnectSMD_;
-        Bool _directConnectSMD{};
-        // public bool _directConnectSMDSpecified
-        bool getDirectConnectSMDSpecified() const;
+        Bool directConnectSMD_{};
+        // public bool directConnectSMDSpecified_
 
         // Настройка автоматической трассировки: не дотягивать проводник до точки привязки полигонального контакта.
         // [XmlAttribute("dontStretchWireToPolypin")] public Bool dontStretchWireToPolypin_;
-        Bool _dontStretchWireToPolypin{};
-        // public bool _dontStretchWireToPolypinSpecified
-        bool getDontStretchWireToPolypinSpecified() const;
+        Bool dontStretchWireToPolypin_{};
+        // public bool dontStretchWireToPolypinSpecified_
     };
 
     // Настройки автоматических процедур.
@@ -65,11 +60,11 @@ struct Settings {
 
         // Настройка автоматической перекладки проводников.
         // [XmlAttribute("refine")] public refine refine_;
-        refine _refine{};
+        refine refine_{};
 
         // Настройка автоматической подвижки.
         // [XmlAttribute("automove")] public automove automove_;
-        automove _automove{};
+        automove automove_{};
     };
 
     // Настройки автоматического размещения компонентов.
@@ -79,7 +74,6 @@ struct Settings {
             // Координаты точек, вершин
             // [XmlElement("Dot")] public List<Dot> Dots_;
             std::vector<Dot> Dots;
-            bool ShouldSerialize_Dots();
         };
 
         // Настройки автоматического размещения компонентов: область размещения. Область прямоугольная, задаётся двумя вершинами(верхняя левая и правая нижняя).
@@ -91,39 +85,33 @@ struct Settings {
     struct Labels_Settings {
         // Настройка ориентации ярлыков: вращать ярлык при вращении компонента.
         // [XmlAttribute("rotateWithComp")] public Bool rotateWithComp_;
-        Bool _rotateWithComp{};
-        // public bool _rotateWithCompSpecified
-        bool getRotateWithCompSpecified() const;
+        Bool rotateWithComp_{};
+        // public bool rotateWithCompSpecified_
 
         // Настройка редактирования ярлыков: использовать правила ориентации.
         // [XmlAttribute("useOrientRules")] public Bool useOrientRules_;
-        Bool _useOrientRules{};
-        // public bool _useOrientRulesSpecified
-        bool getUseOrientRulesSpecified() const;
+        Bool useOrientRules_{};
+        // public bool useOrientRulesSpecified_
 
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на верхней стороне.
         // [XmlAttribute("topHorzRotate")] public Bool topHorzRotate_;
-        Bool _topHorzRotate{};
-        // public bool _topHorzRotateSpecified
-        bool getTopHorzRotateSpecified() const;
+        Bool topHorzRotate_{};
+        // public bool topHorzRotateSpecified_
 
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на верхней стороне.
         // [XmlAttribute("topVertRotate")] public Bool topVertRotate_;
-        Bool _topVertRotate{};
-        // public bool _topVertRotateSpecified
-        bool getTopVertRotateSpecified() const;
+        Bool topVertRotate_{};
+        // public bool topVertRotateSpecified_
 
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на нижней стороне.
         // [XmlAttribute("bottomHorzRotate")] public Bool bottomHorzRotate_;
-        Bool _bottomHorzRotate{};
-        // public bool _bottomHorzRotateSpecified
-        bool getBottomHorzRotateSpecified() const;
+        Bool bottomHorzRotate_{};
+        // public bool bottomHorzRotateSpecified_
 
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на нижней стороне.
         // [XmlAttribute("bottomVertRotate")] public Bool bottomVertRotate_;
-        Bool _bottomVertRotate{};
-        // public bool _bottomVertRotateSpecified
-        bool getBottomVertRotateSpecified() const;
+        Bool bottomVertRotate_{};
+        // public bool bottomVertRotateSpecified_
     };
 
     // Версия раздела.

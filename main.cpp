@@ -1,13 +1,18 @@
 #include "mainwindow.h"
+#include "qregularexpression.h"
 #include <QApplication>
 
 auto messageHandler = qInstallMessageHandler(nullptr);
 void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message) {
     auto file = context.file;
     QMessageLogContext& context_ = const_cast<QMessageLogContext&>(context);
-    while(*file)
+    while(file && *file)
         if(*file++ == '/')
             context_.file = file;
+
+    QString data{context_.function};
+    data.replace(QRegularExpression(R"((\w+\:\:))"), "");
+    context_.function = data.toUtf8().data();
     messageHandler(type, context, message);
 }
 
@@ -29,7 +34,7 @@ int main(int argc, char* argv[]) {
         // "%{type} "
         // "%{file}:%{line} %{function} "
         "%{if-category}%{category}%{endif}%{message} "
-        "\x1b[38;2;32;32;32m\t%{function}\t%{file} : %{line}\x1b[0m"));
+        "\x1b[38;2;64;64;64m <- %{function} <- %{file} : %{line}\x1b[0m"));
 
     QApplication a(argc, argv);
     QApplication::setOrganizationName("XrSoft");

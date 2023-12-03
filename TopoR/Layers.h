@@ -38,11 +38,9 @@ struct Layers {
         /* [XmlAttribute("thickness", DataType = "float")] public float thickness_; */
         std::optional<XmlAttr<float>> thickness{};
 
-        /* public bool _compsOutlineSpecified */
-        bool getCompsOutlineSpecified() const;
+        /* public bool compsOutlineSpecified_ */
 
-        /* public bool _thicknessSpecified */
-        bool getThicknessSpecified() const;
+        /* public bool thicknessSpecified_ */
 
         /*****************************************************************
          * Здесь находятся функции для работы с элементами класса Layer. *
@@ -50,10 +48,10 @@ struct Layers {
          * ***************************************************************/
         // Layer() { }
         // Layer(const QString& name, layer_type type, Bool compsOutline, float thickness) {
-        //     _name = name;
-        //     _type = type;
-        //     _compsOutline = compsOutline;
-        //     _thickness = thickness;
+        //     name_ = name;
+        //     type_ = type;
+        //     compsOutline_ = compsOutline;
+        //     thickness_ = thickness;
         // }
 
         QString ToString() { return name; }
@@ -69,13 +67,11 @@ struct Layers {
 
     /* [XmlArray("StackUpLayers")][XmlArrayItem("Layer")] public List<Layer> StackUpLayers_; */
     std::vector<Layer> StackUpLayers;
-    bool ShouldSerialize_StackUpLayers() { return StackUpLayers.size(); }
 
     // Описание слоёв вне стека.
 
     /* [XmlArray("UnStackLayers")][XmlArrayItem("Layer")] public List<Layer> UnStackLayers_; */
     std::vector<Layer> UnStackLayers;
-    bool ShouldSerialize_UnStackLayers() { return UnStackLayers.size(); }
 
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Layers. *

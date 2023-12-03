@@ -28,7 +28,7 @@ struct Groups {
         /* [XmlElement("LayerRef", typeof(LayerRef)),
             XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public List<Object> LayerRefs_; */
         std::vector<XmlVariant<LayerRef, LayerGroupRef>> LayerRefs;
-        bool ShouldSerialize_LayerRefs();
+
         /**********************************************************************
          * Здесь находятся функции для работы с элементами класса LayerGroup. *
          * Они не являются частью формата TopoR PCB.                          *
@@ -51,7 +51,6 @@ struct Groups {
         /* [XmlElement("NetRef", typeof(NetRef)),
             XmlElement("NetGroupRef", typeof(NetGroupRef))] public List<Object> NetRefs_; */
         std::vector<XmlVariant<NetRef, NetGroupRef>> NetRefs;
-        bool ShouldSerialize_NetRefs();
     };
 
     // Описание группы компонентов.
@@ -68,7 +67,6 @@ struct Groups {
         /* [XmlElement("CompInstanceRef", typeof(CompInstanceRef)),
             XmlElement("CompGroupRef", typeof(CompGroupRef))] public List<Object> CompRefs_; */
         std::vector<XmlVariant<CompInstanceRef, CompGroupRef>> CompRefs;
-        bool ShouldSerialize_CompRefs();
     };
 
     // Версия раздела.
@@ -80,19 +78,16 @@ struct Groups {
 
     /* [XmlArray("LayerGroups")][XmlArrayItem("LayerGroup")] public List<LayerGroup> LayerGroups_; */
     std::vector<LayerGroup> LayerGroups;
-    bool ShouldSerialize_LayerGroups();
 
     // Группы цепей.
 
     /* [XmlArray("NetGroups")][XmlArrayItem("NetGroup")] public List<NetGroup> NetGroups_; */
     std::vector<NetGroup> NetGroups;
-    bool ShouldSerialize_NetGroups();
 
     // Группы компонентов.
 
     /* [XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> CompGroups_; */
     std::vector<CompGroup> CompGroups;
-    bool ShouldSerialize_CompGroups();
 
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Groups. *

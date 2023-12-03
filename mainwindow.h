@@ -20,4 +20,5 @@ public:
 private:
     Ui::MainWindow* ui;
     TopoR_PCB_Classes::TopoR_PCB_File* file;
+    QString dir;
 };

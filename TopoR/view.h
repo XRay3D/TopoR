@@ -15,28 +15,28 @@ QT_END_NAMESPACE
 
 class View;
 
-class GraphicsView : public QGraphicsView
-{
+class GraphicsView : public QGraphicsView {
     Q_OBJECT
 public:
-    GraphicsView(View *v) : QGraphicsView(), view(v) { }
+    GraphicsView(View* v)
+        : QGraphicsView()
+        , view(v) { }
 
 protected:
 #if QT_CONFIG(wheelevent)
-    void wheelEvent(QWheelEvent *) override;
+    void wheelEvent(QWheelEvent*) override;
 #endif
 
 private:
-    View *view;
+    View* view;
 };
 
-class View : public QFrame
-{
+class View : public QFrame {
     Q_OBJECT
 public:
-    explicit View(const QString &name, QWidget *parent = nullptr);
+    explicit View(const QString& name, QWidget* parent = nullptr);
 
-    QGraphicsView *view() const;
+    QGraphicsView* view() const;
 
 public slots:
     void zoomIn();
@@ -55,16 +55,16 @@ private slots:
     void rotateRight();
 
 private:
-    GraphicsView *graphicsView;
-    QLabel *label;
-    QLabel *label2;
-    QToolButton *selectModeButton;
-    QToolButton *dragModeButton;
-    QToolButton *antialiasButton;
-    QToolButton *printButton;
-    QToolButton *resetButton;
-    QSlider *zoomSlider;
-    QSlider *rotateSlider;
+    GraphicsView* graphicsView;
+    QLabel* label;
+    QLabel* label2;
+    QToolButton* selectModeButton;
+    QToolButton* dragModeButton;
+    QToolButton* antialiasButton;
+    QToolButton* printButton;
+    QToolButton* resetButton;
+    QSlider* zoomSlider;
+    QSlider* rotateSlider;
 };
 
 #endif // VIEW_H

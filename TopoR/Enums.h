@@ -15,7 +15,7 @@ namespace TopoR_PCB_Classes {
 using std::operator""sv;
 
 template <class Ty>
-inline constexpr bool isEnum = false;
+inline constexpr bool hasStrings = false;
 
 namespace Impl {
 
@@ -52,19 +52,19 @@ inline consteval auto tokenize_enum(sv base) {
     };                                                                                 \
     inline auto operator+(Enum e) noexcept { return std::underlying_type_t<Enum>(e); } \
     template <>                                                                        \
-    inline constexpr auto isEnum<Enum> = true;                                         \
+    inline constexpr auto hasStrings<Enum> = true;                                     \
     template <>                                                                        \
     inline constexpr auto Impl::Tokens<Enum> = Impl::tokenize_enum<Impl::enum_size(#__VA_ARGS__), Enum>(#__VA_ARGS__);
 
 template <class E>
-    requires isEnum<E>
+    requires hasStrings<E>
 inline constexpr auto enumToString(E e) {
     auto it = std::ranges::find(Impl::Tokens<E>, e, &std::pair<Impl::sv, E>::second);
     return it == Impl::Tokens<E>.end() ? Impl::sv{} : it->first;
 }
 
 template <class E>
-    requires isEnum<E>
+    requires hasStrings<E>
 inline constexpr E stringToEnum(Impl::sv str) {
     auto it = std::ranges::find(Impl::Tokens<E>, str, &std::pair<Impl::sv, E>::first);
     return it == Impl::Tokens<E>.end()
@@ -73,7 +73,7 @@ inline constexpr E stringToEnum(Impl::sv str) {
 }
 
 template <class E>
-inline constexpr Impl::sv enumToString(E e) { return "!!!"; }
+inline constexpr Impl::sv enumToString(E e) { return "!!!"sv; }
 template <class E>
 inline constexpr E stringToEnum(Impl::sv str) { return E(std::numeric_limits<std::underlying_type_t<E>>::max()); }
 
@@ -107,7 +107,7 @@ ENUM(align,
     /* [XmlEnum("RB")] RB */
     RB)
 
-static_assert(isEnum<align>);
+static_assert(hasStrings<align>);
 
 // Параметр автоматической трассировки: использование функциональной эквивалентности. Значение по умолчанию – None.
 ENUM(autoEqu,

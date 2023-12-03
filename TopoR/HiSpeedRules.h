@@ -26,7 +26,7 @@ struct HiSpeedRules {
 
             /* [XmlAttribute("width", DataType = "float")] public float width_; */
             XmlAttr<float> width;
-            float _width = 0.0F;
+            float width_ = 0.0F;
 
             // Ссылка на слой.
 
@@ -43,13 +43,12 @@ struct HiSpeedRules {
 
         /* [XmlAttribute("Z0", DataType = "float")] public float z0_; */
         XmlAttr<float> Z0;
-        float _z0 = 0.0F;
+        float z0_ = 0.0F;
 
         // Правило разводки сигнала для слоя.
 
         /* [XmlElement("LayerRule")] public List<LayerRule_Impendance> LayerImpedanceRules_; */
         std::vector<LayerRule_Impendance> LayerImpedanceRules;
-        bool ShouldSerialize_LayerImpedanceRules();
     };
 
     // Волновое сопротивление и правила разводки сигналов по слоям для дифференциальных сигналов.
@@ -60,13 +59,13 @@ struct HiSpeedRules {
 
             /* [XmlAttribute("width", DataType = "float")] public float width_; */
             XmlAttr<float> width;
-            float _width = 0.0F;
+            float width_ = 0.0F;
 
             // Параметр правила разводки дифференциальных пар: зазор между проводниками пары.
 
             /* [XmlAttribute("gap", DataType = "float")] public float gap_; */
             XmlAttr<float> gap;
-            float _gap = 0.0F;
+            float gap_ = 0.0F;
 
             // Ссылка на слой.
 
@@ -83,13 +82,12 @@ struct HiSpeedRules {
 
         /* [XmlAttribute("Z0", DataType = "float")] public float z0_; */
         XmlAttr<float> Z0;
-        float _z0 = 0.0F;
+        float z0_ = 0.0F;
 
         // Правило разводки дифференциальной пары для слоя.
 
         /* [XmlElement("LayerRule")] public List<LayerRule_ImpendanceDiff> LayerImpedanceDiffRules_; */
         std::vector<LayerRule_ImpendanceDiff> LayerImpedanceDiffRules;
-        bool ShouldSerialize_LayerImpedanceDiffRules();
     };
 
     // Описание сигнального кластера цепей.
@@ -102,7 +100,6 @@ struct HiSpeedRules {
 
             /* [XmlElement("PinRef")] public List<PinRef> PinRefs_; */
             std::vector<PinRef> PinRefs;
-            bool ShouldSerialize_PinRefs();
         };
 
         // Описание сигнала.
@@ -122,10 +119,6 @@ struct HiSpeedRules {
 
             /* [XmlArray("Components")][XmlArrayItem("CompInstanceRef")] public List<CompInstanceRef> Components_; */
             std::vector<CompInstanceRef> Components;
-            /*   public bool ShouldSerialize_Components()
-               {
-                   return _Components?.Count > 0;
-               }*/
         };
 
         // Ссылка на волновое сопротивление.
@@ -142,9 +135,9 @@ struct HiSpeedRules {
 
         /* [XmlArray("Nets")][XmlArrayItem("NetRef")] public List<NetRef> Nets_; */
         std::vector<NetRef> Nets;
-        /*     public bool ShouldSerialize_Nets()
+        /*     public
              {
-                 return _Nets?.Count > 0;
+                 return Nets_?.Count > 0;
              }
         */
 
@@ -152,9 +145,9 @@ struct HiSpeedRules {
 
         /* [XmlArray("PinPairs")][XmlArrayItem("PinPair")] public List<PinPair> PinPairs_; */
         std::vector<PinPair> PinPairs;
-        /*   public bool ShouldSerialize_PinPairs()
+        /*   public
            {
-               return _PinPairs?.Count > 0;
+               return PinPairs_?.Count > 0;
            }
         */
 
@@ -162,9 +155,9 @@ struct HiSpeedRules {
 
         /* [XmlElement("Signal")] public List<Signal> Signals_; */
         std::vector<Signal> Signals;
-        /*    public bool ShouldSerialize_Signals()
+        /*    public
             {
-                return _Signals?.Count > 0;
+                return Signals_?.Count > 0;
             }
         */
     };
@@ -181,7 +174,7 @@ struct HiSpeedRules {
 
         /* [XmlAttribute("mismatch", DataType = "float")] public float mismatch_; */
         XmlAttr<float> mismatch;
-        float _mismatch = 0.0F;
+        float mismatch_ = 0.0F;
 
         // Ссылка на волновое сопротивление.
 
@@ -192,7 +185,6 @@ struct HiSpeedRules {
 
         /* [XmlElement("SignalRef")] public List<SignalRef> SignalRefs_; */
         std::vector<SignalRef> SignalRefs;
-        bool ShouldSerialize_SignalRefs();
     };
 
     // Описание группы сигналов.
@@ -207,7 +199,6 @@ struct HiSpeedRules {
             XmlElement("DiffSignalRef", typeof(DiffSignalRef)),
             XmlElement("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> References_; */
         std::vector<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> References;
-        bool ShouldSerialize_References();
     };
 
     // Описание правил выравнивания задержек.
@@ -219,15 +210,14 @@ struct HiSpeedRules {
             // Флаг применения правила.
 
             /* [XmlAttribute("enabled")] public Bool enabled_; */
-            Bool _enabled{};
+            Bool enabled_{};
 
-            /* public bool _enabledSpecified */
-            bool getEnabledSpecified() const;
+            /* public bool enabledSpecified_ */
 
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
 
             /* [XmlAttribute("valueType")] public valueType valueType_; */
-            valueType _valueType{};
+            valueType valueType_{};
 
             // Параметр правила выравнивания задержек внутри группы цепей: допуск.
 
@@ -235,13 +225,12 @@ struct HiSpeedRules {
 
             /* [XmlAttribute("tolerance", DataType = "float")] public float tolerance_; */
             XmlAttr<float> tolerance;
-            float _tolerance = 0.0F;
+            float tolerance_ = 0.0F;
 
             // Объекты воздействия правила.
 
             /* [XmlArray("ObjectsAffected")][XmlArrayItem("SignalGroupRef")] public List<SignalGroupRef> ObjectsAffected_; */
             std::vector<SignalGroupRef> ObjectsAffected;
-            bool ShouldSerialize_ObjectsAffected();
         };
 
         // Описание правила задания абсолютного значения задержки.
@@ -250,15 +239,14 @@ struct HiSpeedRules {
             // Флаг применения правила.
 
             /* [XmlAttribute("enabled")] public Bool enabled_; */
-            Bool _enabled{};
+            Bool enabled_{};
 
-            /* public bool _enabledSpecified */
-            bool getEnabledSpecified() const;
+            /* public bool enabledSpecified_ */
 
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
 
             /* [XmlAttribute("valueType")] public valueType valueType_; */
-            XmlAttr<valueType> _valueType{};
+            XmlAttr<valueType> valueType_{};
 
             // Значение константы в правилах выравнивания задержек.
 
@@ -287,7 +275,6 @@ struct HiSpeedRules {
                                              XmlArrayItem("DiffSignalRef", typeof(DiffSignalRef)),
                                              XmlArrayItem("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> ObjectsAffected_; */
             std::vector<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
-            bool ShouldSerialize_ObjectsAffected();
         };
 
         // Описание правила взаимного выравнивания задержек.
@@ -298,15 +285,14 @@ struct HiSpeedRules {
             // Флаг применения правила.
 
             /* [XmlAttribute("enabled")] public Bool enabled_; */
-            Bool _enabled{};
+            Bool enabled_{};
 
-            /* public bool _enabledSpecified */
-            bool getEnabledSpecified() const;
+            /* public bool enabledSpecified_ */
 
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
 
             /* [XmlAttribute("valueType")] public valueType valueType_; */
-            valueType _valueType{};
+            valueType valueType_{};
 
             // Значение константы в правилах выравнивания задержек.
 
@@ -314,7 +300,7 @@ struct HiSpeedRules {
 
             /* [XmlAttribute("constant", DataType = "float")] public float constant_; */
             XmlAttr<float> constant;
-            float _constant = 0.0F;
+            float constant_ = 0.0F;
 
             // Параметр правила выравнивания задержек: нижний допуск.
 
@@ -322,7 +308,7 @@ struct HiSpeedRules {
 
             /* [XmlAttribute("toleranceUnder", DataType = "float")] public float toleranceUnder_; */
             XmlAttr<float> toleranceUnder;
-            float _toleranceUnder = 0.0F;
+            float toleranceUnder_ = 0.0F;
 
             // Параметр правила выравнивания задержек: верхний допуск.
 
@@ -330,7 +316,7 @@ struct HiSpeedRules {
 
             /* [XmlAttribute("toleranceOver", DataType = "float")] public float toleranceOver_; */
             XmlAttr<float> toleranceOver;
-            float _toleranceOver = 0.0F;
+            float toleranceOver_ = 0.0F;
 
             // Первый объект воздействия правила взаимного выравнивания задержек.
 
@@ -347,13 +333,11 @@ struct HiSpeedRules {
 
         /* [XmlElement("DelayEqual")] public List<DelayEqual> DelayEquals_; */
         std::vector<DelayEqual> DelayEquals;
-        bool ShouldSerialize_DelayEquals();
 
         // Правила задания абсолютного значения задержки.
 
         /* [XmlElement("DelayConstant")] public List<DelayConstant> DelayConstants_; */
         std::vector<DelayConstant> DelayConstants;
-        bool ShouldSerialize_DelayConstants();
 
         // Правила взаимного выравнивания задержек.
 
@@ -361,7 +345,6 @@ struct HiSpeedRules {
 
         /* [XmlElement("DelayRelation")] public List<DelayRelation> DelayRelations_; */
         std::vector<DelayRelation> DelayRelations;
-        bool ShouldSerialize_DelayRelations();
     };
 
     // Настройки поиска сигналов.
@@ -373,10 +356,9 @@ struct HiSpeedRules {
             // Флаг применения правила.
 
             /* [XmlAttribute("enabled")] public Bool enabled_; */
-            Bool _enabled{};
+            Bool enabled_{};
 
-            /* public bool _enabledSpecified */
-            bool getEnabledSpecified() const;
+            /* public bool enabledSpecified_ */
 
             // Параметр правила именования цепей дифференциальных сигналов: подстрока, определяющая цепь позитивного сигнала.
 
@@ -396,28 +378,26 @@ struct HiSpeedRules {
 
             /* [XmlAttribute("minPinsNumber", DataType = "int")] public int minPinsNumber_; */
             XmlAttr<int> minPinsNumber;
-            int _minPinsNumber = 0;
+            int minPinsNumber_ = 0;
 
             // Cсылки на цепи.
 
             /* [XmlElement("NetRef")] public List<NetRef> NetRefs_; */
             std::vector<NetRef> NetRefs;
-            bool ShouldSerialize_NetRefs();
         };
 
         // Максимальное число цепей в сигнальном кластере. Параметр используется при автоматическом определении цепей сигнального кластера.
 
         /* [XmlAttribute("maxNetsInCluster", DataType = "int")] public int maxNetsInCluster_; */
         XmlAttr<int> maxNetsInCluster;
-        int _maxNetsInCluster = 0;
+        int maxNetsInCluster_ = 0;
 
         // Автоматически задавать связи.
 
         /* [XmlAttribute("createPinPairs")] public Bool createPinPairs_; */
-        Bool _createPinPairs{};
+        Bool createPinPairs_{};
 
-        /* public bool _createPinPairsSpecified */
-        bool getCreatePinPairsSpecified() const;
+        /* public bool createPinPairsSpecified_ */
 
         // Правила именования цепей дифференциальных сигналов.
 
@@ -425,7 +405,6 @@ struct HiSpeedRules {
 
         /* [XmlArray("RulesDiffSignalNetsNames")][XmlArrayItem("RuleDiffSignalNetsNames")] public List<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames_; */
         std::vector<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames;
-        bool ShouldSerialize_RulesDiffSignalNetsNames();
 
         // Список цепей, исключённых из поиска сигналов.
 
@@ -443,25 +422,21 @@ struct HiSpeedRules {
     /* [XmlArray("RulesImpedances")][XmlArrayItem("Impedance", typeof(Impedance)),
 XmlArrayItem("ImpedanceDiff", typeof(ImpedanceDiff))] public List<Object> RulesImpedances_; */
     std::vector<XmlVariant<Impedance, ImpedanceDiff>> RulesImpedances;
-    bool ShouldSerialize_RulesImpedances();
 
     // Сигнальные кластеры цепей.
 
     /* [XmlArray("SignalClusters")][XmlArrayItem("SignalCluster")] public List<SignalCluster> SignalClusters_; */
     std::vector<SignalCluster> SignalClusters;
-    bool ShouldSerialize_SignalClusters();
 
     // Дифференциальные сигналы.
 
     /* [XmlArray("DiffSignals")][XmlArrayItem("DiffSignal")] public List<DiffSignal> DiffSignals_; */
     std::vector<DiffSignal> DiffSignals;
-    bool ShouldSerialize_DiffSignals();
 
     // Группы сигналов.
 
     /* [XmlArray("SignalGroups")][XmlArrayItem("SignalGroup")] public List<SignalGroup> SignalGroups_; */
     std::vector<SignalGroup> SignalGroups;
-    bool ShouldSerialize_SignalGroups();
 
     // Правила выравнивания задержек.
 

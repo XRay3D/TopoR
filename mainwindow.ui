@@ -20,10 +20,20 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QTableView" name="tableView"/>
+      <widget class="QPlainTextEdit" name="plainTextEdit">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="plainText">
+        <string notr="true"/>
+       </property>
+      </widget>
       <widget class="GraphicsView" name="graphicsView"/>
-      <widget class="QPlainTextEdit" name="plainTextEdit"/>
-      <widget class="QTreeView" name="treeView"/>
+      <widget class="QTreeView" name="treeView">
+       <property name="animated">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>

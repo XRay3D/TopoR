@@ -29,21 +29,19 @@ struct TextStyles {
 
         // Параметр стиля надписей: высота символов в текущих единицах.
         /* [XmlAttribute("height", DataType = "float")] public float height_; */
-        XmlAttr<float> height; //        float _height = 0.0F;
+        XmlAttr<float> height; //        float height_ = 0.0F;
 
         // Параметр стиля надписей: жирность шрифта.
         /* [XmlAttribute("bold")] public Bool bold_; */
         XmlAttr<Bool> bold{};
 
-        /* public bool _boldSpecified */
-        bool getBoldSpecified() const;
+        /* public bool boldSpecified_ */
 
         // Параметр стиля надписей: курсив.
         /* [XmlAttribute("italic")] public Bool italic_; */
         XmlAttr<Bool> italic{};
 
-        /* public bool _italicSpecified */
-        bool getItalicSpecified() const;
+        /* public bool italicSpecified_ */
     };
 
     // Версия раздела.
@@ -53,7 +51,6 @@ struct TextStyles {
     // Стили надписей.
     /* [XmlElement("TextStyle")] public List<TextStyle> TextStyles_; */
     XmlAarray<TextStyle> TextStyles;
-    bool ShouldSerialize_TextStyles();
 
     /**********************************************************************
      * Здесь находятся функции для работы с элементами класса TextStyles. *

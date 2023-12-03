@@ -6,13 +6,13 @@
  * ***************************************************************/
 namespace TopoR_PCB_Classes {
 
-bool Layers::Layer::getCompsOutlineSpecified() const {
-    return type == layer_type::Assy;
-}
+// bool Layers::Layer::getCompsOutlineSpecified() const {
+//     return type == layer_type::Assy;
+// }
 
-bool Layers::Layer::getThicknessSpecified() const {
-    return type != layer_type::Assy;
-}
+// bool Layers::Layer::getThicknessSpecified() const {
+//     return type != layer_type::Assy;
+// }
 
 bool Layers::LayerStackUpContains(LayerRef lref) {
     return /*(_StackUpLayers.empty() ? nullptr : StackUpLayers.Where([&](std::any r) {

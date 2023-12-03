@@ -30,16 +30,16 @@ inline consteval auto trim(sv str) {
         // return std::set{' ', ',', '\f', '\n', '\r', '\t', '\v'}.contains(ch);
         return ch == ' ' || ch == ',' || ch == '\f' || ch == '\n' || ch == '\r' || ch == '\t' || ch == '\v';
     };
-    while (is_space(str.front())) str = str.substr(1);
-    while (is_space(str.back())) str = str.substr(0, str.size() - 1);
+    while(is_space(str.front())) str = str.substr(1);
+    while(is_space(str.back())) str = str.substr(0, str.size() - 1);
     return str;
 };
 
 template <class E>
 inline consteval auto to_num(sv str) {
     std::underlying_type_t<E> val{};
-    for (auto var: str) {
-        if (var == '-') continue;
+    for(auto var: str) {
+        if(var == '-') continue;
         val *= 10, val += var - '0';
     }
     return str.starts_with('-') ? -val : val;
@@ -53,12 +53,12 @@ inline consteval auto tokenize_enum(sv base) {
     std::array<std::pair<sv, T>, N> tokens;
     std::underlying_type_t<T> val{};
     sv name;
-    for (auto&& word: ranges::views::split(base, ", "sv)) {
-        for (int i{}; auto&& tok: ranges::views::split(word, "="sv)) {
+    for(auto&& word: ranges::views::split(base, ", "sv)) {
+        for(int i{}; auto&& tok: ranges::views::split(word, "="sv)) {
             sv token{tok.begin(), tok.end()};
-            if (!i)
+            if(!i)
                 name = trim(token);
-            else if (token.size())
+            else if(token.size())
                 val = to_num<T>(trim(token));
             ++i;
         }
@@ -136,9 +136,8 @@ inline constexpr E stringToEnum(Impl::sv str) {
 
 std::vector<std::string_view> parse(const char* args) {
     std::vector<std::string_view> ret;
-    for (auto&& var: ctre::range<R"(\s*(\w+)\s*.*?)">(args)) {
+    for(auto&& var: ctre::range<R"(\s*(\w+)\s*.*?)">(args))
         ret.emplace_back(var.to_view());
-    }
     return ret;
 }
 
@@ -149,9 +148,8 @@ std::map<T, std::string_view> make_map(const char* text, Ts... args) {
     auto k = keys.cbegin();
     auto v = vals.cbegin();
     std::map<T, std::string_view> r;
-    for (; k != keys.cend(); k++, v++) {
+    for(; k != keys.cend(); k++, v++)
         r.emplace(*k, *v);
-    }
     return r;
 }
 

@@ -128,7 +128,7 @@ constexpr auto get_at(const T& pod, const index_t idx) { return detail::get_impl
 
 template <typename T>
 QVariant toVariant(const T& val) {
-    return {};//QVariant::fromValue(val);
+    return {}; // QVariant::fromValue(val);
 }
 
 namespace detail {

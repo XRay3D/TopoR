@@ -13,9 +13,10 @@ using namespace TopoR_PCB_Classes;
 
 #if __has_include(<cxxabi.h>)
 #include <cxxabi.h>
-QString demangle(const std::type_info& ti) {
+template <typename T>
+QString typeName(const T& = {}) {
     int status;
-    char* const realname = abi::__cxa_demangle(ti.name(), NULL, NULL, &status);
+    char* const realname = abi::__cxa_demangle(typeid(T).name(), NULL, NULL, &status);
     QString ret{realname};
     if(auto&& [whole, stl, name] = ctre::match<R"(std::(\w+)<.+:(\w+),.+)">(realname); whole)
         ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
@@ -41,6 +42,7 @@ Xml::Xml(const QString& name) {
     item->itemData[1] = "Value";
     item->itemData[2] = "IsAttr";
     item->itemData[3] = "Type";
+    item->itemData[4] = "Line #";
     QFile file{name};
     if(!file.open(QIODevice::ReadOnly)) {
         qWarning() << file.errorString();
@@ -73,28 +75,31 @@ QDomElement Xml::top() const {
 auto Xml::value(sl sl_) -> QString {
     QString str;
     auto item = new TreeItem;
-    tree->addItem(item);
-    tree->childItems.back()->itemData[3] = names.front();
-    tree->childItems.back()->itemData[0] = top().tagName();
-    tree->childItems.back()->itemData[2] = isAttr ? "Attribute" : "Element";
+
     if(isAttr) {
         for(auto&& name: names)
             if(str = top().attribute(name); str.size()) {
+                tree->addItem(new TreeItem);
                 tree->childItems.back()->itemData[0] = name;
                 tree->childItems.back()->itemData[1] = str;
+                tree->childItems.back()->itemData[2] = "Attribute";
+                tree->childItems.back()->itemData[3] = names.front();
+                tree->childItems.back()->itemData[4] = top().lineNumber();
                 break;
             }
     } else {
         str = top().text();
-        tree->childItems.back()->itemData[1] = str;
+        tree->itemData[0] = top().tagName();
+        tree->itemData[1] = str;
+        tree->itemData[2] = "Element";
+        tree->itemData[3] = names.front();
+        tree->itemData[4] = top().lineNumber();
     }
-    // qWarning() << str << isAttr << sl_.function_name();
     hasValue = str.size();
     return str;
 }
 
 void Xml::pop(sl sl_) {
-    if(loging) qWarning() << "3> stack" << stack.size() << names << sl_.function_name();
 
     if(isAttr) return;
     if(skipPop) {
@@ -105,13 +110,9 @@ void Xml::pop(sl sl_) {
 
     stack.pop();
     tree = tree->parent();
-
-    if(loging) qWarning() << "-< stack" << stack.size() << names << sl_.function_name();
 }
 
 bool Xml::push(sl sl_) {
-    if(loging) qWarning() << "1> stack" << stack.size() << names << sl_.function_name();
-
     if(skipPushArray || isAttr) {
         skipPushArray = false;
         return true;
@@ -127,27 +128,23 @@ bool Xml::push(sl sl_) {
     };
     QDomNode node = getNode(stack.empty() ? doc : stack.top());
     if(node.isNull()) {
-        qWarning() << names << sl_.function_name();
-        return skipPop = std::ranges::find(names, top().tagName()) != names.end();
+        qWarning() << "not found line#" << top().lineNumber() << names; //<< sl_.function_name();
+        return hasElem = skipPop = std::ranges::find(names, top().tagName()) != names.end();
     } else {
         stack.push(node);
-
-        tree->addItem(new TreeItem);
-        tree = tree->childItems.back();
+        tree = tree->addItem(new TreeItem);
         tree->itemData[0] = top().tagName();
+        tree->itemData[4] = top().lineNumber();
     }
-    if(loging) qWarning() << "R> stack" << stack.size() << names << sl_.function_name();
-    return !node.isNull();
+    return hasElem = !node.isNull();
 }
 
 void Xml::push(const QDomNode& node, sl sl_) {
-    if(loging) qWarning() << "F> stack" << stack.size() << names << sl_.function_name();
     skipPushArray = true;
     stack.push(node);
-
-    tree->addItem(new TreeItem);
-    tree = tree->childItems.back();
+    tree = tree->addItem(new TreeItem);
     tree->itemData[0] = top().tagName();
+    tree->itemData[4] = top().lineNumber();
 }
 
 QString i(int i = {}) {
@@ -186,141 +183,140 @@ QDebug operator<<(QDebug d, std::set<QString> c) {
 
 template <typename T>
     requires(std::is_standard_layout_v<T> && std::is_aggregate_v<T>)
-void read(Xml& xml, T& str) {
-    xml.names = {demangle(typeid(T))};
-    if(!xml.push()) return;
+bool read(Xml& xml, T& str) {
+    xml.names = {typeName<T>()};
+    if(!xml.push()) return false;
     //  qWarning() << xml.top().nodeName() << xml.top().nodeValue();
-    xml.out << demangle(typeid(T)) << " {\n";
+    xml.out << typeName<T>() << " {\n";
     i(+1);
-    read(xml, str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
+    bool ok = read(xml, str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
     xml.out << i(-1) << "}";
     xml.pop();
+    return ok;
 }
 
 template <size_t Is, typename T>
-void readField(Xml& xml, T& str) {
+bool readField(Xml& xml, T& str) {
     auto name = pfr::get_name<Is, T>();
     xml.names = {
-        demangle(typeid(pfr::get<Is>(str))),
+        typeName(typeid(pfr::get<Is>(str))),
         QString::fromUtf8(name.data(), name.size()),
     };
     auto it = xml.names.begin();
     xml.out << i() << *it++ << "<" << *it << ">";
     xml.out << " = ";
-    read(xml, pfr::get<Is>(str));
+    bool ok = read(xml, pfr::get<Is>(str));
     xml.out << '\n';
+    return ok;
 }
 
 template <typename T, size_t... Is>
     requires(std::is_standard_layout_v<T> && std::is_aggregate_v<T>)
-void read(Xml& xml, T& str, std::index_sequence<Is...>) {
-    (readField<Is>(xml, str), ...);
+bool read(Xml& xml, T& str, std::index_sequence<Is...>) {
+    int ok{};
+    ((ok |= readField<Is>(xml, str)), ...);
+    return ok;
 }
 
-inline void read(Xml& xml, QString& str) {
-    if(!xml.push()) return;
+inline bool read(Xml& xml, QString& str) {
+    if(!xml.push()) return false;
     xml.out << '"' << (str = xml.value()) << '"';
     xml.pop();
+    return xml.hasValue;
 }
 
-inline void read(Xml& xml, std::string& sv) {
-    xml.out << '"' << QByteArray{sv.data(), static_cast<int>(sv.size())} << '"';
-}
+// inline bool read(Xml& xml, std::string& sv) {
+//     xml.out << '"' << QByteArray{sv.data(), static_cast<int>(sv.size())} << '"';
+//     return true;
+// }
 
 template <typename T>
     requires std::is_arithmetic_v<T>
-void read(Xml& xml, T& value) {
+bool read(Xml& xml, T& value) {
     xml.out << '"' << (value = QVariant{xml.value()}.value<T>()) << '"';
+    return xml.hasValue;
 }
 
 template <typename Enum>
     requires std::is_enum_v<Enum> // isEnum<Enum>
-void read(Xml& xml, Enum& e) {
+bool read(Xml& xml, Enum& e) {
     e = stringToEnum<Enum>(xml.value().toStdString());
     xml.out << enumToString(e) << "{" << +e << "}";
+    return xml.hasValue;
 }
 
 template <typename T>
-void read(Xml& xml, std::optional<T>& optional) {
+bool read(Xml& xml, std::optional<T>& optional) {
     T value{};
-    xml.names.front() = demangle(typeid(T));
-    read(xml, value);
-    if(xml.hasValue)
+    xml.names.front() = typeName<T>();
+    bool ok = read(xml, value);
+    if(ok && xml.hasValue)
         optional = value;
+    return ok && xml.hasValue;
 }
 
 template <typename T>
-void read(Xml& xml, XmlAttr<T>& optional) {
+bool read(Xml& xml, XmlAttr<T>& optional) {
     xml.isAttr = true;
-    xml.names.front() = demangle(typeid(T));
-    read(xml, optional.value);
+    xml.names.front() = typeName<T>();
+    bool ok = read(xml, optional.value);
     xml.isAttr = false;
+    return ok;
 }
 
 template <typename... Ts>
-void read(Xml& xml, XmlVariant<Ts...>& variant) { // FIXME variant
-    auto reader = [&xml, &variant]<typename T>(T&& val) {
-        if(xml.top().tagName() == demangle(typeid(T))) {
-            qInfo() << xml.top().tagName();
-            read(xml, val);
-            variant = val;
-        }
+bool read(Xml& xml, XmlVariant<Ts...>& variant) { // FIXME variant
+
+    int ctr{};
+    auto reader = [&]<typename T>(T&& val) {
+        qInfo() << "line#" << xml.top().lineNumber() << xml.top().tagName();
+        if(xml.top().tagName() == typeName<T>() && read(xml, val))
+            ++ctr, variant = val;
+        else if(read(xml, val) /*; xml.hasElem*/)
+            ++ctr, variant = val;
     };
     (reader(Ts{}), ...);
+    qInfo() << ctr << xml.top().tagName() << xml.top().lineNumber();
+    // assert(ctr < 2);
+    return ctr;
 }
 
 template <typename T>
-void read(Xml& xml, std::vector<T>& vector) { // FIXME vector
-    // loging = true;
+bool read(Xml& xml, std::vector<T>& vector) { // FIXME vector
+    if(!xml.push()) return false;
     xml.out << "{";
-    if(!xml.push()) return;
-    std::stack<QDomNode> stack;
-    // std::swap(stack, xml.stack);
-    auto childNodes = xml.top().childNodes();
-    vector.resize(childNodes.size());
-    for(int index{}; index < childNodes.size(); ++index) {
-        // xml.skipPushArray = true; // skip push in read(struct) because force pushed in this for
-        xml.push(childNodes.at(index));
-        read(xml, vector[index]);
-        // xml.pop(); // skip pop because read(struct) pop it
+    if(auto childNodes = xml.top().childNodes(); childNodes.size()) {
+        vector.resize(childNodes.size());
+        for(int index{}; index < childNodes.size(); ++index) {
+            xml.push(childNodes.at(index));
+            read(xml, vector[index]);
+        }
     }
-    // std::swap(stack, xml.stack);
+    xml.out << "}";
     xml.pop();
-    xml.out << "}";
+    return true;
 }
 
 template <typename T>
-void read(Xml& xml, XmlAarray<T>& vector) { // FIXME vector
-    // loging = true;
+bool read(Xml& xml, XmlAarray<T>& vector) {
     xml.out << "{";
-    // if(!xml.push()) return;
-    std::stack<QDomNode> stack;
-    // std::swap(stack, xml.stack);
-    auto childNodes = xml.top().childNodes();
-    vector.resize(childNodes.size());
-    for(int index{}; index < childNodes.size(); ++index) {
-        // xml.skipPushArray = true; // skip push in read(struct) because force pushed in this for
-        xml.push(childNodes.at(index));
-        read(xml, vector[index]);
-        // xml.pop(); // skip pop because read(struct) pop it
+    if(auto childNodes = xml.top().childNodes(); childNodes.size()) {
+        vector.resize(childNodes.size());
+        for(int index{}; index < childNodes.size(); ++index) {
+            xml.push(childNodes.at(index));
+            read(xml, vector[index]);
+        }
     }
-    // std::swap(stack, xml.stack);
-    // xml.pop();
     xml.out << "}";
-}
-
-template <typename T>
-    requires(!std::is_standard_layout_v<T> && !std::is_aggregate_v<T>)
-void read(Xml& xml, T& str) {
-    qCritical() << __PRETTY_FUNCTION__ << demangle(typeid(T));
-    xml.out << "ERR: " << demangle(typeid(T));
+    return true;
 }
 
 template <typename T>
 // requires(std::is_enum_v<T> == 0 && std::is_standard_layout_v<T> && std::is_trivial_v<T>)
-void read(Xml& xml, T& str) {
-    qCritical() << __PRETTY_FUNCTION__ << demangle(typeid(T));
-    xml.out << "ERR: " << demangle(typeid(T));
+bool read(Xml& xml, T& str) {
+    qCritical() << __PRETTY_FUNCTION__ << typeName<T>();
+    xml.out << "ERR: " << typeName<T>();
+    return false;
 }
 
 template <>

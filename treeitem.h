@@ -20,9 +20,9 @@ public:
     int childCount() const;
     int childNumber() const;
     int columnCount() const;
-    std::array<QVariant, 4> itemData;
-    void addItem(TreeItem* item) {
-        childItems.emplace_back(item)->parentItem = this;
+    std::array<QVariant, 5> itemData;
+    TreeItem* addItem(TreeItem* item) {
+        return childItems.emplace_back(item)->parentItem = this, childItems.back();
     }
 
     std::vector<TreeItem*> childItems;

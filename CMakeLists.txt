@@ -49,6 +49,20 @@ include_directories(
     TopoR
 )
 
+set(FST
+
+    /home/x-ray/Документы/TopoR/Examples/Example_04/Arcs.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_04/Arcs_standard_routing.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_05/MinVia.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_05/MinVia_standard_routing.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_02/Placement.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_02/Placement_standard_routing.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_06/Signals.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_01/SingleLayer.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_03/arz_2L.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_03/arz_4L.fst
+    /home/x-ray/Документы/TopoR/Examples/Example_03/arz_standard_routing.fst
+)
 
 add_executable(${PROJECT_NAME}
     # ${HEADERS}
@@ -110,8 +124,6 @@ add_executable(${PROJECT_NAME}
     main.cpp
     xmlserializer.cpp
     xmlserializer.h
-    МАН2_МСИС_V2.1.fst
-    formated_МАН2_МСИС_V2.1.fst
     mainwindow.h
     mainwindow.cpp
     mainwindow.ui
@@ -122,6 +134,11 @@ add_executable(${PROJECT_NAME}
     treemodel.h
     treeitem.cpp
     treemodel.cpp
+
+    Coordinates.h
+
+
+
 
 )
 
