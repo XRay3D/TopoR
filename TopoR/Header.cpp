@@ -1,4 +1,3 @@
-﻿#include "Header.h"
-
+#include "Header.h"
 namespace TopoR_PCB_Classes {
 }

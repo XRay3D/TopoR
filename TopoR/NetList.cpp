@@ -1,8 +1,6 @@
-﻿#include "NetList.h"
+#include "NetList.h"
 #include "Commons.h"
-
 namespace TopoR_PCB_Classes {
-
 void NetList::Rename_compName(const QString& oldname, const QString& newname) {
     auto filter = [&oldname](auto&& b) {
         return std::visit([&oldname](auto& ref) { return ref.compName == oldname; }, b);
@@ -11,5 +9,4 @@ void NetList::Rename_compName(const QString& oldname, const QString& newname) {
         for(auto&& b: a.refs | std::ranges::views::filter(filter))
             std::visit([&](auto& ref) { ref.compName = newname; }, b);
 }
-
 } // namespace TopoR_PCB_Classes

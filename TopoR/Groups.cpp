@@ -1,12 +1,9 @@
-﻿#include "Groups.h"
+#include "Groups.h"
 #include "Commons.h"
-
 namespace TopoR_PCB_Classes {
-
 QString Groups::LayerGroup::ToString() {
     return name;
 }
-
 void Groups::Rename_compName(const QString& oldname, const QString& newname) {
     /*  for(auto a: (_CompGroups.empty() ? nullptr : CompGroups.Where([&](std::any aa) {
               return aa::_CompRefs != nullptr;
@@ -16,5 +13,4 @@ void Groups::Rename_compName(const QString& oldname, const QString& newname) {
               }))
               b->_ReferenceName = newname;*/
 }
-
 } // namespace TopoR_PCB_Classes

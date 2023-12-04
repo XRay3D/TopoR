@@ -1,9 +1,6 @@
-﻿#include "ComponentsOnBoard.h"
-
+#include "ComponentsOnBoard.h"
 namespace TopoR_PCB_Classes {
-
 // QString ComponentsOnBoard::CompInstance::ToString() { return name; }
-
 // QString ComponentsOnBoard::AddComponent(const QString& name, units units, const QString& componentRef, const QString& footprintRef) {
 //     /* float x = 0, y = 0; // координаты нового компонента
 //      if(_Components.empty()) return"";
@@ -17,7 +14,6 @@ namespace TopoR_PCB_Classes {
 //      float offset = units == units::mm ? 3 : Ut::UnitsConvert(3, dist::mm, dist::mil);
 //      x += offset; // добавление небольшого смещения
 //      y += offset;
-
 //      Org tempVar = std::make_shared<Org>();
 //      tempVar.value()._x = x;
 //      tempVar.value()._y = y;
@@ -30,7 +26,6 @@ namespace TopoR_PCB_Classes {
 //      return c.value()._name;*/
 //     return {};
 // }
-
 // bool ComponentsOnBoard::RemoveComponent(const QString& name) {
 //     int x = ComponentIndexOf(name);
 //     if(x >= 0) {
@@ -39,13 +34,11 @@ namespace TopoR_PCB_Classes {
 //     }
 //     return false;
 // }
-
 // int ComponentsOnBoard::ComponentIndexOf(const QString& name) {
 //     /* forint.size(); x--)
 //          if(_Components[x - 1].value()._name == name)            return x - 1;*/
 //     return -1;
 // }
-
 // int ComponentsOnBoard::RenameComponent(const QString& oldname, const QString& newname) {
 //     // int x = ComponentIndexOf(oldname);
 //     // if (x >= 0) {
@@ -54,7 +47,6 @@ namespace TopoR_PCB_Classes {
 //     // }
 //     return -1;
 // }
-
 // QString ComponentsOnBoard::UniqueId() {
 //     QString ABC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //     QString uniqueId = "";
@@ -68,5 +60,4 @@ namespace TopoR_PCB_Classes {
 //       }*/
 //     return uniqueId;
 // }
-
 } // namespace TopoR_PCB_Classes
