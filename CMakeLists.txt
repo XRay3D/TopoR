@@ -26,16 +26,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 add_definitions(
--DQT_MESSAGELOGCONTEXT #qDebug()
--DQT_DISABLE_DEPRECATED_BEFORE=0x060000
+    -DQT_MESSAGELOGCONTEXT #qDebug()
+    -DQT_DISABLE_DEPRECATED_BEFORE=0x060000
 )
 
-find_package(QT NAMES #[[Qt6]] Qt5 Core)
+find_package(QT NAMES Qt6 Qt5 Core)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Xml REQUIRED)
 
 add_compile_options(
-#-fconstexpr-depth=50
-#- fpermissive
+    $<$<CXX_COMPILER_ID:MSVC>:/bigobj>
+    #- fconstexpr - depth = 50
+    #- fpermissive
 )
 
 #file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
@@ -46,22 +47,20 @@ add_compile_options(
 include_directories(
     pfr_non_boost/include
     compile-time-regular-expressions/single-header
-    TopoR
 )
 
 set(FST
-
-    /home/x-ray/Документы/TopoR/Examples/Example_04/Arcs.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_04/Arcs_standard_routing.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_05/MinVia.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_05/MinVia_standard_routing.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_02/Placement.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_02/Placement_standard_routing.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_06/Signals.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_01/SingleLayer.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_03/arz_2L.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_03/arz_4L.fst
-    /home/x-ray/Документы/TopoR/Examples/Example_03/arz_standard_routing.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_04/Arcs.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_04/Arcs_standard_routing.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_05/MinVia.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_05/MinVia_standard_routing.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_02/Placement.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_02/Placement_standard_routing.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_06/Signals.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_01/SingleLayer.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_03/arz_2L.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_03/arz_4L.fst
+    # /home/x-ray/Документы/TopoR/Examples/Example_03/arz_standard_routing.fst
 )
 
 add_executable(${PROJECT_NAME}
@@ -69,57 +68,6 @@ add_executable(${PROJECT_NAME}
     # ${JSONS}
     # ${SOURCES}
     # ${UIS}
-    # qserializer.h
-    # topor_cellon.h
-    # topor_file.cpp
-    # topor_file.h
-    # topor_formatstate.cpp
-    # topor_highlighter.cpp
-    # topor_highlighter.h
-    # topor_node.cpp
-    # topor_node.h
-    # topor_parser.cpp
-    # topor_parser.h
-    # topor_plugin.cpp
-    # topor_plugin.h
-    # topor_settingstab.cpp
-    # topor_settingstab.h
-    # topor_types.h
-    TopoR/Commons.cpp
-    TopoR/Commons.h
-    TopoR/ComponentsOnBoard.cpp
-    TopoR/ComponentsOnBoard.h
-    TopoR/Connectivity.cpp
-    TopoR/Connectivity.h
-    TopoR/Constructive.cpp
-    TopoR/Constructive.h
-    TopoR/Coordinates.h
-    TopoR/DialogSettings.cpp
-    TopoR/DialogSettings.h
-    TopoR/DisplayControl.cpp
-    TopoR/DisplayControl.h
-    TopoR/Enums.h
-    TopoR/Groups.cpp
-    TopoR/Groups.h
-    TopoR/Header.cpp
-    TopoR/Header.h
-    TopoR/HiSpeedRules.cpp
-    TopoR/HiSpeedRules.h
-    TopoR/Layers.cpp
-    TopoR/Layers.h
-    TopoR/LocalLibrary.cpp
-    TopoR/LocalLibrary.h
-    TopoR/NetList.cpp
-    TopoR/NetList.h
-    TopoR/Rules.cpp
-    TopoR/Rules.h
-    TopoR/Settings.cpp
-    TopoR/Settings.h
-    TopoR/TextStyles.cpp
-    TopoR/TextStyles.h
-    TopoR/TopoR_PCB_File.cpp
-    TopoR/TopoR_PCB_File.h
-    # enumerator.h
     magicgetruntime.h
     main.cpp
     xmlserializer.cpp
@@ -134,17 +82,59 @@ add_executable(${PROJECT_NAME}
     treemodel.h
     treeitem.cpp
     treemodel.cpp
-
-    Coordinates.h
-
-
-
-
+    # Coordinates.h
 )
 
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+# set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
+#     PROPERTIES GENERATED TRUE)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
+    TopoRLib
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Xml
 )
+
+add_subdirectory(TopoR)
+
+
+
+# if(WIN32)
+#     target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
+#     # windeployqt
+#     set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
+#     get_target_property(_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+#     get_filename_component(_QT_BIN_DIR "${_QMAKE_EXECUTABLE}" DIRECTORY)
+#     find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
+#     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#         COMMAND "${CMAKE_COMMAND}" -E
+#         env PATH="${_QT_BIN_DIR}" "${WINDEPLOYQT_EXECUTABLE}"
+#         --verbose 1
+#         --no-compiler-runtime
+#         \"$<TARGET_FILE:${PROJECT_NAME}>\"
+#         COMMENT "Deploying Qt..."
+#     )
+# elseif (UNIX)#LINUX
+#     #    cqtdeployer -bin myApp -qmake path/to/Qt/5.x.x/build/bin/qmake -qmlDir path/to/my/qml/files/dir qif
+# endif()
+
+if(WIN32)
+    # target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
+    # windeployqt
+    # set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
+    # get_target_property(EXECUTABLE "C:/Program Files/Git/usr/bin/touch.exe" IMPORTED_LOCATION)
+    # get_filename_component(_QT_BIN_DIR "${EXECUTABLE}" DIRECTORY)
+    # find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
+    add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND "C:/Program Files/Git/usr/bin/touch.exe"
+        "${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp"
+        COMMENT "TOUCH Cruth..."
+    )
+endif()
+
+
+
+
+# C:\Program Files\Git\usr\bin\touch.exe

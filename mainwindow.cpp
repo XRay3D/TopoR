@@ -2,23 +2,22 @@
 #include "treemodel.h"
 #include "ui_mainwindow.h"
 
-#include "TopoR_PCB_File.h"
-#include "xmlserializer.h"
 #include <QAbstractTableModel>
 #include <QDebug>
 #include <QSettings>
 #include <QtWidgets>
-#include <magicgetruntime.h>
-#include <unistd.h>
-
+// #include <magicgetruntime.h>
+// #include <unistd.h>
+#include "TopoR_PCB_File.h"
 using namespace TopoR_PCB_Classes;
+#include "xmlserializer.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , file{new TopoR_PCB_Classes::TopoR_PCB_File} {
 
-    if(0) {
+    if (0) {
         QStringList files{
             "../TopoR/Commons.cpp",
             "../TopoR/Commons.h",
@@ -55,13 +54,13 @@ MainWindow::MainWindow(QWidget* parent)
             "../TopoR/TopoR_PCB_File.cpp",
             "../TopoR/TopoR_PCB_File.h",
         };
-        for(auto&& fileName: files) {
+        for (auto&& fileName: files) {
             QFile file(fileName);
             QString dataWr;
             bool fl{};
-            if(file.open(QFile::ReadOnly)) {
+            if (file.open(QFile::ReadOnly)) {
                 dataWr = file.readAll();
-                while(dataWr.contains("\r\n\r\n"))
+                while (dataWr.contains("\r\n\r\n"))
                     dataWr.replace("\r\n\r\n", "\r\n");
                 // dataWr = data;
                 // qWarning() << fileName;
@@ -80,7 +79,7 @@ MainWindow::MainWindow(QWidget* parent)
                 // }
                 file.close();
             }
-            if(1 && file.open(QFile::WriteOnly)) {
+            if (1 && file.open(QFile::WriteOnly)) {
                 file.write(dataWr.toUtf8());
                 file.close();
             }
@@ -94,24 +93,25 @@ MainWindow::MainWindow(QWidget* parent)
     restoreGeometry(settings.value("Geometry").toByteArray());
     restoreState(settings.value("State").toByteArray());
     ui->splitter->restoreState(settings.value("State").toByteArray());
-    // dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
-    if(dir.size() && settings.value("dir").toString() != dir)
+    if (!QFile::exists(dir))
+        dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
+    if (dir.size() && settings.value("dir").toString() != dir)
         settings.setValue("dir", dir);
     QTimer::singleShot(100, [this] {
         Xml xml{dir};
 
         try {
             xml.read(*file);
-        } catch(const std::set<QString>& names) {
+        } catch (const std::set<QString>& names) {
             qCritical() << names;
-        } catch(...) {
+        } catch (...) {
         }
         // qInfo() << xml.byteArray.data();
         // ui->plainTextEdit->appendPlainText(xml.byteArray);
         ui->plainTextEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
 
         connect(new QLineEdit{ui->plainTextEdit}, &QLineEdit::textEdited, [this](const QString& str) {
-            if(!ui->plainTextEdit->find(str)) {
+            if (!ui->plainTextEdit->find(str)) {
                 ui->plainTextEdit->moveCursor(QTextCursor::Start);
                 ui->plainTextEdit->find(str);
             }
@@ -123,7 +123,7 @@ MainWindow::MainWindow(QWidget* parent)
         ui->treeView->setModel(model);
         ui->treeView->expandAll();
         ui->treeView->setAlternatingRowColors(true);
-        for(int column = 0; column < model->columnCount(); ++column)
+        for (int column = 0; column < model->columnCount(); ++column)
             ui->treeView->resizeColumnToContents(column);
         // ui->treeView->collapseAll();
 
@@ -132,6 +132,7 @@ MainWindow::MainWindow(QWidget* parent)
         });
 
 #if 0
+
 
         // for(auto&& footprint: file->localLibrary.Footprints)
         //     ui->graphicsView->addItem(file->localLibrary.footprintGi(footprint));

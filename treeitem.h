@@ -2,6 +2,7 @@
 
 #include <QVariant>
 #include <QVector>
+#include <array>
 
 class TreeItem {
 public:

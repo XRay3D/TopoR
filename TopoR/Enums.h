@@ -8,11 +8,11 @@
 #include <ranges>
 #include <string_view>
 
+using namespace std::literals;
+
 namespace TopoR_PCB_Classes {
 
 //	#region Enumerations //Все enum в алфавитном порядке
-
-using std::operator""sv;
 
 template <class Ty>
 inline constexpr bool hasStrings = false;
@@ -33,12 +33,12 @@ template <size_t N, class Enum>
 inline consteval auto tokenize_enum(sv base) {
     std::array<std::pair<sv, Enum>, N> tokens;
     std::underlying_type_t<Enum> val{};
-    for(auto it = tokens.begin();
-        auto&& [whole, name, value]:
-        ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
-        if(value)
+    for (auto it = tokens.begin();
+         auto&& [whole, name, value]:
+         ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
+        if (value)
             val = value.to_number();
-        if(it != tokens.end())
+        if (it != tokens.end())
             *it++ = {name.to_view(), static_cast<Enum>(val++)};
     }
     return tokens;
@@ -46,15 +46,17 @@ inline consteval auto tokenize_enum(sv base) {
 
 } // namespace Impl
 
-#define ENUM(Enum, ...)                                                                \
-    enum class Enum : int {                                                            \
-        __VA_ARGS__                                                                    \
-    };                                                                                 \
-    inline auto operator+(Enum e) noexcept { return std::underlying_type_t<Enum>(e); } \
-    template <>                                                                        \
-    inline constexpr auto hasStrings<Enum> = true;                                     \
-    template <>                                                                        \
-    inline constexpr auto Impl::Tokens<Enum> = Impl::tokenize_enum<Impl::enum_size(#__VA_ARGS__), Enum>(#__VA_ARGS__);
+#define ENUM(Enum, ...)                                                                              \
+    enum class Enum : int {                                                                          \
+        __VA_ARGS__                                                                                  \
+    };                                                                                               \
+    inline auto operator+(Enum e) noexcept { return std::underlying_type_t<Enum>(e); }               \
+    template <>                                                                                      \
+    inline constexpr auto hasStrings<Enum> = true;                                                   \
+    namespace Impl {                                                                                 \
+    template <>                                                                                      \
+    inline constexpr auto Tokens<Enum> = tokenize_enum<enum_size(#__VA_ARGS__), Enum>(#__VA_ARGS__); \
+    }
 
 template <class E>
     requires hasStrings<E>

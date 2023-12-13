@@ -31,6 +31,7 @@ struct TopoR_PCB_File;
 // Корневой тег. Включает все разделы файла.
 /* [XmlRoot("TopoR_PCB_File")] */
 struct TopoR_PCB_File /*: std::true_type*/ {
+#if 0
     // Раздел «Заголовок файла».
     /* [XmlElement("Header")] */
     Header header;
@@ -42,10 +43,11 @@ struct TopoR_PCB_File /*: std::true_type*/ {
     TextStyles textStyles;
     // Раздел «Библиотечные элементы». (Обязательный раздел)
     /* [XmlElement("LocalLibrary")] */
-#if 1
+#endif
     LocalLibrary localLibrary;
     // Раздел «Конструктив платы».
     /* [XmlElement("Constructive")] */
+#if 0
     Constructive constructive;
     // Раздел «Компоненты на плате». (Обязательный раздел).
     /* [XmlElement("ComponentsOnBoard")] */

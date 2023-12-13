@@ -149,8 +149,7 @@ struct ComponentsOnBoard {
         // Признак фиксации.
         /* [XmlAttribute("fixed")] public Bool fixed_; */
         XmlAttr<Bool> fixed;
-        virtual ~FreePad() {
-        }
+
         /* [XmlIgnore] public bool fixedSpecified_ */
         bool getFixedSpecified() const;
         // Ссылка на стек контактных площадок.

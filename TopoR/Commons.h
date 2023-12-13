@@ -6,43 +6,54 @@
 #include <QTransform>
 #include <array>
 #include <limits>
+#include <map>
 #include <optional>
 #include <string>
 #include <variant>
 #include <vector>
+
 class QGraphicsItem;
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-template <typename... Ts>
-struct Overload : Ts... {
-    using Ts::operator()...;
-};
-template <typename... Ts>
-Overload(Ts...) -> Overload<Ts...>;
+
+// template <typename... Ts>
+// struct Overload : Ts... {
+//     using Ts::operator()...;
+// };
+// template <typename... Ts>
+// Overload(Ts...) -> Overload<Ts...>;
+
 template <typename T>
 using Optional = std::optional<T>;
+
 namespace TopoR_PCB_Classes {
+
 struct Shift;
 struct base_coordinat;
+
 template <typename T>
 struct XmlAttr {
     T value{};
+    // XmlAttr() { } // disable std::is_aggregate_v<T>
     operator T&() noexcept { return value; }
     operator const T&() const noexcept { return value; }
     T& operator=(const T& val) noexcept { return value = val; }
     T& operator=(T&& val) noexcept { return value = val; }
 };
+
 template <typename T>
 struct XmlArray : std::vector<T>, std::false_type {
-    using std::vector<T>::vector;
+    using std:: vector<T>::vector;
 };
-// template <typename T>
-// struct XmlAarrayElem : std::vector<T>, std::true_type {
-//     using std::vector<T>::vector;
-// };
+
+template <typename T>
+struct XmlAarrayElem : std::vector<T>, std::true_type {
+    using std:: vector<T>::vector;
+};
+
 template <typename... Ts>
 struct XmlVariant : std::variant<Ts...> {
     using std::variant<Ts...>::variant;

@@ -1,18 +1,19 @@
 #include "mainwindow.h"
 #include "qregularexpression.h"
 #include <QApplication>
+#include <set>
 
 auto messageHandler = qInstallMessageHandler(nullptr);
 void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message) {
     auto file = context.file;
     QMessageLogContext& context_ = const_cast<QMessageLogContext&>(context);
-    while(file && *file)
-        if(*file++ == '/')
+    while (file && *file)
+        if (std::set{'/', '\\'}.contains(*file++))
             context_.file = file;
 
-    QString data{context_.function};
-    data.replace(QRegularExpression(R"((\w+\:\:))"), "");
-    context_.function = data.toUtf8().data();
+    // QString data{context_.function};
+    // data.replace(QRegularExpression(R"((\w+\:\:))"), "");
+    // context_.function = data.toUtf8().data();
     messageHandler(type, context, message);
 }
 
