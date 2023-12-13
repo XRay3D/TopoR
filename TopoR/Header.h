@@ -7,7 +7,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Заголовок файла».
 struct Header {
     // Единицы измерений для всего файла.
@@ -41,4 +41,4 @@ struct Header {
     /* [XmlElement("Units")] public unitsHeader units; */
     Units units;
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

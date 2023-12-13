@@ -10,7 +10,7 @@
 
 using namespace std::literals;
 
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 
 //	#region Enumerations //Все enum в алфавитном порядке
 
@@ -446,4 +446,4 @@ ENUM(wireShape,
 
 //	#endregion Enumerations
 
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

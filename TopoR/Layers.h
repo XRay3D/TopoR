@@ -9,7 +9,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Слои». (Обязательный раздел)
 struct Layers {
     // Описание слоя.
@@ -49,10 +49,10 @@ struct Layers {
     XmlAttr<QString> version;
     // Описание слоёв в стеке. Порядок описания должен соответствовать порядку слоёв в стеке.
     /* [XmlArray("StackUpLayers")][XmlArrayItem("Layer")] public List<Layer> StackUpLayers_; */
-    std::vector<Layer> StackUpLayers;
+    XmlArrayElem<Layer> StackUpLayers;
     // Описание слоёв вне стека.
     /* [XmlArray("UnStackLayers")][XmlArrayItem("Layer")] public List<Layer> UnStackLayers_; */
-    std::vector<Layer> UnStackLayers;
+    XmlArrayElem<Layer> UnStackLayers;
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Layers. *
      * Они не являются частью формата TopoR PCB.                      *
@@ -67,4 +67,4 @@ struct Layers {
     bool LayerUnStackContain(LayerRef lref);
     /******************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

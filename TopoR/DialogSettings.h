@@ -9,7 +9,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Настройки диалогов».
 struct DialogSettings {
     // Настройки DRC.
@@ -180,7 +180,7 @@ struct DialogSettings {
         XmlAttr<int> fractNums;
         // Настройки вывода файлов Gerber.
         /* [XmlElement("ExportFile")] public List<ExportFile_GerberSettings> ExportFiles_; */
-        std::vector<ExportFile> ExportFiles;
+        XmlArrayElem<ExportFile> ExportFiles;
     };
     // Настройки вывода файла DXF.
     struct DXFSettings {
@@ -241,7 +241,7 @@ struct DialogSettings {
         XmlAttr<Bool> outputDrillLayer;
         // Настройки вывода слоя в файл DXF.
         /* [XmlElement("ExportLayer")] public List<ExportLayer> ExportLayers_; */
-        std::vector<ExportLayer> ExportLayers;
+        XmlArrayElem<ExportLayer> ExportLayers;
     };
     // Настройки вывода файлов Drill.
     struct DrillSettings {
@@ -266,7 +266,7 @@ struct DialogSettings {
         XmlAttr<int> fractNums;
         // Настройки вывода файлов Gerber.
         /* [XmlElement("ExportFile")] public List<ExportFile_DrillSettings> ExportFiles_; */
-        std::vector<ExportFile> ExportFiles;
+        XmlArrayElem<ExportFile> ExportFiles;
     };
     // Настройки вывода BOM файла.
     struct BOMSettings {
@@ -287,7 +287,7 @@ struct DialogSettings {
         XmlAttr<Bool> refDes;
         // Ссылка на атрибут.
         /* [XmlElement("AttributeRef")] public List<AttributeRef> AttributeRefs_; */
-        std::vector<AttributeRef> AttributeRefs;
+        XmlArrayElem<AttributeRef> AttributeRefs;
     };
     // Настройка фильтра сообщений.
     struct MessagesFilter {
@@ -370,4 +370,4 @@ struct DialogSettings {
      * ************************************************************************/
     /**************************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

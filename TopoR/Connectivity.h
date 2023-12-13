@@ -10,7 +10,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Соединения на плате».
 // <remarks>В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.</remarks>
 struct Connectivity {
@@ -79,7 +79,7 @@ struct Connectivity {
         /* [XmlElement("TrackLine", typeof(TrackLine)),
         XmlElement("TrackArc", typeof(TrackArc)),
         XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
-        std::vector<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
+        XmlArrayElem<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
     };
     // Описание проводника.
     struct Wire {
@@ -91,7 +91,7 @@ struct Connectivity {
             struct Teardrop {
                 // координаты точки, вершины.
                 /* [XmlElement("Dot")] public List<Dot> Dots_; */
-                std::vector<Dot> Dots;
+                XmlArrayElem<Dot> Dots;
             };
             // Признак фиксации.
             /* [XmlAttribute("fixed")] public Bool fixed_; */
@@ -161,7 +161,7 @@ struct Connectivity {
                 // Описания координат точек, вершин.
                 // <remarks>! В случае отсутствия - весь ThermalSpoke будет проигнорирован.</remarks>
                 /* [XmlElement("Dot")] public List<Dot> Dots_; */
-                std::vector<Dot> Dots;
+                XmlArrayElem<Dot> Dots;
             };
             // Описание многоугольника.
             /* [XmlElement("Polygon", typeof(Polygon)),
@@ -170,10 +170,10 @@ struct Connectivity {
             // Вырезы в островке области металлизации.
             // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
             /* [XmlArray("Voids")][XmlArrayItem("Polygon", typeof(Polygon)), XmlArrayItem("FilledContour", typeof(FilledContour))] public List<Object> Voids_; */
-            std::vector<XmlVariant<Polygon, FilledContour>> Voids;
+            XmlArrayElem<XmlVariant<Polygon, FilledContour>> Voids;
             // Описание спиц термобарьеров, присутствующих на плате
             /* [XmlElement("ThermalSpoke")] public List<ThermalSpoke> ThermalSpokes_; */
-            std::vector<ThermalSpoke> ThermalSpokes;
+            XmlArrayElem<ThermalSpoke> ThermalSpokes;
         };
         // Параметр области металлизации (полигона): приоритет заливки.
         /* [XmlAttribute("priority", DataType ="int")] public int priority_; */
@@ -234,7 +234,7 @@ struct Connectivity {
         // Вырезы в областях металлизации (полигонах) заданные пользователем.
         // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
         /* [XmlArray("Voids")][XmlArrayItem("FilledCircle", typeof(FilledCircle)), XmlArrayItem("FilledRect", typeof(FilledRect)), XmlArrayItem("Polygon", typeof(Polygon)), XmlArrayItem("FilledContour", typeof(FilledContour))] public List<Object> Voids_; */
-        std::vector<XmlVariant<
+        XmlArrayElem<XmlVariant<
             ArcCCW,
             ArcCW,
             ArcByAngle,
@@ -248,11 +248,11 @@ struct Connectivity {
         // Островки области металлизации.
         // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
         /* [XmlArray("Islands")][XmlArrayItem("Island")] public List<Island> Islands_; */
-        std::vector<Island> Islands;
+        XmlArrayElem<Island> Islands;
         // Заливка областей металлизации (полигонов) линиями.
         // <remarks>! TopoR при импорте игнорирует эту информацию и строит заливку заново.</remarks>
         /* [XmlArray("Fill")][XmlArrayItem("Line")] public List<Line> Fill_lines_; */
-        std::vector<Line> Fill_lines;
+        XmlArrayElem<Line> Fill_lines;
     };
     // Описание незаливаемой области металлизации.
     struct NonfilledCopper {
@@ -297,26 +297,26 @@ struct Connectivity {
     XmlAttr<QString> version;
     // Переходные отверстия на плате.
     /* [XmlArray("Vias")][XmlArrayItem("Via")] public List<Via> Vias_; */
-    std::vector<Via> Vias;
+    XmlArrayElem<Via> Vias;
     // Змейки
     /* [XmlArray("Serpents")][XmlArrayItem("Serpent")] public List<Serpent> Serpents_; */
-    std::vector<Serpent> Serpents;
+    XmlArrayElem<Serpent> Serpents;
     // Застёгнутые пары проводников.
     /* [XmlArray("ZippedWires")][XmlArrayItem("ZippedWire")] public List<ZippedWire> ZippedWires_; */
-    std::vector<ZippedWire> ZippedWires;
+    XmlArrayElem<ZippedWire> ZippedWires;
     // Проводники.
     /* [XmlArray("Wires")][XmlArrayItem("Wire")] public List<Wire> Wires_; */
-    std::vector<Wire> Wires;
+    XmlArrayElem<Wire> Wires;
     // Oбласти металлизации (полигонов).
     /* [XmlArray("Coppers")][XmlArrayItem("Copper")] public List<Copper_Connectivity> Coppers_; */
-    std::vector<Copper> Coppers;
+    XmlArrayElem<Copper> Coppers;
     // Незаливаемые области металлизации.
     /* [XmlArray("NonfilledCoppers")][XmlArrayItem("NonfilledCopper")] public List<NonfilledCopper> NonfilledCoppers_; */
-    std::vector<NonfilledCopper> NonfilledCoppers;
+    XmlArrayElem<NonfilledCopper> NonfilledCoppers;
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Connectivity. *
      * Они не являются частью формата TopoR PCB.                            *
      * **********************************************************************/
     /************************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

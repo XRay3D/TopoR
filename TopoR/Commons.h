@@ -19,17 +19,17 @@ class QGraphicsItem;
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
 
-// template <typename... Ts>
-// struct Overload : Ts... {
-//     using Ts::operator()...;
-// };
-// template <typename... Ts>
-// Overload(Ts...) -> Overload<Ts...>;
+template <typename... Ts>
+struct Overload : Ts... {
+    using Ts::operator()...;
+};
+template <typename... Ts>
+Overload(Ts...) -> Overload<Ts...>;
 
 template <typename T>
 using Optional = std::optional<T>;
 
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 
 struct Shift;
 struct base_coordinat;
@@ -46,12 +46,12 @@ struct XmlAttr {
 
 template <typename T>
 struct XmlArray : std::vector<T>, std::false_type {
-    using std:: vector<T>::vector;
+    using std::vector<T>::vector;
 };
 
 template <typename T>
-struct XmlAarrayElem : std::vector<T>, std::true_type {
-    using std:: vector<T>::vector;
+struct XmlArrayElem : std::vector<T>, std::true_type {
+    using std::vector<T>::vector;
 };
 
 template <typename... Ts>
@@ -90,8 +90,8 @@ struct AttributeRef /*: BaseRef*/ {
 // Ссылка на тип слоя.
 struct LayerTypeRef /*: BaseRef*/ {
     // using BaseRef::BaseRef;
-    XmlAttr<QString> name;
-    operator QString() const { return name; }
+    XmlAttr<QString> type;
+    operator QString() const { return type; }
 };
 // Ссылка на группу слоёв.
 struct LayerGroupRef /*: BaseRef*/ {
@@ -414,7 +414,7 @@ struct Circle /*: IBaseFigure*/ {
 struct Line /*: IBaseFigure*/ {
     // Массив координат точек, вершин.
     /* [XmlElement("Dot")] public List<Dot> Dots_; */
-    std::vector<Dot> Dots;
+    XmlArrayElem<Dot> Dots;
     // void Shift(float x, float y) /*override*/;
     // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
@@ -431,7 +431,7 @@ XmlElement("SegmentArcCCW", typeof(SegmentArcCCW)),
 XmlElement("SegmentArcCW", typeof(SegmentArcCW)),
 XmlElement("SegmentArcByMiddle", typeof(SegmentArcByMiddle))
 ] public List<Object> Segments_; */
-    std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
+    XmlArrayElem<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
     // void Shift(float x, float y) /*override*/;
     // void UnitsConvert(dist in_units, dist out_units) /*override*/;
 };
@@ -440,19 +440,19 @@ XmlElement("SegmentArcByMiddle", typeof(SegmentArcByMiddle))
 struct Contour /*: Polyline*/ {
     // using Polyline::Polyline;
     Start start;
-    std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
+    XmlArrayElem<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
 };
 // Описание незалитого прямоугольника. Указываются верхняя левая и правая нижняя вершины
 struct Rect /*: Line*/ {
     // using Line::Line;
-    std::vector<Dot> Dots;
+    XmlArrayElem<Dot> Dots;
 };
 // Описание залитого контура.
 // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
 struct FilledContour /*: Polyline*/ {
     // using Polyline::Polyline;
     Start start;
-    std::vector<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
+    XmlArrayElem<XmlVariant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>> Segments_;
 }; // TODO: требует уточнения
 // Описание круга.
 struct FilledCircle /*: Circle*/ {
@@ -463,13 +463,13 @@ struct FilledCircle /*: Circle*/ {
 // Описание залитого прямоугольника.
 struct FilledRect /*: Rect*/ {
     // using Rect::Rect;
-    std::vector<Dot> Dots;
+    XmlArrayElem<Dot> Dots;
 };
 // Описание многоугольника.
 // Тег поддерживается, но является устаревшим.Следует использовать тег FilledContour.
 struct Polygon /*: Line*/ {
     // using Line::Line;
-    std::vector<Dot> Dots;
+    XmlArrayElem<Dot> Dots;
 };
 // Описание дугообразного сегмента проводника (дуга по часовой стрелке).
 // <remarks>Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.</remarks>
@@ -512,7 +512,7 @@ struct TrackLine /*: IBaseFigure*/
 // Устанавливает область действия правила: все слои.
 struct AllLayers {
     /* [XmlElement("AllLayers")] public string AllLayers_; */
-    QString AllLayers;
+    // QString AllLayers;// FIXME maybe need
 };
 // Устанавливает область действия правила: все компоненты.
 struct AllComps {
@@ -652,4 +652,4 @@ struct Ut final {
     // <returns>Возвращает сконвертированное значение</returns>
     static float UnitsConvert(float value, dist in_units, dist out_units);
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

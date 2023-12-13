@@ -1,5 +1,5 @@
 #include "Commons.h"
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // void base_coordinat::Shift(float x, float y) {
 //     this->x += x;
 //     this->y += y;
@@ -141,4 +141,4 @@ float Ut::UnitsConvert(float value, dist in_units, dist out_units) {
     }
     // clang-format on
 }
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

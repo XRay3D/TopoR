@@ -1,5 +1,5 @@
 #include "TextStyles.h"
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 
 const TextStyles::TextStyle *TextStyles::getTextStyle(const QString &name) const {
     for(auto&& textStyle: TextStyles)
@@ -8,4 +8,4 @@ const TextStyles::TextStyle *TextStyles::getTextStyle(const QString &name) const
     return {};
 }
 
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

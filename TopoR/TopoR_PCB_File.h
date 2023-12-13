@@ -24,14 +24,14 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  *
- * NOTE std::vector<Package> пустые пропускать и не сериализовать.
+ * NOTE XmlArrayElem<Package> пустые пропускать и не сериализовать.
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 struct TopoR_PCB_File;
 // Корневой тег. Включает все разделы файла.
 /* [XmlRoot("TopoR_PCB_File")] */
 struct TopoR_PCB_File /*: std::true_type*/ {
-#if 0
+#if 1
     // Раздел «Заголовок файла».
     /* [XmlElement("Header")] */
     Header header;
@@ -47,7 +47,7 @@ struct TopoR_PCB_File /*: std::true_type*/ {
     LocalLibrary localLibrary;
     // Раздел «Конструктив платы».
     /* [XmlElement("Constructive")] */
-#if 0
+#if 1
     Constructive constructive;
     // Раздел «Компоненты на плате». (Обязательный раздел).
     /* [XmlElement("ComponentsOnBoard")] */
@@ -80,4 +80,4 @@ struct TopoR_PCB_File /*: std::true_type*/ {
     DialogSettings dialogSettings;
 #endif
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

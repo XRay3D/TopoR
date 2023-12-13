@@ -5,7 +5,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Настройки дизайна».
 struct Settings {
     // Настройки автоматической трассировки.
@@ -55,7 +55,7 @@ struct Settings {
         struct PlacementArea {
             // Координаты точек, вершин
             // [XmlElement("Dot")] public List<Dot> Dots_;
-            std::vector<Dot> Dots;
+            XmlArrayElem<Dot> Dots;
         };
         // Настройки автоматического размещения компонентов: область размещения. Область прямоугольная, задаётся двумя вершинами(верхняя левая и правая нижняя).
         // [XmlElement("PlacementArea")] public PlacementArea placementArea;
@@ -109,4 +109,4 @@ struct Settings {
      * ******************************************************************/
     /********************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

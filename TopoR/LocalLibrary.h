@@ -14,7 +14,7 @@
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
 class QGraphicsItemGroup;
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 class TopoR_PCB_File;
 // Раздел «Библиотечные элементы». (Обязательный раздел)
 struct LocalLibrary {
@@ -98,7 +98,7 @@ struct LocalLibrary {
         /* public bool cornerLTSpecified_ */
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
         /* [XmlElement("Shift")] public Shift shift; */
-        Shift shift;
+        Shift shift; // NOTE maybe optional
         operator QPainterPath() const;
     };
     // Описание полигональной контактной площадки.
@@ -107,7 +107,7 @@ struct LocalLibrary {
         // Массив координат точек, вершин.
         // <remarks>! Минимум 3 элемента</remarks>
         /* [XmlElement("Dot")] public List<Dot> Dots; */
-        std::vector<Dot> Dots;
+        XmlArrayElem<Dot> Dots;
         operator QPolygonF() const;
         operator QPainterPath() const;
     };
@@ -134,7 +134,7 @@ struct LocalLibrary {
         // Контактные площадки стека.
         // <value>PadCircle,PadOval,PadRect,PadPoly</value>
         /* [XmlArray("Pads")][XmlArrayItem("PadCircle", typeof(PadCircle)), XmlArrayItem("PadOval", typeof(PadOval)), XmlArrayItem("PadRect", typeof(PadRect)), XmlArrayItem("PadPoly", typeof(PadPoly))] public List<Object> Pads; */
-        std::vector<XmlVariant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
+        XmlArrayElem<XmlVariant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
     };
     // Описание типа (стека) переходного отверстия.
     struct Viastack {
@@ -148,7 +148,7 @@ struct LocalLibrary {
             // Диапазон слоёв. См. также allLayers
             // <remarks>! При null необходимо смотреть наличие AllLayers. </remarks>
             /* [XmlElement("LayerRef", typeof(LayerRef))] public List<LayerRef> LayerRefs; */
-            std::vector<LayerRef> LayerRefs;
+            XmlArray<LayerRef> LayerRefs; // FIXME maybe XmlArrayElem
         };
         // Имя объекта или ссылка на именованный объект.
         /* [XmlAttribute("name")] public string name_; */
@@ -165,7 +165,7 @@ struct LocalLibrary {
         LayerRange layerRange;
         // Описание площадок стека переходного отверстия.
         /* [XmlArray("ViaPads")][XmlArrayItem("PadCircle", typeof(PadCircle))] public List<PadCircle> ViaPads; */
-        std::vector<PadCircle> ViaPads;
+        XmlArrayElem<PadCircle> ViaPads;
     };
     // Описание посадочного места.
     struct Footprint {
@@ -295,30 +295,32 @@ struct LocalLibrary {
         XmlAttr<QString> name;
         // Описание контактных площадок посадочного места.
         /* [XmlArray("Pads")][XmlArrayItem("Pad")] public List<Pad> Pads; */
-        std::vector<Pad> Pads;
+        XmlArrayElem<Pad> Pads;
         // Надписи.
         /* [XmlArray("Texts")][XmlArrayItem("Text")] public List<Text> Texts; */
-        std::vector<Text> Texts;
+        XmlArrayElem<Text> Texts;
         // Детали посадочного места.
         /* [XmlArray("Details")][XmlArrayItem("Detail")] public List<Detail> Details; */
-        std::vector<Detail> Details;
+        XmlArrayElem<Detail> Details;
         // Области металлизации (полигонов) в посадочных местах компонентов.
         /* [XmlArray("Coppers")][XmlArrayItem("Copper")] public List<Copper_Footprint> Coppers; */
-        std::vector<Copper> Coppers;
+        XmlArrayElem<Copper> Coppers;
         // Запреты размещения в посадочном месте.
         /* [XmlArray("KeepoutsPlace")][XmlArrayItem("Keepout")] public List<Keepout_Place_Trace> KeepoutsPlace; */
-        std::vector<Keepout> KeepoutsPlace;
+        XmlArrayElem<Keepout> KeepoutsPlace;
         // Запреты трассировки в посадочном месте.
         /* [XmlArray("KeepoutsTrace")][XmlArrayItem("Keepout")] public List<Keepout_Place_Trace> KeepoutsTrace; */
-        std::vector<Keepout> KeepoutsTrace;
+        XmlArrayElem<Keepout> KeepoutsTrace;
         // Монтажные отверстия.
         /* [XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<Mnthole> Mntholes; */
-        std::vector<Mnthole> Mntholes;
+        XmlArrayElem<Mnthole> Mntholes;
         // Ярлыки.
         /* [XmlArray("Labels")][XmlArrayItem("Label")] public List<Label_Footprint> Labels; */
-        std::vector<Label> Labels;
+        XmlArrayElem<Label> Labels;
         QString ToString() { return name; }
-        QGraphicsItem* graphicsItem(const TopoR_PCB_File& lib) const;
+
+        QGraphicsItem* graphicsItem(const TopoR_PCB_File& file) const;
+
     };
     // Описание схемного компонента.
     struct Component {
@@ -357,10 +359,10 @@ struct LocalLibrary {
         XmlAttr<QString> name;
         // Контакты схемного компонента.
         /* [XmlArray("Pins")][XmlArrayItem("Pin")] public List<Pin_Component> Pins; */
-        std::vector<Pin> Pins;
+        XmlArrayElem<Pin> Pins;
         // Атрибуты компонента.
         /* [XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<Attribute_Component> Attributes; */
-        std::vector<Attribute> Attributes;
+        XmlArrayElem<Attribute> Attributes;
         QString ToString() { return name; }
     };
     // Описание упаковки (соответствие контактов компонента и выводов посадочного места).
@@ -392,19 +394,19 @@ struct LocalLibrary {
     XmlAttr<QString> version;
     // Стеки контактных площадок.
     /* [XmlArray("Padstacks")][XmlArrayItem("Padstack")] public List<Padstack> Padstacks; */
-    std::vector<Padstack> Padstacks;
-    // Типы (стеки) переходных отверстий.
+    XmlArrayElem<Padstack> Padstacks;
+    //  Типы (стеки) переходных отверстий.
     /* [XmlArray("Viastacks")][XmlArrayItem("Viastack")] public List<Viastack> Viastacks; */
-    std::vector<Viastack> Viastacks;
+    XmlArrayElem<Viastack> Viastacks;
     // Посадочные места.
     /* [XmlArray("Footprints")][XmlArrayItem("Footprint")] public List<Footprint> Footprints; */
-    std::vector<Footprint> Footprints;
+    XmlArrayElem<Footprint> Footprints;
     // Схемные компоненты.
     /* [XmlArray("Components")][XmlArrayItem("Component")] public List<Component> Components; */
-    std::vector<Component> Components;
+    XmlArrayElem<Component> Components;
     // Упаковки.
     /* [XmlArray("Packages")][XmlArrayItem("Package")] public List<Package> Packages; */
-    std::vector<Package> Packages;
+    XmlArrayElem<Package> Packages;
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса LocalLibrary. *
      * Они не являются частью формата TopoR PCB.                            *
@@ -414,4 +416,4 @@ struct LocalLibrary {
     const Footprint* getFootprint(const QString& name) const;
     /************************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

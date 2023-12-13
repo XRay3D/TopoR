@@ -11,7 +11,7 @@
 #include <QRegularExpression>
 
 #include "TopoR_PCB_File.h"
-using namespace TopoR_PCB_Classes;
+using namespace TopoR;
 
 #if __has_include(<cxxabi.h>)
 #include <cxxabi.h>
@@ -104,8 +104,12 @@ struct Xml {
     TreeItem* tree{item};
     QDomNode node;
     int depth{};
+    int fieldNum{};
 
     bool isArray{};
+    bool isVariant{};
+    bool isAarrayElem{};
+
     QString fieldName;
 
     template <typename T>
@@ -118,8 +122,8 @@ enum {
     Name,
     Value,
     IsAttr,
-    Type,
     FLine,
+    Type,
 };
 
 namespace ImplXml {
@@ -281,78 +285,128 @@ inline bool read(Xml& xml, XmlVariant<Ts...>& variant) { // FIXME variant
     int ctr{};
     if (!xml.node.isElement()) return {};
     auto reader = [&]<typename T>(T&& val) {
+        if (ctr) return;
+        qWarning() << xml.node.toElement().tagName() << typeName<T>();
         if (xml.node.toElement().tagName() == typeName<T>()) {
             if (read(xml, val))
                 ++ctr, variant = std::move(val);
-        } else if (read(xml, val))
-            ++ctr, variant = std::move(val);
+        } else {
+            auto copy = xml.node;
+            xml.node = xml.node.firstChildElement(typeName<T>());
+            if (!xml.node.isNull())
+                if (xml.isVariant = true; read(xml, val)) ++ctr, variant = std::move(val);
+            xml.node = copy;
+        }
     };
     (reader(Ts{}), ...);
-    // assert(ctr < 2);
-    return {};
+    assert(ctr < 2);
+    return ctr > 0;
 }
 
 template <typename T>
-inline bool read(Xml& xml, std::vector<T>& vector) { // FIXME vector
-    auto node = xml.node.firstChildElement(xml.fieldName);
+inline bool read(Xml& xml, XmlArrayElem<T>& vector) { // FIXME vector
+    QDomNode node = xml.node.firstChildElement(xml.fieldName);
     if (node.isNull())
         return false;
-    auto copy = xml.node;
 
+    auto copy = xml.node;
+    xml.isAarrayElem = true;
     xml.node = node; //->log
+
     loger log{xml};
 
     auto childNodes = node.childNodes();
-    vector.resize(childNodes.size());
-    for (int index{}; index < childNodes.size(); ++index) {
-        xml.isArray = true;
-        xml.node = childNodes.at(index);
-        read(xml, vector[index]);
+
+    {
+        xml.tree = xml.tree->addItem(new TreeItem);
+        xml.tree->itemData[Name] = xml.fieldName;
+        xml.tree->itemData[Value] = childNodes.size();
+        xml.tree->itemData[Type] = typeid(T).name();
+        xml.tree->itemData[FLine] = xml.node.parentNode().lineNumber();
     }
-    xml.isArray = false;
+
+    vector.resize(childNodes.size());
+
+    if (vector.empty())
+        return false;
+
+    // node = node.firstChild();
+    // for (auto&& var: vector) {
+    //     xml.isArray = true;
+    //     xml.node = childNodes.at(index);
+    //     read(xml, var);
+    //     // xml.node = node.nextSibling();
+    // }
+    bool ok{true};
+
+    for (int index{}; auto&& var: vector) {
+        xml.isArray = true;
+        xml.node = childNodes.at(index++);
+        ok &= read(xml, var);
+    }
+
+    // for (int index{}; index < childNodes.size(); ++index) {
+    //     xml.isArray = true;
+    //     xml.node = childNodes.at(index);
+    //     ok &= read(xml, vector[index]);
+    // }
+
+    xml.isAarrayElem = false;
     xml.node = copy;
-    return true;
+
+    {
+        xml.tree = xml.tree->parent();
+    }
+
+    return ok;
 }
 
 template <typename T>
 inline bool read(Xml& xml, XmlArray<T>& vector) {
-    auto node = xml.node;
-    if (node.isNull())
+    if (xml.node.isNull())
         return false;
-    auto copy = xml.node;
 
-    xml.node = node; //->log
-    loger log{xml};
+    auto childNodes = xml.node.childNodes();
+    vector.resize(childNodes.size() - xml.fieldNum);
 
-    auto childNodes = node.childNodes();
-    vector.resize(childNodes.size());
-    for (int index{}; index < childNodes.size(); ++index) {
+    if (vector.empty())
+        return false;
+
+    const auto copy = xml.node;
+
+    bool ok{true};
+
+    for (int index{xml.fieldNum}; auto&& var: vector) {
         xml.isArray = true;
-        xml.node = childNodes.at(index);
-        read(xml, vector[index]);
+        xml.node = childNodes.at(index++);
+        ok &= read(xml, var);
     }
-    xml.isArray = false;
+
     xml.node = copy;
-    return true;
+    return ok;
 }
 
 template <typename T>
     requires(std::is_class_v<T> && std::is_aggregate_v<T>)
 inline bool read(Xml& xml, T& str) { // pod structures
-    if (!xml.isArray)
+    if (!xml.isArray && !xml.isVariant)
         xml.node = (xml.node.isNull() ? xml.doc : xml.node).firstChildElement(typeName<T>());
-    xml.isArray = false;
+    xml.isArray = xml.isVariant = false;
     loger log{xml};
-    xml.tree = xml.tree->addItem(new TreeItem);
-    xml.tree->itemData[Name] = typeName<T>();
-    // xml.tree->itemData[Value] = value;
-    // xml.tree->itemData[IsAttr] = "Tag";
-    xml.tree->itemData[Type] = typeid(T).name();
-    xml.tree->itemData[FLine] = xml.node.lineNumber();
+    {
+        xml.tree = xml.tree->addItem(new TreeItem);
+        xml.tree->itemData[Name] = typeName<T>();
+        // xml.tree->itemData[Value] = value;
+        // xml.tree->itemData[IsAttr] = "Tag";
+        xml.tree->itemData[Type] = typeid(T).name();
+        xml.tree->itemData[FLine] = xml.node.lineNumber();
+    }
 
     bool ok = read(xml, str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
     xml.node = xml.node.parentNode();
-    xml.tree = xml.tree->parent();
+    {
+        xml.tree = xml.tree->parent();
+    }
     return ok;
 }
 
@@ -366,6 +420,7 @@ inline bool read(Xml& xml, T& str, std::index_sequence<Is...>) {
 template <size_t Is, typename T>
 inline bool readField(Xml& xml, T& str) {
     xml.fieldName = pfr::get_name<Is, T>().data();
+    xml.fieldNum = Is;
     return read(xml, pfr::get<Is>(str));
 }
 

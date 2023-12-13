@@ -9,7 +9,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Стили надписей».
 struct TextStyles {
     // Описание стиля надписей.
@@ -46,4 +46,4 @@ struct TextStyles {
     const TextStyle* getTextStyle(const QString& name) const;
     /**********************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

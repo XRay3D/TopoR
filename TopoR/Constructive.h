@@ -10,7 +10,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Описание конструктива платы.
 struct Constructive {
     // Описание контура платы и вырезов в плате.
@@ -70,10 +70,10 @@ struct Constructive {
         };
         // Описание контура платы.
         /* [XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> Contours_; */
-        std::vector<ShapeContour> Contours;
+        XmlArrayElem<ShapeContour> Contours;
         // Вырезы в плате.
         /* [XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> Voids_; */
-        std::vector<ShapeVoids> Voids;
+        XmlArrayElem<ShapeVoids> Voids;
     };
     // Описание монтажного отверстия на плате.
     struct MntholeInstance {
@@ -118,7 +118,7 @@ struct Constructive {
                 // Ссылка на слои. См. также LayersRef_
                 // <remarks>! При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов. </remarks>
                 /* [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_; */
-                std::vector<LayerRef> LayersRefs;
+                XmlArrayElem<LayerRef> LayersRefs;
             };
             // Тип запрета: запрет размещения.
             struct Place {
@@ -178,16 +178,16 @@ struct Constructive {
     BoardOutline boardOutline;
     // Монтажные отверстия на плате.
     /* [XmlArray("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> Mntholes_; */
-    std::vector<MntholeInstance> Mntholes;
+    XmlArrayElem<MntholeInstance> Mntholes;
     // Детали на механических слоях.
     /* [XmlArray("MechLayerObjects"), DefaultValue(null)][XmlArrayItem("Detail")] public List<Detail> MechLayerObjects_; */
-    std::vector<Detail> MechLayerObjects;
+    XmlArrayElem<Detail> MechLayerObjects;
     // Описание надписей.
     /* [XmlArray("Texts"), DefaultValue(null)][XmlArrayItem("Text")] public List<Text> Texts_; */
-    std::vector<Text> Texts;
+    XmlArrayElem<Text> Texts;
     // Описание запретов.
     /* [XmlArray("Keepouts"), DefaultValue(null)][XmlArrayItem("Keepout")] public List<Keepout_Сonstructive> Keepouts_; */
-    std::vector<Keepout> Keepouts;
+    XmlArrayElem<Keepout> Keepouts;
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Сonstructive. *
      * Они не являются частью формата TopoR PCB.                            *
@@ -197,4 +197,4 @@ struct Constructive {
     //    void Add(Constructive a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts);
     /************************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

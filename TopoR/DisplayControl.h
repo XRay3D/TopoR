@@ -5,7 +5,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Настройки отображения».
 struct DisplayControl {
     // Настройка отображения: параметры текущего вида.
@@ -403,7 +403,7 @@ struct DisplayControl {
         /* public bool colorizeNetlineSpecified_ */
         // Отображение цепей особым цветом: установить цвет для цепи / сигнала / группы цепей / группы сигналов.
         /* [XmlElement("SetColor")] public List<SetColor> SetColors_; */
-        std::vector<SetColor> SetColors;
+        XmlArrayElem<SetColor> SetColors;
     };
     // Фильтр отображения связей.
     struct FilterNetlines {
@@ -418,7 +418,7 @@ struct DisplayControl {
         XmlElement("SignalRef", typeof(SignalRef)),
         XmlElement("DiffSignalRef", typeof(DiffSignalRef)),
         XmlElement("SignalGroupRef", typeof(SignalGroupRef)),] public List<Object> Refs_; */
-        std::vector<XmlVariant<
+        XmlArrayElem<XmlVariant<
             AllNets,
             DiffSignalRef,
             NetGroupRef,
@@ -450,7 +450,7 @@ struct DisplayControl {
     Grid grid;
     // Настройка отображения: настройки видимости слоёв.
     /* [XmlArray("LayersVisualOptions")][XmlArrayItem("LayerOptions")] public List<LayerOptions> LayersVisualOptions_; */
-    std::vector<LayerOptions> LayersVisualOptions;
+    XmlArrayElem<LayerOptions> LayersVisualOptions;
     // Отображение цепей особым цветом.
     /* [XmlElement("ColorNets")] public ColorNets colorNets; */
     ColorNets colorNets;
@@ -463,4 +463,4 @@ struct DisplayControl {
      * ************************************************************************/
     /**************************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

@@ -7,7 +7,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Комоненты на плате (обязательный раздел).
 struct ComponentsOnBoard {
     // Описание компонента на плате.
@@ -122,7 +122,7 @@ struct ComponentsOnBoard {
         XmlArray<Mnthole> Mntholes;
         // Атрибуты компонента.
         /* [XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<Attribute> Attributes; */
-        std::vector<Attribute> Attributes;
+        XmlArrayElem<Attribute> Attributes;
         /************************************************************************
          * Здесь находятся функции для работы с элементами класса CompInstance. *
          * Они не являются частью формата TopoR PCB.                            *
@@ -173,10 +173,10 @@ struct ComponentsOnBoard {
     XmlAttr<QString> version;
     // Описание компонентов на плате (инстанции компонентов)
     /* [XmlArray("Components")][XmlArrayItem("CompInstance")] public List<CompInstance> Components; */
-    std::vector<CompInstance> Components;
+    XmlArrayElem<CompInstance> Components;
     // Описание одиночных контактов.(инстанции компонентов)
     /* [XmlArray("FreePads")][XmlArrayItem("FreePad")] public List<FreePad> FreePads; */
-    std::vector<FreePad> FreePads;
+    XmlArrayElem<FreePad> FreePads;
     /*****************************************************************************
      * Здесь находятся функции для работы с элементами класса ComponentsOnBoard. *
      * Они не являются частью формата TopoR PCB.                                 *
@@ -206,4 +206,4 @@ struct ComponentsOnBoard {
     QString UniqueId();
     /*************************************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

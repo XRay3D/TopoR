@@ -10,7 +10,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Правила для высокоскоростных устройств».
 struct HiSpeedRules {
     // Волновое сопротивление и правила разводки сигналов по слоям.
@@ -33,7 +33,7 @@ struct HiSpeedRules {
         float z0_ = 0.0F;
         // Правило разводки сигнала для слоя.
         /* [XmlElement("LayerRule")] public List<LayerRule_Impendance> LayerImpedanceRules_; */
-        std::vector<LayerRule> LayerImpedanceRules;
+        XmlArrayElem<LayerRule> LayerImpedanceRules;
     };
     // Волновое сопротивление и правила разводки сигналов по слоям для дифференциальных сигналов.
     struct ImpedanceDiff {
@@ -59,7 +59,7 @@ struct HiSpeedRules {
         float z0_ = 0.0F;
         // Правило разводки дифференциальной пары для слоя.
         /* [XmlElement("LayerRule")] public List<LayerRule_ImpendanceDiff> LayerImpedanceDiffRules_; */
-        std::vector<LayerRule> LayerImpedanceDiffRules;
+        XmlArrayElem<LayerRule> LayerImpedanceDiffRules;
     };
     // Описание сигнального кластера цепей.
     struct SignalCluster {
@@ -67,7 +67,7 @@ struct HiSpeedRules {
         struct PinPair {
             // Ссылка на контакт источника сигнала.
             /* [XmlElement("PinRef")] public List<PinRef> PinRefs_; */
-            std::vector<PinRef> PinRefs;
+            XmlArrayElem<PinRef> PinRefs;
         };
         // Описание сигнала.
         struct Signal {
@@ -79,7 +79,7 @@ struct HiSpeedRules {
             ReceiverPinRef receiverPinRef;
             // Пассивные компоненты на пути следования сигнала.
             /* [XmlArray("Components")][XmlArrayItem("CompInstanceRef")] public List<CompInstanceRef> Components_; */
-            std::vector<CompInstanceRef> Components;
+            XmlArrayElem<CompInstanceRef> Components;
         };
         // Ссылка на волновое сопротивление.
         /* [XmlElement("ImpedanceRef")] public ImpedanceRef impedanceRef; */
@@ -89,13 +89,13 @@ struct HiSpeedRules {
         SourcePinRef sourcePinRef;
         // Цепи сигнального кластера.
         /* [XmlArray("Nets")][XmlArrayItem("NetRef")] public List<NetRef> Nets_; */
-        std::vector<NetRef> Nets;
+        XmlArrayElem<NetRef> Nets;
         // Описание заданных связей сигнального кластера.
         /* [XmlArray("PinPairs")][XmlArrayItem("PinPair")] public List<PinPair> PinPairs_; */
-        std::vector<PinPair> PinPairs;
+        XmlArrayElem<PinPair> PinPairs;
         // Ссылки на сигналы.
         /* [XmlElement("Signal")] public List<Signal> Signals_; */
-        std::vector<Signal> Signals;
+        XmlArrayElem<Signal> Signals;
     };
     // Описание дифференциального сигнала (дифференциальной пары).
     struct DiffSignal {
@@ -111,7 +111,7 @@ struct HiSpeedRules {
         ImpedanceRef impedanceRef;
         // Ссылки на сигналы.
         /* [XmlElement("SignalRef")] public List<SignalRef> SignalRefs_; */
-        std::vector<SignalRef> SignalRefs;
+        XmlArrayElem<SignalRef> SignalRefs;
     };
     // Описание группы сигналов.
     struct SignalGroup {
@@ -123,7 +123,7 @@ struct HiSpeedRules {
         /* [XmlElement("SignalRef", typeof(SignalRef)),
             XmlElement("DiffSignalRef", typeof(DiffSignalRef)),
             XmlElement("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> References_; */
-        std::vector<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> References;
+        XmlArrayElem<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> References;
     };
     // Описание правил выравнивания задержек.
     struct RulesDelay {
@@ -143,7 +143,7 @@ struct HiSpeedRules {
             float tolerance_ = 0.0F;
             // Объекты воздействия правила.
             /* [XmlArray("ObjectsAffected")][XmlArrayItem("SignalGroupRef")] public List<SignalGroupRef> ObjectsAffected_; */
-            std::vector<SignalGroupRef> ObjectsAffected;
+            XmlArrayElem<SignalGroupRef> ObjectsAffected;
         };
         // Описание правила задания абсолютного значения задержки.
         struct DelayConstant {
@@ -170,7 +170,7 @@ struct HiSpeedRules {
             /* [XmlArray("ObjectsAffected")][XmlArrayItem("SignalRef", typeof(SignalRef)),
                                              XmlArrayItem("DiffSignalRef", typeof(DiffSignalRef)),
                                              XmlArrayItem("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> ObjectsAffected_; */
-            std::vector<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+            XmlArrayElem<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         };
         // Описание правила взаимного выравнивания задержек.
         // <remarks>! Правило несимметрично относительно ObjectLeft и ObjectRight</remarks>
@@ -206,14 +206,14 @@ struct HiSpeedRules {
         };
         // Правила выравнивания задержек для группы цепей или группы дифференциальных пар.
         /* [XmlElement("DelayEqual")] public List<DelayEqual> DelayEquals_; */
-        std::vector<DelayEqual> DelayEquals;
+        XmlArrayElem<DelayEqual> DelayEquals;
         // Правила задания абсолютного значения задержки.
         /* [XmlElement("DelayConstant")] public List<DelayConstant> DelayConstants_; */
-        std::vector<DelayConstant> DelayConstants;
+        XmlArrayElem<DelayConstant> DelayConstants;
         // Правила взаимного выравнивания задержек.
         // <remarks>! Правила несимметричны относительно ObjectLeft и ObjectRight</remarks>
         /* [XmlElement("DelayRelation")] public List<DelayRelation> DelayRelations_; */
-        std::vector<DelayRelation> DelayRelations;
+        XmlArrayElem<DelayRelation> DelayRelations;
     };
     // Настройки поиска сигналов.
     struct SignalSearchSettings {
@@ -238,7 +238,7 @@ struct HiSpeedRules {
             int minPinsNumber_ = 0;
             // Cсылки на цепи.
             /* [XmlElement("NetRef")] public List<NetRef> NetRefs_; */
-            std::vector<NetRef> NetRefs;
+            XmlArrayElem<NetRef> NetRefs;
         };
         // Максимальное число цепей в сигнальном кластере. Параметр используется при автоматическом определении цепей сигнального кластера.
         /* [XmlAttribute("maxNetsInCluster", DataType = "int")] public int maxNetsInCluster_; */
@@ -251,7 +251,7 @@ struct HiSpeedRules {
         // Правила именования цепей дифференциальных сигналов.
         // <remarks>! Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.</remarks>
         /* [XmlArray("RulesDiffSignalNetsNames")][XmlArrayItem("RuleDiffSignalNetsNames")] public List<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames_; */
-        std::vector<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames;
+        XmlArrayElem<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames;
         // Список цепей, исключённых из поиска сигналов.
         /* [XmlElement("ExcludedNets")] public ExcludedNets excludedNets; */
         ExcludedNets excludedNets;
@@ -262,16 +262,16 @@ struct HiSpeedRules {
     // Волновые сопротивления и правила разводки сигналов.
     /* [XmlArray("RulesImpedances")][XmlArrayItem("Impedance", typeof(Impedance)),
 XmlArrayItem("ImpedanceDiff", typeof(ImpedanceDiff))] public List<Object> RulesImpedances_; */
-    std::vector<XmlVariant<Impedance, ImpedanceDiff>> RulesImpedances;
+    XmlArrayElem<XmlVariant<Impedance, ImpedanceDiff>> RulesImpedances;
     // Сигнальные кластеры цепей.
     /* [XmlArray("SignalClusters")][XmlArrayItem("SignalCluster")] public List<SignalCluster> SignalClusters_; */
-    std::vector<SignalCluster> SignalClusters;
+    XmlArrayElem<SignalCluster> SignalClusters;
     // Дифференциальные сигналы.
     /* [XmlArray("DiffSignals")][XmlArrayItem("DiffSignal")] public List<DiffSignal> DiffSignals_; */
-    std::vector<DiffSignal> DiffSignals;
+    XmlArrayElem<DiffSignal> DiffSignals;
     // Группы сигналов.
     /* [XmlArray("SignalGroups")][XmlArrayItem("SignalGroup")] public List<SignalGroup> SignalGroups_; */
-    std::vector<SignalGroup> SignalGroups;
+    XmlArrayElem<SignalGroup> SignalGroups;
     // Правила выравнивания задержек.
     /* [XmlElement("RulesDelay")] public RulesDelay rulesDelay; */
     RulesDelay rulesDelay;
@@ -288,4 +288,4 @@ XmlArrayItem("ImpedanceDiff", typeof(ImpedanceDiff))] public List<Object> RulesI
     void Rename_compName(const QString& oldname, const QString& newname);
     /***********************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

@@ -9,13 +9,13 @@
 // #include <magicgetruntime.h>
 // #include <unistd.h>
 #include "TopoR_PCB_File.h"
-using namespace TopoR_PCB_Classes;
+using namespace TopoR;
 #include "xmlserializer.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , file{new TopoR_PCB_Classes::TopoR_PCB_File} {
+    , file{new TopoR::TopoR_PCB_File} {
 
     if (0) {
         QStringList files{
@@ -97,95 +97,9 @@ MainWindow::MainWindow(QWidget* parent)
         dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
     if (dir.size() && settings.value("dir").toString() != dir)
         settings.setValue("dir", dir);
-    QTimer::singleShot(100, [this] {
-        Xml xml{dir};
-
-        try {
-            xml.read(*file);
-        } catch (const std::set<QString>& names) {
-            qCritical() << names;
-        } catch (...) {
-        }
-        // qInfo() << xml.byteArray.data();
-        // ui->plainTextEdit->appendPlainText(xml.byteArray);
-        ui->plainTextEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
-
-        connect(new QLineEdit{ui->plainTextEdit}, &QLineEdit::textEdited, [this](const QString& str) {
-            if (!ui->plainTextEdit->find(str)) {
-                ui->plainTextEdit->moveCursor(QTextCursor::Start);
-                ui->plainTextEdit->find(str);
-            }
-        });
-
-        const QStringList headers({tr("Title"), tr("Description")});
-        TreeModel* model = new TreeModel{xml.item, headers, this};
-
-        ui->treeView->setModel(model);
-        ui->treeView->expandAll();
-        ui->treeView->setAlternatingRowColors(true);
-        for (int column = 0; column < model->columnCount(); ++column)
-            ui->treeView->resizeColumnToContents(column);
-        // ui->treeView->collapseAll();
-
-        connect(ui->treeView, &QTreeView::doubleClicked, [this](const QModelIndex& index) {
-            ui->treeView->expandRecursively(index, 1);
-        });
-
-#if 0
-
-
-        // for(auto&& footprint: file->localLibrary.Footprints)
-        //     ui->graphicsView->addItem(file->localLibrary.footprintGi(footprint));
-
-        for(auto&& CompInstance: file->componentsOnBoard.Components) {
-            auto item = file->localLibrary.getFootprint(CompInstance.footprintRef.name)
-                            ->graphicsItem(*file);
-
-            item->setTransform(CompInstance.transform());
-            ui->graphicsView->addItem(item);
-        }
-
-        for(auto&& wire: file->connectivity.Wires) {
-            for(auto&& subwire: wire.Subwires) {
-                QPainterPath path;
-                path.moveTo(subwire.start);
-                if(QPointF p{subwire.start}; p.isNull())
-                    qCritical() << p;
-                for(auto&& track: subwire.Tracks) {
-                    track.visit(
-                        [&path](const TrackLine& track) {
-                            path.lineTo(track.end);
-                            if(QPointF p{track.end}; p.isNull())
-                                qCritical() << p;
-                        },
-                        [&path](const TrackArc& track) {
-                            path.lineTo(track.center);
-                            if(QPointF p{track.center}; p.isNull())
-                                qCritical() << p;
-                            path.lineTo(track.end);
-                            if(QPointF p{track.end}; p.isNull())
-                                qCritical() << p;
-                        },
-                        [&path](const TrackArcCW& track) {
-                            path.lineTo(track.center);
-                            if(QPointF p{track.center}; p.isNull())
-                                qCritical() << p;
-                            path.lineTo(track.end);
-                            if(QPointF p{track.end}; p.isNull())
-                                qCritical() << p;
-                        });
-                }
-                auto item = new QGraphicsPathItem{path};
-                item->setPen({
-                    QColor{255, 0, 0, 128},
-                    subwire.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin
-                });
-                ui->graphicsView->addItem(item);
-            }
-        }
-
-#endif
-        ui->graphicsView->zoomFit();
+    QTimer::singleShot(100, this, [this] {
+        loadFile();
+        drawFile();
     });
 }
 
@@ -197,4 +111,94 @@ MainWindow::~MainWindow() {
     settings.setValue("State", saveState());
     settings.setValue("State", ui->splitter->saveState());
     delete ui;
+}
+
+void MainWindow::loadFile() {
+    Xml xml{dir};
+
+    try {
+        xml.read(*file);
+    } catch (const std::set<QString>& names) {
+        qCritical() << names;
+    } catch (const std::exception& ex) {
+        qCritical() << ex.what();
+    } catch (...) {
+    }
+    // qInfo() << xml.byteArray.data();
+    // ui->plainTextEdit->appendPlainText(xml.byteArray);
+    ui->plainTextEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
+
+    connect(new QLineEdit{ui->plainTextEdit}, &QLineEdit::textEdited, [this](const QString& str) {
+        if (!ui->plainTextEdit->find(str)) {
+            ui->plainTextEdit->moveCursor(QTextCursor::Start);
+            ui->plainTextEdit->find(str);
+        }
+    });
+
+    const QStringList headers({tr("Title"), tr("Description")});
+    TreeModel* model = new TreeModel{xml.item, headers, this};
+
+    ui->treeView->setModel(model);
+    ui->treeView->expandAll();
+    ui->treeView->setAlternatingRowColors(true);
+    for (int column = 0; column < model->columnCount(); ++column)
+        ui->treeView->resizeColumnToContents(column);
+    // ui->treeView->collapseAll();
+
+    connect(ui->treeView, &QTreeView::doubleClicked, [this](const QModelIndex& index) {
+        ui->treeView->expandRecursively(index, 1);
+    });
+}
+
+void MainWindow::drawFile() { // for(auto&& footprint: file->localLibrary.Footprints)
+    //     ui->graphicsView->addItem(file->localLibrary.footprintGi(footprint));
+
+    for (auto&& CompInstance: file->componentsOnBoard.Components) {
+        auto footprint = file->localLibrary.getFootprint(CompInstance.footprintRef.name);
+        if (!footprint) continue;
+        // auto item = footprint->graphicsItem(*file);
+        // item->setTransform(CompInstance.transform());
+        // ui->graphicsView->addItem(item);
+    }
+
+    for (auto&& wire: file->connectivity.Wires) {
+        for (auto&& subwire: wire.Subwires) {
+            QPainterPath path;
+            path.moveTo(subwire.start);
+            if (QPointF p{subwire.start}; p.isNull())
+                qCritical() << p;
+            for (auto&& track: subwire.Tracks) {
+                track.visit(
+                    [&path](const TrackLine& track) {
+                        path.lineTo(track.end);
+                        if (QPointF p{track.end}; p.isNull())
+                            qCritical() << p;
+                    },
+                    [&path](const TrackArc& track) {
+                        path.lineTo(track.center);
+                        if (QPointF p{track.center}; p.isNull())
+                            qCritical() << p;
+                        path.lineTo(track.end);
+                        if (QPointF p{track.end}; p.isNull())
+                            qCritical() << p;
+                    },
+                    [&path](const TrackArcCW& track) {
+                        path.lineTo(track.center);
+                        if (QPointF p{track.center}; p.isNull())
+                            qCritical() << p;
+                        path.lineTo(track.end);
+                        if (QPointF p{track.end}; p.isNull())
+                            qCritical() << p;
+                    });
+            }
+            auto item = new QGraphicsPathItem{path};
+            item->setPen({
+                QColor{255, 0, 0, 128},
+                subwire.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin
+            });
+            ui->graphicsView->addItem(item);
+        }
+    }
+
+    ui->graphicsView->zoomFit();
 }

@@ -5,7 +5,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Правила».
 // <remarks>! Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.</remarks>
 struct Rules {
@@ -42,12 +42,12 @@ struct Rules {
         // Ссылка на слои. См. также LayersRef_
         // <remarks>! При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов. </remarks>
         /* [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_; */
-        std::vector<LayerRef> LayersRefs;
+        XmlArrayElem<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         /* [XmlArray("ObjectsAffected")][XmlArrayItem("NetRef", typeof(NetRef)),
             XmlArrayItem("NetGroupRef", typeof(NetGroupRef)),
             XmlArrayItem("AllNets", typeof(AllNets))] public List<Object> ObjectsAffected_; */
-        std::vector<XmlVariant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
+        XmlArrayElem<XmlVariant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
     };
     // Описание правила зазоров между цепями.
     struct ClearanceNetToNet {
@@ -75,7 +75,7 @@ struct Rules {
         // Ссылка на слои. См. также LayersRef_
         // <remarks>! При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов. </remarks>
         /* [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_; */
-        std::vector<LayerRef> LayersRefs;
+        XmlArrayElem<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         /* [XmlArray("ObjectsAffected")][XmlArrayItem("NetRef", typeof(NetRef)),
             XmlArrayItem("NetGroupRef", typeof(NetGroupRef)),
@@ -83,7 +83,7 @@ struct Rules {
             XmlArrayItem("SignalRef", typeof(SignalRef)),
             XmlArrayItem("DiffSignalRef", typeof(DiffSignalRef)),
             XmlArrayItem("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> ObjectsAffected_; */
-        std::vector<XmlVariant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        XmlArrayElem<XmlVariant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
     };
     // Описание правила зазоров между компонентами.
     struct ClearanceCompToComp {
@@ -99,7 +99,7 @@ struct Rules {
         /* [XmlArray("ObjectsAffected")][XmlArrayItem("ComponentRef", typeof(ComponentRef)),
             XmlArrayItem("CompGroupRef", typeof(CompGroupRef)),
             XmlArrayItem("AllComps", typeof(AllComps))] public List<Object> ObjectsAffected_; */
-        std::vector<XmlVariant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
+        XmlArrayElem<XmlVariant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
     };
     // Описание зазоров до края платы.
     struct RulesClearancesToBoard {
@@ -125,13 +125,13 @@ struct Rules {
             XmlArrayItem("SignalRef", typeof(SignalRef)),
             XmlArrayItem("DiffSignalRef", typeof(DiffSignalRef)),
             XmlArrayItem("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> ObjectsAffected_; */
-        std::vector<XmlVariant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        XmlArrayElem<XmlVariant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         // Назначенные типы переходных отверстий.
         /* [XmlArray("Viastacks")][XmlArrayItem("AllViastacks", typeof(AllViastacks)),
             XmlArrayItem("AllViastacksThrough", typeof(AllViastacksThrough)),
             XmlArrayItem("AllViastacksNotThrough", typeof(AllViastacksNotThrough)),
             XmlArrayItem("ViastackRef", typeof(ViastackRef))] public List<Object> Viastacks_; */
-        std::vector<XmlVariant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
+        XmlArrayElem<XmlVariant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
     };
     // Описание правила назначения цепям опорных слоёв.
     struct PlaneLayerNets {
@@ -157,10 +157,10 @@ struct Rules {
         // Ссылка на слои. См. также LayersRef_
         // <remarks>! При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов. </remarks>
         /* [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_; */
-        std::vector<LayerRef> LayersRefs;
+        XmlArrayElem<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         /* [XmlArray("ObjectsAffected")][XmlArrayItem("NetRef")] public List<NetRef> ObjectsAffected_; */
-        std::vector<NetRef> ObjectsAffected;
+        XmlArrayElem<NetRef> ObjectsAffected;
     };
     // Описание правила назначения цепям сигнальных слоёв.
     struct SignalLayerNets {
@@ -186,12 +186,12 @@ struct Rules {
         // Ссылка на слои. См. также LayersRef_
         // <remarks>! При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов. </remarks>
         /* [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_; */
-        std::vector<LayerRef> LayersRefs;
+        XmlArrayElem<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         /* [XmlArray("ObjectsAffected")][
             XmlArrayItem("NetRef", typeof(NetRef)),
             XmlArrayItem("NetGroupRef", typeof(NetGroupRef))] public List<Object> ObjectsAffected_; */
-        std::vector<XmlVariant<NetRef, NetGroupRef>> ObjectsAffected;
+        XmlArrayElem<XmlVariant<NetRef, NetGroupRef>> ObjectsAffected;
     };
     // Свойства цепи.
     struct NetProperty {
@@ -205,7 +205,7 @@ struct Rules {
         /* public bool routeSpecified_ */
         // Ссылка на цепь.
         /* [XmlElement("NetRef")] public List<NetRef> NetRefs_; */
-        std::vector<NetRef> NetRefs;
+        XmlArrayElem<NetRef> NetRefs;
     };
     // Настройки подключения к углам прямоугольных контактных площадок.
     struct PadConnectSettings {
@@ -214,41 +214,41 @@ struct Rules {
         mode_PadConnectSettings mode_{};
         // Ссылки на стеки контактных площадок.
         /* [XmlElement("PadstackRef")] public List<PadstackRef> PadstackRefs_; */
-        std::vector<PadstackRef> PadstackRefs;
+        XmlArrayElem<PadstackRef> PadstackRefs;
         // Ссылки на контакты.
         /* [XmlElement("PinRef")] public List<PinRef> PinRefs_; */
-        std::vector<PinRef> PinRefs;
+        XmlArrayElem<PinRef> PinRefs;
         // Ссылки на выводы посадочных мест.
         /* [XmlElement("PadRef")] public List<PadRef> PadRefs_; */
-        std::vector<PadRef> PadRefs;
+        XmlArrayElem<PadRef> PadRefs;
     };
     // Версия раздела.
     /* [XmlAttribute("version")] public string version_; */
     XmlAttr<QString> version;
     // Правила ширин проводников.
     /* [XmlArray("RulesWidthOfWires")][XmlArrayItem("WidthOfWires")] public List<WidthOfWires> RulesWidthOfWires_; */
-    std::vector<WidthOfWires> RulesWidthOfWires;
+    XmlArrayElem<WidthOfWires> RulesWidthOfWires;
     // Правила зазоров между цепями.
     /* [XmlArray("RulesClearancesNetToNet")][XmlArrayItem("ClearanceNetToNet")] public List<ClearanceNetToNet> RulesClearancesNetToNet_; */
-    std::vector<ClearanceNetToNet> RulesClearancesNetToNet;
+    XmlArrayElem<ClearanceNetToNet> RulesClearancesNetToNet;
     // Правила зазоров между компонентами.
     /* [XmlArray("RulesClearancesCompToComp")][XmlArrayItem("ClearanceCompToComp")] public List<ClearanceCompToComp> RulesClearancesCompToComp_; */
-    std::vector<ClearanceCompToComp> RulesClearancesCompToComp;
+    XmlArrayElem<ClearanceCompToComp> RulesClearancesCompToComp;
     // Правило зазоров до края платы.
     /* [XmlElement("RulesClearancesToBoard")] public RulesClearancesToBoard rulesClearancesToBoard; */
     RulesClearancesToBoard rulesClearancesToBoard;
     // Правила назначения цепям стеков переходных отверстий.
     /* [XmlArray("RulesViastacksOfNets")][XmlArrayItem("ViastacksOfNets")] public List<ViastacksOfNets> RulesViastacksOfNets_; */
-    std::vector<ViastacksOfNets> RulesViastacksOfNets;
+    XmlArrayElem<ViastacksOfNets> RulesViastacksOfNets;
     // Правила назначения цепям опорных слоёв.
     /* [XmlArray("RulesPlaneLayersNets")][XmlArrayItem("PlaneLayerNets")] public List<PlaneLayerNets> RulesPlaneLayersNets_; */
-    std::vector<PlaneLayerNets> RulesPlaneLayersNets;
+    XmlArrayElem<PlaneLayerNets> RulesPlaneLayersNets;
     // Правила назначения цепям сигнальных слоёв.
     /* [XmlArray("RulesSignalLayersNets")][XmlArrayItem("SignalLayerNets")] public List<SignalLayerNets> RulesSignalLayersNets_; */
-    std::vector<SignalLayerNets> RulesSignalLayersNets;
+    XmlArrayElem<SignalLayerNets> RulesSignalLayersNets;
     // Свойства цепей
     /* [XmlArray("NetProperties")][XmlArrayItem("NetProperty")] public List<NetProperty> NetProperties_; */
-    std::vector<NetProperty> NetProperties;
+    XmlArrayElem<NetProperty> NetProperties;
     // Настройки подключения к углам прямоугольных контактных площадок.
     /* [XmlElement("PadConnectSettings")] public PadConnectSettings padConnectSettings; */
     PadConnectSettings padConnectSettings;
@@ -261,4 +261,4 @@ struct Rules {
     /// \param '1 \brief новое имя компонента
     void Rename_compName(const QString& oldname, const QString& newname);
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

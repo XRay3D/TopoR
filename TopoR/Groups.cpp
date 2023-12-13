@@ -1,6 +1,6 @@
 #include "Groups.h"
 #include "Commons.h"
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 QString Groups::LayerGroup::ToString() {
     return name;
 }
@@ -13,4 +13,4 @@ void Groups::Rename_compName(const QString& oldname, const QString& newname) {
               }))
               b->_ReferenceName = newname;*/
 }
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

@@ -5,7 +5,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Группировка объектов».
 struct Groups {
     // Описание групп слоёв.
@@ -16,7 +16,7 @@ struct Groups {
         // Ссылка на слой или ссылка на группу слоёв.
         /* [XmlElement("LayerRef", typeof(LayerRef)),
             XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public List<Object> LayerRefs_; */
-        std::vector<XmlVariant<LayerRef, LayerGroupRef>> LayerRefs;
+        XmlArrayElem<XmlVariant<LayerRef, LayerGroupRef>> LayerRefs;
         /**********************************************************************
          * Здесь находятся функции для работы с элементами класса LayerGroup. *
          * Они не являются частью формата TopoR PCB.                          *
@@ -32,7 +32,7 @@ struct Groups {
         // Ссылка на цепь или ссылка на группу цепей.
         /* [XmlElement("NetRef", typeof(NetRef)),
             XmlElement("NetGroupRef", typeof(NetGroupRef))] public List<Object> NetRefs_; */
-        std::vector<XmlVariant<NetRef, NetGroupRef>> NetRefs;
+        XmlArrayElem<XmlVariant<NetRef, NetGroupRef>> NetRefs;
     };
     // Описание группы компонентов.
     struct CompGroup {
@@ -42,20 +42,20 @@ struct Groups {
         // Ссылка на компонент на плате или ссылка на группу компонентов.
         /* [XmlElement("CompInstanceRef", typeof(CompInstanceRef)),
             XmlElement("CompGroupRef", typeof(CompGroupRef))] public List<Object> CompRefs_; */
-        std::vector<XmlVariant<CompInstanceRef, CompGroupRef>> CompRefs;
+        XmlArrayElem<XmlVariant<CompInstanceRef, CompGroupRef>> CompRefs;
     };
     // Версия раздела.
     /* [XmlAttribute("version")] public string version_; */
     XmlAttr<QString> version;
     // Группы слоёв.
     /* [XmlArray("LayerGroups")][XmlArrayItem("LayerGroup")] public List<LayerGroup> LayerGroups_; */
-    std::vector<LayerGroup> LayerGroups;
+    XmlArrayElem<LayerGroup> LayerGroups;
     // Группы цепей.
     /* [XmlArray("NetGroups")][XmlArrayItem("NetGroup")] public List<NetGroup> NetGroups_; */
-    std::vector<NetGroup> NetGroups;
+    XmlArrayElem<NetGroup> NetGroups;
     // Группы компонентов.
     /* [XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> CompGroups_; */
-    std::vector<CompGroup> CompGroups;
+    XmlArrayElem<CompGroup> CompGroups;
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Groups. *
      * Они не являются частью формата TopoR PCB.                      *
@@ -66,4 +66,4 @@ struct Groups {
     void Rename_compName(const QString& oldname, const QString& newname);
     /******************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

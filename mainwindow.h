@@ -6,7 +6,7 @@ namespace Ui {
 class MainWindow;
 }
 
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 struct TopoR_PCB_File;
 }
 
@@ -19,6 +19,9 @@ public:
 
 private:
     Ui::MainWindow* ui;
-    TopoR_PCB_Classes::TopoR_PCB_File* file;
+    TopoR::TopoR_PCB_File* file;
     QString dir;
+
+    void loadFile();
+    void drawFile();
 };

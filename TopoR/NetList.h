@@ -5,7 +5,7 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // Раздел «Текущий список соединений».
 struct NetList {
     // Раздел «Текущий список соединени
@@ -34,4 +34,4 @@ struct NetList {
     void Rename_compName(const QString& oldname, const QString& newname);
     /*******************************************************************/
 };
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

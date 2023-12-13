@@ -3,7 +3,7 @@
  * Здесь находятся функции для работы с элементами класса Layer. *
  * Они не являются частью формата TopoR PCB.                     *
  * ***************************************************************/
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // bool Layers::Layer::getCompsOutlineSpecified() const {
 //     return type == layer_type::Assy;
 // }
@@ -26,4 +26,4 @@ bool Layers::LayerUnStackContain(LayerRef lref) {
          >*/
         0;
 }
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

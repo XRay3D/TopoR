@@ -1,5 +1,5 @@
 #include "ComponentsOnBoard.h"
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // QString ComponentsOnBoard::CompInstance::ToString() { return name; }
 // QString ComponentsOnBoard::AddComponent(const QString& name, units units, const QString& componentRef, const QString& footprintRef) {
 //     /* float x = 0, y = 0; // координаты нового компонента
@@ -60,4 +60,4 @@ namespace TopoR_PCB_Classes {
 //       }*/
 //     return uniqueId;
 // }
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR

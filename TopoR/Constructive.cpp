@@ -1,5 +1,5 @@
 #include "Constructive.h"
-namespace TopoR_PCB_Classes {
+namespace TopoR {
 // void Constructive::BoardOutline::Shape_Contour::Shift(float x, float y) {
 //     /*   if(_NonfilledFigure)
 //            (std::dynamic_pointer_cast<IBaseFigure>(_NonfilledFigure)).value().Shift(x, y);*/
@@ -164,4 +164,4 @@ namespace TopoR_PCB_Classes {
 //          }
 //      }*/
 // }
-} // namespace TopoR_PCB_Classes
+} // namespace TopoR
