@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "qregularexpression.h"
+#include "xmlserializer.h"
 #include <QApplication>
 #include <set>
 
@@ -7,8 +8,8 @@ auto messageHandler = qInstallMessageHandler(nullptr);
 void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message) {
     auto file = context.file;
     QMessageLogContext& context_ = const_cast<QMessageLogContext&>(context);
-    while (file && *file)
-        if (std::set{'/', '\\'}.contains(*file++))
+    while(file && *file)
+        if(std::set{'/', '\\'}.contains(*file++))
             context_.file = file;
 
     // QString data{context_.function};
@@ -43,4 +44,57 @@ int main(int argc, char* argv[]) {
     MainWindow w;
     w.show();
     return a.exec();
+}
+
+#include "TopoR_PCB_File.h"
+#include "treemodel.h"
+#include "ui_mainwindow.h"
+#include <QtWidgets>
+#include <boost/stacktrace.hpp>
+
+using namespace TopoR;
+#include "xmlserializer.h"
+
+void MainWindow::loadFile() {
+    Xml xml{dir};
+
+    try {
+        xml.read(*file);
+    } catch(const std::set<QString>& names) {
+        qCritical() << names;
+    } catch(const std::exception& ex) {
+        qCritical() << ex.what();
+        // auto trace = std::stacktrace::current();
+        // qCritical() << std::to_string(trace).data();
+        auto stacktrace = boost::stacktrace::stacktrace{}.as_vector();
+        qCritical() << boost::stacktrace::detail::to_string(stacktrace.data(), stacktrace.size());
+        // for(auto&& trace: stacktrace)
+        // qCritical() << trace.name() << trace.name();
+        // qCritical() << boost::stacktrace::stacktrace();
+    } catch(...) {
+    }
+    // qInfo() << xml.byteArray.data();
+    // ui->plainTextEdit->appendPlainText(xml.byteArray);
+    ui->plainTextEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
+
+    connect(new QLineEdit{ui->plainTextEdit}, &QLineEdit::textEdited, [this](const QString& str) {
+        if(!ui->plainTextEdit->find(str)) {
+            ui->plainTextEdit->moveCursor(QTextCursor::Start);
+            ui->plainTextEdit->find(str);
+        }
+    });
+
+    const QStringList headers({tr("Title"), tr("Description")});
+    TreeModel* model = new TreeModel{xml.item, headers, this};
+
+    ui->treeView->setModel(model);
+    ui->treeView->expandAll();
+    ui->treeView->setAlternatingRowColors(true);
+    for(int column = 0; column < model->columnCount(); ++column)
+        ui->treeView->resizeColumnToContents(column);
+    // ui->treeView->collapseAll();
+
+    connect(ui->treeView, &QTreeView::doubleClicked, [this](const QModelIndex& index) {
+        ui->treeView->expandRecursively(index, 1);
+    });
 }

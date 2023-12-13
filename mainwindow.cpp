@@ -6,18 +6,21 @@
 #include <QDebug>
 #include <QSettings>
 #include <QtWidgets>
+// #include <stacktrace>
+// #define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
+// #include <boost/stacktrace.hpp>
 // #include <magicgetruntime.h>
 // #include <unistd.h>
 #include "TopoR_PCB_File.h"
 using namespace TopoR;
-#include "xmlserializer.h"
+// #include "xmlserializer.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , file{new TopoR::TopoR_PCB_File} {
 
-    if (0) {
+    if(0) {
         QStringList files{
             "../TopoR/Commons.cpp",
             "../TopoR/Commons.h",
@@ -54,13 +57,13 @@ MainWindow::MainWindow(QWidget* parent)
             "../TopoR/TopoR_PCB_File.cpp",
             "../TopoR/TopoR_PCB_File.h",
         };
-        for (auto&& fileName: files) {
+        for(auto&& fileName: files) {
             QFile file(fileName);
             QString dataWr;
             bool fl{};
-            if (file.open(QFile::ReadOnly)) {
+            if(file.open(QFile::ReadOnly)) {
                 dataWr = file.readAll();
-                while (dataWr.contains("\r\n\r\n"))
+                while(dataWr.contains("\r\n\r\n"))
                     dataWr.replace("\r\n\r\n", "\r\n");
                 // dataWr = data;
                 // qWarning() << fileName;
@@ -79,7 +82,7 @@ MainWindow::MainWindow(QWidget* parent)
                 // }
                 file.close();
             }
-            if (1 && file.open(QFile::WriteOnly)) {
+            if(1 && file.open(QFile::WriteOnly)) {
                 file.write(dataWr.toUtf8());
                 file.close();
             }
@@ -93,9 +96,9 @@ MainWindow::MainWindow(QWidget* parent)
     restoreGeometry(settings.value("Geometry").toByteArray());
     restoreState(settings.value("State").toByteArray());
     ui->splitter->restoreState(settings.value("State").toByteArray());
-    if (!QFile::exists(dir))
+    if(!QFile::exists(dir))
         dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
-    if (dir.size() && settings.value("dir").toString() != dir)
+    if(dir.size() && settings.value("dir").toString() != dir)
         settings.setValue("dir", dir);
     QTimer::singleShot(100, this, [this] {
         loadFile();
@@ -113,82 +116,63 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::loadFile() {
-    Xml xml{dir};
-
-    try {
-        xml.read(*file);
-    } catch (const std::set<QString>& names) {
-        qCritical() << names;
-    } catch (const std::exception& ex) {
-        qCritical() << ex.what();
-    } catch (...) {
-    }
-    // qInfo() << xml.byteArray.data();
-    // ui->plainTextEdit->appendPlainText(xml.byteArray);
-    ui->plainTextEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
-
-    connect(new QLineEdit{ui->plainTextEdit}, &QLineEdit::textEdited, [this](const QString& str) {
-        if (!ui->plainTextEdit->find(str)) {
-            ui->plainTextEdit->moveCursor(QTextCursor::Start);
-            ui->plainTextEdit->find(str);
-        }
-    });
-
-    const QStringList headers({tr("Title"), tr("Description")});
-    TreeModel* model = new TreeModel{xml.item, headers, this};
-
-    ui->treeView->setModel(model);
-    ui->treeView->expandAll();
-    ui->treeView->setAlternatingRowColors(true);
-    for (int column = 0; column < model->columnCount(); ++column)
-        ui->treeView->resizeColumnToContents(column);
-    // ui->treeView->collapseAll();
-
-    connect(ui->treeView, &QTreeView::doubleClicked, [this](const QModelIndex& index) {
-        ui->treeView->expandRecursively(index, 1);
-    });
-}
-
 void MainWindow::drawFile() { // for(auto&& footprint: file->localLibrary.Footprints)
     //     ui->graphicsView->addItem(file->localLibrary.footprintGi(footprint));
 
-    for (auto&& CompInstance: file->componentsOnBoard.Components) {
+    for(auto&& CompInstance: file->componentsOnBoard.Components) {
         auto footprint = file->localLibrary.getFootprint(CompInstance.footprintRef.name);
-        if (!footprint) continue;
-        // auto item = footprint->graphicsItem(*file);
-        // item->setTransform(CompInstance.transform());
-        // ui->graphicsView->addItem(item);
+        if(!footprint) continue;
+        auto item = footprint->graphicsItem(*file);
+        item->setTransform(CompInstance.transform());
+        ui->graphicsView->addItem(item);
     }
 
-    for (auto&& wire: file->connectivity.Wires) {
-        for (auto&& subwire: wire.Subwires) {
+    for(auto&& wire: file->connectivity.Wires) {
+        for(auto&& subwire: wire.Subwires) {
             QPainterPath path;
             path.moveTo(subwire.start);
-            if (QPointF p{subwire.start}; p.isNull())
+            if(QPointF p{subwire.start}; p.isNull())
                 qCritical() << p;
-            for (auto&& track: subwire.Tracks) {
+            for(auto&& track: subwire.Tracks) {
                 track.visit(
                     [&path](const TrackLine& track) {
                         path.lineTo(track.end);
-                        if (QPointF p{track.end}; p.isNull())
-                            qCritical() << p;
+                        // if(QPointF p{track.end}; p.isNull())
+                        // qCritical() << p;
                     },
-                    [&path](const TrackArc& track) {
-                        path.lineTo(track.center);
-                        if (QPointF p{track.center}; p.isNull())
-                            qCritical() << p;
-                        path.lineTo(track.end);
-                        if (QPointF p{track.end}; p.isNull())
-                            qCritical() << p;
+                    [&path, this](const TrackArc& track) {
+                        QLineF line1{track.center, path.currentPosition()};
+                        QLineF line2{track.center, track.end};
+                        const auto a1 = line1.angle();
+                        const auto a2 = line2.angle();
+                        const auto a = a1 - a2;
+                        const auto r = line1.length();
+                        path.arcTo(
+                            -r + track.center.x, -r + track.center.y, r * 2, r * 2,
+                            a1,
+                            a);
+                        auto item = new QGraphicsEllipseItem{-r + track.center.x, -r + track.center.y, r * 2, r * 2};
+                        item->setPen({Qt::green, 0.0});
+                        item->setZValue(100000);
+                        item->setToolTip(QString{"A1=%1\nA2=%2\n%3"}.arg(a1).arg(a2).arg(a));
+                        ui->graphicsView->addItem(item);
                     },
-                    [&path](const TrackArcCW& track) {
-                        path.lineTo(track.center);
-                        if (QPointF p{track.center}; p.isNull())
-                            qCritical() << p;
-                        path.lineTo(track.end);
-                        if (QPointF p{track.end}; p.isNull())
-                            qCritical() << p;
+                    [&path, this](const TrackArcCW& track) {
+                        QLineF line1{track.center, path.currentPosition()};
+                        QLineF line2{track.center, track.end};
+                        const auto a1 = line1.angle();
+                        const auto a2 = line2.angle();
+                        const auto a = a1 - a2;
+                        const auto r = line1.length();
+                        path.arcTo(
+                            -r + track.center.x, -r + track.center.y, r * 2, r * 2,
+                            a1,
+                            a);
+                        auto item = new QGraphicsEllipseItem{-r + track.center.x, -r + track.center.y, r * 2, r * 2};
+                        item->setPen({Qt::magenta, 0.0});
+                        item->setZValue(100000);
+                        item->setToolTip(QString{"A1=%1\nA2=%2\n%3"}.arg(a1).arg(a2).arg(a));
+                        ui->graphicsView->addItem(item);
                     });
             }
             auto item = new QGraphicsPathItem{path};
