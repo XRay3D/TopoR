@@ -20,75 +20,6 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
     , file{new TopoR::TopoR_PCB_File} {
 
-    if(0) {
-        QStringList files{
-            "../TopoR/Commons.cpp",
-            "../TopoR/Commons.h",
-            "../TopoR/ComponentsOnBoard.cpp",
-            "../TopoR/ComponentsOnBoard.h",
-            "../TopoR/Connectivity.cpp",
-            "../TopoR/Connectivity.h",
-            "../TopoR/Constructive.cpp",
-            "../TopoR/Constructive.h",
-            "../TopoR/Coordinates.h",
-            "../TopoR/DialogSettings.cpp",
-            "../TopoR/DialogSettings.h",
-            "../TopoR/DisplayControl.cpp",
-            "../TopoR/DisplayControl.h",
-            "../TopoR/Enums.h",
-            "../TopoR/Groups.cpp",
-            "../TopoR/Groups.h",
-            "../TopoR/Header.cpp",
-            "../TopoR/Header.h",
-            "../TopoR/HiSpeedRules.cpp",
-            "../TopoR/HiSpeedRules.h",
-            "../TopoR/Layers.cpp",
-            "../TopoR/Layers.h",
-            "../TopoR/LocalLibrary.cpp",
-            "../TopoR/LocalLibrary.h",
-            "../TopoR/NetList.cpp",
-            "../TopoR/NetList.h",
-            "../TopoR/Rules.cpp",
-            "../TopoR/Rules.h",
-            "../TopoR/Settings.cpp",
-            "../TopoR/Settings.h",
-            "../TopoR/TextStyles.cpp",
-            "../TopoR/TextStyles.h",
-            "../TopoR/TopoR_PCB_File.cpp",
-            "../TopoR/TopoR_PCB_File.h",
-        };
-        for(auto&& fileName: files) {
-            QFile file(fileName);
-            QString dataWr;
-            bool fl{};
-            if(file.open(QFile::ReadOnly)) {
-                dataWr = file.readAll();
-                while(dataWr.contains("\r\n\r\n"))
-                    dataWr.replace("\r\n\r\n", "\r\n");
-                // dataWr = data;
-                // qWarning() << fileName;
-                // for(auto&& [all /*, repCap, type, name*/]:
-                //     ctre::multiline_range<R"(//.+(?:\r\n)+)">(data)) {
-                //     // if(repCap.view().starts_with("XmlAttr"sv)) continue;
-                //     auto rep = QString::fromStdString(all.str());
-                //     fl = true;
-
-                //     // auto rep = QString::fromStdString("XmlAttr<" + type.str() + "> " + name.str());
-                //     qInfo() << rep;
-                //     for(int i = 0; i < 5; ++i)
-                //         rep.replace("\r\n\r\n", "\r\n");
-                //     qInfo() << rep;
-                //     // dataWr.replace(QString::fromStdString(repCap.str()), rep);
-                // }
-                file.close();
-            }
-            if(1 && file.open(QFile::WriteOnly)) {
-                file.write(dataWr.toUtf8());
-                file.close();
-            }
-        }
-        exit(0);
-    }
     ui->setupUi(this);
     QSettings settings;
     settings.beginGroup("MainWindow");
@@ -96,9 +27,9 @@ MainWindow::MainWindow(QWidget* parent)
     restoreGeometry(settings.value("Geometry").toByteArray());
     restoreState(settings.value("State").toByteArray());
     ui->splitter->restoreState(settings.value("State").toByteArray());
-    if(!QFile::exists(dir))
+    if (!QFile::exists(dir))
         dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
-    if(dir.size() && settings.value("dir").toString() != dir)
+    if (dir.size() && settings.value("dir").toString() != dir)
         settings.setValue("dir", dir);
     QTimer::singleShot(100, this, [this] {
         loadFile();
@@ -111,7 +42,7 @@ MainWindow::MainWindow(QWidget* parent)
         dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
         QSettings settings;
         settings.beginGroup("MainWindow");
-        if(dir.size() && settings.value("dir").toString() != dir)
+        if (dir.size() && settings.value("dir").toString() != dir)
             settings.setValue("dir", dir);
         loadFile();
         ui->graphicsView->setScene(new QGraphicsScene{ui->graphicsView});
@@ -129,29 +60,101 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
+QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_File& file) {
+    auto group = new QGraphicsItemGroup;
+    LocalLibrary::footprints.emplace(fp->name, group);
+    for (auto&& pad: fp->Pads) {
+        if (auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack)
+            for (int hue{}; auto&& padShape: padstack->Pads) {
+                if (auto item = padShape.visit([](auto&& pad) { return new QGraphicsPathItem{pad}; }); item) {
+                    int color = 240 / padstack->Pads.size() * hue++;
+                    item->setPen({QColor::fromHsv(color, 255, 255),
+                        0.0});
+                    item->setTransform(pad.transform());
+                    group->addToGroup(item);
+                }
+            }
+    }
+
+    for (auto&& detail: fp->Details) {
+        auto item = new QGraphicsPathItem{detail.Figure.visit([](auto&& det) -> QPainterPath { return det; })};
+        item->setPen({Qt::lightGray, detail.lineWidth < 1.0 ? 0.0 : detail.lineWidth});
+        item->setZValue(10000);
+        group->addToGroup(item);
+    }
+
+    for (auto&& label: fp->Labels) {
+        if (auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
+        }
+    }
+
+    group->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    return group;
+}
+
 void MainWindow::drawFile() {
     // for(auto&& footprint: file->localLibrary.Footprints)
     //     ui->graphicsView->addItem(file->localLibrary.footprintGi(footprint));
 
-    for(auto&& CompInstance: file->componentsOnBoard.Components) {
+    for (auto&& CompInstance: file->componentsOnBoard.Components) {
         auto footprint = file->localLibrary.getFootprint(CompInstance.footprintRef.name);
-        if(!footprint) continue;
-        auto item = footprint->graphicsItem(*file);
+        if (!footprint) continue;
+        auto item = graphicsItem(footprint, *file);
         item->setTransform(CompInstance.transform());
         ui->graphicsView->addItem(item);
     }
 
+    // for (auto&& CompInstance: file->componentsOnBoard.Components) {
+    //     auto component = file->localLibrary.getComponent(CompInstance.componentRef.name);
+    //     if (!component) continue;
+    //     auto item = graphicsItem(component, *file);
+    //     item->setTransform(CompInstance.transform());
+    //     ui->graphicsView->addItem(item);
+    // }
+
     std::map<QString, int> layers;
-    for(auto&& wire: file->connectivity.Wires)
-        if(!layers.contains(wire.layerRef.name.value))
+    for (auto&& wire: file->connectivity.Wires)
+        if (!layers.contains(wire.layerRef.name.value))
             layers.emplace(wire.layerRef.name.value, layers.size());
 
-    for(auto&& wire: file->connectivity.Wires) {
-        for(auto&& subwire: wire.Subwires) {
+    for (auto&& wire: file->connectivity.Wires) {
+        for (auto&& subwire: wire.Subwires) {
             int color = 240 / layers.size() * layers.at(wire.layerRef.name.value);
             ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
         }
     }
+
+    for (auto&& contour: file->constructive.boardOutline.Contour) {
+        // QPainterPath path;
+        if (contour.NonfilledFigure)
+            ui->graphicsView->addItem(
+                                new QGraphicsPathItem{
+                                    contour.NonfilledFigure.visit([](auto&& val) -> QPainterPath { return val; })})
+                ->setPen({Qt::yellow, contour.lineWidth});
+        // contour.NonfilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
+        if (contour.FilledFigure)
+            ui->graphicsView->addItem(
+                                new QGraphicsPathItem{
+                                    contour.FilledFigure.visit([](auto&& val) -> QPainterPath { return val; })})
+                ->setPen({Qt::yellow, contour.lineWidth});
+        // contour.FilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
+    }
+
+    for (auto&& void_: file->constructive.boardOutline.Voids) {
+        QPainterPath path;
+        if (void_.NonfilledFigure)
+            void_.NonfilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
+        if (void_.FilledFigure)
+            void_.FilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
+        ui->graphicsView->addItem(new QGraphicsPathItem{path})->setPen({Qt::gray, void_.lineWidth});
+    }
+
+    // for (auto&& wire: file->constructive.boardOutline) {
+    //     for (auto&& subwire: wire.Subwires) {
+    //         int color = 240 / layers.size() * layers.at(wire.layerRef.name.value);
+    //         ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
+    //     }
+    // }
 
     ui->graphicsView->zoomFit();
 }

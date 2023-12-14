@@ -15,11 +15,11 @@ namespace TopoR {
 struct Constructive {
     // Описание контура платы и вырезов в плате.
     struct BoardOutline {
+#if 0
         struct ShapeContour {
             // Толщина линии.
             /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
             XmlAttr<float> lineWidth;
-            float lineWidth_ = 0.0F;
             // Незалитая фигура.
             /* [XmlElement("ArcCCW", typeof(ArcCCW)),
                 XmlElement("ArcCW", typeof(ArcCW)),
@@ -53,7 +53,6 @@ struct Constructive {
             // Толщина линии.
             /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
             XmlAttr<float> lineWidth;
-            float lineWidth_ = 0.0F;
             // Описание залитой фигуры.
             /* [XmlElement("FilledCircle", typeof(FilledCircle)),
                 XmlElement("FilledRect", typeof(FilledRect)),
@@ -74,13 +73,53 @@ struct Constructive {
         // Вырезы в плате.
         /* [XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> Voids_; */
         XmlArrayElem<ShapeVoids> Voids;
+#else
+        struct Shape {
+            // Толщина линии.
+            /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
+            XmlAttr<float> lineWidth;
+            // Незалитая фигура.
+            XmlVariant<
+                ArcCCW,      // Contour
+                ArcCW,       // Contour
+                ArcByAngle,  // Contour
+                ArcByMiddle, // Contour
+                Circle,      // Contour
+                Line,        // Contour
+                Polyline,    // Contour
+                Rect,        // Contour
+                Contour      // Contour
+                >
+                NonfilledFigure;
+            // Описание залитой фигуры.
+            XmlVariant<
+                FilledCircle, // Voids
+                FilledRect,   // Voids
+                Polygon,      // Voids
+                FilledContour // Voids
+                >
+                FilledFigure;
+            /*************************************************************************
+             * Здесь находятся функции для работы с элементами класса Shape_Contour. *
+             * Они не являются частью формата TopoR PCB.                             *
+             * ***********************************************************************/
+            //    void Shift(float x, float y);
+            //    void UnitsConvert(dist in_units, dist out_units);
+            /*************************************************************************/
+        };
+        // Описание контура платы.
+        /* [XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> Contours_; */
+        XmlArrayElem<Shape> Contour;
+        // Вырезы в плате.
+        /* [XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> Voids_; */
+        XmlArrayElem<Shape> Voids;
+#endif
     };
     // Описание монтажного отверстия на плате.
     struct MntholeInstance {
         // Задаёт угол в градусах c точностью до тысячных долей.
         /* [XmlAttribute("angle", DataType = "float")] public float angle_; */
         XmlAttr<float> angle;
-        float angle_ = 0.0F;
         // Признак фиксации.
         /* [XmlAttribute("fixed")] public Bool fixed_; */
         Bool fixed_{};

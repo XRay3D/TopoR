@@ -50,16 +50,20 @@ const LocalLibrary::Footprint* LocalLibrary::getFootprint(const QString& name) c
     return {};
 }
 
+const LocalLibrary::Component* LocalLibrary::getComponent(const QString& name) const {
+    for (auto&& component: Components)
+        if (name == component.name)
+            return &component;
+    return {};
+}
+
 QGraphicsItem* LocalLibrary::Footprint::graphicsItem(const TopoR_PCB_File& file) const {
     auto group = new QGraphicsItemGroup;
     LocalLibrary::footprints.emplace(name, group);
     for (auto&& pad: Pads) {
         if (auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack)
             for (int hue{}; auto&& padShape: padstack->Pads) {
-                if (auto item = padShape.visit([](auto&& pad) {
-                        return new QGraphicsPathItem{pad};
-                    });
-                    item) {
+                if (auto item = padShape.visit([](auto&& pad) { return new QGraphicsPathItem{pad}; }); item) {
                     int color = 240 / padstack->Pads.size() * hue++;
                     item->setPen({QColor::fromHsv(color, 255, 255),
                         0.0});

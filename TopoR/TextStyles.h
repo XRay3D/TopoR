@@ -22,7 +22,7 @@ struct TextStyles {
         XmlAttr<QString> fontName;
         // Параметр стиля надписей: высота символов в текущих единицах.
         /* [XmlAttribute("height", DataType = "float")] public float height_; */
-        XmlAttr<float> height; //        float height_ = 0.0F;
+        XmlAttr<float> height;
         // Параметр стиля надписей: жирность шрифта.
         /* [XmlAttribute("bold")] public Bool bold_; */
         XmlAttr<Bool> bold{};

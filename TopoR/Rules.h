@@ -18,11 +18,9 @@ struct Rules {
         // Параметр правила ширины проводников: минимальная ширина проводника.
         /* [XmlAttribute("widthMin", DataType = "float")] public float widthMin_; */
         XmlAttr<float> widthMin;
-        float widthMin_ = 0.0F;
         // Параметр правила ширины проводников: номинальная ширина проводника.
         /* [XmlAttribute("widthNom", DataType = "float")] public float widthNom_; */
         XmlAttr<float> widthNom;
-        float widthNom_ = 0.0F;
         // Ссылка на слои. См. также LayersRefs_
         // <remarks>! При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef. </remarks>
         /* [XmlElement("AllLayers", typeof(AllLayers)),
@@ -58,11 +56,9 @@ struct Rules {
         // Параметр правила зазоров между цепями: минимальный зазор.
         /* [XmlAttribute("clrnMin", DataType = "float")] public float clrnMin_; */
         XmlAttr<float> clrnMin;
-        float clrnMin_ = 0.0F;
         // Параметр правила зазоров между цепями: номинальный зазор.
         /* [XmlAttribute("clrnNom", DataType = "float")] public float clrnNom_; */
         XmlAttr<float> clrnNom;
-        float clrnNom_ = 0.0F;
         // Ссылка на слои. См. также LayersRefs_
         // <remarks>! При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef. </remarks>
         /* [XmlElement("AllLayers", typeof(AllLayers)),
@@ -94,7 +90,6 @@ struct Rules {
         // Параметр правила зазоров между цепями: минимальный зазор.
         /* [XmlAttribute("clrn", DataType = "float")] public float clrn_; */
         XmlAttr<float> clrn;
-        float clrn_ = 0.0F;
         // Объекты воздействия правила.
         /* [XmlArray("ObjectsAffected")][XmlArrayItem("ComponentRef", typeof(ComponentRef)),
             XmlArrayItem("CompGroupRef", typeof(CompGroupRef)),
@@ -106,11 +101,9 @@ struct Rules {
         // Устанавливает зазор от проводников до края платы.
         /* [XmlAttribute("wires", DataType = "float")] public float clrn_; */
         XmlAttr<float> wires;
-        float clrn_ = 0.0F;
         // Устанавливает зазор от компонентов до края платы.
         /* [XmlAttribute("comps", DataType = "float")] public float comps_; */
         XmlAttr<float> comps;
-        float comps_ = 0.0F;
     };
     // Описание правила назначения цепям стеков переходных отверстий.
     struct ViastacksOfNets {

@@ -10,7 +10,7 @@
 #*******************************************************************************/
 cmake_minimum_required(VERSION 3.20)
 
-project(TopoRLib LANGUAGES CXX)
+project(TopoR LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #set(CMAKE_AUTOUIC ON)

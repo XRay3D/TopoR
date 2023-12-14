@@ -10,7 +10,7 @@
 #*******************************************************************************/
 cmake_minimum_required(VERSION 3.20)
 
-project(TopoR LANGUAGES CXX)
+project(TopoRTest LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
@@ -21,9 +21,9 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}_${CMAKE_CXX_COMPILER_ID})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 
 add_definitions(
     -DQT_MESSAGELOGCONTEXT #qDebug()
@@ -103,8 +103,10 @@ add_executable(${PROJECT_NAME}
 # set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
 #     PROPERTIES GENERATED TRUE)
 
+link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    TopoRLib
+    TopoR
     # "stdc++_libbacktrace"
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
@@ -144,7 +146,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
     add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND "C:/Program Files/Git/usr/bin/touch.exe"
-        "${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
         COMMENT "TOUCH Cruth..."
     )
 endif()

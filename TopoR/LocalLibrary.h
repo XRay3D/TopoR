@@ -8,11 +8,13 @@
 #include <string>
 #include <variant>
 #include <vector>
+
 /* Мною, Константином aka KilkennyCat,05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
+
 class QGraphicsItemGroup;
 namespace TopoR {
 class TopoR_PCB_File;
@@ -107,7 +109,7 @@ struct LocalLibrary {
         // Массив координат точек, вершин.
         // <remarks>! Минимум 3 элемента</remarks>
         /* [XmlElement("Dot")] public List<Dot> Dots; */
-        XmlArrayElem<Dot> Dots;
+        XmlArray<Dot> Dots;
         operator QPolygonF() const;
         operator QPainterPath() const;
     };
@@ -320,7 +322,6 @@ struct LocalLibrary {
         QString ToString() { return name; }
 
         QGraphicsItem* graphicsItem(const TopoR_PCB_File& file) const;
-
     };
     // Описание схемного компонента.
     struct Component {
@@ -414,6 +415,7 @@ struct LocalLibrary {
     static inline std::map<QString, QGraphicsItemGroup*> footprints;
     const Padstack* getPadstack(const QString& name) const;
     const Footprint* getFootprint(const QString& name) const;
+    const Component* getComponent(const QString& name) const;
     /************************************************************************/
 };
 } // namespace TopoR
