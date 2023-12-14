@@ -17,7 +17,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -34,15 +34,29 @@ find_package(QT NAMES Qt6 Qt5 Core)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Gui Widgets Xml REQUIRED)
 
 add_compile_options(
-    $<$<CXX_COMPILER_ID:MSVC>:/bigobj>
+    $<$<CXX_COMPILER_ID:MSVC>:/bigobj># deep template instantiation
+    # $<$<CXX_COMPILER_ID:GNU>:-rdynamic># stacktrace
+    # $<$<CXX_COMPILER_ID:GNU>:-lstdc++_libbacktrace># stacktrace
     #- fconstexpr - depth = 50
     #- fpermissive
 )
+
+# add_link_options(
+#     $<$<CXX_COMPILER_ID:GNU>:-lstdc++_libbacktrace># stacktrace
+# )
 
 #file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 # file(GLOB_RECURSE JSONS ${CMAKE_CURRENT_SOURCE_DIR}/*.json)
 # file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 # file(GLOB_RECURSE UIS ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
+
+find_package(Boost)
+if (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIR})
+    message(${Boost_INCLUDE_DIR})
+else()
+    message(FATAL_ERROR "Boost not found!!!")
+endif()
 
 include_directories(
     pfr_non_boost/include
@@ -91,6 +105,7 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     TopoRLib
+    # "stdc++_libbacktrace"
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Widgets
@@ -120,7 +135,7 @@ add_subdirectory(TopoR)
 #     #    cqtdeployer -bin myApp -qmake path/to/Qt/5.x.x/build/bin/qmake -qmlDir path/to/my/qml/files/dir qif
 # endif()
 
-if(WIN32)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
     # windeployqt
     # set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)

@@ -20,13 +20,13 @@ inline QString typeName(const T& = {}) {
     int status;
     char* const realname = abi::__cxa_demangle(typeid(T).name(), NULL, NULL, &status);
     QString ret{realname};
-    if (auto&& [whole, stl, name] = ctre::match<R"(std::(\w+)<.+:(\w+),.+)">(realname); whole)
+    if(auto&& [whole, stl, name] = ctre::match<R"(std::(\w+)<.+:(\w+),.+)">(realname); whole)
         ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    else if (auto&& [whole, name] = ctre::match<R"(\S+:XmlAttr<.+:(\w+)>)">(realname); whole)
+    else if(auto&& [whole, name] = ctre::match<R"(\S+:XmlAttr<.+:(\w+)>)">(realname); whole)
         ret = QString::fromStdString(name.to_string());
-    else if (auto&& [whole, stl, name] = ctre::match<R"(\S+::(\w+)<.+:(\w+)(?:,?.*))">(realname); whole)
+    else if(auto&& [whole, stl, name] = ctre::match<R"(\S+::(\w+)<.+:(\w+)(?:,?.*))">(realname); whole)
         ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    else if (auto&& [whole, name] = ctre::match<R"(.+:(\w+))">(realname); whole)
+    else if(auto&& [whole, name] = ctre::match<R"(.+:(\w+))">(realname); whole)
         ret = QString::fromStdString(name.to_string());
     std::free(realname);
     return ret;
@@ -42,13 +42,13 @@ template <typename T>
 inline QString typeName(const T& = {}) {
     QString ret{typeid(T).name()};
     QByteArray realname{ret.toUtf8()};
-    if (auto&& [whole, stl, name] = match1(realname); whole)
+    if(auto&& [whole, stl, name] = match1(realname); whole)
         ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    else if (auto&& [whole, name] = match2(realname); whole)
+    else if(auto&& [whole, name] = match2(realname); whole)
         ret = QString::fromStdString(name.to_string());
-    else if (auto&& [whole, stl, name] = match3(realname); whole)
+    else if(auto&& [whole, stl, name] = match3(realname); whole)
         ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    else if (auto&& [whole, name] = match4(realname); whole)
+    else if(auto&& [whole, name] = match4(realname); whole)
         ret = QString::fromStdString(name.to_string());
     return ret;
 }
@@ -132,7 +132,7 @@ struct loger {
     static inline int i;
     loger(Xml& xml) {
         auto type = [](QDomNode& node) {
-            switch (node.nodeType()) {
+            switch(node.nodeType()) {
             case QDomNode::ElementNode: return "Element Node";
             case QDomNode::AttributeNode: return "Attribute Node";
             case QDomNode::TextNode: return "Text Node";
@@ -158,7 +158,7 @@ struct loger {
 
 template <>
 inline bool read(Xml& xml, QString& str) {
-    if (xml.node.isElement()) {
+    if(xml.node.isElement()) {
         xml.node = xml.node.firstChildElement(xml.fieldName);
         loger log{xml};
         str = xml.node.toElement().text();
@@ -170,7 +170,7 @@ inline bool read(Xml& xml, QString& str) {
         // tree->itemData[IsAttr] = "Tag";
         tree->itemData[Type] = typeid(QString).name();
         tree->itemData[FLine] = xml.node.lineNumber();
-    } else if (xml.node.isAttr()) {
+    } else if(xml.node.isAttr()) {
         str = xml.node.nodeValue();
         loger log{xml};
 
@@ -189,29 +189,29 @@ template <typename T>
     requires std::is_arithmetic_v<T>
 inline bool read(Xml& xml, T& value) {
     QString text;
-    if (xml.node.isElement()) {
-        if (text = xml.node.toElement().attribute(typeName<T>()); text.size()) {
+    if(xml.node.isElement()) {
+        if(text = xml.node.toElement().attribute(typeName<T>()); text.size()) {
             auto tree = xml.tree->addItem(new TreeItem);
             tree->itemData[Name] = typeName<T>();
             tree->itemData[Value] = text;
             // tree->itemData[IsAttr] = "Tag";
-            tree->itemData[Type] = typeid(T).name();
+            tree->itemData[Type] = typeName<T>();
             tree->itemData[FLine] = xml.node.lineNumber();
-        } else if (text = xml.node.toElement().attribute(xml.fieldName); text.size()) {
+        } else if(text = xml.node.toElement().attribute(xml.fieldName); text.size()) {
             auto tree = xml.tree->addItem(new TreeItem);
             tree->itemData[Name] = xml.fieldName;
             tree->itemData[Value] = text;
             // tree->itemData[IsAttr] = "Tag";
-            tree->itemData[Type] = typeid(T).name();
+            tree->itemData[Type] = typeName<T>();
             tree->itemData[FLine] = xml.node.lineNumber();
         }
-    } else if (xml.node.isAttr()) {
-        if (text = xml.node.nodeValue(); text.size()) {
+    } else if(xml.node.isAttr()) {
+        if(text = xml.node.nodeValue(); text.size()) {
             auto tree = xml.tree->addItem(new TreeItem);
             tree->itemData[Name] = xml.node.toAttr().name();
             tree->itemData[Value] = text;
             tree->itemData[IsAttr] = "Attr";
-            tree->itemData[Type] = typeid(T).name();
+            tree->itemData[Type] = typeName<T>();
             tree->itemData[FLine] = xml.node.parentNode().lineNumber();
         }
     }
@@ -223,29 +223,29 @@ template <typename T>
     requires std::is_enum_v<T>
 inline bool read(Xml& xml, T& e) {
     QString value;
-    if (xml.node.isElement()) {
-        if (value = xml.node.toElement().attribute(typeName<T>()); value.size()) {
+    if(xml.node.isElement()) {
+        if(value = xml.node.toElement().attribute(typeName<T>()); value.size()) {
             auto tree = xml.tree->addItem(new TreeItem);
             tree->itemData[Name] = xml.fieldName;
             tree->itemData[Value] = value;
             // tree->itemData[IsAttr] = "Tag";
-            tree->itemData[Type] = typeid(T).name();
+            tree->itemData[Type] = typeName<T>();
             tree->itemData[FLine] = xml.node.lineNumber();
-        } else if (value = xml.node.toElement().attribute(xml.fieldName); value.size()) {
+        } else if(value = xml.node.toElement().attribute(xml.fieldName); value.size()) {
             auto tree = xml.tree->addItem(new TreeItem);
             tree->itemData[Name] = xml.fieldName;
             tree->itemData[Value] = value;
             // tree->itemData[IsAttr] = "Tag";
-            tree->itemData[Type] = typeid(T).name();
+            tree->itemData[Type] = typeName<T>();
             tree->itemData[FLine] = xml.node.lineNumber();
         }
-    } else if (xml.node.isAttr()) {
-        if (value = xml.node.nodeValue(); value.size()) {
+    } else if(xml.node.isAttr()) {
+        if(value = xml.node.nodeValue(); value.size()) {
             auto tree = xml.tree->addItem(new TreeItem);
             tree->itemData[Name] = xml.node.toAttr().name();
             tree->itemData[Value] = value;
             tree->itemData[IsAttr] = "Attr";
-            tree->itemData[Type] = typeid(T).name();
+            tree->itemData[Type] = typeName<T>();
             tree->itemData[FLine] = xml.node.parentNode().lineNumber();
         }
     }
@@ -257,20 +257,20 @@ inline bool read(Xml& xml, T& e) {
 template <typename T>
 inline bool read(Xml& xml, std::optional<T>& optional) { // FIXME check contains tag/attribute
     T val;
-    if (read(xml, val)) optional = val;
+    if(read(xml, val)) optional = val;
     return optional.has_value();
 }
 
 template <typename T>
 inline bool read(Xml& xml, XmlAttr<T>& attr) {
     auto attributes = xml.node.attributes();
-    if (attributes.contains(typeName<T>())) {
+    if(attributes.contains(typeName<T>())) {
         xml.node = attributes.namedItem(typeName<T>());
         loger log{xml};
         bool ok = read(xml, attr.value);
         xml.node = xml.node.parentNode();
         return ok;
-    } else if (attributes.contains(xml.fieldName)) {
+    } else if(attributes.contains(xml.fieldName)) {
         xml.node = attributes.namedItem(xml.fieldName);
         loger log{xml};
         bool ok = read(xml, attr.value);
@@ -283,18 +283,18 @@ inline bool read(Xml& xml, XmlAttr<T>& attr) {
 template <typename... Ts>
 inline bool read(Xml& xml, XmlVariant<Ts...>& variant) { // FIXME variant
     int ctr{};
-    if (!xml.node.isElement()) return {};
+    if(!xml.node.isElement()) return {};
     auto reader = [&]<typename T>(T&& val) {
-        if (ctr) return;
+        if(ctr) return;
         qWarning() << xml.node.toElement().tagName() << typeName<T>();
-        if (xml.node.toElement().tagName() == typeName<T>()) {
-            if (read(xml, val))
+        if(xml.node.toElement().tagName() == typeName<T>()) {
+            if(read(xml, val))
                 ++ctr, variant = std::move(val);
         } else {
             auto copy = xml.node;
             xml.node = xml.node.firstChildElement(typeName<T>());
-            if (!xml.node.isNull())
-                if (xml.isVariant = true; read(xml, val)) ++ctr, variant = std::move(val);
+            if(!xml.node.isNull())
+                if(xml.isVariant = true; read(xml, val)) ++ctr, variant = std::move(val);
             xml.node = copy;
         }
     };
@@ -305,8 +305,9 @@ inline bool read(Xml& xml, XmlVariant<Ts...>& variant) { // FIXME variant
 
 template <typename T>
 inline bool read(Xml& xml, XmlArrayElem<T>& vector) { // FIXME vector
+
     QDomNode node = xml.node.firstChildElement(xml.fieldName);
-    if (node.isNull())
+    if(node.isNull())
         return false;
 
     auto copy = xml.node;
@@ -316,19 +317,20 @@ inline bool read(Xml& xml, XmlArrayElem<T>& vector) { // FIXME vector
     loger log{xml};
 
     auto childNodes = node.childNodes();
+    if(!childNodes.size())
+        return false;
 
     {
         xml.tree = xml.tree->addItem(new TreeItem);
         xml.tree->itemData[Name] = xml.fieldName;
         xml.tree->itemData[Value] = childNodes.size();
-        xml.tree->itemData[Type] = typeid(T).name();
+        xml.tree->itemData[Type] = typeName<T>();
         xml.tree->itemData[FLine] = xml.node.parentNode().lineNumber();
     }
 
     vector.resize(childNodes.size());
 
-    if (vector.empty())
-        return false;
+    bool ok{true};
 
     // node = node.firstChild();
     // for (auto&& var: vector) {
@@ -337,9 +339,8 @@ inline bool read(Xml& xml, XmlArrayElem<T>& vector) { // FIXME vector
     //     read(xml, var);
     //     // xml.node = node.nextSibling();
     // }
-    bool ok{true};
 
-    for (int index{}; auto&& var: vector) {
+    for(int index{}; auto&& var: vector) {
         xml.isArray = true;
         xml.node = childNodes.at(index++);
         ok &= read(xml, var);
@@ -363,20 +364,39 @@ inline bool read(Xml& xml, XmlArrayElem<T>& vector) { // FIXME vector
 
 template <typename T>
 inline bool read(Xml& xml, XmlArray<T>& vector) {
-    if (xml.node.isNull())
+    if(xml.node.isNull())
         return false;
 
     auto childNodes = xml.node.childNodes();
-    vector.resize(childNodes.size() - xml.fieldNum);
 
-    if (vector.empty())
+    auto find = [&]<typename Ty>(Ty&&) -> int {
+        auto node = xml.node.firstChildElement(typeName<Ty>());
+        if(!node.isNull())
+            for(int i{}; i < childNodes.size(); ++i)
+                if(childNodes.at(i) == node) return i;
+        return 999999;
+    };
+
+    auto index = Overload{
+        [&]<typename... Ts>(XmlVariant<Ts...>&&) -> int {
+            std::array arr{find(Ts{})...};
+            return *std::ranges::min_element(arr);
+        },
+        find}(T{});
+
+    if(index == 999999)
+        return false;
+
+    vector.resize(childNodes.size() - index);
+
+    if(vector.empty())
         return false;
 
     const auto copy = xml.node;
 
     bool ok{true};
 
-    for (int index{xml.fieldNum}; auto&& var: vector) {
+    for(auto&& var: vector) {
         xml.isArray = true;
         xml.node = childNodes.at(index++);
         ok &= read(xml, var);
@@ -389,16 +409,17 @@ inline bool read(Xml& xml, XmlArray<T>& vector) {
 template <typename T>
     requires(std::is_class_v<T> && std::is_aggregate_v<T>)
 inline bool read(Xml& xml, T& str) { // pod structures
-    if (!xml.isArray && !xml.isVariant)
+    if(!xml.isArray && !xml.isVariant)
         xml.node = (xml.node.isNull() ? xml.doc : xml.node).firstChildElement(typeName<T>());
     xml.isArray = xml.isVariant = false;
+
     loger log{xml};
     {
         xml.tree = xml.tree->addItem(new TreeItem);
         xml.tree->itemData[Name] = typeName<T>();
         // xml.tree->itemData[Value] = value;
         // xml.tree->itemData[IsAttr] = "Tag";
-        xml.tree->itemData[Type] = typeid(T).name();
+        xml.tree->itemData[Type] = typeName<T>();
         xml.tree->itemData[FLine] = xml.node.lineNumber();
     }
 
@@ -421,7 +442,12 @@ template <size_t Is, typename T>
 inline bool readField(Xml& xml, T& str) {
     xml.fieldName = pfr::get_name<Is, T>().data();
     xml.fieldNum = Is;
-    return read(xml, pfr::get<Is>(str));
+    if(xml.fieldName == "rulesDelay")
+        qDebug("rulesDelay");
+    auto copy = xml.node;
+    bool ok = read(xml, pfr::get<Is>(str));
+    xml.node = copy;
+    return ok;
 }
 
 template <typename T>

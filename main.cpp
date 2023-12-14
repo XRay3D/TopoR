@@ -7,6 +7,7 @@
 auto messageHandler = qInstallMessageHandler(nullptr);
 void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message) {
     auto file = context.file;
+    if(type == QtInfoMsg) return;
     QMessageLogContext& context_ = const_cast<QMessageLogContext&>(context);
     while(file && *file)
         if(std::set{'/', '\\'}.contains(*file++))

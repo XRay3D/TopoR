@@ -67,6 +67,7 @@ GraphicsView::GraphicsView(QWidget* parent)
     setDragMode(RubberBandDrag);
     setInteractive(true);
     setContextMenuPolicy(Qt::DefaultContextMenu);
+    setRenderHint(QPainter::Antialiasing);
 
     setAcceptDrops(true);
 
