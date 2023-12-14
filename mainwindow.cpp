@@ -129,7 +129,8 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::drawFile() { // for(auto&& footprint: file->localLibrary.Footprints)
+void MainWindow::drawFile() {
+    // for(auto&& footprint: file->localLibrary.Footprints)
     //     ui->graphicsView->addItem(file->localLibrary.footprintGi(footprint));
 
     for(auto&& CompInstance: file->componentsOnBoard.Components) {
@@ -147,106 +148,8 @@ void MainWindow::drawFile() { // for(auto&& footprint: file->localLibrary.Footpr
 
     for(auto&& wire: file->connectivity.Wires) {
         for(auto&& subwire: wire.Subwires) {
-            QPainterPath path;
-            auto arc = [&path, this](bool ccw, /*const QPointF& p1,*/ const QPointF& p2, const QPointF& center) {
-                const auto p1 = path.currentPosition();
-                // double radius = sqrt(pow((center.x() - p1.x()), 2) + pow((center.y() - p1.y()), 2));
-                // double start = atan2(p1.y() - center.y(), p1.x() - center.x());
-                // double stop = atan2(p2.y() - center.y(), p2.x() - center.x());
-                // const double sign[]{-1.0, +1.0};
-
-                // if(!ccw && stop >= start)
-                //     stop -= 2.0 * M_PI;
-                // else if(ccw && stop <= start)
-                //     stop += 2.0 * M_PI;
-
-                // start = qRadiansToDegrees(start);
-                // stop = qRadiansToDegrees(stop);
-
-                // double angle = qAbs(stop - start);
-                // angle *= sign[ccw];
-
-                // path.arcTo(
-                //     -radius + center.x(), -radius + center.y(), radius * 2, radius * 2,
-                //     start, angle);
-                // QPainterPath path_;
-                // path_.moveTo(path.currentPosition());
-                // path_.arcTo(
-                //     -radius + center.x(), -radius + center.y(), radius * 2, radius * 2,
-                //     start, angle);
-                // auto item = new QGraphicsPathItem{path_};
-                // // auto item = new QGraphicsEllipseItem{-r + center.x, -r + center.y, r * 2, r * 2};
-                // item->setPen({Qt::green, 0.0});
-                // item->setZValue(100000);
-                // item->setToolTip(QString{"A1=%1\nA2=%2\n%3"}.arg(start).arg(stop).arg(angle));
-                // ui->graphicsView->addItem(item);
-
-                if(ccw) {
-                    QLineF line1{center, p1};
-                    QLineF line2{center, p2};
-                    const auto a1 = line1.angle();
-                    auto a2 = line2.angle();
-                    const auto a = a2 - (qFuzzyIsNull(a1) ? 360. : a1);
-                    const auto r = line1.length();
-                    path.arcTo(
-                        -r + center.x(), -r + center.y(), r * 2, r * 2,
-                        a1, a);
-                    QPainterPath path_;
-                    path_.moveTo(p1);
-                    path_.arcTo(
-                        -r + center.x(), -r + center.y(), r * 2, r * 2,
-                        a1, a);
-                    auto item = new QGraphicsPathItem{path_};
-                    // auto item = new QGraphicsEllipseItem{-r + center.x, -r + center.y, r * 2, r * 2};
-                    item->setPen({Qt::green, 0.0});
-                    item->setZValue(100000);
-                    item->setToolTip(QString{"A1=%1\nA2=%2\n%3"}.arg(a1).arg(a2).arg(a));
-                    ui->graphicsView->addItem(item);
-                } else {
-                    QLineF line1{center, p1};
-                    QLineF line2{center, p2};
-                    const auto a1 = line1.angle();
-                    auto a2 = line2.angle();
-                    auto a = a2 - a1;
-                    // if(a < 0) a = 360 - a;
-                    const auto r = line1.length();
-                    path.arcTo(
-                        -r + center.x(), -r + center.y(), r * 2, r * 2,
-                        a1, a);
-                    QPainterPath path_;
-                    path_.moveTo(p1);
-                    path_.arcTo(
-                        -r + center.x(), -r + center.y(), r * 2, r * 2,
-                        a1, a);
-                    auto item = new QGraphicsPathItem{path_};
-                    // auto item = new QGraphicsEllipseItem{-r + center.x, -r + center.y, r * 2, r * 2};
-                    item->setPen({Qt::magenta, 0.0});
-                    item->setZValue(100000);
-                    item->setToolTip(QString{"A1=%1\nA2=%2\n%3"}.arg(a1).arg(a2).arg(a));
-                    ui->graphicsView->addItem(item);
-                }
-            };
-
-            path.moveTo(subwire.start);
-            if(QPointF p{subwire.start}; p.isNull())
-                qCritical() << p;
-            for(auto&& track: subwire.Tracks) {
-                track.visit(
-                    [&path](const TrackLine& track) {
-                        path.lineTo(track.end);
-                    },
-                    [&arc](const TrackArc& track) { // ccw
-                        arc(true, track.end, track.center);
-                    },
-                    [&arc](const TrackArcCW& track) { // cw
-                        arc(false, track.end, track.center);
-                    });
-            }
-            auto item = new QGraphicsPathItem{path};
             int color = 240 / layers.size() * layers.at(wire.layerRef.name.value);
-            item->setPen({QColor::fromHsv(color, 255, 255, 128),
-                subwire.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin});
-            ui->graphicsView->addItem(item);
+            ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
         }
     }
 

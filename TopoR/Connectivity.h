@@ -1,5 +1,6 @@
 #pragma once
 #include "Commons.h"
+#include <QColor>
 #include <any>
 #include <memory>
 #include <optional>
@@ -116,6 +117,8 @@ struct Connectivity {
                 XmlElement("TrackArc", typeof(TrackArc)),
                 XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
             XmlArray<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
+
+            QGraphicsItem* graphicsItem(const QColor& color = Qt::red) const;
         };
         // Ссылка на слой.
         /* [XmlElement("LayerRef")] public LayerRef layerRef; */

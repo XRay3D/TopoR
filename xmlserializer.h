@@ -442,8 +442,6 @@ template <size_t Is, typename T>
 inline bool readField(Xml& xml, T& str) {
     xml.fieldName = pfr::get_name<Is, T>().data();
     xml.fieldNum = Is;
-    if(xml.fieldName == "rulesDelay")
-        qDebug("rulesDelay");
     auto copy = xml.node;
     bool ok = read(xml, pfr::get<Is>(str));
     xml.node = copy;

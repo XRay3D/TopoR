@@ -12,6 +12,11 @@ using namespace std::literals;
 
 namespace TopoR {
 
+enum ArcDir{
+    CW,
+    CCW
+};
+
 //	#region Enumerations //Все enum в алфавитном порядке
 
 template <class Ty>
@@ -33,12 +38,12 @@ template <size_t N, class Enum>
 inline consteval auto tokenize_enum(sv base) {
     std::array<std::pair<sv, Enum>, N> tokens;
     std::underlying_type_t<Enum> val{};
-    for (auto it = tokens.begin();
-         auto&& [whole, name, value]:
-         ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
-        if (value)
+    for(auto it = tokens.begin();
+        auto&& [whole, name, value]:
+        ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
+        if(value)
             val = value.to_number();
-        if (it != tokens.end())
+        if(it != tokens.end())
             *it++ = {name.to_view(), static_cast<Enum>(val++)};
     }
     return tokens;
