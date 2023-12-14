@@ -10,11 +10,10 @@ void arc(ArcDir dir, QPainterPath& path, const std::optional<QPointF>& startOpt,
         path.moveTo(start);
     } else
         start = path.currentPosition();
-    const QLineF line1{center, start};
-    const QLineF line2{center, stop};
-    const auto a1 = line1.angle();
-    const auto a2 = line2.angle();
-    const auto radius = line1.length();
+
+    const auto a1 = QLineF{center, start}.angle();
+    const auto a2 = QLineF{center, stop}.angle();
+    const auto radius = QLineF{center, start}.length();
 
     auto aSpan = a2 - a1;
 
@@ -151,7 +150,7 @@ QPainterPath Rect::toPainterPath() const {
 void Rect::drawTo(QPainterPath& path) const {
     QRectF rect;
     rect.setTopLeft(Dots.front());
-    rect.setBottomLeft(Dots.back());
+    rect.setBottomRight(Dots.back());
     path.addRect(rect);
 }
 

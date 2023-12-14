@@ -64,16 +64,23 @@ QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_F
     auto group = new QGraphicsItemGroup;
     LocalLibrary::footprints.emplace(fp->name, group);
     for (auto&& pad: fp->Pads) {
-        if (auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack)
+        if (auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack) {
+            QPainterPath path;
+            path.addEllipse({}, padstack->holeDiameter * 0.5, padstack->holeDiameter * 0.5);
+            auto item = new QGraphicsPathItem{path};
+            item->setPen({Qt::magenta, 0.0});
+            item->setTransform(pad.transform());
+            group->addToGroup(item);
             for (int hue{}; auto&& padShape: padstack->Pads) {
-                if (auto item = padShape.visit([](auto&& pad) { return new QGraphicsPathItem{pad}; }); item) {
-                    int color = 240 / padstack->Pads.size() * hue++;
-                    item->setPen({QColor::fromHsv(color, 255, 255),
-                        0.0});
-                    item->setTransform(pad.transform());
-                    group->addToGroup(item);
-                }
+                auto path = padShape.visit([](auto&& pad) -> QPainterPath { return pad; });
+                auto item = new QGraphicsPathItem{path};
+                int color = 240 / padstack->Pads.size() * hue++;
+                item->setPen({QColor::fromHsv(color, 255, 255),
+                    0.0});
+                item->setTransform(pad.transform());
+                group->addToGroup(item);
             }
+        }
     }
 
     for (auto&& detail: fp->Details) {
@@ -123,6 +130,23 @@ void MainWindow::drawFile() {
             ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
         }
     }
+
+    auto group = new QGraphicsItemGroup;
+    for (auto&& via: file->connectivity.Vias) {
+        auto viastack = file->localLibrary.getViastack(via.viastackRef.name);
+        if (!viastack) continue;
+        for (int hue{}; QPainterPath padShape: viastack->ViaPads) {
+            padShape.addEllipse({}, viastack->holeDiameter * 0.5, viastack->holeDiameter * 0.5);
+            auto item = new QGraphicsPathItem{padShape};
+            int color = 240 / viastack->ViaPads.size() * hue++;
+            item->setPen({QColor::fromHsv(color, 255, 255),
+                0.0});
+            item->setPos(via.org);
+            group->addToGroup(item);
+        }
+    }
+    group->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    ui->graphicsView->addItem(group);
 
     for (auto&& contour: file->constructive.boardOutline.Contour) {
         // QPainterPath path;

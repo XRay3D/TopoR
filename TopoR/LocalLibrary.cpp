@@ -57,6 +57,13 @@ const LocalLibrary::Component* LocalLibrary::getComponent(const QString& name) c
     return {};
 }
 
+const LocalLibrary::Viastack* LocalLibrary::getViastack(const QString& name) const {
+    for (auto&& viastack: Viastacks)
+        if (name == viastack.name)
+            return &viastack;
+    return {};
+}
+
 QGraphicsItem* LocalLibrary::Footprint::graphicsItem(const TopoR_PCB_File& file) const {
     auto group = new QGraphicsItemGroup;
     LocalLibrary::footprints.emplace(name, group);

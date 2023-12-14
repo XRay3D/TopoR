@@ -17,7 +17,7 @@ enum ArcDir {
     CCW
 };
 
-//	#region Enumerations //Все enum в алфавитном порядке
+// #region Enumerations // Все enum в алфавитном порядке
 
 template <class Ty>
 inline constexpr bool hasStrings = false;
@@ -51,7 +51,7 @@ inline consteval auto tokenize_enum(sv base) {
 
 } // namespace Impl
 
-#define ENUM(Enum, ...)                                                                              \
+#define XML_ENUM(Enum, ...)                                                                          \
     enum class Enum : int {                                                                          \
         __VA_ARGS__                                                                                  \
     };                                                                                               \
@@ -83,9 +83,9 @@ template <class E>
 inline constexpr Impl::sv enumToString(E e) { return "!!!"sv; }
 template <class E>
 inline constexpr E stringToEnum(Impl::sv str) { return E(std::numeric_limits<std::underlying_type_t<E>>::max()); }
-// XmlEnum
-//  Параметр надписей (ярлыков): способ выравнивания текста. Значение по умолчанию – CM.
-ENUM(align,
+
+// Параметр надписей (ярлыков): способ выравнивания текста. Значение по умолчанию – CM.
+XML_ENUM(align,
     CM, // по центру
     LT, // по левому верхнему углу
     CT, // по верхнему краю
@@ -98,7 +98,7 @@ ENUM(align,
 )
 
 // Параметр автоматической трассировки: использование функциональной эквивалентности. Значение по умолчанию – None.
-ENUM(autoEqu,
+XML_ENUM(autoEqu,
     None,  // не использовать функциональную эквивалентность
     Pins,  // переназначать выводы компонента
     Gates, // переназначать вентили компонентов (не поддерживается)
@@ -106,32 +106,32 @@ ENUM(autoEqu,
 )
 
 // Настройка автоматической подвижки. Значение по умолчанию – MoveVias.
-ENUM(automove,
+XML_ENUM(automove,
     MoveVias,           // двигаются только переходы
     MoveViasWithRefine, // двигаются только переходы; в процессе движения выполняется перекладка проводников
     MoveCompsWithRefine // двигаются компоненты и переходы; в процессе движения выполняется перекладка проводников
 )
 
 // Флаг, значение по умолчанию – off.
-ENUM(Bool,
+XML_ENUM(Bool,
     off, // off,
     on   // on
 )
 
 // Параметр области металлизации (полигона) стека: подключение контактных площадок. Значение по умолчанию – Direct.
-ENUM(connectPad,
+XML_ENUM(connectPad,
     Direct, // прямое подключение
     Thermal // подключение с помощью термобарьера
 )
 
 // Параметр области металлизации (полигона): подключение площадок переходных отверстий. Значение по умолчанию – Direct.
-ENUM(connectVia,
+XML_ENUM(connectVia,
     Direct, // прямое подключение
     Thermal // подключение с помощью термобарьера
 )
 
 // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
-ENUM(dist,
+XML_ENUM(dist,
     mm,  // миллиметр
     mkm, // микрометр
     cm,  // сантиметр
@@ -142,20 +142,20 @@ ENUM(dist,
 )
 
 // Параметр области металлизации (полигона): тип заливки. Значение по умолчанию – Solid.
-ENUM(fillType,
+XML_ENUM(fillType,
     Solid,    // сплошная заливка
     Hatched,  // штриховка сеткой
     CRHatched // диагональная штриховка сеткой
 )
 // Настройка отображения сетки: тип сетки.
 
-ENUM(gridKind,
+XML_ENUM(gridKind,
     Dots, // Dots,
     Lines // Lines
 )
 
 // Тип слоя. Значение по умолчанию – Signal.
-ENUM(layer_type,
+XML_ENUM(layer_type,
     Signal,     // сигнальный слой
     Assy,       // сборочный слой (слой очертаний компонентов)
     Paste,      // слой паяльной пасты
@@ -168,27 +168,27 @@ ENUM(layer_type,
 )
 
 // Настройка автоматической трассировки: режим трассировки. Значение по умолчанию – Multilayer.
-ENUM(mode_Autoroute,
+XML_ENUM(mode_Autoroute,
     Multilayer,       // многослойная трассировка
     SinglelayerTop,   // однослойная трассировка на верхнем слое
     SinglelayerBottom // однослойная трассировка на нижнем слое
 )
 
 // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
-ENUM(mode_PadConnectSettings,
+XML_ENUM(mode_PadConnectSettings,
     AutoConnect, // возможность подключения к углам КП определяется автоматически.
     AllPads      // разрешено подключаться к углам всех КП
 )
 
 // Параметр области металлизации (полигона): точность аппроксимации контура. Значение по умолчанию – Med.
-ENUM(precision,
+XML_ENUM(precision,
     Med, // средняя точность
     Low, // низкая точность
     High // высокая точность
 )
 
 // Настройка отображения: единицы измерения. Значение по умолчанию – Metric.
-ENUM(preference,
+XML_ENUM(preference,
     Metric,   // метрические (конкретные единицы выбираются в зависимости от параметра)
     mkm,      // микрометр
     mm,       // миллиметр
@@ -201,20 +201,20 @@ ENUM(preference,
 )
 
 // Настройка автоматической перекладки проводников. Значение по умолчанию – ChangeLayer.
-ENUM(refine,
+XML_ENUM(refine,
     ChangeLayer,  // разрешён перенос проводников на другой слой.
     NoChangeLayer // без переноса проводников на другой слой.
 )
 
 // Тип запрета трассировки. Значение по умолчанию – Wires
-ENUM(role,
+XML_ENUM(role,
     Wires,       // запрет проводников
     Vias,        // запрет переходных отверстий
     WiresАndVias // запрет проводников и переходных отверстий
 )
 
 // Настройка фильтра сообщений: режим показа предупреждений. Значение по умолчанию – ShowChecked.
-ENUM(showWarnings,
+XML_ENUM(showWarnings,
     ShowChecked, // показывать только отмеченные предупреждения
     ShowAll,     // показывать все предупреждения
     ShowNothing  // ничего не показывать
@@ -222,21 +222,21 @@ ENUM(showWarnings,
 // Сторона объекта.
 
 // <remarks>! Значение Both возможно только при описании запретов размещения.</remarks>
-ENUM(side,
+XML_ENUM(side,
     Top,    // верх
     Bottom, // низ
     Both    // обе стороны
 )
 
 // Параметр области металлизации (полигона): состояние. Значение по умолчанию – Unpoured.
-ENUM(state,
+XML_ENUM(state,
     Unpoured, // незалитая
     Poured,   // залитая
     Locked    // залитая и зафиксированная
 )
 
 // Единица измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
-ENUM(time,
+XML_ENUM(time,
     ps, // пикосекунда
     fs, // фемтосекунда
     ns, // наносекунда
@@ -244,50 +244,50 @@ ENUM(time,
 )
 
 // Тип предопределённого атрибута компонента. Значение по умолчанию - RefDes
-ENUM(type,
+XML_ENUM(type,
     RefDes,  // позиционное обозначение
     PartName // PartName
 )
 
 // Параметр стека контактной площадки: подключение к области металлизации (полигону). Значение по умолчанию – NoneConnect.
-ENUM(type_connectToCopper,
+XML_ENUM(type_connectToCopper,
     NoneConnect, // тип подключения не задан(используются настройки полигона)
     Direct,      // прямое подключение
     Thermal      // подключение с помощью термобарьера
 )
 
 // Тип обработки углов прямоугольной контактной площадки.
-ENUM(type_handling,
+XML_ENUM(type_handling,
     None,     // без обработки
     Rounding, // скругление
     Chamfer   // срез
 )
 
 // Тип стека контактных площадок. Значение по умолчанию – Through.
-ENUM(type_padstack,
+XML_ENUM(type_padstack,
     Through,  // сквозной
     SMD,      // планарный
     MountHole // монтажное отверстие
 )
 
 // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения. Значение по умолчанию – mm.
-ENUM(units,
+XML_ENUM(units,
     mm, // миллиметр
     mil // мил (тысячная дюйма)
 )
 
 // Параметр правил выравнивания задержек: тип значений констант и допусков. Значение по умолчанию: Dist
-ENUM(valueType,
+XML_ENUM(valueType,
     Dist, // длина
     Time  // время
 )
 
 // Параметр автоматической трассировки: форма проводников.
-ENUM(wireShape,
+XML_ENUM(wireShape,
     Polyline, // Polyline
     Arcs      // Arcs
 )
 
-//	#endregion Enumerations
+// #endregion Enumerations
 
 } // namespace TopoR

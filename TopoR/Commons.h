@@ -557,7 +557,7 @@ struct Rect /*: Line*/ {
     QPainterPath toPainterPath() const;
     operator QPainterPath() const { return toPainterPath(); }
     // using Line::Line;
-    XmlArrayElem<Dot> Dots;
+    XmlArray<Dot> Dots;
 };
 
 // Описание залитого контура.

@@ -416,6 +416,7 @@ struct LocalLibrary {
     const Padstack* getPadstack(const QString& name) const;
     const Footprint* getFootprint(const QString& name) const;
     const Component* getComponent(const QString& name) const;
+    const Viastack* getViastack(const QString& name) const;
     /************************************************************************/
 };
 } // namespace TopoR

@@ -93,7 +93,7 @@ void MainWindow::loadFile() {
     ui->treeView->setAlternatingRowColors(true);
     for(int column = 0; column < model->columnCount(); ++column)
         ui->treeView->resizeColumnToContents(column);
-    // ui->treeView->collapseAll();
+    ui->treeView->collapseAll();
 
     connect(ui->treeView, &QTreeView::doubleClicked, [this](const QModelIndex& index) {
         ui->treeView->expandRecursively(index, 1);
