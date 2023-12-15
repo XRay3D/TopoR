@@ -121,10 +121,14 @@ jobs:
         # # The architecture the binaries were built for
         # arch: # optional, default is x86
         # # The dirctory to install boost into
-        # boost_install_dir: # optional, default is 
+        # boost_dir: ["D:\boost", "/home/boost"]
+        # boost_install_dir:
+          # - os: windows-latest 
+          #   boost_dir: "D:\boost"
+          # - os: ubuntu-latest
+          #   boost_dir: "/home/boost"
         # # Wheter to use actions/cache to improve build times
         # cache: # optional, default is true
-
             
     - uses: actions/checkout@v3
 
@@ -141,6 +145,7 @@ jobs:
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DBOOST_ROOT=${{ github.workspace/boost }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -S ${{ github.workspace }}
