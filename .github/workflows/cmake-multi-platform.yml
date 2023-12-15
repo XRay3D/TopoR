@@ -105,30 +105,49 @@ jobs:
       # example-archives: # optional
       # # Space-separated list of additional example modules to install.
       # example-modules: # optional
-    - name: Download and install Boost
-      # You may pin to the exact commit or the version.
-      # uses: MarkusJx/install-boost@3039450bb3dd2e8630d1cf10ec39cb1da3054bbd
-      uses: MarkusJx/install-boost@v2.4.4
+    - name: Cache boost
+      uses: actions/cache@v1.0.3
+      id: cache-boost
       with:
-        # The boost version to install, e.g. "1.73.0"
-        boost_version: "1.82.0"
-        # # The toolset used to compile boost, e.g. "msvc"
-        # toolset: # optional, default is 
-        # # The platform version boost was compiled on, e.g. "18.04"
-        # platform_version: # optional, default is 
-        # # Whether the boost libraries are linked statically or dynamically
-        # link: # optional, default is 
-        # # The architecture the binaries were built for
-        # arch: # optional, default is x86
-        # # The dirctory to install boost into
-        # boost_dir: ["D:\boost", "/home/boost"]
-        # boost_install_dir:
-          # - os: windows-latest 
-          #   boost_dir: "D:\boost"
-          # - os: ubuntu-latest
-          #   boost_dir: "/home/boost"
-        # # Wheter to use actions/cache to improve build times
-        # cache: # optional, default is true
+        path: "~/boost"
+        key: libboost1.82-dev
+    - name: Install boost
+      env:
+        CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
+      run: |
+        if [[ "$CACHE_HIT" == 'true' ]]; then
+          sudo cp --force --recursive ~/boost/* /
+        else
+          sudo apt-get update && sudo apt-get install -yq libboost1.82-dev
+          mkdir -p ~/boost
+          for dep in libboost1.82-dev; do
+              dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/boost/
+          done
+        fi
+    # - name: Download and install Boost
+    #   # You may pin to the exact commit or the version.
+    #   # uses: MarkusJx/install-boost@3039450bb3dd2e8630d1cf10ec39cb1da3054bbd
+    #   uses: MarkusJx/install-boost@v2.4.4
+    #   with:
+    #     # The boost version to install, e.g. "1.73.0"
+    #     boost_version: "1.82.0"
+    #     # # The toolset used to compile boost, e.g. "msvc"
+    #     # toolset: # optional, default is 
+    #     # # The platform version boost was compiled on, e.g. "18.04"
+    #     # platform_version: # optional, default is 
+    #     # # Whether the boost libraries are linked statically or dynamically
+    #     # link: # optional, default is 
+    #     # # The architecture the binaries were built for
+    #     # arch: # optional, default is x86
+    #     # # The dirctory to install boost into
+    #     # boost_dir: ["D:\boost", "/home/boost"]
+    #     # boost_install_dir:
+    #       # - os: windows-latest 
+    #       #   boost_dir: "D:\boost"
+    #       # - os: ubuntu-latest
+    #       #   boost_dir: "/home/boost"
+    #     # # Wheter to use actions/cache to improve build times
+    #     # cache: # optional, default is true
             
     - uses: actions/checkout@v3
 
