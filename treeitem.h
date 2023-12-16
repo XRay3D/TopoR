@@ -6,8 +6,15 @@
 
 class TreeItem {
 public:
-    // explicit TreeItem(const QVector<QVariant>& data, TreeItem* parent = nullptr);
-    // TreeItem(){};
+    explicit TreeItem(
+        const QString& Name,
+        const QVariant& Value,
+        const QString& Attr,
+        int Line,
+        const QString& Type)
+        : itemData{Name, Value, Attr, Line, Type} { }
+
+    TreeItem(){};
     ~TreeItem();
 
     QVariant data(int column) const;

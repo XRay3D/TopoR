@@ -27,9 +27,9 @@ MainWindow::MainWindow(QWidget* parent)
     restoreGeometry(settings.value("Geometry").toByteArray());
     restoreState(settings.value("State").toByteArray());
     ui->splitter->restoreState(settings.value("State").toByteArray());
-    if (!QFile::exists(dir))
+    if(!QFile::exists(dir))
         dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
-    if (dir.size() && settings.value("dir").toString() != dir)
+    if(dir.size() && settings.value("dir").toString() != dir)
         settings.setValue("dir", dir);
     QTimer::singleShot(100, this, [this] {
         loadFile();
@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget* parent)
         dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
         QSettings settings;
         settings.beginGroup("MainWindow");
-        if (dir.size() && settings.value("dir").toString() != dir)
+        if(dir.size() && settings.value("dir").toString() != dir)
             settings.setValue("dir", dir);
         loadFile();
         ui->graphicsView->setScene(new QGraphicsScene{ui->graphicsView});
@@ -60,18 +60,18 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_File& file) {
+static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_File& file) {
     auto group = new QGraphicsItemGroup;
     LocalLibrary::footprints.emplace(fp->name, group);
-    for (auto&& pad: fp->Pads) {
-        if (auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack) {
+    for(auto&& pad: fp->Pads) {
+        if(auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack) {
             QPainterPath path;
             path.addEllipse({}, padstack->holeDiameter * 0.5, padstack->holeDiameter * 0.5);
             auto item = new QGraphicsPathItem{path};
             item->setPen({Qt::magenta, 0.0});
             item->setTransform(pad.transform());
             group->addToGroup(item);
-            for (int hue{}; auto&& padShape: padstack->Pads) {
+            for(int hue{}; auto&& padShape: padstack->Pads) {
                 auto path = padShape.visit([](auto&& pad) -> QPainterPath { return pad; });
                 auto item = new QGraphicsPathItem{path};
                 int color = 240 / padstack->Pads.size() * hue++;
@@ -83,15 +83,15 @@ QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_F
         }
     }
 
-    for (auto&& detail: fp->Details) {
+    for(auto&& detail: fp->Details) {
         auto item = new QGraphicsPathItem{detail.Figure.visit([](auto&& det) -> QPainterPath { return det; })};
         item->setPen({Qt::lightGray, detail.lineWidth < 1.0 ? 0.0 : detail.lineWidth});
         item->setZValue(10000);
         group->addToGroup(item);
     }
 
-    for (auto&& label: fp->Labels) {
-        if (auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
+    for(auto&& label: fp->Labels) {
+        if(auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
         }
     }
 
@@ -100,42 +100,28 @@ QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_F
 }
 
 void MainWindow::drawFile() {
-    // for(auto&& footprint: file->localLibrary.Footprints)
-    //     ui->graphicsView->addItem(file->localLibrary.footprintGi(footprint));
 
-    for (auto&& CompInstance: file->componentsOnBoard.Components) {
-        auto footprint = file->localLibrary.getFootprint(CompInstance.footprintRef.name);
-        if (!footprint) continue;
-        auto item = graphicsItem(footprint, *file);
-        item->setTransform(CompInstance.transform());
-        ui->graphicsView->addItem(item);
-    }
+    // for (auto&&var : file->dialogSettings.) {
 
-    // for (auto&& CompInstance: file->componentsOnBoard.Components) {
-    //     auto component = file->localLibrary.getComponent(CompInstance.componentRef.name);
-    //     if (!component) continue;
-    //     auto item = graphicsItem(component, *file);
-    //     item->setTransform(CompInstance.transform());
-    //     ui->graphicsView->addItem(item);
     // }
 
-    std::map<QString, int> layers;
-    for (auto&& wire: file->connectivity.Wires)
-        if (!layers.contains(wire.layerRef.name.value))
-            layers.emplace(wire.layerRef.name.value, layers.size());
+    // colors
 
-    for (auto&& wire: file->connectivity.Wires) {
-        for (auto&& subwire: wire.Subwires) {
-            int color = 240 / layers.size() * layers.at(wire.layerRef.name.value);
-            ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
-        }
-    }
+    drawComponents();
+    drawWires();
+    drawVias();
+    drawBoardOutline();
+    drawBoardOutlineVoids();
 
+    ui->graphicsView->zoomFit();
+}
+
+void MainWindow::drawVias() {
     auto group = new QGraphicsItemGroup;
-    for (auto&& via: file->connectivity.Vias) {
+    for(auto&& via: file->connectivity.Vias) {
         auto viastack = file->localLibrary.getViastack(via.viastackRef.name);
-        if (!viastack) continue;
-        for (int hue{}; QPainterPath padShape: viastack->ViaPads) {
+        if(!viastack) continue;
+        for(int hue{}; QPainterPath padShape: viastack->ViaPads) {
             padShape.addEllipse({}, viastack->holeDiameter * 0.5, viastack->holeDiameter * 0.5);
             auto item = new QGraphicsPathItem{padShape};
             int color = 240 / viastack->ViaPads.size() * hue++;
@@ -147,38 +133,58 @@ void MainWindow::drawFile() {
     }
     group->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
     ui->graphicsView->addItem(group);
+}
 
-    for (auto&& contour: file->constructive.boardOutline.Contour) {
+void MainWindow::drawWires() {
+    std::map<QString, int> layers;
+    for(auto&& wire: file->connectivity.Wires)
+        if(!layers.contains(wire.layerRef.name.value))
+            layers.emplace(wire.layerRef.name.value, layers.size());
+
+    for(auto&& wire: file->connectivity.Wires) {
+        for(auto&& subwire: wire.Subwires) {
+            int color = 240 / layers.size() * layers.at(wire.layerRef.name.value);
+            ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
+        }
+    }
+}
+
+void MainWindow::drawBoardOutline() {
+    for(auto&& contour: file->constructive.boardOutline.Contour_) {
         // QPainterPath path;
-        if (contour.NonfilledFigure)
+        if(contour.NonfilledFigure)
             ui->graphicsView->addItem(
                                 new QGraphicsPathItem{
                                     contour.NonfilledFigure.visit([](auto&& val) -> QPainterPath { return val; })})
                 ->setPen({Qt::yellow, contour.lineWidth});
         // contour.NonfilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
-        if (contour.FilledFigure)
+        if(contour.FilledFigure)
             ui->graphicsView->addItem(
                                 new QGraphicsPathItem{
                                     contour.FilledFigure.visit([](auto&& val) -> QPainterPath { return val; })})
                 ->setPen({Qt::yellow, contour.lineWidth});
         // contour.FilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
     }
+}
 
-    for (auto&& void_: file->constructive.boardOutline.Voids) {
+void MainWindow::drawBoardOutlineVoids() {
+
+    for(auto&& void_: file->constructive.boardOutline.Voids) {
         QPainterPath path;
-        if (void_.NonfilledFigure)
+        if(void_.NonfilledFigure)
             void_.NonfilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
-        if (void_.FilledFigure)
+        if(void_.FilledFigure)
             void_.FilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
         ui->graphicsView->addItem(new QGraphicsPathItem{path})->setPen({Qt::gray, void_.lineWidth});
     }
+}
 
-    // for (auto&& wire: file->constructive.boardOutline) {
-    //     for (auto&& subwire: wire.Subwires) {
-    //         int color = 240 / layers.size() * layers.at(wire.layerRef.name.value);
-    //         ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
-    //     }
-    // }
-
-    ui->graphicsView->zoomFit();
+void MainWindow::drawComponents() {
+    for(auto&& CompInstance: file->componentsOnBoard.Components) {
+        auto footprint = file->localLibrary.getFootprint(CompInstance.footprintRef.name);
+        if(!footprint) continue;
+        auto item = graphicsItem(footprint, *file);
+        item->setTransform(CompInstance.transform());
+        ui->graphicsView->addItem(item);
+    }
 }

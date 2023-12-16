@@ -22,6 +22,24 @@ private:
     TopoR::TopoR_PCB_File* file;
     QString dir;
 
+    std::unordered_map<QStringView, QColor> colors;
+
     void loadFile();
     void drawFile();
+    void drawVias();
+    void drawWires();
+    void drawBoardOutline();
+    void drawBoardOutlineVoids();
+    void drawComponents();
+    // void draw();
+    // void draw();
+    // void draw();
+    // void draw();
+    // void draw();
+    // void draw();
+    // void draw();
+    // void draw();
+    // void draw();
+    // void draw();
+    // void draw();
 };
