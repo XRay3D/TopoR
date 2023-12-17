@@ -116,7 +116,7 @@ GraphicsView::GraphicsView(QWidget* parent)
 
     scale(1.0, -1.0); // flip vertical
 
-    if (0) {
+    if(0) {
         QSettings settings;
         settings.beginGroup("Viewer");
         setOpenGL(settings.value("chbxOpenGl").toBool());
@@ -152,11 +152,11 @@ void GraphicsView::zoomFit() {
 
 void GraphicsView::zoomToSelected() {
     QRectF rect;
-    for (const QGraphicsItem* item: scene()->selectedItems()) {
+    for(const QGraphicsItem* item: scene()->selectedItems()) {
         const QRectF tmpRect(item->pos().isNull() ? item->boundingRect() : item->boundingRect().translated(item->pos()));
         rect = /*rect.isEmpty() ? tmpRect :*/ rect.united(tmpRect);
     }
-    if (rect.isEmpty())
+    if(rect.isEmpty())
         return;
     fitInView(rect);
 }
@@ -164,7 +164,7 @@ void GraphicsView::zoomToSelected() {
 void GraphicsView::zoom100() {
     double x = 1.0, y = 1.0;
     const double m11 = QGraphicsView::transform().m11(), m22 = QGraphicsView::transform().m22();
-    if (/* DISABLES CODE */ (1)) {
+    if(/* DISABLES CODE */ (1)) {
         x = qAbs(1.0 / m11 / (25.4 / physicalDpiX()));
         y = qAbs(1.0 / m22 / (25.4 / physicalDpiY()));
     } else {
@@ -174,7 +174,7 @@ void GraphicsView::zoom100() {
         // y = qAbs(1.0 / m22 / (size.width() / scrGeometry.width()));
     }
 
-    if (0) { // && App::settings().guiSmoothScSh()) {
+    if(0) { // && App::settings().guiSmoothScSh()) {
         animate(this, "scale", getScale(), x * zoomFactorAnim);
     } else {
         scale(x, y);
@@ -183,10 +183,10 @@ void GraphicsView::zoom100() {
 }
 
 void GraphicsView::zoomIn() {
-    if (getScale() > 10000.0)
+    if(getScale() > 10000.0)
         return;
 
-    if (0) { // App::settings().guiSmoothScSh()) {
+    if(0) { // App::settings().guiSmoothScSh()) {
         animate(this, "scale", getScale(), getScale() * zoomFactorAnim);
     } else {
         scale(zoomFactor, zoomFactor);
@@ -195,9 +195,9 @@ void GraphicsView::zoomIn() {
 }
 
 void GraphicsView::zoomOut() {
-    if (getScale() < 1.0)
+    if(getScale() < 1.0)
         return;
-    if (0) { // App::settings().guiSmoothScSh()) {
+    if(0) { // App::settings().guiSmoothScSh()) {
         animate(this, "scale", getScale(), getScale() * (1.0 / zoomFactorAnim));
     } else {
         scale(1.0 / zoomFactor, 1.0 / zoomFactor);
@@ -206,15 +206,15 @@ void GraphicsView::zoomOut() {
 }
 
 void GraphicsView::fitInView(QRectF dstRect, bool withBorders) {
-    if (dstRect.isNull())
+    if(dstRect.isNull())
         return;
-    if (withBorders)
+    if(withBorders)
         dstRect += QMarginsF(dstRect.width() / 5, dstRect.height() / 5, dstRect.width() / 5, dstRect.height() / 5); // 5 mm
     //    const auto r1(getViewRect().toRect());
     //    const auto r2(dstRect.toRect());
     //    if (r1 == r2)
     //        return;
-    if (0) { // App::settings().guiSmoothScSh()) {
+    if(0) { // App::settings().guiSmoothScSh()) {
         animate(this, "viewRect", getViewRect(), dstRect);
     } else {
         QGraphicsView::fitInView(dstRect, Qt::KeepAspectRatio);
@@ -285,7 +285,7 @@ QRectF GraphicsView::getViewRect() {
 QRectF GraphicsView::getSelectedBoundingRect() {
     auto selectedItems{scene()->selectedItems()};
 
-    if (selectedItems.isEmpty())
+    if(selectedItems.isEmpty())
         return {};
 
     QRectF rect;
@@ -309,26 +309,26 @@ void GraphicsView::wheelEvent(QWheelEvent* event) {
     const auto pos = event->position().toPoint();
 
     static auto sbUpdate = [&delta, this, scale = 3, event](QScrollBar* sb) { // Warning if create more GraphicsView`s!!
-        if (0)                                                                // App::settings().guiSmoothScSh())
+        if(0)                                                                 // App::settings().guiSmoothScSh())
             animate(sb, "value", sb->value(), sb->value() - sb->pageStep() / (delta > 0 ? +scale : -scale));
         else sb->setValue(sb->value() - delta);
     };
 
-    if (event->buttons() & Qt::RightButton) {
-        if (abs(delta) == 120) {
+    if(event->buttons() & Qt::RightButton) {
+        if(abs(delta) == 120) {
             setInteractive(false);
-            if (delta > 0)
+            if(delta > 0)
                 zoomIn();
             else
                 zoomOut();
             setInteractive(true);
         }
     } else {
-        switch (event->modifiers()) {
+        switch(event->modifiers()) {
         case Qt::ControlModifier:
-            if (abs(delta) == 120) {
+            if(abs(delta) == 120) {
                 setInteractive(false);
-                if (delta > 0)
+                if(delta > 0)
                     zoomIn();
                 else
                     zoomOut();
@@ -336,11 +336,11 @@ void GraphicsView::wheelEvent(QWheelEvent* event) {
             }
             break;
         case Qt::ShiftModifier:
-            if (!event->angleDelta().x())
+            if(!event->angleDelta().x())
                 sbUpdate(QAbstractScrollArea::horizontalScrollBar());
             break;
         case Qt::NoModifier:
-            if (!event->angleDelta().x())
+            if(!event->angleDelta().x())
                 sbUpdate(QAbstractScrollArea::verticalScrollBar());
             break;
         default:
@@ -446,7 +446,7 @@ class GiGuide : public QGraphicsItem {
 
     Qt::Orientation orientation;
     double scaleFactor() const {
-        if (scene() && scene()->views().size())
+        if(scene() && scene()->views().size())
             return 1.0 / scene()->views().first()->transform().m11();
         return 1.0;
     };
@@ -465,7 +465,7 @@ public:
         qDebug(__FUNCTION__);
         auto sceneRect{scene()->sceneRect()};
         auto k = 2 * scaleFactor();
-        if (orientation == Qt::Horizontal)
+        if(orientation == Qt::Horizontal)
             return {sceneRect.left(), -k, sceneRect.width(), k * 2};
         else
             return {-k, sceneRect.top(), k * 2, sceneRect.height()};
@@ -518,7 +518,7 @@ void GraphicsView::resizeEvent(QResizeEvent* event) {
 }
 
 void GraphicsView::mousePressEvent(QMouseEvent* event) {
-    if (event->buttons() & Qt::MiddleButton) {
+    if(event->buttons() & Qt::MiddleButton) {
         setInteractive(false);
         // по нажатию средней кнопки мыши создаем событие ее отпускания выставляем моду перетаскивания и создаем событие зажатой левой кнопки мыши
         // #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -534,7 +534,7 @@ void GraphicsView::mousePressEvent(QMouseEvent* event) {
         QMouseEvent fakeEvent(event->type(), event->pos(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
         QGraphicsView::mousePressEvent(&fakeEvent);
         // #endif
-    } else if (event->button() == Qt::RightButton) {
+    } else if(event->button() == Qt::RightButton) {
         //        { // удаление мостика
         //            QGraphicsItem* item = scene()->itemAt(mapToScene(event->pos()), transform());
         //            if (item && item->type() == Gi::Type::Bridge && !static_cast<BridgeItem*>(item)->ok())
@@ -545,7 +545,7 @@ void GraphicsView::mousePressEvent(QMouseEvent* event) {
         setInteractive(false);
         // Ruler
 
-        if (ruler_) {
+        if(ruler_) {
             const QPointF point(mappedPos(event));
             emit mouseClickR(point);
             // scene_->setDrawRuller(true);
@@ -554,7 +554,7 @@ void GraphicsView::mousePressEvent(QMouseEvent* event) {
     } else {
         // это для выделения рамкой  - работа по-умолчанию левой кнопки мыши
         QGraphicsView::mousePressEvent(event);
-        if (ruler_ && !(rulerCtr++ & 0x1))
+        if(ruler_ && !(rulerCtr++ & 0x1))
             rulPt1 = mappedPos(event);
 
         // if(auto item{scene()->itemAt(mapToScene(event->pos()), transform())}; 0 && item && item->type() == QGraphicsPixmapItem::Type) { // NOTE  возможно DD для направляющих не сделаю.
@@ -579,7 +579,7 @@ void GraphicsView::mousePressEvent(QMouseEvent* event) {
 }
 
 void GraphicsView::mouseReleaseEvent(QMouseEvent* event) {
-    if (event->button() == Qt::MiddleButton) {
+    if(event->button() == Qt::MiddleButton) {
         // отпускаем левую кнопку мыши которую виртуально зажали в mousePressEvent
         // #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         //        QMouseEvent fakeEvent(event->type(), event->localPos(), event->screenPos(), event->windowPos(), Qt::LeftButton, event->buttons() & ~Qt::LeftButton, event->modifiers());
@@ -589,7 +589,7 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent* event) {
         QGraphicsView::mouseReleaseEvent(&fakeEvent);
         setDragMode(NoDrag);
         setInteractive(true);
-    } else if (event->button() == Qt::RightButton) {
+    } else if(event->button() == Qt::RightButton) {
         // это что бы при вызове контекстного меню ничего постороннего не было
         QGraphicsView::mousePressEvent(event);
         setDragMode(RubberBandDrag);
@@ -610,7 +610,7 @@ void GraphicsView::mouseMoveEvent(QMouseEvent* event) {
     // hRuler->setCursorPos(event->pos());
     point = mappedPos(event);
     //    if (event->button() == Qt::RightButton)
-    if (ruler_ && rulerCtr & 0x1)
+    if(ruler_ && rulerCtr & 0x1)
         rulPt2 = point;
 
     emit mouseMove(point);
@@ -707,10 +707,10 @@ void GraphicsView::animate(QObject* target, const QByteArray& propertyName, T be
         point = mapToScene(viewport()->mapFromGlobal(QCursor::pos()));
         scene()->update();
     });
-    if constexpr (std::is_same_v<T, QRectF>) {
+    if constexpr(std::is_same_v<T, QRectF>) {
         animation->setEasingCurve(QEasingCurve(QEasingCurve::InOutSine));
         animation->setDuration(200);
-    } else if constexpr (std::is_same_v<decltype(target), QScrollBar>) {
+    } else if constexpr(std::is_same_v<decltype(target), QScrollBar>) {
         animation->setEasingCurve(QEasingCurve(QEasingCurve::Linear));
         animation->setDuration(50);
     } else {

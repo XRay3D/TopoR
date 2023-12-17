@@ -14,8 +14,8 @@ QDebug operator<<(QDebug d, std::set<QString> c) {
     const bool oldSetting = d.autoInsertSpaces();
     d.nospace() << "set" << '(';
     auto it = c.begin(), end = c.end();
-    if (it != end) d << *it++;
-    while (it != end) d << ", " << *it++;
+    if(it != end) d << *it++;
+    while(it != end) d << ", " << *it++;
     d << ')';
     d.setAutoInsertSpaces(oldSetting);
     return d.maybeSpace();
@@ -29,7 +29,7 @@ Xml::Xml(const QString& name) {
     item->itemData[Type] = "Type";
     item->itemData[FLine] = "Line #";
     QFile file{name};
-    if (!file.open(QIODevice::ReadOnly)) {
+    if(!file.open(QIODevice::ReadOnly)) {
         qWarning() << file.errorString();
         return;
     }
@@ -37,7 +37,7 @@ Xml::Xml(const QString& name) {
     QString errorMsg{};
     int errorLine{};
     int errorColumn{};
-    if (!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn)) {
+    if(!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn)) {
         qWarning() << errorMsg << errorLine << errorColumn;
         return;
     }
@@ -77,7 +77,7 @@ Xml::Xml(const QString& name) {
     return;
     file.setFileName(file.fileName().replace("/", "/formated_"));
     qWarning() << file.fileName();
-    if (!file.open(QIODevice::WriteOnly)) {
+    if(!file.open(QIODevice::WriteOnly)) {
         qWarning() << file.errorString();
         return;
     }

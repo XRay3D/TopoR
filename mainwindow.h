@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QMap>
 
 namespace Ui {
 class MainWindow;
@@ -22,7 +23,13 @@ private:
     TopoR::TopoR_PCB_File* file;
     QString dir;
 
-    std::unordered_map<QStringView, QColor> colors;
+    QMap<QString, QColor> detailsColor;
+    QMap<QString, QColor> fixColor;
+    QMap<QString, QColor> padsColor;
+
+    QMap<QString, bool> isDetailsVisible;
+    QMap<QString, bool> isPadsVisible;
+    QMap<QString, bool> isVisible;
 
     void loadFile();
     void drawFile();
@@ -31,7 +38,7 @@ private:
     void drawBoardOutline();
     void drawBoardOutlineVoids();
     void drawComponents();
-    // void draw();
+    void drawFreePads();
     // void draw();
     // void draw();
     // void draw();

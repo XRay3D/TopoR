@@ -94,24 +94,28 @@ static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const Topo
         if(auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
         }
     }
-
+    group->setToolTip(fp->name);
     group->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
     return group;
 }
 
 void MainWindow::drawFile() {
 
-    // for (auto&&var : file->dialogSettings.) {
-
-    // }
-
-    // colors
+    for(auto&& layerOptions: file->displayControl.LayersVisualOptions) {
+        detailsColor[layerOptions.layerRef] = {layerOptions.colors.details};
+        fixColor[layerOptions.layerRef] = {layerOptions.colors.fix};
+        padsColor[layerOptions.layerRef] = {layerOptions.colors.pads};
+        isDetailsVisible[layerOptions.layerRef] = +layerOptions.show.details;
+        isPadsVisible[layerOptions.layerRef] = +layerOptions.show.pads;
+        isVisible[layerOptions.layerRef] = +layerOptions.show.visible;
+    }
 
     drawComponents();
     drawWires();
     drawVias();
     drawBoardOutline();
     drawBoardOutlineVoids();
+    drawFreePads();
 
     ui->graphicsView->zoomFit();
 }
@@ -125,8 +129,7 @@ void MainWindow::drawVias() {
             padShape.addEllipse({}, viastack->holeDiameter * 0.5, viastack->holeDiameter * 0.5);
             auto item = new QGraphicsPathItem{padShape};
             int color = 240 / viastack->ViaPads.size() * hue++;
-            item->setPen({QColor::fromHsv(color, 255, 255),
-                0.0});
+            item->setPen({QColor::fromHsv(color, 255, 255), 0.0});
             item->setPos(via.org);
             group->addToGroup(item);
         }
@@ -168,7 +171,6 @@ void MainWindow::drawBoardOutline() {
 }
 
 void MainWindow::drawBoardOutlineVoids() {
-
     for(auto&& void_: file->constructive.boardOutline.Voids) {
         QPainterPath path;
         if(void_.NonfilledFigure)
@@ -186,5 +188,29 @@ void MainWindow::drawComponents() {
         auto item = graphicsItem(footprint, *file);
         item->setTransform(CompInstance.transform());
         ui->graphicsView->addItem(item);
+    }
+}
+
+void MainWindow::drawFreePads() {
+    std::unordered_map<QString, QGraphicsItemGroup*> groups;
+    for(auto&& pad: file->componentsOnBoard.FreePads) {
+        auto padstack = file->localLibrary.getPadstack(pad.padstackRef);
+        if(!padstack) continue;
+        for(int hue{}; auto&& padShape: padstack->Pads) {
+            auto ref = padShape.visit([](auto&& pad) { return pad.Reference.visit([](auto&& ref) -> QString { return ref; }); });
+            if(!groups.contains(ref)) groups.emplace(ref, new QGraphicsItemGroup);
+            auto path = padShape.visit([](auto&& pad) -> QPainterPath { return pad; });
+            auto item = new QGraphicsPathItem{path};
+            int color = 240 / padstack->Pads.size() * hue++;
+            item->setPen({QColor::fromHsv(color, 255, 255), 0.0});
+            item->setPen({padsColor[ref], 0.0});
+            item->setTransform(pad.transform());
+            groups[ref]->addToGroup(item);
+            groups[ref]->setToolTip(ref);
+        }
+    }
+    for(auto&& [key, group]: groups) {
+        group->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+        ui->graphicsView->addItem(group);
     }
 }
