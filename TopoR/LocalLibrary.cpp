@@ -14,7 +14,7 @@ LocalLibrary::PadCircle::operator QPainterPath() const {
 LocalLibrary::PadOval::operator QPainterPath() const {
     QPainterPath path;
 
-    const QLineF line{stretch * -0.5, stretch * +0.5};
+    const QLineF line{stretch.toPoint() * -0.5, stretch.toPoint() * +0.5};
     const auto angle = line.angle();
     const QRectF capRect{-diameter * 0.5, -diameter * 0.5, diameter, diameter};
     const auto start = QLineF::fromPolar(diameter * 0.5, angle + 90).translated(line.p1()).p2();
@@ -91,7 +91,7 @@ LocalLibrary::PadPoly::operator QPolygonF() const {
     QPolygonF poly;
     poly.reserve(Dots.size() + 1);
     for(const auto& dot: Dots) poly.append(dot);
-    if(Dots.front() != Dots.back()) poly.append(Dots.front());
+    if(Dots.front().toPoint() != Dots.back().toPoint()) poly.append(Dots.front());
     return poly;
 }
 
