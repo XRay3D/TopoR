@@ -17,43 +17,41 @@ struct HiSpeedRules {
     struct Impedance {
         struct LayerRule {
             // Ширина проводника.
-            /* [XmlAttribute("width", DataType = "float")] public float width_; */
+            // [XmlAttribute("width", DataType = "float")] public float width_;
             XmlAttr<float> width;
             // Ссылка на слой.
-            /* [XmlElement("LayerRef")] public LayerRef layerRef; */
+            // [XmlElement("LayerRef")] public LayerRef layerRef;
             LayerRef layerRef;
         };
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
-        /* [XmlAttribute("Z0", DataType = "float")] public float z0_; */
+        // [XmlAttribute("Z0", DataType = "float")] public float z0_;
         XmlAttr<float> Z0;
         // Правило разводки сигнала для слоя.
-        /* [XmlElement("LayerRule")] public List<LayerRule_Impendance> LayerImpedanceRules_; */
+        // [XmlElement("LayerRule")] public List<LayerRule_Impendance> LayerImpedanceRules_;
         XmlArrayElem<LayerRule> LayerImpedanceRules;
     };
     // Волновое сопротивление и правила разводки сигналов по слоям для дифференциальных сигналов.
     struct ImpedanceDiff {
         struct LayerRule {
             // Ширина проводника.
-            /* [XmlAttribute("width", DataType = "float")] public float width_; */
+            // [XmlAttribute("width", DataType = "float")] public float width_;
             XmlAttr<float> width;
             // Параметр правила разводки дифференциальных пар: зазор между проводниками пары.
-            /* [XmlAttribute("gap", DataType = "float")] public float gap_; */
+            // [XmlAttribute("gap", DataType = "float")] public float gap_;
             XmlAttr<float> gap;
             // Ссылка на слой.
-            /* [XmlElement("LayerRef")] public LayerRef layerRef; */
+            // [XmlElement("LayerRef")] public LayerRef layerRef;
             LayerRef layerRef;
         };
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
-        /* [XmlAttribute("Z0", DataType = "float")] public float z0_; */
+        // [XmlAttribute("Z0", DataType = "float")] public float z0_;
         XmlAttr<float> Z0;
         // Правило разводки дифференциальной пары для слоя.
-        /* [XmlElement("LayerRule")] public List<LayerRule_ImpendanceDiff> LayerImpedanceDiffRules_; */
+        // [XmlElement("LayerRule")] public List<LayerRule_ImpendanceDiff> LayerImpedanceDiffRules_;
         XmlArrayElem<LayerRule> LayerImpedanceDiffRules;
     };
     // Описание сигнального кластера цепей.
@@ -61,62 +59,59 @@ struct HiSpeedRules {
         // Описание заданной связи.
         struct PinPair {
             // Ссылка на контакт источника сигнала.
-            /* [XmlElement("PinRef")] public List<PinRef> PinRefs_; */
+            // [XmlElement("PinRef")] public List<PinRef> PinRefs_;
             XmlArrayElem<PinRef> PinRefs;
         };
         // Описание сигнала.
         struct Signal {
             // Имя объекта или ссылка на именованный объект.
-            /* [XmlAttribute("name")] public string name_; */
             XmlAttr<QString> name;
             // Ссылка на контакт источника сигнала.
-            /* [XmlElement("ReceiverPinRef")] public ReceiverPinRef receiverPinRef; */
+            // [XmlElement("ReceiverPinRef")] public ReceiverPinRef receiverPinRef;
             ReceiverPinRef receiverPinRef;
             // Пассивные компоненты на пути следования сигнала.
-            /* [XmlArray("Components")][XmlArrayItem("CompInstanceRef")] public List<CompInstanceRef> Components_; */
+            // [XmlArray("Components")][XmlArrayItem("CompInstanceRef")] public List<CompInstanceRef> Components_;
             XmlArrayElem<CompInstanceRef> Components;
         };
         // Ссылка на волновое сопротивление.
-        /* [XmlElement("ImpedanceRef")] public ImpedanceRef impedanceRef; */
+        // [XmlElement("ImpedanceRef")] public ImpedanceRef impedanceRef;
         ImpedanceRef impedanceRef;
         // Ссылка на контакт источника сигнала.
-        /* [XmlElement("SourcePinRef")] public SourcePinRef sourcePinRef; */
+        // [XmlElement("SourcePinRef")] public SourcePinRef sourcePinRef;
         SourcePinRef sourcePinRef;
         // Цепи сигнального кластера.
-        /* [XmlArray("Nets")][XmlArrayItem("NetRef")] public List<NetRef> Nets_; */
+        // [XmlArray("Nets")][XmlArrayItem("NetRef")] public List<NetRef> Nets_;
         XmlArrayElem<NetRef> Nets;
         // Описание заданных связей сигнального кластера.
-        /* [XmlArray("PinPairs")][XmlArrayItem("PinPair")] public List<PinPair> PinPairs_; */
+        // [XmlArray("PinPairs")][XmlArrayItem("PinPair")] public List<PinPair> PinPairs_;
         XmlArrayElem<PinPair> PinPairs;
         // Ссылки на сигналы.
-        /* [XmlElement("Signal")] public List<Signal> Signals_; */
+        // [XmlElement("Signal")] public List<Signal> Signals_;
         XmlArrayElem<Signal> Signals;
     };
     // Описание дифференциального сигнала (дифференциальной пары).
     struct DiffSignal {
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
         // Параметр дифференциальной пары: допустимый разброс длины между проводниками пары.
-        /* [XmlAttribute("mismatch", DataType = "float")] public float mismatch_; */
+        // [XmlAttribute("mismatch", DataType = "float")] public float mismatch_;
         XmlAttr<float> mismatch;
         // Ссылка на волновое сопротивление.
-        /* [XmlElement("ImpedanceRef")] public ImpedanceRef impedanceRef; */
+        // [XmlElement("ImpedanceRef")] public ImpedanceRef impedanceRef;
         ImpedanceRef impedanceRef;
         // Ссылки на сигналы.
-        /* [XmlElement("SignalRef")] public List<SignalRef> SignalRefs_; */
+        // [XmlElement("SignalRef")] public List<SignalRef> SignalRefs_;
         XmlArrayElem<SignalRef> SignalRefs;
     };
     // Описание группы сигналов.
     struct SignalGroup {
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
         // Ссылки на сигнал, диф.сигнал, или группу сигналов
         // <value>SignalRef, DiffSignalRef, SignalGroupRef</value>
-        /* [XmlElement("SignalRef", typeof(SignalRef)),
-            XmlElement("DiffSignalRef", typeof(DiffSignalRef)),
-            XmlElement("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> References_; */
+        // [XmlElement(SignalRef),
+        //  XmlElement(DiffSignalRef),
+        //  XmlElement(SignalGroupRef)] public List<Object> References_;
         XmlArrayElem<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> References;
     };
     // Описание правил выравнивания задержек.
@@ -124,85 +119,85 @@ struct HiSpeedRules {
         // Описание правила выравнивания задержек для группы цепей или группы дифференциальных пар.
         struct DelayEqual {
             // Флаг применения правила.
-            /* [XmlAttribute("enabled")] public Bool enabled_; */
+            // [XmlAttribute("enabled")] public Bool enabled_;
             XmlAttr<Bool> enabled;
             /* public bool enabledSpecified_ */
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
-            /* [XmlAttribute("valueType")] public valueType valueType_; */
-            XmlAttr<valueType> valueType;
+            // [XmlAttribute("valueType")] public valueType valueType_;
+            XmlAttr<valueType> valueType_;
             // Параметр правила выравнивания задержек внутри группы цепей: допуск.
-            // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
-            /* [XmlAttribute("tolerance", DataType = "float")] public float tolerance_; */
+            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // [XmlAttribute("tolerance", DataType = "float")] public float tolerance_;
             XmlAttr<float> tolerance;
             // Объекты воздействия правила.
-            /* [XmlArray("ObjectsAffected")][XmlArrayItem("SignalGroupRef")] public List<SignalGroupRef> ObjectsAffected_; */
+            // [XmlArray("ObjectsAffected")][XmlArrayItem("SignalGroupRef")] public List<SignalGroupRef> ObjectsAffected_;
             XmlArrayElem<SignalGroupRef> ObjectsAffected;
         };
         // Описание правила задания абсолютного значения задержки.
         struct DelayConstant {
             // Флаг применения правила.
-            /* [XmlAttribute("enabled")] public Bool enabled_; */
-            Bool enabled_{};
+            // [XmlAttribute("enabled")] public Bool enabled_;
+            XmlAttr<Bool> enabled;
             /* public bool enabledSpecified_ */
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
-            /* [XmlAttribute("valueType")] public valueType valueType_; */
-            XmlAttr<valueType> valueType_{};
+            // [XmlAttribute("valueType")] public valueType valueType_;
+            XmlAttr<valueType> valueType_;
             // Значение константы в правилах выравнивания задержек.
-            // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
-            /* [XmlAttribute("constant", DataType = "float")] public float constant_; */
+            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // [XmlAttribute("constant", DataType = "float")] public float constant_;
             XmlAttr<float> constant;
             // Параметр правила выравнивания задержек: нижний допуск.
-            // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
-            /* [XmlAttribute("toleranceUnder", DataType = "float")] public float toleranceUnder_; */
+            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // [XmlAttribute("toleranceUnder", DataType = "float")] public float toleranceUnder_;
             XmlAttr<float> toleranceUnder;
             // Параметр правила выравнивания задержек: верхний допуск.
-            // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
-            /* [XmlAttribute("toleranceOver", DataType = "float")] public float toleranceOver_; */
+            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // [XmlAttribute("toleranceOver", DataType = "float")] public float toleranceOver_;
             XmlAttr<float> toleranceOver;
             // Объекты воздействия правила.
-            /* [XmlArray("ObjectsAffected")][XmlArrayItem("SignalRef", typeof(SignalRef)),
-                                             XmlArrayItem("DiffSignalRef", typeof(DiffSignalRef)),
-                                             XmlArrayItem("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> ObjectsAffected_; */
+            // [XmlArray("ObjectsAffected")][XmlArrayItem(SignalRef),
+            //  XmlArrayItem(DiffSignalRef),
+            //  XmlArrayItem(SignalGroupRef)] public List<Object> ObjectsAffected_;
             XmlArrayElem<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         };
         // Описание правила взаимного выравнивания задержек.
-        // <remarks>! Правило несимметрично относительно ObjectLeft и ObjectRight</remarks>
+        /// \note !Правило несимметрично относительно ObjectLeft и ObjectRight
         struct DelayRelation {
             // Флаг применения правила.
-            /* [XmlAttribute("enabled")] public Bool enabled_; */
-            Bool enabled_{};
+            // [XmlAttribute("enabled")] public Bool enabled_;
+            XmlAttr<Bool> enabled;
             /* public bool enabledSpecified_ */
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
-            /* [XmlAttribute("valueType")] public valueType valueType_; */
-            valueType valueType_{};
+            // [XmlAttribute("valueType")] public valueType valueType_;
+            XmlAttr<valueType> valueType_;
             // Значение константы в правилах выравнивания задержек.
-            // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
-            /* [XmlAttribute("constant", DataType = "float")] public float constant_; */
+            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // [XmlAttribute("constant", DataType = "float")] public float constant_;
             XmlAttr<float> constant;
             // Параметр правила выравнивания задержек: нижний допуск.
-            // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
-            /* [XmlAttribute("toleranceUnder", DataType = "float")] public float toleranceUnder_; */
+            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // [XmlAttribute("toleranceUnder", DataType = "float")] public float toleranceUnder_;
             XmlAttr<float> toleranceUnder;
             // Параметр правила выравнивания задержек: верхний допуск.
-            // <remarks>! Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).</remarks>
-            /* [XmlAttribute("toleranceOver", DataType = "float")] public float toleranceOver_; */
+            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // [XmlAttribute("toleranceOver", DataType = "float")] public float toleranceOver_;
             XmlAttr<float> toleranceOver;
             // Первый объект воздействия правила взаимного выравнивания задержек.
-            /* [XmlElement("ObjectLeft")] public ObjectSignal ObjectLeft_; */
-            ObjectSignal ObjectLeft_;
+            // [XmlElement("ObjectLeft")] public ObjectSignal ObjectLeft_;
+            ObjectSignal ObjectLeft_; // FIXME ???
             // Второй объект воздействия правила взаимного выравнивания задержек.
-            /* [XmlElement("ObjectRight")] public ObjectSignal ObjectRight_; */
-            ObjectSignal ObjectRight_;
+            // [XmlElement("ObjectRight")] public ObjectSignal ObjectRight_;
+            ObjectSignal ObjectRight_; // FIXME ???
         };
         // Правила выравнивания задержек для группы цепей или группы дифференциальных пар.
-        /* [XmlElement("DelayEqual")] public List<DelayEqual> DelayEquals_; */
+        // [XmlElement("DelayEqual")] public List<DelayEqual> DelayEquals_;
         XmlArrayElem<DelayEqual> DelayEquals;
         // Правила задания абсолютного значения задержки.
-        /* [XmlElement("DelayConstant")] public List<DelayConstant> DelayConstants_; */
+        // [XmlElement("DelayConstant")] public List<DelayConstant> DelayConstants_;
         XmlArrayElem<DelayConstant> DelayConstants;
         // Правила взаимного выравнивания задержек.
-        // <remarks>! Правила несимметричны относительно ObjectLeft и ObjectRight</remarks>
-        /* [XmlElement("DelayRelation")] public List<DelayRelation> DelayRelations_; */
+        /// \note !Правила несимметричны относительно ObjectLeft и ObjectRight
+        // [XmlElement("DelayRelation")] public List<DelayRelation> DelayRelations_;
         XmlArrayElem<DelayRelation> DelayRelations;
     };
     // Настройки поиска сигналов.
@@ -210,63 +205,60 @@ struct HiSpeedRules {
         // Правило именования цепей дифференциальных сигналов.
         struct RuleDiffSignalNetsNames {
             // Флаг применения правила.
-            /* [XmlAttribute("enabled")] public Bool enabled_; */
-            Bool enabled_{};
-            /* public bool enabledSpecified_ */
+            XmlAttr<Bool> enabled;
             // Параметр правила именования цепей дифференциальных сигналов: подстрока, определяющая цепь позитивного сигнала.
-            /* [XmlAttribute("posStr")] public string posStr_; */
             XmlAttr<QString> posStr;
             // Параметр правила именования цепей дифференциальных сигналов: подстрока, определяющая цепь негативного сигнала.
-            /* [XmlAttribute("negStr")] public string negStr_; */
             XmlAttr<QString> negStr;
+            operator bool() const { return +enabled; }
         };
         // Список цепей, исключённых из поиска сигналов.
         struct ExcludedNets {
             // Минимальное количество контактов в силовой цепи. Параметр используется для автоматического определения силовых цепей.
-            /* [XmlAttribute("minPinsNumber", DataType = "int")] public int minPinsNumber_; */
+            // [XmlAttribute("minPinsNumber", DataType = "int")] public int minPinsNumber_;
             XmlAttr<int> minPinsNumber;
             int minPinsNumber_ = 0;
             // Cсылки на цепи.
-            /* [XmlElement("NetRef")] public List<NetRef> NetRefs_; */
+            // [XmlElement("NetRef")] public List<NetRef> NetRefs_;
             XmlArrayElem<NetRef> NetRefs;
         };
         // Максимальное число цепей в сигнальном кластере. Параметр используется при автоматическом определении цепей сигнального кластера.
-        /* [XmlAttribute("maxNetsInCluster", DataType = "int")] public int maxNetsInCluster_; */
+        // [XmlAttribute("maxNetsInCluster", DataType = "int")] public int maxNetsInCluster_;
         XmlAttr<int> maxNetsInCluster;
         int maxNetsInCluster_ = 0;
         // Автоматически задавать связи.
-        /* [XmlAttribute("createPinPairs")] public Bool createPinPairs_; */
-        Bool createPinPairs_{};
+        // [XmlAttribute("createPinPairs")] public Bool createPinPairs_;
+        XmlAttr<Bool> createPinPairs;
         /* public bool createPinPairsSpecified_ */
         // Правила именования цепей дифференциальных сигналов.
-        // <remarks>! Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.</remarks>
-        /* [XmlArray("RulesDiffSignalNetsNames")][XmlArrayItem("RuleDiffSignalNetsNames")] public List<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames_; */
+        /// \note !Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.
+        // [XmlArray("RulesDiffSignalNetsNames")][XmlArrayItem("RuleDiffSignalNetsNames")] public List<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames_;
         XmlArrayElem<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames;
         // Список цепей, исключённых из поиска сигналов.
-        /* [XmlElement("ExcludedNets")] public ExcludedNets excludedNets; */
+        // [XmlElement("ExcludedNets")] public ExcludedNets excludedNets;
         ExcludedNets excludedNets;
     };
     // Версия раздела.
-    /* [XmlAttribute("version")] public string version_; */
+    // [XmlAttribute("version")] public string version_;
     XmlAttr<QString> version;
     // Волновые сопротивления и правила разводки сигналов.
-    /* [XmlArray("RulesImpedances")][XmlArrayItem("Impedance", typeof(Impedance)),
-XmlArrayItem("ImpedanceDiff", typeof(ImpedanceDiff))] public List<Object> RulesImpedances_; */
+    // [XmlArray("RulesImpedances")][XmlArrayItem(Impedance),
+    // XmlArrayItem(ImpedanceDiff)] public List<Object> RulesImpedances_;
     XmlArrayElem<XmlVariant<Impedance, ImpedanceDiff>> RulesImpedances;
     // Сигнальные кластеры цепей.
-    /* [XmlArray("SignalClusters")][XmlArrayItem("SignalCluster")] public List<SignalCluster> SignalClusters_; */
+    // [XmlArray("SignalClusters")][XmlArrayItem("SignalCluster")] public List<SignalCluster> SignalClusters_;
     XmlArrayElem<SignalCluster> SignalClusters;
     // Дифференциальные сигналы.
-    /* [XmlArray("DiffSignals")][XmlArrayItem("DiffSignal")] public List<DiffSignal> DiffSignals_; */
+    // [XmlArray("DiffSignals")][XmlArrayItem("DiffSignal")] public List<DiffSignal> DiffSignals_;
     XmlArrayElem<DiffSignal> DiffSignals;
     // Группы сигналов.
-    /* [XmlArray("SignalGroups")][XmlArrayItem("SignalGroup")] public List<SignalGroup> SignalGroups_; */
+    // [XmlArray("SignalGroups")][XmlArrayItem("SignalGroup")] public List<SignalGroup> SignalGroups_;
     XmlArrayElem<SignalGroup> SignalGroups;
     // Правила выравнивания задержек.
-    /* [XmlElement("RulesDelay")] public RulesDelay rulesDelay; */
+    // [XmlElement("RulesDelay")] public RulesDelay rulesDelay;
     RulesDelay rulesDelay;
     // Настройки автоматического поиска сигналов.
-    /* [XmlElement("SignalSearchSettings")] public SignalSearchSettings signalSearchSettings; */
+    // [XmlElement("SignalSearchSettings")] public SignalSearchSettings signalSearchSettings;
     SignalSearchSettings signalSearchSettings;
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса HiSpeedRules. *

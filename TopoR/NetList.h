@@ -11,18 +11,17 @@ struct NetList {
     // Раздел «Текущий список соединени
     struct Net {
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
         // Ссылка на контакт или вывод посадочного места (объект класса PinRef или PadRef).
-        /* [XmlElement("PinRef", typeof(PinRef)),
-            XmlElement("PadRef", typeof(PadRef))] public List<Object> refs_; */
+        // [XmlElement(PinRef),
+        //  XmlElement(PadRef)] public List<Object> refs_;
         XmlArray<XmlVariant<PinRef, PadRef>> refs;
     };
     // Версия раздела.
-    /* [XmlAttribute("version")] public string version_; */
+    // [XmlAttribute("version")] public string version_;
     XmlAttr<QString> version;
     // Описания цепей.
-    /* [XmlElement("Net")] public List<Net> Nets_; */
+    // [XmlElement("Net")] public List<Net> Nets_;
     XmlArray<Net> Nets;
     /*******************************************************************
      * Здесь находятся функции для работы с элементами класса Nets. *

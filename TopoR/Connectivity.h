@@ -13,145 +13,145 @@
  */
 namespace TopoR {
 // Раздел «Соединения на плате».
-// <remarks>В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.</remarks>
+/// \note В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
 struct Connectivity {
     // Переходное отверстие на плате.
     struct Via {
         // Признак фиксации.
-        /* [XmlAttribute("fixed")] public Bool fixed_; */
+        // [XmlAttribute("fixed")] public Bool fixed_;
         XmlAttr<Bool> fixed;
         /* public bool fixedSpecified_ */
         // Ссылка на тип переходного отверстия.
-        /* [XmlElement("ViastackRef")] public ViastackRef viastackRef; */
+        // [XmlElement("ViastackRef")] public ViastackRef viastackRef;
         ViastackRef viastackRef;
         // Ссылка на цепь.
-        /* [XmlElement("NetRef")] public NetRef netRef; */
+        // [XmlElement("NetRef")] public NetRef netRef;
         NetRef netRef;
         // Точка привязки объекта.
-        /* [XmlElement("Org")] public Org org; */
+        // [XmlElement("Org")] public Org org;
         Org org;
     };
     // Описание змейки.
-    // <remarks>! Проводники, реализующие змейку, описываются в секции Wires (см. описание раздела Connectivity)</remarks>
+    /// \note !Проводники, реализующие змейку, описываются в секции Wires (см. описание раздела Connectivity)
     struct Serpent {
         // Идентификатор неименованных объектов.
-        /* [XmlAttribute("id")] public string id_; */
+        // [XmlAttribute("id")] public string id_;
         XmlAttr<QString> id;
         // Параметр змейки: требуемая длина.
-        /* [XmlAttribute("Count", DataType ="float")] public float Count_; */
+        // [XmlAttribute("Count", DataType ="float")] public float Count_;
         XmlAttr<float> Count;
         // Параметр змейки: зазор между соседними изломами.
-        /* [XmlAttribute("gap", DataType = "float")] public float gap_; */
+        // [XmlAttribute("gap", DataType = "float")] public float gap_;
         XmlAttr<float> gap;
         // Параметр змейки: высота h1 (см. описание змейки Serpent).
-        /* [XmlAttribute("h1", DataType = "float")] public float h1_; */
+        // [XmlAttribute("h1", DataType = "float")] public float h1_;
         XmlAttr<float> h1;
         // Параметр змейки: высота h2 (см. описание змейки Serpent).
-        /* [XmlAttribute("h2", DataType = "float")] public float h2_; */
+        // [XmlAttribute("h2", DataType = "float")] public float h2_;
         XmlAttr<float> h2;
         // Параметр змейки: высота h3 (см. описание змейки Serpent).
-        /* [XmlAttribute("h3", DataType = "float")] public float h3_; */
+        // [XmlAttribute("h3", DataType = "float")] public float h3_;
         XmlAttr<float> h3;
         // Параметр змейки: высота h4 (см. описание змейки Serpent).
-        /* [XmlAttribute("h4", DataType = "float")] public float h4_; */
+        // [XmlAttribute("h4", DataType = "float")] public float h4_;
         XmlAttr<float> h4;
     };
     // Описание застёгнутой пары проводников.
-    // <remarks>! Сегменты(Track) описывают осевую линию пары.Форма проводников пары рассчитывается автоматически.</remarks>
+    /// \note !Сегменты(Track) описывают осевую линию пары.Форма проводников пары рассчитывается автоматически.
     struct ZippedWire {
         // Идентификатор неименованных объектов.
-        /* [XmlAttribute("id")] public string id_; */
+        // [XmlAttribute("id")] public string id_;
         XmlAttr<QString> id;
         // Признак фиксации.
-        /* [XmlAttribute("fixed")] public Bool fixed_; */
+        // [XmlAttribute("fixed")] public Bool fixed_;
         XmlAttr<Bool> fixed;
         /* public bool fixedSpecified_ */
         // Ссылка на слой.
-        /* [XmlElement("LayerRef")] public LayerRef layerRef; */
+        // [XmlElement("LayerRef")] public LayerRef layerRef;
         LayerRef layerRef;
         // Ссылка на дифференциальный сигнал.
-        /* [XmlElement("DiffSignalRef")] public DiffSignalRef diffSignalRef; */
+        // [XmlElement("DiffSignalRef")] public DiffSignalRef diffSignalRef;
         DiffSignalRef diffSignalRef;
         // Начальная точка линии, дуги.
-        /* [XmlElement("Start")] public Start start; */
+        // [XmlElement("Start")] public Start start;
         Start start;
         // Описание(я) сегмента проводника.
-        // <remarks>! В случае отсутствия - предупреждение. Весь ZippedWire будет проигнорирован.</remarks>
-        /* [XmlElement("TrackLine", typeof(TrackLine)),
-        XmlElement("TrackArc", typeof(TrackArc)),
-        XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
+        /// \note !В случае отсутствия - предупреждение. Весь ZippedWire будет проигнорирован.
+        // [XmlElement(TrackLine),
+        //  XmlElement(TrackArc),
+        //  XmlElement(TrackArcCW)] public List<Object> Tracks_;
         XmlArrayElem<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
     };
     // Описание проводника.
     struct Wire {
         // Описание части проводника (последовательность сегментов с одной шириной и одинаковым признаком фиксации).
-        // <remarks>! Атрибут zipwireRef (ссылка на застёгнутую пару проводников) используется, если описываемая часть проводника входит в застёгнутую пару проводников ZippedWire (см. пример описания проводника дифференциальной пары).</remarks>
+        /// \note !Атрибут zipwireRef (ссылка на застёгнутую пару проводников) используется, если описываемая часть проводника входит в застёгнутую пару проводников ZippedWire (см. пример описания проводника дифференциальной пары).
         struct Subwire {
             // Описание «капельки» четырёхугольником. Первая вершина соответствует точке привязки контакта (переходного отверстия). Остальные вершины описывают контур четырёхугольника против часовой стрелки.
-            // <remarks> ! TopoR при импорте игнорирует информацию о капельках.</remarks>
+            /// \note !TopoR при импорте игнорирует информацию о капельках.
             struct Teardrop {
                 // координаты точки, вершины.
-                /* [XmlElement("Dot")] public List<Dot> Dots_; */
+                // [XmlElement("Dot")] public List<Dot> Dots_;
                 XmlArrayElem<Dot> Dots;
             };
             // Признак фиксации.
-            /* [XmlAttribute("fixed")] public Bool fixed_; */
+            // [XmlAttribute("fixed")] public Bool fixed_;
             XmlAttr<Bool> fixed;
             /* public bool fixedSpecified_ */
             // Ширина проводника.
-            /* [XmlAttribute("width", DataType = "float")] public float width_; */
+            // [XmlAttribute("width", DataType = "float")] public float width_;
             XmlAttr<float> width;
             // Ссылка на застёгнутую пару проводников. Строка должна содержать идентификатор описанной застёгнутой пары проводников ZippedWire.
-            /* [XmlAttribute("zipwireRef")] public string zipwireRef_; */
+            // [XmlAttribute("zipwireRef")] public string zipwireRef_;
             XmlAttr<QString> zipwireRef;
             // Описание «капелек» для Subwire.
-            // <remarks>От KilkennyCat: сделал как массив, в спецификации не так, но так удобней</remarks>
-            /* [XmlArray("Teardrops")][XmlArrayItem("Teardrop")] public List<Teardrop> Teardrops_; */
+            /// \note От KilkennyCat: сделал как массив, в спецификации не так, но так удобней
+            // [XmlArray("Teardrops")][XmlArrayItem("Teardrop")] public List<Teardrop> Teardrops_;
             XmlArray<Teardrop> Teardrops;
             // Начальная точка линии, дуги.
-            /* [XmlElement("Start")] public Start start; */
+            // [XmlElement("Start")] public Start start;
             Start start;
             // Описание(я) сегмента проводника.
-            // <remarks>! В случае отсутствия - предупреждение. Весь проводник будет проигнорирован.</remarks>
-            /* [XmlElement("TrackLine", typeof(TrackLine)),
-                XmlElement("TrackArc", typeof(TrackArc)),
-                XmlElement("TrackArcCW", typeof(TrackArcCW))] public List<Object> Tracks_; */
+            /// \note !В случае отсутствия - предупреждение. Весь проводник будет проигнорирован.
+            // [XmlElement(TrackLine),
+            //  XmlElement(TrackArc),
+            //  XmlElement(TrackArcCW)] public List<Object> Tracks_;
             XmlArray<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
 
             QGraphicsItem* graphicsItem(const QColor& color = Qt::red) const;
         };
         // Ссылка на слой.
-        /* [XmlElement("LayerRef")] public LayerRef layerRef; */
+        // [XmlElement("LayerRef")] public LayerRef layerRef;
         LayerRef layerRef;
         // Ссылка на цепь.
-        /* [XmlElement("NetRef")] public NetRef netRef; */
+        // [XmlElement("NetRef")] public NetRef netRef;
         NetRef netRef;
         // Части проводника (последовательность сегментов с одной шириной и одинаковым признаком фиксации).
-        /* [XmlElement("Subwire")] public List<Subwire> Subwires_; */
+        // [XmlElement("Subwire")] public List<Subwire> Subwires_;
         XmlArray<Subwire> Subwires;
     };
     // Описание заливаемой области металлизации (полигона).
-    // <remarks>! Заливка полигона линиями (Fill) записывается только для других САПР. TopoR при импорте её игнорирует. Сплошная заливка (fillType = Solid) не записывается.</remarks>
+    /// \note !Заливка полигона линиями (Fill) записывается только для других САПР. TopoR при импорте её игнорирует. Сплошная заливка (fillType = Solid) не записывается.
     struct Copper {
         // Описание термобарьера для подключения контактных площадок к области металлизации.
         struct ThermalPad {
             // Описание термобарьера.
-            /* [XmlElement("Thermal")] public Thermal thermal; */
+            // [XmlElement("Thermal")] public Thermal thermal;
             Thermal thermal;
         };
         // Описание термобарьера для подключения площадок переходных отверстий к области металлизации.
         struct ThermalVia {
             // Описание термобарьера.
-            /* [XmlElement("Thermal")] public Thermal thermal; */
+            // [XmlElement("Thermal")] public Thermal thermal;
             Thermal thermal;
         };
         // Описание контура заливаемой области металлизации.
         struct Shape {
             // Описание залитой фигуры.
-            /* [XmlElement("FilledCircle", typeof(FilledCircle)),
-                XmlElement("FilledRect", typeof(FilledRect)),
-                XmlElement("Polygon", typeof(Polygon)),
-                XmlElement("FilledContour", typeof(FilledContour))] public Object FilledFigure_; */
+            // [XmlElement(FilledCircle),
+            //  XmlElement(FilledRect),
+            //  XmlElement(Polygon),
+            //  XmlElement(FilledContour)] public Object FilledFigure_;
             XmlVariant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure_;
         };
         // Описание островка области металлизации.
@@ -159,84 +159,84 @@ struct Connectivity {
             // Описание спицы термобарьера, присутствующего на плате
             struct ThermalSpoke {
                 // Толщина линии.
-                /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
+                // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
                 XmlAttr<float> lineWidth;
                 // Описания координат точек, вершин.
-                // <remarks>! В случае отсутствия - весь ThermalSpoke будет проигнорирован.</remarks>
-                /* [XmlElement("Dot")] public List<Dot> Dots_; */
+                /// \note !В случае отсутствия - весь ThermalSpoke будет проигнорирован.
+                // [XmlElement("Dot")] public List<Dot> Dots_;
                 XmlArrayElem<Dot> Dots;
             };
             // Описание многоугольника.
-            /* [XmlElement("Polygon", typeof(Polygon)),
-                XmlElement("FilledContour", typeof(FilledContour))] public Object Polygon_; */
+            // [XmlElement(Polygon),
+            //  XmlElement(FilledContour)] public Object Polygon_;
             XmlVariant<Polygon, FilledContour> Polygon_;
             // Вырезы в островке области металлизации.
-            // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
-            /* [XmlArray("Voids")][XmlArrayItem("Polygon", typeof(Polygon)), XmlArrayItem("FilledContour", typeof(FilledContour))] public List<Object> Voids_; */
+            /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+            // [XmlArray("Voids")][XmlArrayItem(Polygon), XmlArrayItem(FilledContour)] public List<Object> Voids_;
             XmlArrayElem<XmlVariant<Polygon, FilledContour>> Voids;
             // Описание спиц термобарьеров, присутствующих на плате
-            /* [XmlElement("ThermalSpoke")] public List<ThermalSpoke> ThermalSpokes_; */
+            // [XmlElement("ThermalSpoke")] public List<ThermalSpoke> ThermalSpokes_;
             XmlArrayElem<ThermalSpoke> ThermalSpokes;
         };
         // Параметр области металлизации (полигона): приоритет заливки.
-        /* [XmlAttribute("priority", DataType ="int")] public int priority_; */
+        // [XmlAttribute("priority", DataType ="int")] public int priority_;
         XmlAttr<int> priority;
         // Параметр области металлизации (полигона): использовать указанный зазор.
-        /* [XmlAttribute("useBackoff")] public Bool useBackoff_; */
+        // [XmlAttribute("useBackoff")] public Bool useBackoff_;
         XmlAttr<Bool> useBackoff;
         /* public bool useBackoffSpecified_ */
         // Параметр области металлизации (полигона): зазор до области металлизации.
-        /* [XmlAttribute("backoff", DataType ="float")] public float backoff_; */
+        // [XmlAttribute("backoff", DataType ="float")] public float backoff_;
         XmlAttr<float> backoff;
         // Параметр области металлизации (полигона) стека: подключение контактных площадок.
-        /* [XmlAttribute("connectPad")] public connectPad connectPad_; */
+        // [XmlAttribute("connectPad")] public connectPad connectPad_;
         XmlAttr<connectPad> connectPad_;
         // Параметр области металлизации (полигона): подключение площадок переходных отверстий.
-        /* [XmlAttribute("connectVia")] public connectVia connectVia_; */
+        // [XmlAttribute("connectVia")] public connectVia connectVia_;
         XmlAttr<connectVia> connectVia_;
         // Толщина линии.
-        /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
+        // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
         XmlAttr<float> lineWidth;
         // Параметр области металлизации (полигона): зазор между линиями штриховки.
-        /* [XmlAttribute("lineClr", DataType = "float")] public float lineClr_; */
+        // [XmlAttribute("lineClr", DataType = "float")] public float lineClr_;
         XmlAttr<float> lineClr;
         // Параметр области металлизации (полигона): минимальная площадь островка.
-        /* [XmlAttribute("minSquare", DataType = "float")] public float minSquare_; */
+        // [XmlAttribute("minSquare", DataType = "float")] public float minSquare_;
         XmlAttr<float> minSquare;
         // Параметр области металлизации (полигона): точность аппроксимации контура.
-        /* [XmlAttribute("precision")] public precision precision_; */
+        // [XmlAttribute("precision")] public precision precision_;
         XmlAttr<precision> precision_;
         // Параметр области металлизации (полигона): удалять неподключенные островки.
-        /* [XmlAttribute("deleteUnconnected")] public Bool deleteUnconnected_; */
+        // [XmlAttribute("deleteUnconnected")] public Bool deleteUnconnected_;
         XmlAttr<Bool> deleteUnconnected;
         /* public bool deleteUnconnectedSpecified_ */
         // Параметр области металлизации (полигона): состояние.
-        /* [XmlAttribute("state")] public state state_; */
+        // [XmlAttribute("state")] public state state_;
         XmlAttr<state> state_;
         // Параметр области металлизации (полигона): тип заливки.
-        /* [XmlAttribute("fillType")] public fillType fillType_; */
+        // [XmlAttribute("fillType")] public fillType fillType_;
         XmlAttr<fillType> fillType_;
         // Ссылка на слой.
-        /* [XmlElement("LayerRef")] public LayerRef layerRef; */
+        // [XmlElement("LayerRef")] public LayerRef layerRef;
         LayerRef layerRef;
         // Ссылка на цепь.
-        /* [XmlElement("NetRef")] public NetRef netRef; */
+        // [XmlElement("NetRef")] public NetRef netRef;
         NetRef netRef;
         // Описание термобарьера для подключения контактных площадок к области металлизации.
-        // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
-        /* [XmlElement("ThermalPad")] public ThermalPad thermalPad; */
+        /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+        // [XmlElement("ThermalPad")] public ThermalPad thermalPad;
         ThermalPad thermalPad;
         // Описание термобарьера для подключения площадок переходных отверстий к области металлизации.
-        // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
-        /* [XmlElement("ThermalVia")] public ThermalVia thermalVia; */
+        /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+        // [XmlElement("ThermalVia")] public ThermalVia thermalVia;
         ThermalVia thermalVia;
         // Описание контура заливаемой области металлизации..
-        // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
-        /* [XmlElement("Shape")] public Shape Shape_; */
+        /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+        // [XmlElement("Shape")] public Shape Shape_;
         Shape Shape_;
         // Вырезы в областях металлизации (полигонах) заданные пользователем.
-        // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
-        /* [XmlArray("Voids")][XmlArrayItem("FilledCircle", typeof(FilledCircle)), XmlArrayItem("FilledRect", typeof(FilledRect)), XmlArrayItem("Polygon", typeof(Polygon)), XmlArrayItem("FilledContour", typeof(FilledContour))] public List<Object> Voids_; */
+        /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+        // [XmlArray("Voids")][XmlArrayItem(FilledCircle), XmlArrayItem(FilledRect), XmlArrayItem(Polygon), XmlArrayItem(FilledContour)] public List<Object> Voids_;
         XmlArrayElem<XmlVariant<
             ArcCCW,
             ArcCW,
@@ -249,28 +249,28 @@ struct Connectivity {
             Contour>>
             Voids_;
         // Островки области металлизации.
-        // <remarks>! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.</remarks>
-        /* [XmlArray("Islands")][XmlArrayItem("Island")] public List<Island> Islands_; */
+        /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+        // [XmlArray("Islands")][XmlArrayItem("Island")] public List<Island> Islands_;
         XmlArrayElem<Island> Islands;
         // Заливка областей металлизации (полигонов) линиями.
-        // <remarks>! TopoR при импорте игнорирует эту информацию и строит заливку заново.</remarks>
-        /* [XmlArray("Fill")][XmlArrayItem("Line")] public List<Line> Fill_lines_; */
-        XmlArrayElem<Line> Fill_lines;
+        /// \note !TopoR при импорте игнорирует эту информацию и строит заливку заново.
+        // [XmlArray("Fill")][XmlArrayItem("Line")] public List<Line> Fill_lines_;
+        XmlArrayElem<Line> Fill;
     };
     // Описание незаливаемой области металлизации.
     struct NonfilledCopper {
         // Описание контура незаливаемой области металлизации.
         struct Shape {
             // Описание фигуры.
-            /* [XmlElement("ArcCCW", typeof(ArcCCW)),
-                XmlElement("ArcCW", typeof(ArcCW)),
-                XmlElement("ArcByAngle", typeof(ArcByAngle)),
-                XmlElement("ArcByMiddle", typeof(ArcByMiddle)),
-                XmlElement("Circle", typeof(Circle)),
-                XmlElement("Line", typeof(Line)),
-                XmlElement("Polyline", typeof(Polyline)),
-                XmlElement("Rect", typeof(Rect)),
-                XmlElement("Contour", typeof(Contour))] public Object FigureContPoliline_; */
+            // [XmlElement(ArcCCW),
+            //  XmlElement(ArcCW),
+            //  XmlElement(ArcByAngle),
+            //  XmlElement(ArcByMiddle),
+            //  XmlElement(Circle),
+            //  XmlElement(Line),
+            //  XmlElement(Polyline),
+            //  XmlElement(Rect),
+            //  XmlElement(Contour)] public Object FigureContPoliline_;
             XmlVariant<ArcCCW,
                 ArcCW,
                 ArcByAngle,
@@ -283,38 +283,38 @@ struct Connectivity {
                 FigureContPoliline_;
         };
         // Толщина линии.
-        /* [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_; */
+        // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
         XmlAttr<float> lineWidth;
         // Ссылка на слой.
-        /* [XmlElement("LayerRef")] public LayerRef layerRef; */
+        // [XmlElement("LayerRef")] public LayerRef layerRef;
         LayerRef layerRef;
         // Ссылка на цепь.
-        /* [XmlElement("NetRef")] public NetRef netRef; */
+        // [XmlElement("NetRef")] public NetRef netRef;
         NetRef netRef;
         // Описание контура незаливаемой области металлизации.
-        /* [XmlElement("Shape")] public Shape Shape_; */
+        // [XmlElement("Shape")] public Shape Shape_;
         Shape Shape_;
     };
     // Версия раздела.
-    /* [XmlAttribute("version")] public string version_; */
+    // [XmlAttribute("version")] public string version_;
     XmlAttr<QString> version;
     // Переходные отверстия на плате.
-    /* [XmlArray("Vias")][XmlArrayItem("Via")] public List<Via> Vias_; */
+    // [XmlArray("Vias")][XmlArrayItem("Via")] public List<Via> Vias_;
     XmlArrayElem<Via> Vias;
     // Змейки
-    /* [XmlArray("Serpents")][XmlArrayItem("Serpent")] public List<Serpent> Serpents_; */
+    // [XmlArray("Serpents")][XmlArrayItem("Serpent")] public List<Serpent> Serpents_;
     XmlArrayElem<Serpent> Serpents;
     // Застёгнутые пары проводников.
-    /* [XmlArray("ZippedWires")][XmlArrayItem("ZippedWire")] public List<ZippedWire> ZippedWires_; */
+    // [XmlArray("ZippedWires")][XmlArrayItem("ZippedWire")] public List<ZippedWire> ZippedWires_;
     XmlArrayElem<ZippedWire> ZippedWires;
     // Проводники.
-    /* [XmlArray("Wires")][XmlArrayItem("Wire")] public List<Wire> Wires_; */
+    // [XmlArray("Wires")][XmlArrayItem("Wire")] public List<Wire> Wires_;
     XmlArrayElem<Wire> Wires;
     // Oбласти металлизации (полигонов).
-    /* [XmlArray("Coppers")][XmlArrayItem("Copper")] public List<Copper_Connectivity> Coppers_; */
+    // [XmlArray("Coppers")][XmlArrayItem("Copper")] public List<Copper_Connectivity> Coppers_;
     XmlArrayElem<Copper> Coppers;
     // Незаливаемые области металлизации.
-    /* [XmlArray("NonfilledCoppers")][XmlArrayItem("NonfilledCopper")] public List<NonfilledCopper> NonfilledCoppers_; */
+    // [XmlArray("NonfilledCoppers")][XmlArrayItem("NonfilledCopper")] public List<NonfilledCopper> NonfilledCoppers_;
     XmlArrayElem<NonfilledCopper> NonfilledCoppers;
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Connectivity. *

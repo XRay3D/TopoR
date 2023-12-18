@@ -12,42 +12,42 @@ struct Settings {
     struct Autoroute {
         // Настройка автоматической трассировки: режим трассировки.
         // [XmlAttribute("mode")] public mode_Autoroute mode_;
-        mode_Autoroute mode_{};
+        XmlAttr<mode_Autoroute> mode;
         // Параметр автоматической трассировки: использование функциональной эквивалентности.
         // [XmlAttribute("autoEqu")] public autoEqu autoEqu_;
-        autoEqu autoEqu_{};
+        XmlAttr<autoEqu> autoEqu_;
         // Параметр автоматической трассировки: форма проводников.
         // [XmlAttribute("wireShape")] public wireShape wireShape_;
-        wireShape wireShape_{};
+        XmlAttr<wireShape> wireShape_;
         // Параметр автоматической трассировки: создавать «капельки».
         // [XmlAttribute("teardrops")] public Bool teardrops_;
-        Bool teardrops_{};
+        XmlAttr<Bool> teardrops;
         // public bool teardropsSpecified_
         // Параметр автоматической трассировки: ослабленный контроль зазоров.
         // [XmlAttribute("weakCheck")] public Bool weakCheck_;
-        Bool weakCheck_{};
+        XmlAttr<Bool> weakCheck;
         // public bool weakCheckSpecified_
         // Параметр автоматической трассировки: использовать имеющуюся разводку в качестве начального варианта.
         // [XmlAttribute("takeCurLayout")] public Bool takeCurLayout_;
-        Bool takeCurLayout_{};
+        XmlAttr<Bool> takeCurLayout;
         // public bool takeCurLayoutSpecified_
         // Настройка автоматической трассировки: соединять планарные контакты напрямую.
         // [XmlAttribute("directConnectSMD")] public Bool directConnectSMD_;
-        Bool directConnectSMD_{};
+        XmlAttr<Bool> directConnectSMD;
         // public bool directConnectSMDSpecified_
         // Настройка автоматической трассировки: не дотягивать проводник до точки привязки полигонального контакта.
         // [XmlAttribute("dontStretchWireToPolypin")] public Bool dontStretchWireToPolypin_;
-        Bool dontStretchWireToPolypin_{};
+        XmlAttr<Bool> dontStretchWireToPolypin;
         // public bool dontStretchWireToPolypinSpecified_
     };
     // Настройки автоматических процедур.
     struct Autoproc {
         // Настройка автоматической перекладки проводников.
         // [XmlAttribute("refine")] public refine refine_;
-        refine refine_{};
+        XmlAttr<refine> refine_;
         // Настройка автоматической подвижки.
         // [XmlAttribute("automove")] public automove automove_;
-        automove automove_{};
+        XmlAttr<automove> automove_;
     };
     // Настройки автоматического размещения компонентов.
     struct Placement {
@@ -65,27 +65,27 @@ struct Settings {
     struct Labels {
         // Настройка ориентации ярлыков: вращать ярлык при вращении компонента.
         // [XmlAttribute("rotateWithComp")] public Bool rotateWithComp_;
-        Bool rotateWithComp_{};
+        XmlAttr<Bool> rotateWithComp;
         // public bool rotateWithCompSpecified_
         // Настройка редактирования ярлыков: использовать правила ориентации.
         // [XmlAttribute("useOrientRules")] public Bool useOrientRules_;
-        Bool useOrientRules_{};
+        XmlAttr<Bool> useOrientRules;
         // public bool useOrientRulesSpecified_
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на верхней стороне.
         // [XmlAttribute("topHorzRotate")] public Bool topHorzRotate_;
-        Bool topHorzRotate_{};
+        XmlAttr<Bool> topHorzRotate;
         // public bool topHorzRotateSpecified_
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на верхней стороне.
         // [XmlAttribute("topVertRotate")] public Bool topVertRotate_;
-        Bool topVertRotate_{};
+        XmlAttr<Bool> topVertRotate;
         // public bool topVertRotateSpecified_
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на нижней стороне.
         // [XmlAttribute("bottomHorzRotate")] public Bool bottomHorzRotate_;
-        Bool bottomHorzRotate_{};
+        XmlAttr<Bool> bottomHorzRotate;
         // public bool bottomHorzRotateSpecified_
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на нижней стороне.
         // [XmlAttribute("bottomVertRotate")] public Bool bottomVertRotate_;
-        Bool bottomVertRotate_{};
+        XmlAttr<Bool> bottomVertRotate;
         // public bool bottomVertRotateSpecified_
     };
     // Версия раздела.

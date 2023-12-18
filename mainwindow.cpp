@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "layermodel.h"
 #include "treemodel.h"
 #include "ui_mainwindow.h"
 
@@ -109,6 +110,43 @@ void MainWindow::drawFile() {
         isPadsVisible[layerOptions.layerRef] = +layerOptions.show.pads;
         isVisible[layerOptions.layerRef] = +layerOptions.show.visible;
     }
+
+    ui->lvStackUpLayers->setModel(new LayerModel{file->layers.StackUpLayers,
+        [](std::add_const_t<decltype(file->layers.StackUpLayers.front())>& val) { return val.name.value; },
+        ui->lvStackUpLayers});
+    ui->lvUnStackLayers->setModel(new LayerModel{file->layers.UnStackLayers,
+        [](std::add_const_t<decltype(file->layers.UnStackLayers.front())>& val) { return val.name.value; },
+        ui->lvUnStackLayers});
+    ui->lvLayerGroups->setModel(new LayerModel{file->groups.LayerGroups,
+        [](std::add_const_t<decltype(file->groups.LayerGroups.front())>& val) { return val.name.value; },
+        ui->lvLayerGroups});
+    ui->lvComponentsOnBoard->setModel(new LayerModel{file->componentsOnBoard.Components,
+        [](std::add_const_t<decltype(file->componentsOnBoard.Components.front())>& val) { return val.name + ": " + val.uniqueId; },
+        ui->lvComponentsOnBoard});
+    ui->lvComponents->setModel(new LayerModel{file->localLibrary.Components,
+        [](std::add_const_t<decltype(file->localLibrary.Components.front())>& val) { return val.name.value; },
+        ui->lvComponents});
+    ui->lvFootprints->setModel(new LayerModel{file->localLibrary.Footprints,
+        [](std::add_const_t<decltype(file->localLibrary.Footprints.front())>& val) { return val.name.value; },
+        ui->lvFootprints});
+    ui->cbxLayer->setDuplicatesEnabled(false);
+    connect(ui->lvComponentsOnBoard->selectionModel(), &QItemSelectionModel::selectionChanged, this, [this](const QItemSelection& selected, const QItemSelection& /*deselected*/) {
+        if(!selected.size()) return;
+        auto id = selected.indexes().front().data().toString().split(':').front();
+        auto it = std::ranges::find(file->componentsOnBoard.Components, id, &ComponentsOnBoard::CompInstance::name);
+        if(it == file->componentsOnBoard.Components.end()) return;
+        ui->lvComponentsAttr->setModel(new LayerModel{it->Attributes,
+            [](std::add_const_t<decltype(it->Attributes.front())>& val) { return val.name + " (" + val.value + ")"; },
+            ui->lvComponentsAttr});
+
+        ui->chbxLocked->setChecked(+it->fixed);
+        auto sv = enumToString(it->side_.value);
+        ui->cbxLayer->addItem(QByteArray{sv.data(), static_cast<int>(sv.size())});
+        ui->cbxLayer->setCurrentText(QByteArray{sv.data(), static_cast<int>(sv.size())});
+        ui->dsbxAngle->setValue(it->angle);
+        ui->dsbxPosY->setValue(it->org.y);
+        ui->dxbxPosX->setValue(it->org.x);
+    });
 
     drawComponents();
     drawWires();

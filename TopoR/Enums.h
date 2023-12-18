@@ -17,7 +17,7 @@ enum ArcDir {
     CCW
 };
 
-// #region Enumerations // Все enum в алфавитном порядке
+namespace Enumerations { // Все enum в алфавитном порядке
 
 template <class Ty>
 inline constexpr bool hasStrings = false;
@@ -38,12 +38,12 @@ template <size_t N, class Enum>
 inline consteval auto tokenize_enum(sv base) {
     std::array<std::pair<sv, Enum>, N> tokens;
     std::underlying_type_t<Enum> val{};
-    for (auto it = tokens.begin();
-         auto&& [whole, name, value]:
-         ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
-        if (value)
+    for(auto it = tokens.begin();
+        auto&& [whole, name, value]:
+        ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
+        if(value)
             val = value.to_number();
-        if (it != tokens.end())
+        if(it != tokens.end())
             *it++ = {name.to_view(), static_cast<Enum>(val++)};
     }
     return tokens;
@@ -155,7 +155,7 @@ XML_ENUM(gridKind,
 )
 
 // Тип слоя. Значение по умолчанию – Signal.
-XML_ENUM(layer_type,
+XML_ENUM(LayerType,
     Signal,     // сигнальный слой
     Assy,       // сборочный слой (слой очертаний компонентов)
     Paste,      // слой паяльной пасты
@@ -221,7 +221,7 @@ XML_ENUM(showWarnings,
 )
 // Сторона объекта.
 
-// <remarks>! Значение Both возможно только при описании запретов размещения.</remarks>
+/// \note !Значение Both возможно только при описании запретов размещения.
 XML_ENUM(side,
     Top,    // верх
     Bottom, // низ
@@ -250,14 +250,14 @@ XML_ENUM(type,
 )
 
 // Параметр стека контактной площадки: подключение к области металлизации (полигону). Значение по умолчанию – NoneConnect.
-XML_ENUM(type_connectToCopper,
+XML_ENUM(ConnectToCopper,
     NoneConnect, // тип подключения не задан(используются настройки полигона)
     Direct,      // прямое подключение
     Thermal      // подключение с помощью термобарьера
 )
 
 // Тип обработки углов прямоугольной контактной площадки.
-XML_ENUM(type_handling,
+XML_ENUM(Handling,
     None,     // без обработки
     Rounding, // скругление
     Chamfer   // срез
@@ -288,6 +288,7 @@ XML_ENUM(wireShape,
     Arcs      // Arcs
 )
 
-// #endregion Enumerations
+} // namespace Enumerations
+using namespace Enumerations;
 
 } // namespace TopoR

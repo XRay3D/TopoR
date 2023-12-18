@@ -11,11 +11,9 @@ struct Groups {
     // Описание групп слоёв.
     struct LayerGroup {
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
         // Ссылка на слой или ссылка на группу слоёв.
-        /* [XmlElement("LayerRef", typeof(LayerRef)),
-            XmlElement("LayerGroupRef", typeof(LayerGroupRef))] public List<Object> LayerRefs_; */
+        // [XmlElement(LayerRef, LayerGroupRef)] public List<Object> LayerRefs_;
         XmlArrayElem<XmlVariant<LayerRef, LayerGroupRef>> LayerRefs;
         /**********************************************************************
          * Здесь находятся функции для работы с элементами класса LayerGroup. *
@@ -27,34 +25,32 @@ struct Groups {
     // Описание группы цепей.
     struct NetGroup {
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
         // Ссылка на цепь или ссылка на группу цепей.
-        /* [XmlElement("NetRef", typeof(NetRef)),
-            XmlElement("NetGroupRef", typeof(NetGroupRef))] public List<Object> NetRefs_; */
+        // [XmlElement(NetRef),
+        //  XmlElement(NetGroupRef)] public List<Object> NetRefs_;
         XmlArrayElem<XmlVariant<NetRef, NetGroupRef>> NetRefs;
     };
     // Описание группы компонентов.
     struct CompGroup {
         // Имя объекта или ссылка на именованный объект.
-        /* [XmlAttribute("name")] public string name_; */
         XmlAttr<QString> name;
         // Ссылка на компонент на плате или ссылка на группу компонентов.
-        /* [XmlElement("CompInstanceRef", typeof(CompInstanceRef)),
-            XmlElement("CompGroupRef", typeof(CompGroupRef))] public List<Object> CompRefs_; */
+        // [XmlElement(CompInstanceRef),
+        //  XmlElement(CompGroupRef)] public List<Object> CompRefs_;
         XmlArrayElem<XmlVariant<CompInstanceRef, CompGroupRef>> CompRefs;
     };
     // Версия раздела.
-    /* [XmlAttribute("version")] public string version_; */
+    // [XmlAttribute("version")] public string version_;
     XmlAttr<QString> version;
     // Группы слоёв.
-    /* [XmlArray("LayerGroups")][XmlArrayItem("LayerGroup")] public List<LayerGroup> LayerGroups_; */
+    // [XmlArray("LayerGroups")][XmlArrayItem("LayerGroup")] public List<LayerGroup> LayerGroups_;
     XmlArrayElem<LayerGroup> LayerGroups;
     // Группы цепей.
-    /* [XmlArray("NetGroups")][XmlArrayItem("NetGroup")] public List<NetGroup> NetGroups_; */
+    // [XmlArray("NetGroups")][XmlArrayItem("NetGroup")] public List<NetGroup> NetGroups_;
     XmlArrayElem<NetGroup> NetGroups;
     // Группы компонентов.
-    /* [XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> CompGroups_; */
+    // [XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> CompGroups_;
     XmlArrayElem<CompGroup> CompGroups;
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Groups. *

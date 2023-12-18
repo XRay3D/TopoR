@@ -29,54 +29,54 @@
 namespace TopoR {
 struct TopoR_PCB_File;
 // Корневой тег. Включает все разделы файла.
-/* [XmlRoot("TopoR_PCB_File")] */
+// [XmlRoot("TopoR_PCB_File")] */
 struct TopoR_PCB_File /*: std::true_type*/ {
 #if 1
     // Раздел «Заголовок файла».
-    /* [XmlElement("Header")] */
+    // [XmlElement("Header")] */
     Header header;
     // Раздел «Слои». (Обязательный раздел)
-    /* [XmlElement("Layers")] */
+    // [XmlElement("Layers")] */
     Layers layers;
     //  Раздел «Стили надписей».
-    /* [XmlElement("TextStyles")] */
+    // [XmlElement("TextStyles")] */
     TextStyles textStyles;
     // Раздел «Библиотечные элементы». (Обязательный раздел)
-    /* [XmlElement("LocalLibrary")] */
+    // [XmlElement("LocalLibrary")] */
 #endif
     LocalLibrary localLibrary;
     // Раздел «Конструктив платы».
-    /* [XmlElement("Constructive")] */
+    // [XmlElement("Constructive")] */
 #if 1
     Constructive constructive;
     // Раздел «Компоненты на плате». (Обязательный раздел).
-    /* [XmlElement("ComponentsOnBoard")] */
+    // [XmlElement("ComponentsOnBoard")] */
     ComponentsOnBoard componentsOnBoard;
     // Раздел «Текущий список соединений».
-    /* [XmlElement("NetList")] */
+    // [XmlElement("NetList")] */
     NetList netList;
     // Раздел «Группировка объектов».
-    /* [XmlElement("Groups")] */
+    // [XmlElement("Groups")] */
     Groups groups;
     // Раздел «Правила для высокоскоростных устройств».
-    /* [XmlElement("HiSpeedRules")] */
+    // [XmlElement("HiSpeedRules")] */
     HiSpeedRules hiSpeedRules;
     // Раздел «Правила».
-    // <remarks>! Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.</remarks>
-    /* [XmlElement("Rules")] */
+    /// \note !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
+    // [XmlElement("Rules")] */
     Rules rules;
     // Раздел «Соединения на плате».
-    // <remarks>В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.</remarks>
-    /* [XmlElement("Connectivity")] */
+    /// \note В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
+    // [XmlElement("Connectivity")] */
     Connectivity connectivity;
     // Раздел «Настройки дизайна».
-    /* [XmlElement("Settings")] */
+    // [XmlElement("Settings")] */
     Settings settings;
     // Раздел «Настройки отображения».
-    /* [XmlElement("DisplayControl")] */
+    // [XmlElement("DisplayControl")] */
     DisplayControl displayControl;
     // Раздел «Настройки диалогов».
-    /* [XmlElement("DialogSettings")] */
+    // [XmlElement("DialogSettings")] */
     DialogSettings dialogSettings;
 #endif
 };

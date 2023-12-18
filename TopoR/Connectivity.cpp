@@ -74,12 +74,11 @@ QGraphicsItem* Connectivity::Wire::Subwire::graphicsItem(const QColor& color) co
 
     path.moveTo(start);
 
-    for(auto&& track: Tracks) {
+    for(auto&& track: Tracks)
         track.visit(
             [&path](const TrackLine& track) { path.lineTo(track.end); },
             [&arc](const TrackArc& track) { arc(CCW, track.center, track.end); },
             [&arc](const TrackArcCW& track) { arc(CW, track.center, track.end); });
-    }
     auto item = new QGraphicsPathItem{path};
     item->setPen({color, width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin});
     return item;

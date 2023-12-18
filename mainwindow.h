@@ -3,13 +3,16 @@
 #include <QMainWindow>
 #include <QMap>
 
+class QGraphicsItemGroup;
 namespace Ui {
 class MainWindow;
 }
 
 namespace TopoR {
 struct TopoR_PCB_File;
-}
+} // namespace TopoR
+
+struct QGraphicsItem;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -18,7 +21,7 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-private:
+    // private:
     Ui::MainWindow* ui;
     TopoR::TopoR_PCB_File* file;
     QString dir;
@@ -27,10 +30,11 @@ private:
     QMap<QString, QColor> fixColor;
     QMap<QString, QColor> padsColor;
 
+    std::unordered_map<QString, QGraphicsItemGroup*> lauerGroups;
+
     QMap<QString, bool> isDetailsVisible;
     QMap<QString, bool> isPadsVisible;
     QMap<QString, bool> isVisible;
-
     void loadFile();
     void drawFile();
     void drawVias();

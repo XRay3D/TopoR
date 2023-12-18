@@ -99,6 +99,7 @@ add_executable(${PROJECT_NAME}
     treemodel.h
     treeitem.cpp
     treemodel.cpp
+    layermodel.h layermodel.cpp
     # Coordinates.h
 )
 

@@ -5,10 +5,10 @@
  * ***************************************************************/
 namespace TopoR {
 // bool Layers::Layer::getCompsOutlineSpecified() const {
-//     return type == layer_type::Assy;
+//     return type == LayerType::Assy;
 // }
 // bool Layers::Layer::getThicknessSpecified() const {
-//     return type != layer_type::Assy;
+//     return type != LayerType::Assy;
 // }
 bool Layers::LayerStackUpContains(LayerRef lref) {
     return /*(_StackUpLayers.empty() ? nullptr : StackUpLayers.Where([&](std::any r) {
