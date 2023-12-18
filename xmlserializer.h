@@ -75,19 +75,19 @@ private:
                 QString text;
                 if(node.isElement()) {
                     auto element = node.toElement();
-                    if(text = element.attribute(typeName<T>()); text.size()) {
+                    if(text = element.attribute(typeName<T>); text.size()) {
                         auto tree_ = tree->addItem(new TreeItem);
-                        tree_->itemData[Name] = typeName<T>();
+                        tree_->itemData[Name] = typeName<T>;
                         tree_->itemData[Value] = text;
                         // tree->itemData[IsAttr] = "Tag";
-                        tree_->itemData[Type] = typeName<T>();
+                        tree_->itemData[Type] = typeName<T>;
                         tree_->itemData[FLine] = node.lineNumber();
                     } else if(text = element.attribute(fieldName); text.size()) {
                         auto tree_ = tree->addItem(new TreeItem);
                         tree_->itemData[Name] = fieldName;
                         tree_->itemData[Value] = text;
                         // tree->itemData[IsAttr] = "Tag";
-                        tree_->itemData[Type] = typeName<T>();
+                        tree_->itemData[Type] = typeName<T>;
                         tree_->itemData[FLine] = node.lineNumber();
                     }
                 } else if(node.isAttr()) {
@@ -96,7 +96,7 @@ private:
                         tree_->itemData[Name] = node.toAttr().name();
                         tree_->itemData[Value] = text;
                         tree_->itemData[IsAttr] = "Attr";
-                        tree_->itemData[Type] = typeName<T>();
+                        tree_->itemData[Type] = typeName<T>;
                         tree_->itemData[FLine] = node.parentNode().lineNumber();
                     }
                 }
@@ -108,19 +108,19 @@ private:
             {
                 QString value;
                 if(node.isElement()) {
-                    if(value = node.toElement().attribute(typeName<T>()); value.size()) {
+                    if(value = node.toElement().attribute(typeName<T>); value.size()) {
                         auto tree_ = tree->addItem(new TreeItem);
                         tree_->itemData[Name] = fieldName;
                         tree_->itemData[Value] = value;
                         // tree_->itemData[IsAttr] = "Tag";
-                        tree_->itemData[Type] = typeName<T>();
+                        tree_->itemData[Type] = typeName<T>;
                         tree_->itemData[FLine] = node.lineNumber();
                     } else if(value = node.toElement().attribute(fieldName); value.size()) {
                         auto tree_ = tree->addItem(new TreeItem);
                         tree_->itemData[Name] = fieldName;
                         tree_->itemData[Value] = value;
                         // tree_->itemData[IsAttr] = "Tag";
-                        tree_->itemData[Type] = typeName<T>();
+                        tree_->itemData[Type] = typeName<T>;
                         tree_->itemData[FLine] = node.lineNumber();
                     }
                 } else if(node.isAttr()) {
@@ -129,7 +129,7 @@ private:
                         tree_->itemData[Name] = node.toAttr().name();
                         tree_->itemData[Value] = value;
                         tree_->itemData[IsAttr] = "Attr";
-                        tree_->itemData[Type] = typeName<T>();
+                        tree_->itemData[Type] = typeName<T>;
                         tree_->itemData[FLine] = node.parentNode().lineNumber();
                     }
                 }
@@ -143,8 +143,8 @@ private:
             },
             [this]<typename T>(XmlAttr<T>& attr) { // перенаправление ↑↑↑
                 auto attributes = node.attributes();
-                if(attributes.contains(typeName<T>())) {
-                    node = attributes.namedItem(typeName<T>());
+                if(attributes.contains(typeName<T>)) {
+                    node = attributes.namedItem(typeName<T>);
                     bool ok = read(attr.value);
                     node = node.parentNode();
                     return ok;
@@ -161,11 +161,11 @@ private:
                 if(!node.isElement()) return false;
                 auto reader = [&]<typename T>(T&& val) {
                     if(ctr) return;
-                    if(node.toElement().tagName() == typeName<T>() && read(val)) {
+                    if(node.toElement().tagName() == typeName<T> && read(val)) {
                         ++ctr, variant = std::move(val);
                     } else {
                         auto copy = node;
-                        node = node.firstChildElement(typeName<T>());
+                        node = node.firstChildElement(typeName<T>);
                         if(!node.isNull())
                             if(isVariant = true; read(val)) ++ctr, variant = std::move(val);
                         node = copy;
@@ -186,7 +186,7 @@ private:
                 tree = tree->addItem(new TreeItem);
                 tree->itemData[Name] = fieldName;
                 tree->itemData[Value] = childNodes.size();
-                tree->itemData[Type] = typeName<T>();
+                tree->itemData[Type] = typeName<T>;
                 tree->itemData[FLine] = node.lineNumber();
 
                 vector.resize(childNodes.size());
@@ -240,14 +240,14 @@ private:
                 requires(std::is_class_v<T> && std::is_aggregate_v<T>)
             { // чтение полей структуры
                 if(!isArray && !isVariant)
-                    node = (node.isNull() ? doc : node).firstChildElement(typeName<T>());
+                    node = (node.isNull() ? doc : node).firstChildElement(typeName<T>);
                 isArray = isVariant = false;
 
                 tree = tree->addItem(new TreeItem);
-                tree->itemData[Name] = typeName<T>();
+                tree->itemData[Name] = typeName<T>;
                 // tree->itemData[Value] = value;
                 // tree->itemData[IsAttr] = "Tag";
-                tree->itemData[Type] = typeName<T>();
+                tree->itemData[Type] = typeName<T>;
                 tree->itemData[FLine] = node.lineNumber();
 #if 1
                 auto readStr = [this]<typename Ty, size_t... Is>(Ty& str, std::index_sequence<Is...>) {
@@ -308,19 +308,19 @@ private:
         QString text;
         if (node.isElement()) {
             auto element = node.toElement();
-            if (text = element.attribute(typeName<T>()); text.size()) {
+            if (text = element.attribute(TypeName<T>); text.size()) {
                 auto tree_ = tree->addItem(new TreeItem);
-                tree_->itemData[Name] = typeName<T>();
+                tree_->itemData[Name] = TypeName<T>;
                 tree_->itemData[Value] = text;
                 // tree->itemData[IsAttr] = "Tag";
-                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[Type] = TypeName<T>;
                 tree_->itemData[FLine] = node.lineNumber();
             } else if (text = element.attribute(fieldName); text.size()) {
                 auto tree_ = tree->addItem(new TreeItem);
                 tree_->itemData[Name] = fieldName;
                 tree_->itemData[Value] = text;
                 // tree->itemData[IsAttr] = "Tag";
-                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[Type] = TypeName<T>;
                 tree_->itemData[FLine] = node.lineNumber();
             }
         } else if (node.isAttr()) {
@@ -329,7 +329,7 @@ private:
                 tree_->itemData[Name] = node.toAttr().name();
                 tree_->itemData[Value] = text;
                 tree_->itemData[IsAttr] = "Attr";
-                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[Type] = TypeName<T>;
                 tree_->itemData[FLine] = node.parentNode().lineNumber();
             }
         }
@@ -341,19 +341,19 @@ private:
     {
         QString value;
         if (node.isElement()) {
-            if (value = node.toElement().attribute(typeName<T>()); value.size()) {
+            if (value = node.toElement().attribute(TypeName<T>); value.size()) {
                 auto tree_ = tree->addItem(new TreeItem);
                 tree_->itemData[Name] = fieldName;
                 tree_->itemData[Value] = value;
                 // tree_->itemData[IsAttr] = "Tag";
-                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[Type] = TypeName<T>;
                 tree_->itemData[FLine] = node.lineNumber();
             } else if (value = node.toElement().attribute(fieldName); value.size()) {
                 auto tree_ = tree->addItem(new TreeItem);
                 tree_->itemData[Name] = fieldName;
                 tree_->itemData[Value] = value;
                 // tree_->itemData[IsAttr] = "Tag";
-                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[Type] = TypeName<T>;
                 tree_->itemData[FLine] = node.lineNumber();
             }
         } else if (node.isAttr()) {
@@ -362,7 +362,7 @@ private:
                 tree_->itemData[Name] = node.toAttr().name();
                 tree_->itemData[Value] = value;
                 tree_->itemData[IsAttr] = "Attr";
-                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[Type] = TypeName<T>;
                 tree_->itemData[FLine] = node.parentNode().lineNumber();
             }
         }
@@ -376,8 +376,8 @@ private:
     }
     template <typename T> bool read(XmlAttr<T>& attr) { // перенаправление ↑↑↑
         auto attributes = node.attributes();
-        if (attributes.contains(typeName<T>())) {
-            node = attributes.namedItem(typeName<T>());
+        if (attributes.contains(TypeName<T>)) {
+            node = attributes.namedItem(TypeName<T>);
             bool ok = read(attr.value);
             node = node.parentNode();
             return ok;
@@ -394,11 +394,11 @@ private:
         if (!node.isElement()) return false;
         auto reader = [&]<typename T>(T&& val) {
             if (ctr) return;
-            if (node.toElement().tagName() == typeName<T>() && read(val)) {
+                      if (node.toElement().tagName() == TypeName<T> && read(val)) {
                 ++ctr, variant = std::move(val);
             } else {
                 auto copy = node;
-                node = node.firstChildElement(typeName<T>());
+                      node = node.firstChildElement(TypeName<T>);
                 if (!node.isNull())
                     if (isVariant = true; read(val)) ++ctr, variant = std::move(val);
                 node = copy;
@@ -419,7 +419,7 @@ private:
         tree = tree->addItem(new TreeItem);
         tree->itemData[Name] = fieldName;
         tree->itemData[Value] = childNodes.size();
-        tree->itemData[Type] = typeName<T>();
+        tree->itemData[Type] = TypeName<T>;
         tree->itemData[FLine] = node.lineNumber();
 
         vector.resize(childNodes.size());
@@ -442,7 +442,7 @@ private:
             return false;
         auto childNodes = node.childNodes();
         auto find = [&]<typename Type>(Tag<Type>) -> int {
-            auto node_ = node.firstChildElement(typeName<Type>());
+                    auto node_ = node.firstChildElement(TypeName<Type>);
             if (!node_.isNull())
                 for (int index{}; index < childNodes.size(); ++index)
                     if (childNodes.at(index) == node_) return index;
@@ -474,14 +474,14 @@ public:
         requires(std::is_class_v<T> && std::is_aggregate_v<T>)
     { // чтение полей структуры
         if (!isArray && !isVariant)
-            node = (node.isNull() ? doc : node).firstChildElement(typeName<T>());
+            node = (node.isNull() ? doc : node).firstChildElement(TypeName<T>);
         isArray = isVariant = false;
 
         tree = tree->addItem(new TreeItem);
-        tree->itemData[Name] = typeName<T>();
+        tree->itemData[Name] = TypeName<T>;
         // tree->itemData[Value] = value;
         // tree->itemData[IsAttr] = "Tag";
-        tree->itemData[Type] = typeName<T>();
+        tree->itemData[Type] = TypeName<T>;
         tree->itemData[FLine] = node.lineNumber();
 #if 1
         auto readStr = [this]<typename Ty, size_t... Is>(Ty& str, std::index_sequence<Is...>) {
@@ -566,19 +566,19 @@ public:
 // inline bool Xml::read(T& e) {
 //     QString value;
 //     if(node.isElement()) {
-//         if(value = node.toElement().attribute(typeName<T>()); value.size()) {
+//         if(value = node.toElement().attribute(typeName<T>); value.size()) {
 //             auto tree = this->tree->addItem(new TreeItem);
 //             tree->itemData[Name] = fieldName;
 //             tree->itemData[Value] = value;
 //             // tree->itemData[IsAttr] = "Tag";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = node.lineNumber();
 //         } else if(value = node.toElement().attribute(fieldName); value.size()) {
 //             auto tree = this->tree->addItem(new TreeItem);
 //             tree->itemData[Name] = fieldName;
 //             tree->itemData[Value] = value;
 //             // tree->itemData[IsAttr] = "Tag";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = node.lineNumber();
 //         }
 //     } else if(node.isAttr()) {
@@ -587,7 +587,7 @@ public:
 //             tree->itemData[Name] = node.toAttr().name();
 //             tree->itemData[Value] = value;
 //             tree->itemData[IsAttr] = "Attr";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = node.parentNode().lineNumber();
 //         }
 //     }
@@ -605,8 +605,8 @@ public:
 // template <typename T>
 // inline bool Xml::read(XmlAttr<T>& attr) {
 //     auto attributes = node.attributes();
-//     if(attributes.contains(typeName<T>())) {
-//         node = attributes.namedItem(typeName<T>());
+//     if(attributes.contains(typeName<T>)) {
+//         node = attributes.namedItem(typeName<T>);
 //         bool ok = read(attr.value);
 //         node = node.parentNode();
 //         return ok;
@@ -625,11 +625,11 @@ public:
 //     if(!node.isElement()) return {};
 //     auto reader = [&]<typename T>(T&& val) {
 //         if(ctr) return;
-//         if(node.toElement().tagName() == typeName<T>() && read(val)) {
+//         if(node.toElement().tagName() == typeName<T> && read(val)) {
 //             ++ctr, variant = std::move(val);
 //         } else {
 //             auto copy = node;
-//             node = node.firstChildElement(typeName<T>());
+//             node = node.firstChildElement(typeName<T>);
 //             if(!node.isNull())
 //                 if(isVariant = true; read(val)) ++ctr, variant = std::move(val);
 //             node = copy;
@@ -653,7 +653,7 @@ public:
 //     tree = this->tree->addItem(new TreeItem);
 //     tree->itemData[Name] = fieldName;
 //     tree->itemData[Value] = childNodes.size();
-//     tree->itemData[Type] = typeName<T>();
+//     tree->itemData[Type] = typeName<T>;
 //     tree->itemData[FLine] = node.lineNumber();
 
 //     vector.resize(childNodes.size());
@@ -748,19 +748,19 @@ public:
 // inline bool Xml::read(T& value) {
 //     QString text;
 //     if(node.isElement()) {
-//         if(text = node.toElement().attribute(typeName<T>()); text.size()) {
+//         if(text = node.toElement().attribute(typeName<T>); text.size()) {
 //             auto tree = this->tree->addItem(new TreeItem);
-//             tree->itemData[Name] = typeName<T>();
+//             tree->itemData[Name] = typeName<T>;
 //             tree->itemData[Value] = text;
 //             // tree->itemData[IsAttr] = "Tag";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = node.lineNumber();
 //         } else if(text = node.toElement().attribute(fieldName); text.size()) {
 //             auto tree = this->tree->addItem(new TreeItem);
 //             tree->itemData[Name] = fieldName;
 //             tree->itemData[Value] = text;
 //             // tree->itemData[IsAttr] = "Tag";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = node.lineNumber();
 //         }
 //     } else if(node.isAttr()) {
@@ -769,7 +769,7 @@ public:
 //             tree->itemData[Name] = node.toAttr().name();
 //             tree->itemData[Value] = text;
 //             tree->itemData[IsAttr] = "Attr";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = node.parentNode().lineNumber();
 //         }
 //     }
@@ -781,14 +781,14 @@ public:
 //     requires(std::is_class_v<T> && std::is_aggregate_v<T>)
 // inline bool Xml::read(T& str) { // pod structures
 //     if(!isArray && !isVariant)
-//         node = (node.isNull() ? doc : node).firstChildElement(typeName<T>());
+//         node = (node.isNull() ? doc : node).firstChildElement(typeName<T>);
 //     isArray = isVariant = false;
 
 //     tree = this->tree->addItem(new TreeItem);
-//     tree->itemData[Name] = typeName<T>();
+//     tree->itemData[Name] = typeName<T>;
 //     // tree->itemData[Value] = value;
 //     // tree->itemData[IsAttr] = "Tag";
-//     tree->itemData[Type] = typeName<T>();
+//     tree->itemData[Type] = typeName<T>;
 //     tree->itemData[FLine] = node.lineNumber();
 
 //     bool ok = read(str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
@@ -818,14 +818,14 @@ public:
 // template <typename T>
 //     requires(!std::is_class_v<T> && !std::is_aggregate_v<T>)
 // inline bool Xml::read(T& str) {
-//     qCritical() << "!!!ERR!!!" << sl::current().function_name() << typeName<T>();
+//     qCritical() << "!!!ERR!!!" << sl::current().function_name() << typeName<T>;
 //     return false;
 // }
 
 // template <typename T>
 //     requires(std::is_polymorphic_v<T>)
 // inline bool Xml::read(T& str) {
-//     qCritical() << "!!!ERR!!!" << sl::current().function_name() << typeName<T>();
+//     qCritical() << "!!!ERR!!!" << sl::current().function_name() << typeName<T>;
 //     return false;
 // }
 
@@ -861,19 +861,19 @@ public:
 // inline bool read(Xml& xml, T& value) {
 //     QString text;
 //     if(xml.node.isElement()) {
-//         if(text = xml.node.toElement().attribute(typeName<T>()); text.size()) {
+//         if(text = xml.node.toElement().attribute(typeName<T>); text.size()) {
 //             auto tree = xml.tree->addItem(new TreeItem);
-//             tree->itemData[Name] = typeName<T>();
+//             tree->itemData[Name] = typeName<T>;
 //             tree->itemData[Value] = text;
 //             // tree->itemData[IsAttr] = "Tag";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = xml.node.lineNumber();
 //         } else if(text = xml.node.toElement().attribute(xml.fieldName); text.size()) {
 //             auto tree = xml.tree->addItem(new TreeItem);
 //             tree->itemData[Name] = xml.fieldName;
 //             tree->itemData[Value] = text;
 //             // tree->itemData[IsAttr] = "Tag";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = xml.node.lineNumber();
 //         }
 //     } else if(xml.node.isAttr()) {
@@ -882,7 +882,7 @@ public:
 //             tree->itemData[Name] = xml.node.toAttr().name();
 //             tree->itemData[Value] = text;
 //             tree->itemData[IsAttr] = "Attr";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = xml.node.parentNode().lineNumber();
 //         }
 //     }
@@ -895,19 +895,19 @@ public:
 // inline bool read(Xml& xml, T& e) {
 //     QString value;
 //     if(xml.node.isElement()) {
-//         if(value = xml.node.toElement().attribute(typeName<T>()); value.size()) {
+//         if(value = xml.node.toElement().attribute(typeName<T>); value.size()) {
 //             auto tree = xml.tree->addItem(new TreeItem);
 //             tree->itemData[Name] = xml.fieldName;
 //             tree->itemData[Value] = value;
 //             // tree->itemData[IsAttr] = "Tag";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = xml.node.lineNumber();
 //         } else if(value = xml.node.toElement().attribute(xml.fieldName); value.size()) {
 //             auto tree = xml.tree->addItem(new TreeItem);
 //             tree->itemData[Name] = xml.fieldName;
 //             tree->itemData[Value] = value;
 //             // tree->itemData[IsAttr] = "Tag";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = xml.node.lineNumber();
 //         }
 //     } else if(xml.node.isAttr()) {
@@ -916,7 +916,7 @@ public:
 //             tree->itemData[Name] = xml.node.toAttr().name();
 //             tree->itemData[Value] = value;
 //             tree->itemData[IsAttr] = "Attr";
-//             tree->itemData[Type] = typeName<T>();
+//             tree->itemData[Type] = typeName<T>;
 //             tree->itemData[FLine] = xml.node.parentNode().lineNumber();
 //         }
 //     }
@@ -934,8 +934,8 @@ public:
 // template <typename T>
 // inline bool read(Xml& xml, XmlAttr<T>& attr) {
 //     auto attributes = xml.node.attributes();
-//     if(attributes.contains(typeName<T>())) {
-//         xml.node = attributes.namedItem(typeName<T>());
+//     if(attributes.contains(typeName<T>)) {
+//         xml.node = attributes.namedItem(typeName<T>);
 //         bool ok = read(xml, attr.value);
 //         xml.node = xml.node.parentNode();
 //         return ok;
@@ -954,11 +954,11 @@ public:
 //     if(!xml.node.isElement()) return {};
 //     auto reader = [&]<typename T>(T&& val) {
 //         if(ctr) return;
-//         if(xml.node.toElement().tagName() == typeName<T>() && read(xml, val)) {
+//         if(xml.node.toElement().tagName() == typeName<T> && read(xml, val)) {
 //             ++ctr, variant = std::move(val);
 //         } else {
 //             auto copy = xml.node;
-//             xml.node = xml.node.firstChildElement(typeName<T>());
+//             xml.node = xml.node.firstChildElement(typeName<T>);
 //             if(!xml.node.isNull())
 //                 if(xml.isVariant = true; read(xml, val)) ++ctr, variant = std::move(val);
 //             xml.node = copy;
@@ -982,7 +982,7 @@ public:
 //     xml.tree = xml.tree->addItem(new TreeItem);
 //     xml.tree->itemData[Name] = xml.fieldName;
 //     xml.tree->itemData[Value] = childNodes.size();
-//     xml.tree->itemData[Type] = typeName<T>();
+//     xml.tree->itemData[Type] = typeName<T>;
 //     xml.tree->itemData[FLine] = xml.node.lineNumber();
 
 //     vector.resize(childNodes.size());
@@ -1051,14 +1051,14 @@ public:
 //     requires(std::is_class_v<T> && std::is_aggregate_v<T>)
 // inline bool read(Xml& xml, T& str) { // pod structures
 //     if(!xml.isArray && !xml.isVariant)
-//         xml.node = (xml.node.isNull() ? xml.doc : xml.node).firstChildElement(typeName<T>());
+//         xml.node = (xml.node.isNull() ? xml.doc : xml.node).firstChildElement(typeName<T>);
 //     xml.isArray = xml.isVariant = false;
 
 //     xml.tree = xml.tree->addItem(new TreeItem);
-//     xml.tree->itemData[Name] = typeName<T>();
+//     xml.tree->itemData[Name] = typeName<T>;
 //     // xml.tree->itemData[Value] = value;
 //     // xml.tree->itemData[IsAttr] = "Tag";
-//     xml.tree->itemData[Type] = typeName<T>();
+//     xml.tree->itemData[Type] = typeName<T>;
 //     xml.tree->itemData[FLine] = xml.node.lineNumber();
 
 //     bool ok = read(xml, str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
@@ -1088,14 +1088,14 @@ public:
 // template <typename T>
 //     requires(!std::is_class_v<T> && !std::is_aggregate_v<T>)
 // inline bool read(Xml& xml, T& str) {
-//     qCritical() << "!!!ERR!!!" << sl::current().function_name() << typeName<T>();
+//     qCritical() << "!!!ERR!!!" << sl::current().function_name() << typeName<T>;
 //     return false;
 // }
 
 // template <typename T>
 //     requires(std::is_polymorphic_v<T>)
 // inline bool read(Xml& xml, T& str) {
-//     qCritical() << "!!!ERR!!!" << sl::current().function_name() << typeName<T>();
+//     qCritical() << "!!!ERR!!!" << sl::current().function_name() << typeName<T>;
 //     return false;
 // }
 

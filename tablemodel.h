@@ -64,7 +64,7 @@ public:
             return [section, this]<size_t... Is>(std::index_sequence<Is...>) {
                 QString ret;
                 (((section == Is)
-                         ? ret = typeName(pfr::get<Is>(*data_.data())) + "\n" + pfr::get_name<Is, DataType>().data()
+                        ? ret = TypeName<decltype(pfr::get<Is>(*data_.data()))> + QByteArray{"\n"} + pfr::get_name<Is, DataType>().data()
                          : ret),
                     ...);
                 return ret;
@@ -101,18 +101,18 @@ private:
                 return get(attr.value);
             },
             []<typename... Ts>(const XmlVariant<Ts...>& variant) -> QVariant { // перенаправление ↑↑↑
-                return variant.visit([]<typename T>(const T&) { return typeName<T>(); });
+                return variant.visit([]<typename T>(const T&) { return TypeName<T>; });
             },
             []<typename T>(const XmlArrayElem<T>& vector) -> QVariant { // перенаправление ↑↑↑
-                return QString{"Elem: %1[%2]"}.arg(typeName<T>()).arg(vector.size());
+                return QString{"Elem: %1[%2]"}.arg(TypeName<T>).arg(vector.size());
             },
             []<typename T>(const XmlArray<T>& vector) -> QVariant { // перенаправление ↑↑↑
-                return QString{"Field: %1[%2]"}.arg(typeName<T>()).arg(vector.size());
+                return QString{"Field: %1[%2]"}.arg(TypeName<T>).arg(vector.size());
             },
             []<typename T>(const T& str) -> QVariant // чтение полей структуры
                 requires(std::is_class_v<T> && std::is_aggregate_v<T>)
             {
-                return typeName(str);
+                return TypeName<T>;
             },
             };
     }
@@ -143,13 +143,13 @@ private:
                 return set(attr.value);
             },
             []<typename... Ts>(XmlVariant<Ts...>& variant) -> bool { // перенаправление ↑↑↑
-                return false;                                        // variant.visit([]<typename T>( T&) { return typeName<T>(); });
+                return false;                                        // variant.visit([]<typename T>( T&) { return typeName<T>; });
             },
             []<typename T>(XmlArrayElem<T>& vector) -> bool { // перенаправление ↑↑↑
-                return false;                                 // QString{"Elem: %1[%2]"}.arg(typeName<T>()).arg(vector.size());
+                return false;                                 // QString{"Elem: %1[%2]"}.arg(typeName<T>).arg(vector.size());
             },
             []<typename T>(XmlArray<T>& vector) -> bool { // перенаправление ↑↑↑
-                return false;                             // QString{"Field: %1[%2]"}.arg(typeName<T>()).arg(vector.size());
+                return false;                             // QString{"Field: %1[%2]"}.arg(typeName<T>).arg(vector.size());
             },
             []<typename T>(T& str) -> bool // чтение полей структуры
                 requires(std::is_class_v<T> && std::is_aggregate_v<T>)
