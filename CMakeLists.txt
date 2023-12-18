@@ -124,26 +124,26 @@ add_subdirectory(TopoR)
 
 
 
-# if(WIN32)
-#     target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
-#     # windeployqt
-#     set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
-#     get_target_property(_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
-#     get_filename_component(_QT_BIN_DIR "${_QMAKE_EXECUTABLE}" DIRECTORY)
-#     find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
-#     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-#         COMMAND "${CMAKE_COMMAND}" -E
-#         env PATH="${_QT_BIN_DIR}" "${WINDEPLOYQT_EXECUTABLE}"
-#         --verbose 1
-#         --no-compiler-runtime
-#         \"$<TARGET_FILE:${PROJECT_NAME}>\"
-#         COMMENT "Deploying Qt..."
-#     )
-# elseif (UNIX)#LINUX
-#     #    cqtdeployer -bin myApp -qmake path/to/Qt/5.x.x/build/bin/qmake -qmlDir path/to/my/qml/files/dir qif
-# endif()
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
+    # windeployqt
+    set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
+    get_target_property(_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+    get_filename_component(_QT_BIN_DIR "${_QMAKE_EXECUTABLE}" DIRECTORY)
+    find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E
+        env PATH="${_QT_BIN_DIR}" "${WINDEPLOYQT_EXECUTABLE}"
+        --verbose 1
+        --no-compiler-runtime
+        \"$<TARGET_FILE:${PROJECT_NAME}>\"
+        COMMENT "Deploying Qt..."
+    )
+elseif (UNIX)#LINUX
+    #    cqtdeployer -bin myApp -qmake path/to/Qt/5.x.x/build/bin/qmake -qmlDir path/to/my/qml/files/dir qif
+endif()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC_")
     # target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
     # windeployqt
     # set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
@@ -152,7 +152,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
     add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND "C:/Program Files/Git/usr/bin/touch.exe"
-        "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp"
         COMMENT "TOUCH Cruth..."
     )
 endif()

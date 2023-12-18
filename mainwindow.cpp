@@ -159,7 +159,7 @@ void MainWindow::drawFile() {
 
         auto component = file->localLibrary.getComponent(it->componentRef);
 
-        ui->tvContakts->setModel(new TableModel{component->Pins, ui->lvComponentsAttr});
+        ui->tvContakts->setModel(new TableModel{const_cast<LocalLibrary::Component*>(component)->Pins, ui->lvComponentsAttr});
     });
 
     drawComponents();
