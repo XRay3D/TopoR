@@ -13,46 +13,6 @@
 #include "TopoR_PCB_File.h"
 using namespace TopoR;
 
-#if __has_include(<cxxabi.h>)
-#include <cxxabi.h>
-template <typename T>
-inline QString typeName(const T& = {}) {
-    int status;
-    char* const realname = abi::__cxa_demangle(typeid(T).name(), NULL, NULL, &status);
-    QString ret{realname};
-    if(auto&& [whole, stl, name] = ctre::match<R"(std::(\w+)<.+:(\w+),.+)">(realname); whole)
-        ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    else if(auto&& [whole, name] = ctre::match<R"(\S+:XmlAttr<.+:(\w+)>)">(realname); whole)
-        ret = QString::fromStdString(name.to_string());
-    else if(auto&& [whole, stl, name] = ctre::match<R"(\S+::(\w+)<.+:(\w+)(?:,?.*))">(realname); whole)
-        ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    else if(auto&& [whole, name] = ctre::match<R"(.+:(\w+))">(realname); whole)
-        ret = QString::fromStdString(name.to_string());
-    std::free(realname);
-    return ret;
-}
-#else
-
-inline constexpr auto match1 = ctre::match<R"(std::(\w+)<.+:(\w+),.+)">;
-inline constexpr auto match2 = ctre::match<R"(.+:XmlAttr<(?:.+:)?(\w+)>)">;
-inline constexpr auto match3 = ctre::match<R"(\S+::(\w+)<.+:(\w+)(?:,?.*))">;
-inline constexpr auto match4 = ctre::match<R"(.+:(\w+))">;
-
-template <typename T>
-inline QString typeName(const T& = {}) {
-    QString ret{typeid(T).name()};
-    QByteArray realname{ret.toUtf8()};
-    if(auto&& [whole, stl, name] = match1(realname); whole)
-        ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    else if(auto&& [whole, name] = match2(realname); whole)
-        ret = QString::fromStdString(name.to_string());
-    else if(auto&& [whole, stl, name] = match3(realname); whole)
-        ret = QString::fromStdString(stl.to_string() + '<' + name.to_string() + '>');
-    else if(auto&& [whole, name] = match4(realname); whole)
-        ret = QString::fromStdString(name.to_string());
-    return ret;
-}
-#endif
 
 using sl = std::source_location;
 
@@ -81,7 +41,7 @@ struct Xml {
 private:
     template <typename T> struct Tag { };
     static constexpr auto ArrayNull = std::numeric_limits<int>::max();
-
+#if 0
     inline auto overload() {
         return Overload{
             [this](QString& str) // Строки
@@ -315,6 +275,241 @@ private:
             },
             };
     }
+#else
+
+    bool read(QString& str) // Строки
+    // [this]<typename T>(T& str)
+    //     requires std::is_same_v<T, QString>
+    {
+        if (node.isElement()) {
+            node = node.firstChildElement(fieldName);
+            str = node.toElement().text();
+            node = node.parentNode();
+            auto tree_ = tree->addItem(new TreeItem);
+            tree_->itemData[Name] = fieldName;
+            tree_->itemData[Value] = str;
+            // tree_->itemData[IsAttr] = "Tag";
+            tree_->itemData[Type] = typeid(QString).name();
+            tree_->itemData[FLine] = node.lineNumber();
+        } else if (node.isAttr()) {
+            str = node.nodeValue();
+            auto tree_ = tree->addItem(new TreeItem);
+            tree_->itemData[Name] = node.toAttr().name();
+            tree_->itemData[Value] = str;
+            tree_->itemData[IsAttr] = "Attr";
+            tree_->itemData[Type] = typeid(QString).name();
+            tree_->itemData[FLine] = node.parentNode().lineNumber();
+        }
+        return str.size();
+    }
+    template <typename T> bool read(T& value) // float`ы int`ы
+        requires std::is_arithmetic_v<T>
+    {
+        QString text;
+        if (node.isElement()) {
+            auto element = node.toElement();
+            if (text = element.attribute(typeName<T>()); text.size()) {
+                auto tree_ = tree->addItem(new TreeItem);
+                tree_->itemData[Name] = typeName<T>();
+                tree_->itemData[Value] = text;
+                // tree->itemData[IsAttr] = "Tag";
+                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[FLine] = node.lineNumber();
+            } else if (text = element.attribute(fieldName); text.size()) {
+                auto tree_ = tree->addItem(new TreeItem);
+                tree_->itemData[Name] = fieldName;
+                tree_->itemData[Value] = text;
+                // tree->itemData[IsAttr] = "Tag";
+                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[FLine] = node.lineNumber();
+            }
+        } else if (node.isAttr()) {
+            if (text = node.nodeValue(); text.size()) {
+                auto tree_ = tree->addItem(new TreeItem);
+                tree_->itemData[Name] = node.toAttr().name();
+                tree_->itemData[Value] = text;
+                tree_->itemData[IsAttr] = "Attr";
+                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[FLine] = node.parentNode().lineNumber();
+            }
+        }
+        value = QVariant{text}.value<T>();
+        return text.size();
+    }
+    template <typename T> bool read(T& e) // enum`ы
+        requires std::is_enum_v<T>
+    {
+        QString value;
+        if (node.isElement()) {
+            if (value = node.toElement().attribute(typeName<T>()); value.size()) {
+                auto tree_ = tree->addItem(new TreeItem);
+                tree_->itemData[Name] = fieldName;
+                tree_->itemData[Value] = value;
+                // tree_->itemData[IsAttr] = "Tag";
+                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[FLine] = node.lineNumber();
+            } else if (value = node.toElement().attribute(fieldName); value.size()) {
+                auto tree_ = tree->addItem(new TreeItem);
+                tree_->itemData[Name] = fieldName;
+                tree_->itemData[Value] = value;
+                // tree_->itemData[IsAttr] = "Tag";
+                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[FLine] = node.lineNumber();
+            }
+        } else if (node.isAttr()) {
+            if (value = node.nodeValue(); value.size()) {
+                auto tree_ = tree->addItem(new TreeItem);
+                tree_->itemData[Name] = node.toAttr().name();
+                tree_->itemData[Value] = value;
+                tree_->itemData[IsAttr] = "Attr";
+                tree_->itemData[Type] = typeName<T>();
+                tree_->itemData[FLine] = node.parentNode().lineNumber();
+            }
+        }
+        e = stringToEnum<T>(value.toStdString());
+        return value.size();
+    }
+    template <typename T> bool read(std::optional<T>& optional) { // перенаправление ↑↑↑
+        T val;
+        if (read(val)) optional = val;
+        return optional.has_value();
+    }
+    template <typename T> bool read(XmlAttr<T>& attr) { // перенаправление ↑↑↑
+        auto attributes = node.attributes();
+        if (attributes.contains(typeName<T>())) {
+            node = attributes.namedItem(typeName<T>());
+            bool ok = read(attr.value);
+            node = node.parentNode();
+            return ok;
+        } else if (attributes.contains(fieldName)) {
+            node = attributes.namedItem(fieldName);
+            bool ok = read(attr.value);
+            node = node.parentNode();
+            return ok;
+        }
+        return false;
+    }
+    template <typename... Ts> bool read(XmlVariant<Ts...>& variant) { // перенаправление ↑↑↑
+        int ctr{};
+        if (!node.isElement()) return false;
+        auto reader = [&]<typename T>(T&& val) {
+            if (ctr) return;
+            if (node.toElement().tagName() == typeName<T>() && read(val)) {
+                ++ctr, variant = std::move(val);
+            } else {
+                auto copy = node;
+                node = node.firstChildElement(typeName<T>());
+                if (!node.isNull())
+                    if (isVariant = true; read(val)) ++ctr, variant = std::move(val);
+                node = copy;
+            }
+        };
+        (reader(Ts{}), ...);
+        assert(ctr < 2);
+        return ctr > 0;
+    }
+    template <typename T> bool read(XmlArrayElem<T>& vector) { // перенаправление ↑↑↑
+        QDomNode node_ = node.firstChildElement(fieldName);
+        if (node_.isNull())
+            return false;
+        isAarrayElem = true;
+        auto childNodes = node_.childNodes();
+        if (!childNodes.size())
+            return false;
+        tree = tree->addItem(new TreeItem);
+        tree->itemData[Name] = fieldName;
+        tree->itemData[Value] = childNodes.size();
+        tree->itemData[Type] = typeName<T>();
+        tree->itemData[FLine] = node.lineNumber();
+
+        vector.resize(childNodes.size());
+
+        bool ok{true};
+
+        for (int index{}; auto&& var: vector) {
+            isArray = true;
+            node = childNodes.at(index++);
+            ok &= read(var);
+        }
+
+        isAarrayElem = false;
+        tree = tree->parent();
+
+        return ok;
+    }
+    template <typename T> bool read(XmlArray<T>& vector) { // перенаправление ↑↑↑
+        if (node.isNull())
+            return false;
+        auto childNodes = node.childNodes();
+        auto find = [&]<typename Type>(Tag<Type>) -> int {
+            auto node_ = node.firstChildElement(typeName<Type>());
+            if (!node_.isNull())
+                for (int index{}; index < childNodes.size(); ++index)
+                    if (childNodes.at(index) == node_) return index;
+            return ArrayNull;
+        };
+        auto index = Overload{
+            [&]<typename... Ts>(Tag<XmlVariant<Ts...>>) -> int {
+                std::array arr{find(Tag<Ts>{})...};
+                return *std::ranges::min_element(arr);
+            },
+            find}(Tag<T>{});
+        if (index == ArrayNull)
+            return false;
+        vector.resize(childNodes.size() - index);
+        if (vector.empty())
+            return false;
+
+        bool ok{true};
+        for (auto&& var: vector) {
+            isArray = true;
+            node = childNodes.at(index++);
+            ok &= read(var);
+        }
+        return ok;
+    }
+
+public:
+    template <typename T> bool read(T& str)
+        requires(std::is_class_v<T> && std::is_aggregate_v<T>)
+    { // чтение полей структуры
+        if (!isArray && !isVariant)
+            node = (node.isNull() ? doc : node).firstChildElement(typeName<T>());
+        isArray = isVariant = false;
+
+        tree = tree->addItem(new TreeItem);
+        tree->itemData[Name] = typeName<T>();
+        // tree->itemData[Value] = value;
+        // tree->itemData[IsAttr] = "Tag";
+        tree->itemData[Type] = typeName<T>();
+        tree->itemData[FLine] = node.lineNumber();
+#if 1
+        auto readStr = [this]<typename Ty, size_t... Is>(Ty& str, std::index_sequence<Is...>) {
+            auto readField = [this]<size_t Index, typename FTy>(FTy& str, std::integral_constant<size_t, Index>) {
+                fieldName = pfr::get_name<Index, FTy>().data();
+                if (fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
+                fieldNum = Index;
+                auto copy = node;
+                bool ok = read(pfr::get<Index>(str));
+                node = copy;
+                return ok;
+            };
+            int ok{};
+            ((ok += readField(str, std::integral_constant<size_t, Is>{})), ...);
+            return ok;
+        };
+
+        bool ok = readStr(str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
+#else
+        bool ok = read(str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
+#endif
+        node = node.parentNode();
+        tree = tree->parent();
+        return ok;
+    }
+
+private:
+#endif
 #if 0
     template <size_t Index, typename T>
     bool readField(T& str) {
@@ -348,8 +543,9 @@ private:
     };
 
 public:
-    template <typename T>
-    bool read(T& str) { return overload()(str); }
+    // template <typename T>
+    // bool read(T& str) { return read(str); }
+    // bool read(T& str) { return overload()(str); }
 };
 
 // enum {

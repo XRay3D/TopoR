@@ -2,17 +2,17 @@
 
 #include <QAbstractListModel>
 template <typename T, typename Proj>
-class LayerModel : public QAbstractListModel {
+class ListModel : public QAbstractListModel {
     // Q_OBJECT
     T& data_;
     Proj proj;
 
 public:
-    explicit LayerModel(T& data, Proj&& proj, QObject* parent = nullptr)
+    explicit ListModel(T& data, Proj&& proj, QObject* parent = nullptr)
         : QAbstractListModel{parent}
         , data_{data}
         , proj{std::forward<Proj>(proj)} { }
-    ~LayerModel() { qWarning(__FUNCTION__); }
+    ~ListModel() { qWarning(__FUNCTION__); }
 
     // QAbstractItemModel interface
 

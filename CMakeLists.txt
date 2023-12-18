@@ -99,7 +99,9 @@ add_executable(${PROJECT_NAME}
     treemodel.h
     treeitem.cpp
     treemodel.cpp
-    layermodel.h layermodel.cpp
+    listmodel.h listmodel.cpp
+    tablemodel.h tablemodel.cpp
+    xmlserializertypes.h
     # Coordinates.h
 )
 

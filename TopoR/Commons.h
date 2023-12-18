@@ -1,17 +1,10 @@
 #pragma once
-// #include "enumerator.h"
+
+#include "../xmlserializertypes.h"
 #include "Enums.h"
 #include <QPainterPath>
 #include <QPoint>
-#include <QString>
 #include <QTransform>
-#include <array>
-#include <limits>
-#include <map>
-#include <optional>
-#include <string>
-#include <variant>
-#include <vector>
 
 class QGraphicsItem;
 class QPainterPath;
@@ -21,75 +14,7 @@ class QPainterPath;
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
 
-template <typename... Ts>
-struct Overload : Ts... {
-    using Ts::operator()...;
-};
-
-template <typename... Ts>
-Overload(Ts...) -> Overload<Ts...>;
-
-template <typename T>
-using Optional = std::optional<T>;
-
 namespace TopoR {
-
-template <typename T>
-struct XmlAttr {
-    using TypeName = T;
-    T value{};
-
-    // XmlAttr() { } // disable std::is_aggregate_v<T>
-    // XmlAttr(const T& val = {})
-    //     : value{val} { }
-    // XmlAttr(T&& val)
-    //     : value{std::move(val)} { }
-    // XmlAttr(const XmlAttr&) = default;
-    // XmlAttr(XmlAttr&&) = default;
-
-    operator T&() noexcept { return value; }
-    operator const T&() const noexcept { return value; }
-    T& operator=(const T& val) noexcept { return value = val; }
-    T& operator=(T&& val) noexcept { return value = val; }
-
-    // auto operator<=>(const T& other) const {
-    //     return value <=> other;
-    // }
-};
-
-template <typename T>
-struct XmlArray : std::vector<T>, std::false_type {
-    using std::vector<T>::vector;
-};
-
-template <typename T>
-struct XmlArrayElem : std::vector<T>, std::true_type {
-    using std::vector<T>::vector;
-};
-
-template <typename... Ts>
-struct XmlVariant : std::variant<Ts...> {
-    using std::variant<Ts...>::variant;
-    using Variant = std::variant<Ts...>;
-    template <typename Func>
-    auto visit(Func&& func) {
-        return std::visit(std::forward<Func>(func), *this);
-    }
-    template <typename Func>
-    auto visit(Func&& func) const {
-        return std::visit(std::forward<Func>(func), *this);
-    }
-    template <typename... Funcs>
-    auto visit(Funcs&&... funcs) {
-        return std::visit(Overload{std::forward<Funcs>(funcs)...}, *this);
-    }
-    template <typename... Funcs>
-    auto visit(Funcs&&... funcs) const {
-        return std::visit(Overload{std::forward<Funcs>(funcs)...}, *this);
-    }
-    bool has_value() const { return Variant::index() != std::variant_npos; }
-    operator bool() const { return has_value(); }
-};
 
 namespace Reference_Types {
 // базовый класс ссылок.

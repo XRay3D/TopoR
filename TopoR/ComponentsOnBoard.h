@@ -114,10 +114,10 @@ struct ComponentsOnBoard {
         Org org;
         // Контакты компонента на плате.
         // [XmlArray("Pins")][XmlArrayItem("Pin")] public List<Pin> Pins;
-        XmlArray<Pin> Pins;
+        XmlArrayElem<Pin> Pins;
         // Монтажные отверстия.
         // [XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<Mnthole> Mntholes;
-        XmlArray<Mnthole> Mntholes;
+        XmlArrayElem<Mnthole> Mntholes;
         // Атрибуты компонента.
         // [XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<Attribute> Attributes;
         XmlArrayElem<Attribute> Attributes;
