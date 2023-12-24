@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
     QApplication::setOrganizationName("XrSoft");
     QApplication::setApplicationName("TopoR_File");
+
     MainWindow w;
     w.show();
     return a.exec();
@@ -59,8 +60,15 @@ using namespace TopoR;
 void MainWindow::loadFile() {
     Xml xml{dir};
 
+    for(auto&& tk: TopoR::Enumerations::Impl::Tokens<TopoR::Enumerations::Handling>.tokens) {
+        qInfo() << tk.name.data() << +tk.value;
+    }
+
     try {
         xml.read(*file);
+        xml.write(*file);
+        ui->plainTextEdit->setPlainText(xml.outDoc.toString(4));
+
     } catch(const std::set<QString>& names) {
         qCritical() << names;
     } catch(const std::exception& ex) {

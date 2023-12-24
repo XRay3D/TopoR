@@ -74,7 +74,27 @@ Xml::Xml(const QString& name) {
     // exit(0);
 
     file.close();
+
+    /*
+
+    QDomDocument doc;
+    QDomElement root = doc.createElement("MyML");
+    doc.appendChild(root);
+
+    QDomElement tag = doc.createElement("Greeting");
+    root.appendChild(tag);
+
+    QDomText t = doc.createTextNode("Hello World");
+    tag.appendChild(t);
+
+    tag.setAttribute("Attr", "Value");
+
+    QString xml = doc.toString();
+    ui->plainTextEdit->setPlainText(xml);
+*/
+
     return;
+
     file.setFileName(file.fileName().replace("/", "/formated_"));
     qWarning() << file.fileName();
     if(!file.open(QIODevice::WriteOnly)) {

@@ -16,7 +16,7 @@ enum ArcDir {
     CW,
     CCW
 };
-
+// 23:10:03: Прошло времени: 00:40.
 namespace Enumerations { // Все enum в алфавитном порядке
 
 template <class Ty>
@@ -24,65 +24,98 @@ inline constexpr bool hasStrings = false;
 
 namespace Impl {
 
-using sv = std::string_view;
+using std::string_view;
 namespace ranges = std::ranges;
 
 template <class Ty>
 inline constexpr Ty Tokens = Ty{};
 
-consteval size_t enum_size(sv enums) {
-    return ranges::count(enums, ',') + !enums.ends_with(',');
-}
-
-template <size_t N, class Enum>
-inline consteval auto tokenize_enum(sv base) {
-    std::array<std::pair<sv, Enum>, N> tokens;
-    std::underlying_type_t<Enum> val{};
-    for(auto it = tokens.begin();
-        auto&& [whole, name, value]:
-        ctre::range<R"((\w+)(?: = (\w+))?,?)">(base)) {
-        if(value)
-            val = value.to_number();
-        if(it != tokens.end())
-            *it++ = {name.to_view(), static_cast<Enum>(val++)};
+template <size_t N>
+struct String {
+    char data[N]{};
+    size_t count{};
+    static constexpr size_t strLen{N};
+    constexpr String(const char (&str)[N]) {
+        ranges::copy(str, data);
+        for(auto ch: str)
+            if(ch == ',') ++count;
+        count += str[N - 1] != ',';
     }
-    return tokens;
-}
+};
+
+// inline constexpr auto range = ctre::range<R"((\w+)(?: = (\w+))?,?)">;
+
+template <auto Str, class Enum>
+struct Tokenizer {
+    using Ty = std::underlying_type_t<Enum>;
+
+    constexpr Tokenizer() {
+        ranges::copy(Str.data, text.begin());
+        Ty val{};
+        // for(auto it = tokens.begin(); auto&& [whole, name, value]: range(text)) {
+        //     if(value)
+        //         val = value.template to_number<Ty>();
+        for(auto it = tokens.begin(); auto&& name: ranges::views::split(text, ","sv)) {
+            if(it != tokens.end())
+                *it++ = {string_view{name}, static_cast<Enum>(val++)};
+        }
+        ranges::replace(text, ',', '\0'); // null teminated data() in string_view
+    }
+
+    struct Data {
+        string_view name;
+        Enum value;
+    };
+    std::array<Data, Str.count> tokens;
+    std::array<char, Str.strLen> text{};
+    static constexpr auto errorValue
+        = static_cast<Enum>(std::numeric_limits<Ty>::max());
+
+    inline constexpr auto toString(Enum e) const {
+        auto it = std::ranges::find(tokens, e, &Data::value);
+        return it == tokens.end() ? std::string_view{} : it->name;
+    }
+
+    inline constexpr Enum toEnum(std::string_view str) const {
+        auto it = std::ranges::find(tokens, str, &Data::name);
+        return it == tokens.end() ? errorValue : it->value;
+    }
+};
 
 } // namespace Impl
 
-#define XML_ENUM(Enum, ...)                                                                          \
-    enum class Enum : int {                                                                          \
-        __VA_ARGS__                                                                                  \
-    };                                                                                               \
-    inline auto operator+(Enum e) noexcept { return std::underlying_type_t<Enum>(e); }               \
-    template <>                                                                                      \
-    inline constexpr auto hasStrings<Enum> = true;                                                   \
-    namespace Impl {                                                                                 \
-    template <>                                                                                      \
-    inline constexpr auto Tokens<Enum> = tokenize_enum<enum_size(#__VA_ARGS__), Enum>(#__VA_ARGS__); \
+#define XML_ENUM(Enum, ...)                                                            \
+    enum class Enum : int {                                                            \
+        __VA_ARGS__                                                                    \
+    };                                                                                 \
+    inline auto operator+(Enum e) noexcept { return std::underlying_type_t<Enum>(e); } \
+    template <>                                                                        \
+    inline constexpr auto hasStrings<Enum> = true;                                     \
+    namespace Impl {                                                                   \
+    template <>                                                                        \
+    inline constexpr auto Tokens<Enum> = Tokenizer<String{#__VA_ARGS__}, Enum>();      \
     }
 
 template <class E>
     requires hasStrings<E>
 inline constexpr auto enumToString(E e) {
-    auto it = std::ranges::find(Impl::Tokens<E>, e, &std::pair<Impl::sv, E>::second);
-    return it == Impl::Tokens<E>.end() ? Impl::sv{} : it->first;
+    return Impl::Tokens<E>.toString(e);
 }
 
 template <class E>
     requires hasStrings<E>
-inline constexpr E stringToEnum(Impl::sv str) {
-    auto it = std::ranges::find(Impl::Tokens<E>, str, &std::pair<Impl::sv, E>::first);
-    return it == Impl::Tokens<E>.end()
-        ? static_cast<E>(std::numeric_limits<std::underlying_type_t<E>>::min())
-        : it->second;
+inline constexpr E stringToEnum(std::string_view str) {
+    return Impl::Tokens<E>.toEnum(str);
 }
 
 template <class E>
-inline constexpr Impl::sv enumToString(E e) { return "!!!"sv; }
+inline constexpr void enumToString(E e) {
+    static_assert(hasStrings<E>, "");
+}
 template <class E>
-inline constexpr E stringToEnum(Impl::sv str) { return E(std::numeric_limits<std::underlying_type_t<E>>::max()); }
+inline constexpr void stringToEnum(std::string_view str) {
+    static_assert(hasStrings<E>, "");
+}
 
 // Параметр надписей (ярлыков): способ выравнивания текста. Значение по умолчанию – CM.
 XML_ENUM(align,
