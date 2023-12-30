@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ctre.hpp"
+#include "qdebug.h"
 #include <QString>
 #include <algorithm>
 #include <array>
@@ -19,65 +20,61 @@ enum ArcDir {
 // 23:10:03: Прошло времени: 00:40.
 namespace Enumerations { // Все enum в алфавитном порядке
 
-template <class Ty>
-inline constexpr bool hasStrings = false;
-
 namespace Impl {
 
-using std::string_view;
 namespace ranges = std::ranges;
+using std::array;
+using str_view = std::string_view;
+
+template <class Ty>
+inline constexpr bool hasStrings = false;
 
 template <class Ty>
 inline constexpr Ty Tokens = Ty{};
 
-template <size_t N>
-struct String {
-    char data[N]{};
-    size_t count{};
-    static constexpr size_t strLen{N};
-    constexpr String(const char (&str)[N]) {
-        ranges::copy(str, data);
-        for(auto ch: str)
-            if(ch == ',') ++count;
-        count += str[N - 1] != ',';
-    }
-};
+template <auto EnumVal>
+static consteval auto enumName() {
+#ifdef _MSC_VER
+    // MSVC: auto __cdecl Impl::enumName<align::CM>(void)
+    constexpr string_view sv{__FUNCSIG__};
+    constexpr auto last = sv.find_last_of(">");
+#else
+    // clang: auto Impl::name() [E = align::CM]
+    // gcc: consteval auto Impl::name() [with auto E = align::CM]
+    constexpr str_view sv{__PRETTY_FUNCTION__};
+    constexpr auto last = sv.find_last_of("]");
+#endif
+    constexpr auto first = sv.find_last_of(":", last) + 1;
+    array<char, last - first + 1> buf{}; // +1 '\0' tetminated c_str
+    ranges::copy(str_view{sv.begin() + first, last - first}, buf.begin());
+    return buf;
+}
 
-// inline constexpr auto range = ctre::range<R"((\w+)(?: = (\w+))?,?)">;
+template <auto EnumVal>
+inline constexpr auto ENameArr{enumName<EnumVal>()};
+template <auto EnumVal>
+inline constexpr str_view EnumName{ENameArr<EnumVal>.data(), ENameArr<EnumVal>.size() - 1};
 
-template <auto Str, class Enum>
-struct Tokenizer {
-    using Ty = std::underlying_type_t<Enum>;
-
-    constexpr Tokenizer() {
-        ranges::copy(Str.data, text.begin());
-        Ty val{};
-        // for(auto it = tokens.begin(); auto&& [whole, name, value]: range(text)) {
-        //     if(value)
-        //         val = value.template to_number<Ty>();
-        for(auto it = tokens.begin(); auto&& name: ranges::views::split(text, ","sv)) {
-            if(it != tokens.end())
-                *it++ = {string_view{name}, static_cast<Enum>(val++)};
-        }
-        ranges::replace(text, ',', '\0'); // null teminated data() in string_view
-    }
-
+template <typename Enum, auto... Enums>
+class Tokenizer {
     struct Data {
-        string_view name;
+        str_view name;
         Enum value;
     };
-    std::array<Data, Str.count> tokens;
-    std::array<char, Str.strLen> text{};
-    static constexpr auto errorValue
-        = static_cast<Enum>(std::numeric_limits<Ty>::max());
+    static constexpr array tokens{
+        Data{EnumName<Enums>, Enums}
+        ...
+    };
+    using Ty = std::underlying_type_t<Enum>;
+    static constexpr Enum errorValue{static_cast<Enum>(std::numeric_limits<Ty>::max())};
 
-    inline constexpr auto toString(Enum e) const {
-        auto it = std::ranges::find(tokens, e, &Data::value);
-        return it == tokens.end() ? std::string_view{} : it->name;
+public:
+    static constexpr auto toString(Enum e) noexcept {
+        auto it = ranges::find(tokens, e, &Data::value);
+        return it == tokens.end() ? str_view{""} : it->name;
     }
-
-    inline constexpr Enum toEnum(std::string_view str) const {
-        auto it = std::ranges::find(tokens, str, &Data::name);
+    static constexpr Enum toEnum(str_view str) noexcept {
+        auto it = ranges::find(tokens, str, &Data::name);
         return it == tokens.end() ? errorValue : it->value;
     }
 };
@@ -89,32 +86,26 @@ struct Tokenizer {
         __VA_ARGS__                                                                    \
     };                                                                                 \
     inline auto operator+(Enum e) noexcept { return std::underlying_type_t<Enum>(e); } \
-    template <>                                                                        \
-    inline constexpr auto hasStrings<Enum> = true;                                     \
     namespace Impl {                                                                   \
     template <>                                                                        \
-    inline constexpr auto Tokens<Enum> = Tokenizer<String{#__VA_ARGS__}, Enum>();      \
+    inline constexpr auto hasStrings<Enum> = true;                                     \
+    template <>                                                                        \
+    inline constexpr auto Tokens<Enum> = [] {                                          \
+        using enum Enum; /* using enum ↓  P1099R5 */                                 \
+        return Tokenizer<Enum, __VA_ARGS__>();                                         \
+    }();                                                                               \
     }
 
-template <class E>
-    requires hasStrings<E>
+template <typename E, typename Enum = std::remove_cvref_t<E>>
+    requires Impl::hasStrings<Enum>
 inline constexpr auto enumToString(E e) {
-    return Impl::Tokens<E>.toString(e);
+    return Impl::Tokens<Enum>.toString(e);
 }
 
-template <class E>
-    requires hasStrings<E>
+template <typename E, typename Enum = std::remove_cvref_t<E>>
+    requires Impl::hasStrings<Enum>
 inline constexpr E stringToEnum(std::string_view str) {
-    return Impl::Tokens<E>.toEnum(str);
-}
-
-template <class E>
-inline constexpr void enumToString(E e) {
-    static_assert(hasStrings<E>, "");
-}
-template <class E>
-inline constexpr void stringToEnum(std::string_view str) {
-    static_assert(hasStrings<E>, "");
+    return Impl::Tokens<Enum>.toEnum(str);
 }
 
 // Параметр надписей (ярлыков): способ выравнивания текста. Значение по умолчанию – CM.
