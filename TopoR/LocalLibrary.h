@@ -44,7 +44,7 @@ struct LocalLibrary {
         Stretch stretch;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
         // [XmlElement("Shift")] public Shift shift;
-        Shift shift;
+        Optional<Shift> shift;
         operator QPainterPath() const;
     };
     // Описание прямоугольной контактной площадки.
@@ -68,37 +68,28 @@ struct LocalLibrary {
         XmlAttr<float> height;
         // Тип обработки углов прямоугольной контактной площадки.
         // [XmlAttribute("handling")] public Handling handling_;
-        XmlAttr<Handling> handling;
-        /* public bool handlingSpecified_ */
-        bool isHandlingSpecified() const { return handling != Handling::None; }
+        Optional<XmlAttr<Handling>> handling;
         // Величина обработки углов прямоугольной контактной площадки. Значение зависит от типа обработки. Для скругления это радиус. Для среза это высота среза.
         // [XmlAttribute("handlingValue", DataType = "float")] public float handlingValue_;
-        XmlAttr<float> handlingValue;
-        /* public bool handlingValueSpecified_ */
-        bool isHandlingValueSpecified() const { return handlingValue != 0; }
+        Optional<XmlAttr<float>> handlingValue;
         // Флаг выборочной обработки углов прямоугольной контактной площадки. Если не установлен, то все углы обрабатываются одинаковым образом.
         // [XmlAttribute("custom")] public Bool custom_;
-        XmlAttr<Bool> custom;
-        /* public bool customSpecified_ */
+        Optional<XmlAttr<Bool>> custom;
         // Флаг обработки левого нижнего угла прямоугольной контактной площадки.
         // [XmlAttribute("cornerLB")] public Bool cornerLB_;
-        XmlAttr<Bool> cornerLB;
-        /* public bool cornerLBSpecified_ */
+        Optional<XmlAttr<Bool>> cornerLB;
         // Флаг обработки правого нижнего угла прямоугольной контактной площадки.
         // [XmlAttribute("cornerRB")] public Bool cornerRB_;
-        XmlAttr<Bool> cornerRB;
-        /* public bool cornerRBSpecified_ */
+        Optional<XmlAttr<Bool>> cornerRB;
         // Флаг обработки правого нижнего угла прямоугольной контактной площадки.
         // [XmlAttribute("cornerRT")] public Bool cornerRT_;
-        XmlAttr<Bool> cornerRT;
-        /* public bool cornerRTSpecified_ */
+        Optional<XmlAttr<Bool>> cornerRT;
         // Флаг обработки левого верхнего угла прямоугольной контактной площадки.
         // [XmlAttribute("cornerLT")] public Bool cornerLT_;
-        XmlAttr<Bool> cornerLT;
-        /* public bool cornerLTSpecified_ */
+        Optional<XmlAttr<Bool>> cornerLT;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
         // [XmlElement("Shift")] public Shift shift;
-        Shift shift; // NOTE maybe optional
+        Optional<Shift> shift;
         operator QPainterPath() const;
     };
     // Описание полигональной контактной площадки.
@@ -135,7 +126,7 @@ struct LocalLibrary {
         // [XmlArray("Pads")][XmlArrayItem(PadCircle), XmlArrayItem(PadOval), XmlArrayItem(PadRect), XmlArrayItem(PadPoly)] public List<Object> Pads;
         XmlArrayElem<XmlVariant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
 
-       static QString getReference(const XmlVariant<PadCircle, PadOval, PadRect, PadPoly>& padShape) ;
+        static QString getReference(const XmlVariant<PadCircle, PadOval, PadRect, PadPoly>& padShape);
     };
     // Описание типа (стека) переходного отверстия.
     struct Viastack {
@@ -230,13 +221,13 @@ struct LocalLibrary {
             XmlAttr<QString> name;
             // Параметр надписей (ярлыков): способ выравнивания текста.
             // [XmlAttribute("align")] public align align;
-            XmlAttr<align> align_;
+            Optional<XmlAttr<align>> align_;
             // Задаёт угол в градусах c точностью до тысячных долей.
             // [XmlAttribute("angle", DataType = "float")] public float angle_;
-            XmlAttr<float> angle;
+            Optional<XmlAttr<float>> angle;
             // Параметр надписей и ярлыков: зеркальность отображения.
             // [XmlAttribute("mirror")] public Bool mirror_;
-            XmlAttr<Bool> mirror;
+            Optional<XmlAttr<Bool>> mirror;
             // Ссылка на слой.
             // [XmlElement("LayerRef")] public LayerRef layerRef;
             LayerRef layerRef;
@@ -245,11 +236,13 @@ struct LocalLibrary {
             TextStyleRef textStyleRef;
             // Точка привязки объекта.
             // [XmlElement("Org")] public Org org;
-            Org org;
+            Optional<Org> org;
             QTransform transform() const {
                 QTransform transform;
-                transform.translate(org.x, org.y);
-                transform.rotate(angle);
+                if (org)
+                    transform.translate(org.value().x, org.value().y);
+                if (angle)
+                    transform.rotate(angle.value());
                 return transform;
             }
         };

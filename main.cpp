@@ -9,8 +9,8 @@ void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const Q
     auto file = context.file;
     // if(type == QtInfoMsg) return;
     QMessageLogContext& context_ = const_cast<QMessageLogContext&>(context);
-    while(file && *file)
-        if(std::set{'/', '\\'}.contains(*file++))
+    while (file && *file)
+        if (std::set{'/', '\\'}.contains(*file++))
             context_.file = file;
 
     // QString data{context_.function};
@@ -60,18 +60,29 @@ using namespace TopoR;
 void MainWindow::loadFile() {
     Xml xml{dir};
 
-    for(auto&& tk: TopoR::Enumerations::Impl::Tokens<TopoR::Enumerations::Handling>.tokens) {
-        qInfo() << tk.name.data() << +tk.value;
-    }
+    // for(auto&& tk: TopoR::Enumerations::Impl::Tokens<TopoR::Enumerations::Handling>.tokens) {
+    //     qInfo() << tk.name.data() << +tk.value;
+    // }
 
     try {
         xml.read(*file);
         xml.write(*file);
-        ui->plainTextEdit->setPlainText(xml.outDoc.toString(4));
 
-    } catch(const std::set<QString>& names) {
+        QDomNode xmlNode = xml.outDoc.createProcessingInstruction("xml", R"(version="1.0" encoding="UTF-8")");
+        xml.outDoc.insertBefore(xmlNode, xml.outDoc.firstChild());
+        QString text = xml.outDoc.toString(4);
+        text.replace("<![CDATA[", "");
+        text.replace("]]>", "");
+        ui->plainTextEdit->setPlainText(text);
+        if (QFile file{dir + "out.fst"}; file.open(QFile::WriteOnly)) {
+            file.write(text.toUtf8());
+            // QTextStream out(&file);
+            // xml.outDoc.save(out, 4);
+        }
+
+    } catch (const std::set<QString>& names) {
         qCritical() << names;
-    } catch(const std::exception& ex) {
+    } catch (const std::exception& ex) {
         qCritical() << ex.what();
         // auto trace = std::stacktrace::current();
         // qCritical() << std::to_string(trace).data();
@@ -80,14 +91,14 @@ void MainWindow::loadFile() {
         // for(auto&& trace: stacktrace)
         // qCritical() << trace.name() << trace.name();
         // qCritical() << boost::stacktrace::stacktrace();
-    } catch(...) {
+    } catch (...) {
     }
     // qInfo() << xml.byteArray.data();
     // ui->plainTextEdit->appendPlainText(xml.byteArray);
     ui->plainTextEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
 
     connect(new QLineEdit{ui->plainTextEdit}, &QLineEdit::textEdited, [this](const QString& str) {
-        if(!ui->plainTextEdit->find(str)) {
+        if (!ui->plainTextEdit->find(str)) {
             ui->plainTextEdit->moveCursor(QTextCursor::Start);
             ui->plainTextEdit->find(str);
         }
@@ -99,7 +110,7 @@ void MainWindow::loadFile() {
     ui->treeView->setModel(model);
     ui->treeView->expandAll();
     ui->treeView->setAlternatingRowColors(true);
-    for(int column = 0; column < model->columnCount(); ++column)
+    for (int column = 0; column < model->columnCount(); ++column)
         ui->treeView->resizeColumnToContents(column);
     ui->treeView->collapseAll();
 

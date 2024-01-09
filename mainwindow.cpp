@@ -99,8 +99,9 @@ static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const Topo
     }
 
     for (auto&& label: fp->Labels) {
-        if (auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
-        }
+
+            if (auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
+            }
     }
     group->setToolTip(fp->name);
     group->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);

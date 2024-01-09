@@ -126,6 +126,11 @@ Overload(Ts...) -> Overload<Ts...>;
 
 template <typename T>
 using Optional = std::optional<T>;
+// struct Optional : std::optional<T> {
+//     using Opt = std::optional<T>;
+//     using Opt::operator bool;
+//     operator const T&() const { return Opt::value(); }
+// };
 
 template <typename T>
 struct XmlAttr {
