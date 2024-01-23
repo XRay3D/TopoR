@@ -251,10 +251,10 @@ private:
     bool write(const QString& str) const {
         if (isAttribute) {
             isAttribute = false;
-            // outNode.toElement().setAttribute(fieldName, str);
-            auto node = outDoc.createAttribute(fieldName);
-            node.toCharacterData().setData(str);
-            outNode.toElement().setAttributeNode(node);
+            outNode.toElement().    setAttribute(fieldName, str);
+            // auto node = outDoc.createAttribute(fieldName);
+            // node.toCharacterData().setData(str);
+            // outNode.toElement().setAttributeNode(node);
         } else {
             auto element = outDoc.createElement(fieldName);
             element.appendChild(outDoc.createTextNode(str));

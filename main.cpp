@@ -73,6 +73,8 @@ void MainWindow::loadFile() {
         QString text = xml.outDoc.toString(4);
         text.replace("<![CDATA[", "");
         text.replace("]]>", "");
+        text.replace("&#xd;", "\x0D");
+        text.replace("&#xa;", "\x0A");
         ui->plainTextEdit->setPlainText(text);
         if (QFile file{dir + "out.fst"}; file.open(QFile::WriteOnly)) {
             file.write(text.toUtf8());
