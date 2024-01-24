@@ -1,4 +1,7 @@
 #include "ComponentsOnBoard.h"
+
+#if COMPONENTSONBOARD
+
 namespace TopoR {
 
 QString ComponentsOnBoard::AddComponent(QString name, units units, const QString& componentRef, const QString& footprintRef) {
@@ -73,3 +76,5 @@ QTransform ComponentsOnBoard::CompInstance::transform() const {
 }
 
 } // namespace TopoR
+
+#endif

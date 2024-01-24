@@ -4,6 +4,8 @@
 #include <QPainterPath>
 #include <QPen>
 
+#if CONNECTIVITY
+
 namespace TopoR {
 
 QGraphicsItem* Connectivity::Wire::Subwire::graphicsItem(const QColor& color) const {
@@ -85,3 +87,5 @@ QGraphicsItem* Connectivity::Wire::Subwire::graphicsItem(const QColor& color) co
 }
 
 } // namespace TopoR
+
+#endif

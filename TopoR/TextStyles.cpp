@@ -1,4 +1,7 @@
 #include "TextStyles.h"
+
+#if TEXTSTYLES
+
 namespace TopoR {
 
 const TextStyles::TextStyle* TextStyles::getTextStyle(const QString& name) const {
@@ -9,3 +12,5 @@ const TextStyles::TextStyle* TextStyles::getTextStyle(const QString& name) const
 }
 
 } // namespace TopoR
+
+#endif

@@ -14,6 +14,21 @@ class QPainterPath;
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
 
+#define COMPONENTSONBOARD 1
+#define CONNECTIVITY      1
+#define CONSTRUCTIVE      1
+#define DIALOGSETTINGS    1
+#define DISPLAYCONTROL    1
+#define GROUPS            1
+#define HEADER            1
+#define HISPEEDRULES      1
+#define LAYERS            1
+#define LOCALLIBRARY      1
+#define NETLIST           1
+#define RULES             1
+#define SETTINGS          1
+#define TEXTSTYLES        1
+
 namespace TopoR {
 
 namespace Reference_Types {
@@ -506,55 +521,55 @@ struct AllLayers {
 // Устанавливает область действия правила: все компоненты.
 struct AllComps {
     // [XmlElement("AllComps")] public string AllComps_;
-    QString AllComps;
+    // QString AllComps;
 };
 
 // Устанавливает область действия правила: все цепи.
 struct AllNets {
     // [XmlElement("AllNets")] public string AllNets_;
-    QString AllNets;
+    // QString AllNets;
 };
 
 // Устанавливает область действия правила: все внутренние слои.
 struct AllLayersInner {
     // [XmlElement("AllLayersInner")] public string AllLayersInner_;
-    QString AllLayersInner;
+    // QString AllLayersInner;
 };
 
 // Устанавливает область действия правила: все внутренние сигнальные слои.
 struct AllLayersInnerSignal {
     // [XmlElement("AllLayersInnerSignal")] public string AllLayersInnerSignal_;
-    QString AllLayersInnerSignal;
+    // QString AllLayersInnerSignal;
 };
 
 // Устанавливает область действия правила: все сигнальные слои.
 struct AllLayersSignal {
     // [XmlElement("AllLayersSignal")] public string AllLayersSignal_;
-    QString AllLayersSignal;
+    // QString AllLayersSignal;
 };
 
 // Устанавливает область действия правила: все внешние слои.
 struct AllLayersOuter {
     // [XmlElement("AllLayersOuter")] public string AllLayersOuter_;
-    QString AllLayersOuter;
+    // QString AllLayersOuter;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все типы.
 struct AllViastacks {
     // [XmlElement("AllViastacks")] public string AllViastacks_;
-    QString AllViastacks;
+    // QString AllViastacks;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все сквозные типы.
 struct AllViastacksThrough {
     // [XmlElement("AllViastacksThrough")] public string AllViastacksThrough_;
-    QString AllViastacksThrough;
+    // QString AllViastacksThrough;
 };
 
 // Устанавливает доступные типы переходных отверстий для правила: все несквозные типы.
 struct AllViastacksNotThrough {
     // [XmlElement("AllViastacksNotThrough")] public string AllViastacksNotThrough_;
-    QString AllViastacksNotThrough;
+    // QString AllViastacksNotThrough;
 };
 
 } // namespace Rules_Area

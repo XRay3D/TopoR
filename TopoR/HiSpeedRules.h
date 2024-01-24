@@ -30,7 +30,7 @@ struct HiSpeedRules {
         XmlAttr<float> Z0;
         // Правило разводки сигнала для слоя.
         // [XmlElement("LayerRule")] public List<LayerRule_Impendance> LayerImpedanceRules_;
-        XmlArrayElem<LayerRule> LayerImpedanceRules;
+        XmlArray<LayerRule> LayerImpedanceRules;
     };
     // Волновое сопротивление и правила разводки сигналов по слоям для дифференциальных сигналов.
     struct ImpedanceDiff {
@@ -52,7 +52,7 @@ struct HiSpeedRules {
         XmlAttr<float> Z0;
         // Правило разводки дифференциальной пары для слоя.
         // [XmlElement("LayerRule")] public List<LayerRule_ImpendanceDiff> LayerImpedanceDiffRules_;
-        XmlArrayElem<LayerRule> LayerImpedanceDiffRules;
+        XmlArray<LayerRule> LayerImpedanceDiffRules;
     };
     // Описание сигнального кластера цепей.
     struct SignalCluster {
@@ -217,15 +217,13 @@ struct HiSpeedRules {
             // Минимальное количество контактов в силовой цепи. Параметр используется для автоматического определения силовых цепей.
             // [XmlAttribute("minPinsNumber", DataType = "int")] public int minPinsNumber_;
             XmlAttr<int> minPinsNumber;
-            int minPinsNumber_ = 0;
             // Cсылки на цепи.
             // [XmlElement("NetRef")] public List<NetRef> NetRefs_;
-            XmlArrayElem<NetRef> NetRefs;
+            XmlArray<NetRef> NetRefs;
         };
         // Максимальное число цепей в сигнальном кластере. Параметр используется при автоматическом определении цепей сигнального кластера.
         // [XmlAttribute("maxNetsInCluster", DataType = "int")] public int maxNetsInCluster_;
         XmlAttr<int> maxNetsInCluster;
-        int maxNetsInCluster_ = 0;
         // Автоматически задавать связи.
         // [XmlAttribute("createPinPairs")] public Bool createPinPairs_;
         XmlAttr<Bool> createPinPairs;

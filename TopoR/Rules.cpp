@@ -1,5 +1,9 @@
 #include "Rules.h"
+
+#if RULES
+
 namespace TopoR {
+
 void Rules::Rename_compName(const QString& oldname, const QString& newname) {
     // for(auto a: (_PadConnectSettings == nullptr ? nullptr : ((_PadConnectSettings->_PadRefs.empty() ? nullptr : PadConnectSettings_->_PadRefs.Where([&](std::any aa) { return aa.value()._compName == oldname; })))))
     //     a->_compName = newname;
@@ -10,4 +14,7 @@ void Rules::Rename_compName(const QString& oldname, const QString& newname) {
     //         b->_ReferenceName = newname;
     /****************************************************************/
 }
+
 } // namespace TopoR
+
+#endif

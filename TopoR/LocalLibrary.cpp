@@ -3,6 +3,8 @@
 #include <QGraphicsItemGroup>
 #include <QPen>
 
+#if LOCALLIBRARY
+
 namespace TopoR {
 
 LocalLibrary::PadCircle::operator QPainterPath() const {
@@ -170,3 +172,5 @@ QString LocalLibrary::Padstack::getReference(const XmlVariant<PadCircle, PadOval
 }
 
 } // namespace TopoR
+
+#endif

@@ -137,13 +137,13 @@ struct Connectivity {
         struct ThermalPad {
             // Описание термобарьера.
             // [XmlElement("Thermal")] public Thermal thermal;
-            Thermal thermal;
+            Optional<Thermal> thermal;
         };
         // Описание термобарьера для подключения площадок переходных отверстий к области металлизации.
         struct ThermalVia {
             // Описание термобарьера.
             // [XmlElement("Thermal")] public Thermal thermal;
-            Thermal thermal;
+            Optional<Thermal> thermal;
         };
         // Описание контура заливаемой области металлизации.
         struct Shape {
@@ -221,7 +221,7 @@ struct Connectivity {
         LayerRef layerRef;
         // Ссылка на цепь.
         // [XmlElement("NetRef")] public NetRef netRef;
-        NetRef netRef;
+        Optional<NetRef> netRef;
         // Описание термобарьера для подключения контактных площадок к области металлизации.
         /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
         // [XmlElement("ThermalPad")] public ThermalPad thermalPad;
@@ -247,7 +247,7 @@ struct Connectivity {
             Polyline,
             Rect,
             Contour>>
-            Voids_;
+            Voids;
         // Островки области металлизации.
         /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
         // [XmlArray("Islands")][XmlArrayItem("Island")] public List<Island> Islands_;

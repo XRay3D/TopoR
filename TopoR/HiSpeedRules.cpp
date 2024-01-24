@@ -1,5 +1,9 @@
 #include "HiSpeedRules.h"
+
+#if HISPEEDRULES
+
 namespace TopoR {
+
 void HiSpeedRules::Rename_compName(const QString& oldname, const QString& newname) {
     /* for(auto a: SignalClusters_) {
          if(a->_SourcePinRef.value()._compName == oldname)
@@ -19,4 +23,7 @@ void HiSpeedRules::Rename_compName(const QString& oldname, const QString& newnam
                  c->_compName = newname;
      }*/
 }
+
 } // namespace TopoR
+
+#endif

@@ -161,7 +161,7 @@ struct Rules {
         /* public bool routeSpecified_ */
         // Ссылка на цепь.
         // [XmlElement("NetRef")] public List<NetRef> NetRefs_;
-        XmlArrayElem<NetRef> NetRefs;
+        XmlArray<NetRef> NetRefs;
     };
     // Настройки подключения к углам прямоугольных контактных площадок.
     struct PadConnectSettings {

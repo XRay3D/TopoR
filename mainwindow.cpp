@@ -17,6 +17,11 @@
 using namespace TopoR;
 // #include "xmlserializer.h"
 
+#if COMPONENTSONBOARD && CONNECTIVITY && CONSTRUCTIVE && DIALOGSETTINGS && DISPLAYCONTROL && GROUPS && HEADER && HISPEEDRULES && LAYERS && LOCALLIBRARY && NETLIST && RULES && SETTINGS && TEXTSTYLES
+#define ALL 1
+#else
+#define ALL 0
+#endif
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -68,6 +73,8 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
+#if ALL
+
 static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_File& file) {
     auto group = new QGraphicsItemGroup;
     LocalLibrary::footprints.emplace(fp->name, group);
@@ -100,8 +107,8 @@ static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const Topo
 
     for (auto&& label: fp->Labels) {
 
-            if (auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
-            }
+        if (auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
+        }
     }
     group->setToolTip(fp->name);
     group->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
@@ -267,3 +274,12 @@ void MainWindow::drawFreePads() {
         ui->graphicsView->addItem(group);
     }
 }
+#else
+void MainWindow::drawFile() { }
+void MainWindow::drawVias() { }
+void MainWindow::drawWires() { }
+void MainWindow::drawBoardOutline() { }
+void MainWindow::drawBoardOutlineVoids() { }
+void MainWindow::drawComponents() { }
+void MainWindow::drawFreePads() { }
+#endif

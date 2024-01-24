@@ -41,6 +41,9 @@ struct Layers {
         //     thickness_ = thickness;
         // }
         QString ToString() { return name; }
+
+        bool isCompsOutline() const { return type == LayerType::Assy; }
+        bool hasThickness() const { return type != LayerType::Assy; }
         /*****************************************************************/
     };
     // Версия раздела.
@@ -59,11 +62,11 @@ struct Layers {
     // Проверяет существование слоя, на который ссылается ссылка
     /// \param '1 \brief Ссылка на слой
     /// \return  true, если слой существует
-    bool LayerStackUpContains(LayerRef lref);
+    bool LayerStackUpContains(LayerRef lref) const;
     // Проверяет существование слоя, на который ссылается ссылка
     /// \param '1 \brief Ссылка на слой
     /// \return  true, если слой существует
-    bool LayerUnStackContain(LayerRef lref);
+    bool LayerUnStackContain(LayerRef lref) const;
     /******************************************************************/
 };
 } // namespace TopoR

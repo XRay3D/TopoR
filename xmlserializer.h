@@ -193,12 +193,13 @@ private:
         isAarrayElem = true;
         auto childNodes = node_.childNodes();
         if (!childNodes.size())
-            return false;
+            return true /*false*/; // NOTE Force add emty tag
         tree = tree->addItem(new TreeItem);
         tree->itemData[Name] = fieldName;
         tree->itemData[Value] = childNodes.size();
         tree->itemData[Type] = TypeName<T>;
         tree->itemData[FLine] = node.lineNumber();
+        tree->itemData[IsAttr] = "ArrObj";
 
         vector.resize(childNodes.size());
 
@@ -240,6 +241,7 @@ private:
             return false;
 
         bool ok{true};
+        tree->itemData[IsAttr] = "Array";
         for (auto&& var: vector) {
             isArray = true;
             node = childNodes.at(index++);
@@ -251,7 +253,8 @@ private:
     bool write(const QString& str) const {
         if (isAttribute) {
             isAttribute = false;
-            outNode.toElement().    setAttribute(fieldName, str);
+            if (str.size())
+                outNode.toElement().setAttribute(fieldName, str);
             // auto node = outDoc.createAttribute(fieldName);
             // node.toCharacterData().setData(str);
             // outNode.toElement().setAttributeNode(node);
@@ -268,7 +271,7 @@ private:
     {
         if (isAttribute) {
             isAttribute = false;
-            outNode.toElement().setAttribute(fieldName, value);
+            outNode.toElement().setAttribute(fieldName, QString::number(value));
         } else {
             auto element = outDoc.createElement(fieldName);
             element.appendChild(outDoc.createTextNode(QString::number(value)));
@@ -340,22 +343,24 @@ public:
         tree->itemData[Type] = TypeName<T>;
         tree->itemData[FLine] = node.lineNumber();
 
-        auto readStr = [this]<typename Ty, size_t... Is>(Ty& str, std::index_sequence<Is...>) {
-            auto readField = [this]<size_t Index, typename FTy>(FTy& str, std::integral_constant<size_t, Index>) {
-                fieldName = pfr::get_name<Index, FTy>().data();
-                if (fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
-                fieldNum = Index;
-                auto copy = node;
-                bool ok = read(pfr::get<Index>(str));
-                node = copy;
+        bool ok{true};
+        if constexpr (pfr::tuple_size_v<T> != 0) {
+            auto readStr = [this]<typename Ty, size_t... Is>(Ty& str, std::index_sequence<Is...>) {
+                auto readField = [this]<size_t Index, typename FTy>(FTy& str, std::integral_constant<size_t, Index>) {
+                    fieldName = pfr::get_name<Index, FTy>().data();
+                    if (fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
+                    fieldNum = Index;
+                    auto copy = node;
+                    bool ok = read(pfr::get<Index>(str));
+                    node = copy;
+                    return ok;
+                };
+                int ok{};
+                ((ok += readField(str, std::integral_constant<size_t, Is>{})), ...);
                 return ok;
             };
-            int ok{};
-            ((ok += readField(str, std::integral_constant<size_t, Is>{})), ...);
-            return ok;
-        };
-
-        bool ok = readStr(str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
+            ok = readStr(str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
+        }
 
         node = node.parentNode();
         tree = tree->parent();
@@ -369,22 +374,24 @@ public:
             ? outDoc.appendChild(outDoc.createElement(TypeName<T>))
             : outNode.appendChild(outDoc.createElement(TypeName<T>));
 
-        auto writeStr = [this]<typename Ty, size_t... Is>(Ty& str, std::index_sequence<Is...>) {
-            auto writeField = [this]<size_t Index, typename FTy>(FTy& str, std::integral_constant<size_t, Index>) {
-                fieldName = pfr::get_name<Index, FTy>().data();
-                if (fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
-                fieldNum = Index;
-                auto copy = outNode;
-                bool ok = write(pfr::get<Index>(str));
-                outNode = copy;
+        bool ok{true};
+        if constexpr (pfr::tuple_size_v<T> != 0) {
+            auto writeStr = [this]<typename Ty, size_t... Is>(Ty& str, std::index_sequence<Is...>) {
+                auto writeField = [this]<size_t Index, typename FTy>(FTy& str, std::integral_constant<size_t, Index>) {
+                    fieldName = pfr::get_name<Index, FTy>().data();
+                    if (fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
+                    fieldNum = Index;
+                    auto copy = outNode;
+                    bool ok = write(pfr::get<Index>(str));
+                    outNode = copy;
+                    return ok;
+                };
+                int ok{};
+                ((ok += writeField(str, std::integral_constant<size_t, Is>{})), ...);
                 return ok;
             };
-            int ok{};
-            ((ok += writeField(str, std::integral_constant<size_t, Is>{})), ...);
-            return ok;
-        };
-
-        bool ok = writeStr(str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
+            ok = writeStr(str, std::make_index_sequence<pfr::tuple_size_v<T>>{});
+        }
 
         outNode = outNode.parentNode();
         return ok;
