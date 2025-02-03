@@ -20,15 +20,15 @@ struct TextStyles {
         // [XmlAttribute("fontName")] public string fontName_;
         XmlAttr<QString> fontName;
         // Параметр стиля надписей: высота символов в текущих единицах.
-        // [XmlAttribute("height", DataType = "float")] public float height_;
-        XmlAttr<float> height;
+        // [XmlAttribute("height", DataType = "double")] public double height_;
+        XmlAttr<double> height;
         // Параметр стиля надписей: жирность шрифта.
         // [XmlAttribute("bold")] public Bool bold_;
-        XmlAttr<Bool> bold;
+        Optional<XmlAttr<Bool>> bold;
         /* public bool boldSpecified_ */
         // Параметр стиля надписей: курсив.
         // [XmlAttribute("italic")] public Bool italic_;
-        XmlAttr<Bool> italic;
+        Optional<XmlAttr<Bool>> italic;
         /* public bool italicSpecified_ */
     };
     // Версия раздела.

@@ -1,6 +1,6 @@
 #include "Constructive.h"
 namespace TopoR {
-// void Constructive::BoardOutline::Shape_Contour::Shift(float x, float y) {
+// void Constructive::BoardOutline::Shape_Contour::Shift(double x, double y) {
 //     /*   if(_NonfilledFigure)
 //            (std::dynamic_pointer_cast<IBaseFigure>(_NonfilledFigure)).value().Shift(x, y);*/
 // }
@@ -9,7 +9,7 @@ namespace TopoR {
 //        if(_NonfilledFigure)
 //            (std::dynamic_pointer_cast<IBaseFigure>(_NonfilledFigure)).value().UnitsConvert(in_units, out_units);*/
 // }
-// void Constructive::BoardOutline::Shape_Voids::Shift(float x, float y) {
+// void Constructive::BoardOutline::Shape_Voids::Shift(double x, double y) {
 //     /*    if(_FilledFigure)
 //             (std::dynamic_pointer_cast<IBaseFigure>(_FilledFigure)).value().Shift(x, y);*/
 // }
@@ -18,7 +18,7 @@ namespace TopoR {
 //        if(_FilledFigure)
 //            (std::dynamic_pointer_cast<IBaseFigure>(_FilledFigure)).value().UnitsConvert(in_units, out_units);*/
 // }
-// void Constructive::MntholeInstance::Shift(float x, float y) {
+// void Constructive::MntholeInstance::Shift(double x, double y) {
 //     /**  if(_Org)
 //           Org.value().Shift(x, y);*/
 // }
@@ -26,7 +26,7 @@ namespace TopoR {
 //     /*  if(_Org)
 //           Org.value().UnitsConvert(in_units, out_units);*/
 // }
-// void Constructive::Keepout_Сonstructive::Shift(float x, float y) {
+// void Constructive::Keepout_Сonstructive::Shift(double x, double y) {
 //     /* if(_FigureContPolyline)
 //          (std::dynamic_pointer_cast<IBaseFigure>(_FigureContPolyline)).value().Shift(x, y);*/
 // }
@@ -34,7 +34,7 @@ namespace TopoR {
 //     /*  if(_FigureContPolyline)
 //           (std::dynamic_pointer_cast<IBaseFigure>(_FigureContPolyline)).value().UnitsConvert(in_units, out_units);*/
 // }
-// void Constructive::Shift(float x, float y) {
+// void Constructive::Shift(double x, double y) {
 //     /*  if(_BoardOutline) {
 //            if(_BoardOutline.size())
 //                for(int i = 0; i < BoardOutline.value()._Contours.size(); i++)

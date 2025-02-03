@@ -14,8 +14,8 @@ QDebug operator<<(QDebug d, std::set<QString> c) {
     const bool oldSetting = d.autoInsertSpaces();
     d.nospace() << "set" << '(';
     auto it = c.begin(), end = c.end();
-    if (it != end) d << *it++;
-    while (it != end) d << ", " << *it++;
+    if(it != end) d << *it++;
+    while(it != end) d << ", " << *it++;
     d << ')';
     d.setAutoInsertSpaces(oldSetting);
     return d.maybeSpace();
@@ -23,13 +23,12 @@ QDebug operator<<(QDebug d, std::set<QString> c) {
 
 Xml::Xml(const QString& name) {
     // buffer.open(QIODevice::WriteOnly);
-    item->itemData[Name] = "Name";
-    item->itemData[Value] = "Value";
-    item->itemData[IsAttr] = "IsAttr";
-    item->itemData[Type] = "Type";
-    item->itemData[FLine] = "Line #";
+    item->itemData[TreeItem::NameType] = "Name (Type)";
+    item->itemData[TreeItem::Value] = "Value";
+    item->itemData[TreeItem::IsAttr] = "IsAttr";
+    item->itemData[TreeItem::FLine] = "Line #";
     QFile file{name};
-    if (!file.open(QIODevice::ReadOnly)) {
+    if(!file.open(QIODevice::ReadOnly)) {
         qWarning() << file.errorString();
         return;
     }
@@ -37,7 +36,7 @@ Xml::Xml(const QString& name) {
     QString errorMsg{};
     int errorLine{};
     int errorColumn{};
-    if (!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn)) {
+    if(!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn)) {
         qWarning() << errorMsg << errorLine << errorColumn;
         return;
     }
@@ -73,7 +72,6 @@ Xml::Xml(const QString& name) {
     // func(doc.firstChildElement());
     // exit(0);
 
-
     file.close();
 
     /*
@@ -94,13 +92,34 @@ Xml::Xml(const QString& name) {
     ui->plainTextEdit->setPlainText(xml);
 */
 
-    return;
+    // return;
 
-    file.setFileName(file.fileName().replace("/", "/formated_"));
+    file.setFileName(file.fileName() % "in.fst");
     qWarning() << file.fileName();
-    if (!file.open(QIODevice::WriteOnly)) {
+    if(!file.open(QIODevice::WriteOnly)) {
         qWarning() << file.errorString();
         return;
     }
-    file.write(doc.toString(4).toUtf8());
+
+    QString text = doc.toString(4);
+    text.replace("<![CDATA[", "");
+    text.replace("]]>", "");
+    text.replace("&#xd;", "\x0D");
+    text.replace("&#xa;", "\x0A");
+    file.write(text.toUtf8());
+}
+
+void Xml::save(const QString& dir) {
+    QDomNode xmlNode = outDoc.createProcessingInstruction("xml", R"(version="1.0" encoding="UTF-8")");
+    outDoc.insertBefore(xmlNode, outDoc.firstChild());
+    QString text = outDoc.toString(4);
+    text.replace("<![CDATA[", "");
+    text.replace("]]>", "");
+    text.replace("&#xd;", "\x0D");
+    text.replace("&#xa;", "\x0A");
+    if(QFile file{dir}; file.open(QFile::WriteOnly)) {
+        file.write(text.toUtf8());
+        // QTextStream out(&file);
+        // outDoc.save(out, 4);
+    }
 }

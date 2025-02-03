@@ -10,14 +10,14 @@ QString ComponentsOnBoard::AddComponent(QString name, units units, const QString
     while(ComponentIndexOf(name) >= 0) // проверка на уникальность имени и добавление суффикса
         name += "_";
 
-    float x{}, y{}; // координаты нового компонента
+    double x{}, y{}; // координаты нового компонента
 
     for(int i = Components.size(); i > 0; --i) { // вычисление максимально возможных координат
-        x = std::max<float>(x, Components[i - 1].org.x);
-        y = std::max<float>(y, Components[i - 1].org.y);
+        x = std::max<double>(x, Components[i - 1].org.x);
+        y = std::max<double>(y, Components[i - 1].org.y);
     }
 
-    float offset = (units == units::mm) ? 3 : 3 * Ut::UnitsConvert(dist::mm, dist::mil);
+    double offset = (units == units::mm) ? 3 : 3 * Ut::UnitsConvert(dist::mm, dist::mil);
     x += offset; // добавление небольшого смещения
     y += offset;
 
@@ -26,7 +26,7 @@ QString ComponentsOnBoard::AddComponent(QString name, units units, const QString
         .uniqueId{UniqueId()},
         .side_{side::Top},
         .angle{},
-        .fixed{Bool::off},
+        .fixed{/*Bool::off*/},
         .componentRef{componentRef},
         .footprintRef{footprintRef},
         .org{x, y},
@@ -71,7 +71,7 @@ QTransform ComponentsOnBoard::CompInstance::transform() const {
     QTransform transform;
     transform.translate(org.x, org.y);
     if(side_ == side::Bottom) transform.scale(-1, 1);
-    transform.rotate(angle);
+    transform.rotate(angle); // FIXME
     return transform;
 }
 

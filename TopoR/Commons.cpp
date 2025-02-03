@@ -218,7 +218,7 @@ void TrackLine::drawTo(QPainterPath& path) const {
     path.lineTo(end);
 }
 
-float Ut::UnitsConvert(dist inUnits, dist outUnits) {
+double Ut::UnitsConvert(dist inUnits, dist outUnits) {
     // clang-format off
     auto k = [](dist in_units) {
         switch (in_units) {

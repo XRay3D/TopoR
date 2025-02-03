@@ -19,7 +19,7 @@ struct Connectivity {
     struct Via {
         // Признак фиксации.
         // [XmlAttribute("fixed")] public Bool fixed_;
-        XmlAttr<Bool> fixed;
+        Optional<XmlAttr<Bool>> fixed;
         /* public bool fixedSpecified_ */
         // Ссылка на тип переходного отверстия.
         // [XmlElement("ViastackRef")] public ViastackRef viastackRef;
@@ -38,23 +38,23 @@ struct Connectivity {
         // [XmlAttribute("id")] public string id_;
         XmlAttr<QString> id;
         // Параметр змейки: требуемая длина.
-        // [XmlAttribute("Count", DataType ="float")] public float Count_;
-        XmlAttr<float> Count;
+        // [XmlAttribute("Count", DataType ="double")] public double Count_;
+        XmlAttr<double> Count;
         // Параметр змейки: зазор между соседними изломами.
-        // [XmlAttribute("gap", DataType = "float")] public float gap_;
-        XmlAttr<float> gap;
+        // [XmlAttribute("gap", DataType = "double")] public double gap_;
+        XmlAttr<double> gap;
         // Параметр змейки: высота h1 (см. описание змейки Serpent).
-        // [XmlAttribute("h1", DataType = "float")] public float h1_;
-        XmlAttr<float> h1;
+        // [XmlAttribute("h1", DataType = "double")] public double h1_;
+        XmlAttr<double> h1;
         // Параметр змейки: высота h2 (см. описание змейки Serpent).
-        // [XmlAttribute("h2", DataType = "float")] public float h2_;
-        XmlAttr<float> h2;
+        // [XmlAttribute("h2", DataType = "double")] public double h2_;
+        XmlAttr<double> h2;
         // Параметр змейки: высота h3 (см. описание змейки Serpent).
-        // [XmlAttribute("h3", DataType = "float")] public float h3_;
-        XmlAttr<float> h3;
+        // [XmlAttribute("h3", DataType = "double")] public double h3_;
+        XmlAttr<double> h3;
         // Параметр змейки: высота h4 (см. описание змейки Serpent).
-        // [XmlAttribute("h4", DataType = "float")] public float h4_;
-        XmlAttr<float> h4;
+        // [XmlAttribute("h4", DataType = "double")] public double h4_;
+        XmlAttr<double> h4;
     };
     // Описание застёгнутой пары проводников.
     /// \note !Сегменты(Track) описывают осевую линию пары.Форма проводников пары рассчитывается автоматически.
@@ -64,7 +64,7 @@ struct Connectivity {
         XmlAttr<QString> id;
         // Признак фиксации.
         // [XmlAttribute("fixed")] public Bool fixed_;
-        XmlAttr<Bool> fixed;
+        Optional<XmlAttr<Bool>> fixed;
         /* public bool fixedSpecified_ */
         // Ссылка на слой.
         // [XmlElement("LayerRef")] public LayerRef layerRef;
@@ -92,22 +92,22 @@ struct Connectivity {
             struct Teardrop {
                 // координаты точки, вершины.
                 // [XmlElement("Dot")] public List<Dot> Dots_;
-                XmlArrayElem<Dot> Dots;
+                XmlArray<Dot> Dots;
             };
             // Признак фиксации.
             // [XmlAttribute("fixed")] public Bool fixed_;
-            XmlAttr<Bool> fixed;
+            Optional<XmlAttr<Bool>> fixed;
             /* public bool fixedSpecified_ */
             // Ширина проводника.
-            // [XmlAttribute("width", DataType = "float")] public float width_;
-            XmlAttr<float> width;
+            // [XmlAttribute("width", DataType = "double")] public double width_;
+            XmlAttr<double> width;
             // Ссылка на застёгнутую пару проводников. Строка должна содержать идентификатор описанной застёгнутой пары проводников ZippedWire.
             // [XmlAttribute("zipwireRef")] public string zipwireRef_;
             XmlAttr<QString> zipwireRef;
             // Описание «капелек» для Subwire.
             /// \note От KilkennyCat: сделал как массив, в спецификации не так, но так удобней
             // [XmlArray("Teardrops")][XmlArrayItem("Teardrop")] public List<Teardrop> Teardrops_;
-            XmlArray<Teardrop> Teardrops;
+            XmlArrayElem<Teardrop> Teardrops;
             // Начальная точка линии, дуги.
             // [XmlElement("Start")] public Start start;
             Start start;
@@ -159,8 +159,8 @@ struct Connectivity {
             // Описание спицы термобарьера, присутствующего на плате
             struct ThermalSpoke {
                 // Толщина линии.
-                // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
-                XmlAttr<float> lineWidth;
+                // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
+                XmlAttr<double> lineWidth;
                 // Описания координат точек, вершин.
                 /// \note !В случае отсутствия - весь ThermalSpoke будет проигнорирован.
                 // [XmlElement("Dot")] public List<Dot> Dots_;
@@ -186,8 +186,8 @@ struct Connectivity {
         XmlAttr<Bool> useBackoff;
         /* public bool useBackoffSpecified_ */
         // Параметр области металлизации (полигона): зазор до области металлизации.
-        // [XmlAttribute("backoff", DataType ="float")] public float backoff_;
-        XmlAttr<float> backoff;
+        // [XmlAttribute("backoff", DataType ="double")] public double backoff_;
+        XmlAttr<double> backoff;
         // Параметр области металлизации (полигона) стека: подключение контактных площадок.
         // [XmlAttribute("connectPad")] public connectPad connectPad_;
         XmlAttr<connectPad> connectPad_;
@@ -195,14 +195,14 @@ struct Connectivity {
         // [XmlAttribute("connectVia")] public connectVia connectVia_;
         XmlAttr<connectVia> connectVia_;
         // Толщина линии.
-        // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
-        XmlAttr<float> lineWidth;
+        // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
+        XmlAttr<double> lineWidth;
         // Параметр области металлизации (полигона): зазор между линиями штриховки.
-        // [XmlAttribute("lineClr", DataType = "float")] public float lineClr_;
-        XmlAttr<float> lineClr;
+        // [XmlAttribute("lineClr", DataType = "double")] public double lineClr_;
+        XmlAttr<double> lineClr;
         // Параметр области металлизации (полигона): минимальная площадь островка.
-        // [XmlAttribute("minSquare", DataType = "float")] public float minSquare_;
-        XmlAttr<float> minSquare;
+        // [XmlAttribute("minSquare", DataType = "double")] public double minSquare_;
+        XmlAttr<double> minSquare;
         // Параметр области металлизации (полигона): точность аппроксимации контура.
         // [XmlAttribute("precision")] public precision precision_;
         XmlAttr<precision> precision_;
@@ -283,8 +283,8 @@ struct Connectivity {
                 FigureContPoliline_;
         };
         // Толщина линии.
-        // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
-        XmlAttr<float> lineWidth;
+        // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
+        XmlAttr<double> lineWidth;
         // Ссылка на слой.
         // [XmlElement("LayerRef")] public LayerRef layerRef;
         LayerRef layerRef;

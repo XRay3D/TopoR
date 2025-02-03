@@ -88,21 +88,25 @@ std::string_view sv{}
 // }
 
 // Elapsed time: 40 s. (time), 39.405 s. (clock)
+
+#ifdef _MSC_VER
+#define __PRETTY_FUNCTION__ __FUNCSIG__;
+#endif
+
 namespace Impl {
 template <typename T>
 inline consteval auto typeName() {
+    constexpr std::string_view sv = __PRETTY_FUNCTION__;
 #ifdef _MSC_VER
-    constexpr std::string_view sv = __FUNCSIG__;
     constexpr auto last = sv.find_last_not_of(" &>(}", sv.size() - 6);
 #else
-    constexpr std::string_view sv{__PRETTY_FUNCTION__};
     constexpr auto last = sv.find_last_not_of(" &>]");
 #endif
     constexpr auto first = sv.find_last_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789", last);
     constexpr size_t size = last - first + 1;
     std::array<char, size> res{};
     auto it = res.data();
-    for (auto a{first + 1}; a <= last; ++a) *it++ = sv[a];
+    for(auto a{first + 1}; a <= last; ++a) *it++ = sv[a];
     return res;
 }
 
@@ -125,14 +129,6 @@ template <typename... Ts>
 Overload(Ts...) -> Overload<Ts...>;
 
 template <typename T>
-using Optional = std::optional<T>;
-// struct Optional : std::optional<T> {
-//     using Opt = std::optional<T>;
-//     using Opt::operator bool;
-//     operator const T&() const { return Opt::value(); }
-// };
-
-template <typename T>
 struct XmlAttr {
     using TypeName = T;
     T value{};
@@ -153,6 +149,26 @@ struct XmlAttr {
     // auto operator<=>(const T& other) const {
     //     return value <=> other;
     // }
+};
+
+template <typename T>
+struct Optional;
+
+template <typename T>
+struct Optional<XmlAttr<T>> : std::optional<XmlAttr<T>> {
+    using opt = std::optional<XmlAttr<T>>;
+    using std::optional<XmlAttr<T>>::optional;
+    operator T() const { return (opt::has_value()) ? opt::value().value : T{}; }
+};
+
+template <typename T>
+struct Optional : std::optional<T> {
+    using opt = std::optional<XmlAttr<T>>;
+    using std::optional<T>::optional;
+    operator T() const { return (opt::has_value()) ? opt::value() : T{}; }
+    // using operator bool();
+    // auto& operator=(T&& val) { return Optional::emplace(std::move(val)), Optional::value(); }
+    // auto& operator=(const T& val) { return Optional::emplace(val), Optional::value(); }
 };
 
 template <typename T>
@@ -187,4 +203,28 @@ struct XmlVariant : std::variant<Ts...> {
     }
     bool has_value() const { return Variant::index() != std::variant_npos; }
     operator bool() const { return has_value(); }
+};
+
+/// Skippable
+template <typename T> concept Heritable = !std::is_fundamental_v<T> && !std::is_pointer_v<T>;
+template <typename T> concept NotHeritable = !Heritable<T>;
+
+template <typename T>
+struct Skip;
+
+template <Heritable T>
+struct Skip<T> : T {
+    using T::T;
+};
+
+template <NotHeritable T>
+struct Skip<T> {
+    T val;
+    Skip(T arg)
+        : val{arg} { }
+    auto& operator=(T arg) { return val = arg; }
+    operator T&() & { return val; }
+    operator const T&() const& { return val; }
+    operator T() { return val; }
+    operator const T() const { return val; }
 };

@@ -1,4 +1,5 @@
 #include "treeitem.h"
+#include <QColor>
 
 // TreeItem::TreeItem(const QVector<QVariant>& data, TreeItem* parent)
 //     : itemData(data)
@@ -6,9 +7,16 @@
 
 TreeItem::~TreeItem() { qDeleteAll(childItems); }
 
-QVariant TreeItem::data(int column) const {
-    if(column < 0 || column >= itemData.size()) return QVariant();
-    return itemData.at(column);
+QVariant TreeItem::data(int column, int role) const {
+    if(column < 0 || column >= itemData.size()) return {};
+    if(role == Qt::DisplayRole || role == Qt::EditRole)
+        return itemData.at(column);
+    if(role == Qt::BackgroundRole && itemData.at(column).toString().startsWith('#')) {
+        QColor retColor{};
+        retColor.setNamedColor(itemData.at(column).toString());
+        return retColor;
+    }
+    return {};
 }
 
 TreeItem* TreeItem::child(int number) {

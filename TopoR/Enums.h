@@ -24,7 +24,7 @@ namespace Impl {
 
 namespace ranges = std::ranges;
 using std::array;
-using str_view = std::string_view;
+using std::string_view;
 
 template <class Ty>
 inline constexpr bool hasStrings = false;
@@ -37,28 +37,28 @@ static consteval auto enumName() {
 #ifdef _MSC_VER
     // MSVC: auto __cdecl Impl::enumName<align::CM>(void)
     constexpr string_view sv{__FUNCSIG__};
-    constexpr auto last = sv.find_last_of(">");
+    constexpr size_t last = sv.find_last_of(">");
 #else
     // clang: auto Impl::name() [E = align::CM]
     // gcc: consteval auto Impl::name() [with auto E = align::CM]
-    constexpr str_view sv{__PRETTY_FUNCTION__};
+    constexpr string_view sv{__PRETTY_FUNCTION__};
     constexpr auto last = sv.find_last_of("]");
 #endif
-    constexpr auto first = sv.find_last_of(":", last) + 1;
+    constexpr size_t first = sv.find_last_of(":", last) + 1;
     array<char, last - first + 1> buf{}; // +1 '\0' tetminated c_str
-    ranges::copy(str_view{sv.begin() + first, last - first}, buf.begin());
+    ranges::copy(string_view{sv.data() + first, last - first}, buf.begin());
     return buf;
 }
 
 template <auto EnumVal>
 inline constexpr auto ENameArr{enumName<EnumVal>()};
 template <auto EnumVal>
-inline constexpr str_view EnumName{ENameArr<EnumVal>.data(), ENameArr<EnumVal>.size() - 1};
+inline constexpr string_view EnumName{ENameArr<EnumVal>.data(), ENameArr<EnumVal>.size() - 1};
 
 template <typename Enum, auto... Enums>
 class Tokenizer {
     struct Data {
-        str_view name;
+        string_view name;
         Enum value;
     };
     static constexpr array tokens{
@@ -71,9 +71,9 @@ class Tokenizer {
 public:
     static constexpr auto toString(Enum e) noexcept {
         auto it = ranges::find(tokens, e, &Data::value);
-        return it == tokens.end() ? str_view{""} : it->name;
+        return it == tokens.end() ? string_view{""} : it->name;
     }
-    static constexpr Enum toEnum(str_view str) noexcept {
+    static constexpr Enum toEnum(string_view str) noexcept {
         auto it = ranges::find(tokens, str, &Data::name);
         return it == tokens.end() ? errorValue : it->value;
     }
@@ -91,7 +91,7 @@ public:
     inline constexpr auto hasStrings<Enum> = true;                                     \
     template <>                                                                        \
     inline constexpr auto Tokens<Enum> = [] {                                          \
-        using enum Enum; /* using enum ↓  P1099R5 */                                 \
+        using enum Enum; /* using enum ↓  P1099R5 */                                   \
         return Tokenizer<Enum, __VA_ARGS__>();                                         \
     }();                                                                               \
     }
@@ -289,9 +289,9 @@ XML_ENUM(Handling,
 
 // Тип стека контактных площадок. Значение по умолчанию – Through.
 XML_ENUM(type_padstack,
-    Through,  // сквозной
-    SMD,      // планарный
-    MountHole // монтажное отверстие
+    Through,     // сквозной
+    SMD,         // планарный
+    MountingHole // монтажное отверстие
 )
 
 // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения. Значение по умолчанию – mm.

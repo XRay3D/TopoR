@@ -16,11 +16,11 @@ struct Rules {
         XmlAttr<Bool> enabled;
         /* public bool enabledSpecified_ */
         // Параметр правила ширины проводников: минимальная ширина проводника.
-        // [XmlAttribute("widthMin", DataType = "float")] public float widthMin_;
-        XmlAttr<float> widthMin;
+        // [XmlAttribute("widthMin", DataType = "double")] public double widthMin_;
+        XmlAttr<double> widthMin;
         // Параметр правила ширины проводников: номинальная ширина проводника.
-        // [XmlAttribute("widthNom", DataType = "float")] public float widthNom_;
-        XmlAttr<float> widthNom;
+        // [XmlAttribute("widthNom", DataType = "double")] public double widthNom_;
+        XmlAttr<double> widthNom;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         // [XmlElement(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
@@ -49,11 +49,11 @@ struct Rules {
         XmlAttr<Bool> enabled;
         /* public bool enabledSpecified_ */
         // Параметр правила зазоров между цепями: минимальный зазор.
-        // [XmlAttribute("clrnMin", DataType = "float")] public float clrnMin_;
-        XmlAttr<float> clrnMin;
+        // [XmlAttribute("clrnMin", DataType = "double")] public double clrnMin_;
+        XmlAttr<double> clrnMin;
         // Параметр правила зазоров между цепями: номинальный зазор.
-        // [XmlAttribute("clrnNom", DataType = "float")] public float clrnNom_;
-        XmlAttr<float> clrnNom;
+        // [XmlAttribute("clrnNom", DataType = "double")] public double clrnNom_;
+        XmlAttr<double> clrnNom;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         // [XmlElement(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
@@ -73,8 +73,8 @@ struct Rules {
         XmlAttr<Bool> enabled;
         /* public bool enabledSpecified_ */
         // Параметр правила зазоров между цепями: минимальный зазор.
-        // [XmlAttribute("clrn", DataType = "float")] public float clrn_;
-        XmlAttr<float> clrn;
+        // [XmlAttribute("clrn", DataType = "double")] public double clrn_;
+        XmlAttr<double> clrn;
         // Объекты воздействия правила.
         // [XmlArray("ObjectsAffected")][XmlArrayItem(ComponentRef,CompGroupRef,AllComps)] public List<Object> ObjectsAffected_;
         XmlArrayElem<XmlVariant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
@@ -82,11 +82,11 @@ struct Rules {
     // Описание зазоров до края платы.
     struct RulesClearancesToBoard {
         // Устанавливает зазор от проводников до края платы.
-        // [XmlAttribute("wires", DataType = "float")] public float clrn_;
-        XmlAttr<float> wires;
+        // [XmlAttribute("wires", DataType = "double")] public double clrn_;
+        XmlAttr<double> wires;
         // Устанавливает зазор от компонентов до края платы.
-        // [XmlAttribute("comps", DataType = "float")] public float comps_;
-        XmlAttr<float> comps;
+        // [XmlAttribute("comps", DataType = "double")] public double comps_;
+        XmlAttr<double> comps;
     };
     // Описание правила назначения цепям стеков переходных отверстий.
     struct ViastacksOfNets {

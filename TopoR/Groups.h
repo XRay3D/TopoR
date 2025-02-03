@@ -14,7 +14,7 @@ struct Groups {
         XmlAttr<QString> name;
         // Ссылка на слой или ссылка на группу слоёв.
         // [XmlElement(LayerRef, LayerGroupRef)] public List<Object> LayerRefs_;
-        XmlArrayElem<XmlVariant<LayerRef, LayerGroupRef>> LayerRefs;
+        XmlArray<XmlVariant<LayerRef, LayerGroupRef>> LayerRefs;
         /**********************************************************************
          * Здесь находятся функции для работы с элементами класса LayerGroup. *
          * Они не являются частью формата TopoR PCB.                          *
@@ -29,7 +29,7 @@ struct Groups {
         // Ссылка на цепь или ссылка на группу цепей.
         // [XmlElement(NetRef),
         //  XmlElement(NetGroupRef)] public List<Object> NetRefs_;
-        XmlArrayElem<XmlVariant<NetRef, NetGroupRef>> NetRefs;
+        XmlArray<XmlVariant<NetRef, NetGroupRef>> NetRefs;
     };
     // Описание группы компонентов.
     struct CompGroup {
@@ -38,7 +38,7 @@ struct Groups {
         // Ссылка на компонент на плате или ссылка на группу компонентов.
         // [XmlElement(CompInstanceRef),
         //  XmlElement(CompGroupRef)] public List<Object> CompRefs_;
-        XmlArrayElem<XmlVariant<CompInstanceRef, CompGroupRef>> CompRefs;
+        XmlArray<XmlVariant<CompInstanceRef, CompGroupRef>> CompRefs;
     };
     // Версия раздела.
     // [XmlAttribute("version")] public string version_;

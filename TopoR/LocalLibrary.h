@@ -29,16 +29,16 @@ struct LocalLibrary {
     struct PadCircle {
         BasePadRef Reference;
         // Диаметр окружности, круга, овала.
-        // [XmlAttribute("diameter", DataType = "float")] public float diameter_;
-        XmlAttr<float> diameter;
+        // [XmlAttribute("diameter", DataType = "double")] public double diameter_;
+        XmlAttr<double> diameter;
         operator QPainterPath() const;
     };
     // Описание овальной контактной площадки.
     struct PadOval {
         BasePadRef Reference;
         // Диаметр окружности, круга, овала.
-        // [XmlAttribute("diameter", DataType = "float")] public float diameter_;
-        XmlAttr<float> diameter;
+        // [XmlAttribute("diameter", DataType = "double")] public double diameter_;
+        XmlAttr<double> diameter;
         // Параметр овальной контактной площадки: вытягивание по осям x и y.
         // [XmlElement("Stretch")] public Stretch stretch;
         Stretch stretch;
@@ -61,17 +61,17 @@ struct LocalLibrary {
     struct PadRect {
         BasePadRef Reference;
         // Ширина прямоугольной контактной площадки.
-        // [XmlAttribute("width", DataType = "float")] public float width_;
-        XmlAttr<float> width;
+        // [XmlAttribute("width", DataType = "double")] public double width_;
+        XmlAttr<double> width;
         // Высота прямоугольной контактной площадки.
-        // [XmlAttribute("height", DataType = "float")] public float height_;
-        XmlAttr<float> height;
+        // [XmlAttribute("height", DataType = "double")] public double height_;
+        XmlAttr<double> height;
         // Тип обработки углов прямоугольной контактной площадки.
         // [XmlAttribute("handling")] public Handling handling_;
         Optional<XmlAttr<Handling>> handling;
         // Величина обработки углов прямоугольной контактной площадки. Значение зависит от типа обработки. Для скругления это радиус. Для среза это высота среза.
-        // [XmlAttribute("handlingValue", DataType = "float")] public float handlingValue_;
-        Optional<XmlAttr<float>> handlingValue;
+        // [XmlAttribute("handlingValue", DataType = "double")] public double handlingValue_;
+        Optional<XmlAttr<double>> handlingValue;
         // Флаг выборочной обработки углов прямоугольной контактной площадки. Если не установлен, то все углы обрабатываются одинаковым образом.
         // [XmlAttribute("custom")] public Bool custom_;
         Optional<XmlAttr<Bool>> custom;
@@ -108,16 +108,16 @@ struct LocalLibrary {
         XmlAttr<QString> name;
         // Тип стека контактных площадок.
         // [XmlAttribute("type")] public type_padstack type_;
-        XmlAttr<type_padstack> type;
+        Optional<XmlAttr<type_padstack>> type;
         // Диаметр отверстия.
-        // [XmlAttribute("holeDiameter", DataType = "float")] public float holeDiameter_;
-        XmlAttr<float> holeDiameter;
+        // [XmlAttribute("holeDiameter", DataType = "double")] public double holeDiameter_;
+        Optional<XmlAttr<double>> holeDiameter;
         // Параметр стека контактной площадки: металлизация отверстия.
         // [XmlAttribute("metallized")] public Bool metallized_;
-        XmlAttr<Bool> metallized;
+        Optional<XmlAttr<Bool>> metallized;
         // Параметр стека контактной площадки: подключение к области металлизации (полигону).
         // [XmlAttribute("connectToCopper")] public ConnectToCopper connectToCopper_;
-        XmlAttr<ConnectToCopper> connectToCopper;
+        Optional<XmlAttr<ConnectToCopper>> connectToCopper;
         // Описание термобарьера.
         // [XmlElement("Thermal")] public Thermal thermal;
         Thermal thermal;
@@ -145,11 +145,11 @@ struct LocalLibrary {
         // Имя объекта или ссылка на именованный объект.
         XmlAttr<QString> name;
         // Диаметр отверстия.
-        // [XmlAttribute("holeDiameter", DataType = "float")] public float holeDiameter_;
-        XmlAttr<float> holeDiameter;
+        // [XmlAttribute("holeDiameter", DataType = "double")] public double holeDiameter_;
+        XmlAttr<double> holeDiameter;
         // Параметр типа переходного отверстия: возможность установить переходное отверстие на контактной площадке.
         // [XmlAttribute("viaOnPin")] public Bool viaOnPin_;
-        XmlAttr<Bool> viaOnPin;
+        Optional<XmlAttr<Bool>> viaOnPin;
         // Диапазон слоев.
         // <value>AllLayers | [LayerRef]</value>
         // [XmlElement(LayerRange)] public LayerRange layerRange;
@@ -163,8 +163,8 @@ struct LocalLibrary {
         // Описание области металлизации (полигона) в посадочном месте компонента.
         struct Copper /*_Footprint*/ {
             // Толщина линии.
-            // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
-            XmlAttr<float> lineWidth;
+            // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
+            XmlAttr<double> lineWidth;
             // Ссылка на слой.
             // [XmlElement("LayerRef")] public LayerRef layerRef;
             LayerRef layerRef;
@@ -223,8 +223,8 @@ struct LocalLibrary {
             // [XmlAttribute("align")] public align align;
             Optional<XmlAttr<align>> align_;
             // Задаёт угол в градусах c точностью до тысячных долей.
-            // [XmlAttribute("angle", DataType = "float")] public float angle_;
-            Optional<XmlAttr<float>> angle;
+            // [XmlAttribute("angle", DataType = "double")] public double angle_;
+            Optional<XmlAttr<double>> angle;
             // Параметр надписей и ярлыков: зеркальность отображения.
             // [XmlAttribute("mirror")] public Bool mirror_;
             Optional<XmlAttr<Bool>> mirror;
@@ -239,9 +239,9 @@ struct LocalLibrary {
             Optional<Org> org;
             QTransform transform() const {
                 QTransform transform;
-                if (org)
+                if(org)
                     transform.translate(org.value().x, org.value().y);
-                if (angle)
+                if(angle)
                     transform.rotate(angle.value());
                 return transform;
             }
@@ -260,13 +260,13 @@ struct LocalLibrary {
             // Имя объекта или ссылка на именованный объект.
             XmlAttr<QString> name;
             // Задаёт угол в градусах c точностью до тысячных долей.
-            // [XmlAttribute("angle", DataType = "float")] public float angle_;
-            XmlAttr<float> angle;
+            // [XmlAttribute("angle", DataType = "double")] public double angle_;
+            Optional<XmlAttr<double>> angle;
             // Параметр контакта (вывода) посадочного места: перевёрнутость.
             // Если флаг не установлен, площадка планарного контакта будет находиться на одной стороне с компонентом,
             // иначе площадка будет расположена на противоположной стороне.
             // [XmlAttribute("flipped")] public Bool flipped_;
-            XmlAttr<Bool> flipped;
+            Optional<XmlAttr<Bool>> flipped;
             // Ссылка на стек контактных площадок.
             // [XmlElement("PadstackRef")] public PadstackRef padstackRef;
             PadstackRef padstackRef;
@@ -276,7 +276,7 @@ struct LocalLibrary {
             QTransform transform() const {
                 QTransform transform;
                 transform.translate(org.x, org.y);
-                transform.rotate(angle);
+                if(angle) transform.rotate(*angle);
                 return transform;
             }
         };
@@ -359,9 +359,9 @@ struct LocalLibrary {
             XmlAttr<int> padNum;
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
             // [XmlAttribute("valueType")] public valueType valueType_;
-            XmlAttr<valueType> valueType_;
+            Optional<XmlAttr<valueType>> valueType_;
             // Параметр контакта компонента в посадочном месте: задержка сигнала в посадочном месте.
-            XmlAttr<float> delay;
+            Optional<XmlAttr<double>> delay;
         };
         // Ссылка на схемный компонент.
         // [XmlElement("ComponentRef")] public ComponentRef componentRef;
@@ -395,7 +395,7 @@ struct LocalLibrary {
      * Здесь находятся функции для работы с элементами класса LocalLibrary. *
      * Они не являются частью формата TopoR PCB.                            *
      * **********************************************************************/
-    static inline std::map<QString, QGraphicsItemGroup*> footprints;
+    mutable Skip<std::map<QString, QGraphicsItemGroup*>> footprints;
     const Padstack* getPadstack(const QString& name) const;
     const Footprint* getFootprint(const QString& name) const;
     const Component* getComponent(const QString& name) const;

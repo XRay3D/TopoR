@@ -17,8 +17,8 @@ struct HiSpeedRules {
     struct Impedance {
         struct LayerRule {
             // Ширина проводника.
-            // [XmlAttribute("width", DataType = "float")] public float width_;
-            XmlAttr<float> width;
+            // [XmlAttribute("width", DataType = "double")] public double width_;
+            XmlAttr<double> width;
             // Ссылка на слой.
             // [XmlElement("LayerRef")] public LayerRef layerRef;
             LayerRef layerRef;
@@ -26,8 +26,8 @@ struct HiSpeedRules {
         // Имя объекта или ссылка на именованный объект.
         XmlAttr<QString> name;
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
-        // [XmlAttribute("Z0", DataType = "float")] public float z0_;
-        XmlAttr<float> Z0;
+        // [XmlAttribute("Z0", DataType = "double")] public double z0_;
+        XmlAttr<double> Z0;
         // Правило разводки сигнала для слоя.
         // [XmlElement("LayerRule")] public List<LayerRule_Impendance> LayerImpedanceRules_;
         XmlArray<LayerRule> LayerImpedanceRules;
@@ -36,11 +36,11 @@ struct HiSpeedRules {
     struct ImpedanceDiff {
         struct LayerRule {
             // Ширина проводника.
-            // [XmlAttribute("width", DataType = "float")] public float width_;
-            XmlAttr<float> width;
+            // [XmlAttribute("width", DataType = "double")] public double width_;
+            XmlAttr<double> width;
             // Параметр правила разводки дифференциальных пар: зазор между проводниками пары.
-            // [XmlAttribute("gap", DataType = "float")] public float gap_;
-            XmlAttr<float> gap;
+            // [XmlAttribute("gap", DataType = "double")] public double gap_;
+            XmlAttr<double> gap;
             // Ссылка на слой.
             // [XmlElement("LayerRef")] public LayerRef layerRef;
             LayerRef layerRef;
@@ -48,8 +48,8 @@ struct HiSpeedRules {
         // Имя объекта или ссылка на именованный объект.
         XmlAttr<QString> name;
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
-        // [XmlAttribute("Z0", DataType = "float")] public float z0_;
-        XmlAttr<float> Z0;
+        // [XmlAttribute("Z0", DataType = "double")] public double z0_;
+        XmlAttr<double> Z0;
         // Правило разводки дифференциальной пары для слоя.
         // [XmlElement("LayerRule")] public List<LayerRule_ImpendanceDiff> LayerImpedanceDiffRules_;
         XmlArray<LayerRule> LayerImpedanceDiffRules;
@@ -94,8 +94,8 @@ struct HiSpeedRules {
         // Имя объекта или ссылка на именованный объект.
         XmlAttr<QString> name;
         // Параметр дифференциальной пары: допустимый разброс длины между проводниками пары.
-        // [XmlAttribute("mismatch", DataType = "float")] public float mismatch_;
-        XmlAttr<float> mismatch;
+        // [XmlAttribute("mismatch", DataType = "double")] public double mismatch_;
+        XmlAttr<double> mismatch;
         // Ссылка на волновое сопротивление.
         // [XmlElement("ImpedanceRef")] public ImpedanceRef impedanceRef;
         ImpedanceRef impedanceRef;
@@ -127,8 +127,8 @@ struct HiSpeedRules {
             XmlAttr<valueType> valueType_;
             // Параметр правила выравнивания задержек внутри группы цепей: допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            // [XmlAttribute("tolerance", DataType = "float")] public float tolerance_;
-            XmlAttr<float> tolerance;
+            // [XmlAttribute("tolerance", DataType = "double")] public double tolerance_;
+            XmlAttr<double> tolerance;
             // Объекты воздействия правила.
             // [XmlArray("ObjectsAffected")][XmlArrayItem("SignalGroupRef")] public List<SignalGroupRef> ObjectsAffected_;
             XmlArrayElem<SignalGroupRef> ObjectsAffected;
@@ -144,16 +144,16 @@ struct HiSpeedRules {
             XmlAttr<valueType> valueType_;
             // Значение константы в правилах выравнивания задержек.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            // [XmlAttribute("constant", DataType = "float")] public float constant_;
-            XmlAttr<float> constant;
+            // [XmlAttribute("constant", DataType = "double")] public double constant_;
+            XmlAttr<double> constant;
             // Параметр правила выравнивания задержек: нижний допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            // [XmlAttribute("toleranceUnder", DataType = "float")] public float toleranceUnder_;
-            XmlAttr<float> toleranceUnder;
+            // [XmlAttribute("toleranceUnder", DataType = "double")] public double toleranceUnder_;
+            XmlAttr<double> toleranceUnder;
             // Параметр правила выравнивания задержек: верхний допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            // [XmlAttribute("toleranceOver", DataType = "float")] public float toleranceOver_;
-            XmlAttr<float> toleranceOver;
+            // [XmlAttribute("toleranceOver", DataType = "double")] public double toleranceOver_;
+            XmlAttr<double> toleranceOver;
             // Объекты воздействия правила.
             // [XmlArray("ObjectsAffected")][XmlArrayItem(SignalRef),
             //  XmlArrayItem(DiffSignalRef),
@@ -172,16 +172,16 @@ struct HiSpeedRules {
             XmlAttr<valueType> valueType_;
             // Значение константы в правилах выравнивания задержек.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            // [XmlAttribute("constant", DataType = "float")] public float constant_;
-            XmlAttr<float> constant;
+            // [XmlAttribute("constant", DataType = "double")] public double constant_;
+            XmlAttr<double> constant;
             // Параметр правила выравнивания задержек: нижний допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            // [XmlAttribute("toleranceUnder", DataType = "float")] public float toleranceUnder_;
-            XmlAttr<float> toleranceUnder;
+            // [XmlAttribute("toleranceUnder", DataType = "double")] public double toleranceUnder_;
+            XmlAttr<double> toleranceUnder;
             // Параметр правила выравнивания задержек: верхний допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            // [XmlAttribute("toleranceOver", DataType = "float")] public float toleranceOver_;
-            XmlAttr<float> toleranceOver;
+            // [XmlAttribute("toleranceOver", DataType = "double")] public double toleranceOver_;
+            XmlAttr<double> toleranceOver;
             // Первый объект воздействия правила взаимного выравнивания задержек.
             // [XmlElement("ObjectLeft")] public ObjectSignal ObjectLeft_;
             ObjectSignal ObjectLeft_; // FIXME ???

@@ -25,8 +25,8 @@ struct Layers {
         std::optional<XmlAttr<Bool>> compsOutline;
         // Параметр слоя: толщина.
         /// \note !Для документирующих слоёв и слоёв с типом Assy параметр thickness отсутствует.
-        // [XmlAttribute("thickness", DataType = "float")] public float thickness_;
-        std::optional<XmlAttr<float>> thickness;
+        // [XmlAttribute("thickness", DataType = "double")] public double thickness_;
+        std::optional<XmlAttr<double>> thickness;
         /* public bool compsOutlineSpecified_ */
         /* public bool thicknessSpecified_ */
         /*****************************************************************
@@ -34,7 +34,7 @@ struct Layers {
          * Они не являются частью формата TopoR PCB.                     *
          * ***************************************************************/
         // Layer() { }
-        // Layer(const QString& name, LayerType type, Bool compsOutline, float thickness) {
+        // Layer(const QString& name, LayerType type, Bool compsOutline, double thickness) {
         //     name_ = name;
         //     type_ = type;
         //     compsOutline_ = compsOutline;

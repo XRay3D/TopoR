@@ -18,8 +18,8 @@ struct Constructive {
 #if 0
         struct ShapeContour {
             // Толщина линии.
-            // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
-            XmlAttr<float> lineWidth;
+            // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
+            XmlAttr<double> lineWidth;
             // Незалитая фигура.
             // [XmlElement(ArcCCW),
             //  XmlElement(ArcCW),
@@ -51,8 +51,8 @@ struct Constructive {
         };
         struct ShapeVoids {
             // Толщина линии.
-            // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
-            XmlAttr<float> lineWidth;
+            // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
+            XmlAttr<double> lineWidth;
             // Описание залитой фигуры.
             // [XmlElement(FilledCircle),
             //  XmlElement(FilledRect),
@@ -76,8 +76,8 @@ struct Constructive {
 #else
         struct Shape {
             // Толщина линии.
-            // [XmlAttribute("lineWidth", DataType = "float")] public float lineWidth_;
-            XmlAttr<float> lineWidth;
+            // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
+            XmlAttr<double> lineWidth;
             // Незалитая фигура.
             XmlVariant<
                 ArcCCW,      // Contour
@@ -118,8 +118,8 @@ struct Constructive {
     // Описание монтажного отверстия на плате.
     struct MntholeInstance {
         // Задаёт угол в градусах c точностью до тысячных долей.
-        // [XmlAttribute("angle", DataType = "float")] public float angle_;
-        XmlAttr<float> angle;
+        // [XmlAttribute("angle", DataType = "double")] public double angle_;
+        XmlAttr<double> angle;
         // Признак фиксации.
         // [XmlAttribute("fixed")] public Bool fixed_;
         XmlAttr<Bool> fixed;

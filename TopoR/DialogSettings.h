@@ -24,8 +24,8 @@ struct DialogSettings {
         // [XmlAttribute("messageLimit", DataType = "int")] public int messageLimit_;
         XmlAttr<int> messageLimit;
         // Настройка DRC: допуск.
-        // [XmlAttribute("tolerance", DataType = "float")] public float tolerance_;
-        XmlAttr<float> tolerance;
+        // [XmlAttribute("tolerance", DataType = "double")] public double tolerance_;
+        XmlAttr<double> tolerance;
         // Настройка DRC: проверка целостности цепей.
         // [XmlAttribute("checkNetIntegrity")] public Bool checkNetIntegrity_;
         XmlAttr<Bool> checkNetIntegrity;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QStringBuilder>
 #include <QVariant>
 #include <QVector>
 #include <array>
@@ -8,16 +9,23 @@ class TreeItem {
 public:
     explicit TreeItem(
         const QString& Name,
+        const QString& Type,
         const QVariant& Value,
         const QString& Attr,
-        int Line,
-        const QString& Type)
-        : itemData{Name, Value, Attr, Line, Type} { }
+        int Line)
+        : itemData{QString{Name % "(" % Type % ")"}, Value, Attr, Line} { }
 
-    TreeItem(){};
+    enum {
+        NameType,
+        Value,
+        IsAttr,
+        FLine,
+    };
+
+    TreeItem() { };
     ~TreeItem();
 
-    QVariant data(int column) const;
+    QVariant data(int column, int role) const;
     TreeItem* child(int number);
     TreeItem* parent();
     // bool insertChildren(int position, int count, int columns);
@@ -28,7 +36,7 @@ public:
     int childCount() const;
     int childNumber() const;
     int columnCount() const;
-    std::array<QVariant, 5> itemData;
+    std::array<QVariant, 4> itemData;
     TreeItem* addItem(TreeItem* item) {
         return childItems.emplace_back(item)->parentItem = this, childItems.back();
     }

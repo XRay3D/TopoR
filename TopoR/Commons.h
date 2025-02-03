@@ -176,63 +176,63 @@ using namespace Reference_Types;
 
 namespace Coordinates {
 struct base_coordinat {
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // координаты точки, вершины.
 struct Dot /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Центр круга (окружности), овала.
 struct Center /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Начальная точка линии, дуги.
 struct Start /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Средняя точка дуги.
 struct Middle /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Конечная точка линии, дуги.
 struct End /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Точка привязки объекта.
 struct Org /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Cмещение точки привязки или объекта по осям x и y.
 struct Shift /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Вытягивание по осям x и y.
 struct Stretch /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<float> x, y;
+    XmlAttr<double> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
@@ -287,7 +287,7 @@ struct SegmentArcByAngle /*: SegmentLine*/ {
     operator QPainterPath() const { return toPPath(); }
     End end;
     // Задаёт угол в градусах c точностью до тысячных долей.
-    XmlAttr<float> angle;
+    XmlAttr<double> angle;
 };
 
 // Описание дугообразного сегмента контура.
@@ -349,7 +349,7 @@ struct ArcByAngle /*: IBaseFigure*/ {
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
     // Задаёт угол в градусах c точностью до тысячных долей.
-    XmlAttr<float> angle;
+    XmlAttr<double> angle;
     // Начальная точка линии, дуги.
     // [XmlElement("Start")] public Start start;
     Start start;
@@ -380,7 +380,7 @@ struct Circle /*: IBaseFigure*/ {
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
     // Диаметр окружности, круга, овала.
-    XmlAttr<float> diameter;
+    XmlAttr<double> diameter;
     // Центр круга (окружности), овала.
     // [XmlElement("Center")] public Center center;
     Center center;
@@ -446,7 +446,7 @@ struct FilledCircle /*: Circle*/ {
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
     // using Circle::Circle;
-    XmlAttr<float> diameter;
+    XmlAttr<double> diameter;
     Center center;
 };
 
@@ -583,16 +583,16 @@ struct Thermal { // Параметры термобарьера:
     // Минимальное число спиц.
     XmlAttr<int> minSpokeNum;
     // Задаёт угол в градусах c точностью до тысячных долей.
-    XmlAttr<float> angle;
+    XmlAttr<double> angle;
     // Ширина спицы.
-    XmlAttr<float> spokeWidth;
+    XmlAttr<double> spokeWidth;
     // Зазор между контактной площадкой и областью металлизации.
-    XmlAttr<float> backoff;
+    XmlAttr<double> backoff;
 };
 
 // Описание детали.
 struct Detail {
-    XmlAttr<float> lineWidth; // Толщина линии.
+    XmlAttr<double> lineWidth; // Толщина линии.
     LayerRef layerRef;        // Ссылка на слой.
     XmlVariant<               // Описание фигуры.
         ArcByAngle,
@@ -618,9 +618,9 @@ struct Text {
     XmlAttr<align> align_;
 
     // Задаёт угол в градусах c точностью до тысячных долей.
-    XmlAttr<float> angle;
+    Optional<XmlAttr<double>> angle;
     // Параметр надписей и ярлыков: зеркальность отображения.
-    XmlAttr<Bool> mirror;
+    Optional<XmlAttr<Bool>> mirror;
 
     /* public bool mirrorSpecified_ */
     // Ссылка на слой.
@@ -652,7 +652,7 @@ struct Ut final {
     /// \param inUnits \brief текущие единицы измерения
     /// \param outUnits \brief выходные единицы измерения
     /// \return  Возвращает сконвертированное значение
-    static float UnitsConvert(dist inUnits, dist outUnits);
+    static double UnitsConvert(dist inUnits, dist outUnits);
 };
 
 } // namespace TopoR

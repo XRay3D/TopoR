@@ -11,14 +11,14 @@ struct DisplayControl {
     // Настройка отображения: параметры текущего вида.
     struct View {
         // Параметр текущего вида: масштаб.
-        // [XmlAttribute("scale", DataType = "float")] public float scale_;
-        XmlAttr<float> scale;
+        // [XmlAttribute("scale", DataType = "double")] public double scale_;
+        XmlAttr<double> scale;
         // Параметр текущего вида: прокрутка по горизонтали.
-        // [XmlAttribute("scrollHorz", DataType = "float")] public float scrollHorz_;
-        XmlAttr<float> scrollHorz;
+        // [XmlAttribute("scrollHorz", DataType = "double")] public double scrollHorz_;
+        XmlAttr<double> scrollHorz;
         // Параметр текущего вида: прокрутка по вертикали.
-        // [XmlAttribute("scrollVert", DataType = "float")] public float scrollVert_;
-        XmlAttr<float> scrollVert;
+        // [XmlAttribute("scrollVert", DataType = "double")] public double scrollVert_;
+        XmlAttr<double> scrollVert;
     };
     // Устанавливает активный слой.
     struct ActiveLayer {
@@ -282,11 +282,11 @@ struct DisplayControl {
         // Настройка отображения сетки: шаг сетки.
         struct GridSpace {
             // шаг сетки по горизонтали.
-            // [XmlAttribute("x", DataType = "float")] public float x_;
-            XmlAttr<float> x;
+            // [XmlAttribute("x", DataType = "double")] public double x_;
+            XmlAttr<double> x;
             // шаг сетки по вертикали.
-            // [XmlAttribute("y", DataType = "float")] public float y_;
-            XmlAttr<float> y;
+            // [XmlAttribute("y", DataType = "double")] public double y_;
+            XmlAttr<double> y;
         };
         // Настройка отображения сетки: цвет сетки.
         // [XmlAttribute("gridColor")] public string gridColor_;

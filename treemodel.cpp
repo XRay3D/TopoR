@@ -9,9 +9,7 @@ TreeModel::TreeModel(TreeItem* rootItem, const QStringList& headers, QObject* pa
     , rootItem{rootItem} {
 }
 
-TreeModel::~TreeModel() {
-    delete rootItem;
-}
+TreeModel::~TreeModel() { delete rootItem; }
 
 int TreeModel::columnCount(const QModelIndex& parent) const {
     Q_UNUSED(parent);
@@ -20,14 +18,14 @@ int TreeModel::columnCount(const QModelIndex& parent) const {
 
 QVariant TreeModel::data(const QModelIndex& index, int role) const {
     if(!index.isValid())
-        return QVariant();
+        return {};
 
-    if(role != Qt::DisplayRole && role != Qt::EditRole)
-        return QVariant();
+    // if(role != Qt::DisplayRole && role != Qt::EditRole)
+    // return {};
 
     TreeItem* item = getItem(index);
 
-    return item->data(index.column());
+    return item->data(index.column(), role);
 }
 
 Qt::ItemFlags TreeModel::flags(const QModelIndex& index) const {
@@ -46,12 +44,10 @@ TreeItem* TreeModel::getItem(const QModelIndex& index) const {
     return rootItem;
 }
 
-QVariant TreeModel::headerData(int section, Qt::Orientation orientation,
-    int role) const {
+QVariant TreeModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return rootItem->data(section);
-
-    return QVariant();
+        return rootItem->data(section, role);
+    return {};
 }
 
 QModelIndex TreeModel::index(int row, int column, const QModelIndex& parent) const {

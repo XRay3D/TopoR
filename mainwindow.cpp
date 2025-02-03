@@ -22,21 +22,23 @@ using namespace TopoR;
 #else
 #define ALL 0
 #endif
+
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , file{new TopoR::TopoR_PCB_File} {
 
     ui->setupUi(this);
+
     QSettings settings;
     settings.beginGroup("MainWindow");
     dir = settings.value("dir").toString();
     restoreGeometry(settings.value("Geometry").toByteArray());
     restoreState(settings.value("State").toByteArray());
     ui->splitter->restoreState(settings.value("State").toByteArray());
-    if (!QFile::exists(dir))
+    if(!QFile::exists(dir))
         dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
-    if (dir.size() && settings.value("dir").toString() != dir)
+    if(dir.size() && settings.value("dir").toString() != dir)
         settings.setValue("dir", dir);
     QTimer::singleShot(100, this, [this] {
         loadFile();
@@ -49,7 +51,7 @@ MainWindow::MainWindow(QWidget* parent)
         dir = QFileDialog::getOpenFileName(this, {}, dir, "TopoR (*.fst)");
         QSettings settings;
         settings.beginGroup("MainWindow");
-        if (dir.size() && settings.value("dir").toString() != dir)
+        if(dir.size() && settings.value("dir").toString() != dir)
             settings.setValue("dir", dir);
         loadFile();
         ui->graphicsView->setScene(new QGraphicsScene{ui->graphicsView});
@@ -77,16 +79,17 @@ MainWindow::~MainWindow() {
 
 static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_File& file) {
     auto group = new QGraphicsItemGroup;
-    LocalLibrary::footprints.emplace(fp->name, group);
-    for (auto&& pad: fp->Pads) {
-        if (auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack) {
+    file.localLibrary.footprints.emplace(fp->name, group);
+    for(auto&& pad: fp->Pads) {
+        if(auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack) {
             QPainterPath path;
-            path.addEllipse({}, padstack->holeDiameter * 0.5, padstack->holeDiameter * 0.5);
+            if(padstack->holeDiameter)
+                path.addEllipse({}, *padstack->holeDiameter * 0.5, *padstack->holeDiameter * 0.5);
             auto item = new QGraphicsPathItem{path};
             item->setPen({Qt::magenta, 0.0});
             item->setTransform(pad.transform());
             group->addToGroup(item);
-            for (int hue{}; auto&& padShape: padstack->Pads) {
+            for(int hue{}; auto&& padShape: padstack->Pads) {
                 auto path = padShape.visit([](auto&& pad) -> QPainterPath { return pad; });
                 auto item = new QGraphicsPathItem{path};
                 int color = 240 / padstack->Pads.size() * hue++;
@@ -98,16 +101,16 @@ static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const Topo
         }
     }
 
-    for (auto&& detail: fp->Details) {
+    for(auto&& detail: fp->Details) {
         auto item = new QGraphicsPathItem{detail.Figure.visit([](auto&& det) -> QPainterPath { return det; })};
         item->setPen({Qt::lightGray, detail.lineWidth < 1.0 ? 0.0 : detail.lineWidth});
         item->setZValue(10000);
         group->addToGroup(item);
     }
 
-    for (auto&& label: fp->Labels) {
+    for(auto&& label: fp->Labels) {
 
-        if (auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
+        if(auto textStyle = file.textStyles.getTextStyle(label.textStyleRef); textStyle) {
         }
     }
     group->setToolTip(fp->name);
@@ -117,7 +120,7 @@ static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const Topo
 
 void MainWindow::drawFile() {
 
-    for (auto&& layerOptions: file->displayControl.LayersVisualOptions) {
+    for(auto&& layerOptions: file->displayControl.LayersVisualOptions) {
         detailsColor[layerOptions.layerRef] = {layerOptions.colors.details};
         fixColor[layerOptions.layerRef] = {layerOptions.colors.fix};
         padsColor[layerOptions.layerRef] = {layerOptions.colors.pads};
@@ -149,10 +152,10 @@ void MainWindow::drawFile() {
         ui->lvFootprints});
     ui->cbxLayer->setDuplicatesEnabled(false);
     connect(ui->lvComponentsOnBoard->selectionModel(), &QItemSelectionModel::selectionChanged, this, [this](const QItemSelection& selected, const QItemSelection& /*deselected*/) {
-        if (!selected.size()) return;
+        if(!selected.size()) return;
         auto id = selected.indexes().front().data().toString().split(':').front();
         auto it = std::ranges::find(file->componentsOnBoard.Components, id, &ComponentsOnBoard::CompInstance::name);
-        if (it == file->componentsOnBoard.Components.end()) return;
+        if(it == file->componentsOnBoard.Components.end()) return;
         ui->lvComponentsAttr->setModel(new ListModel{it->Attributes,
             [](std::add_const_t<decltype(it->Attributes.front())>& val) { return val.name + " (" + val.value + ")"; },
             ui->lvComponentsAttr});
@@ -182,10 +185,10 @@ void MainWindow::drawFile() {
 
 void MainWindow::drawVias() {
     auto group = new QGraphicsItemGroup;
-    for (auto&& via: file->connectivity.Vias) {
+    for(auto&& via: file->connectivity.Vias) {
         auto viastack = file->localLibrary.getViastack(via.viastackRef.name);
-        if (!viastack) continue;
-        for (int hue{}; QPainterPath padShape: viastack->ViaPads) {
+        if(!viastack) continue;
+        for(int hue{}; QPainterPath padShape: viastack->ViaPads) {
             padShape.addEllipse({}, viastack->holeDiameter * 0.5, viastack->holeDiameter * 0.5);
             auto item = new QGraphicsPathItem{padShape};
             int color = 240 / viastack->ViaPads.size() * hue++;
@@ -200,12 +203,12 @@ void MainWindow::drawVias() {
 
 void MainWindow::drawWires() {
     std::map<QString, int> layers;
-    for (auto&& wire: file->connectivity.Wires)
-        if (!layers.contains(wire.layerRef.name.value))
+    for(auto&& wire: file->connectivity.Wires)
+        if(!layers.contains(wire.layerRef.name.value))
             layers.emplace(wire.layerRef.name.value, layers.size());
 
-    for (auto&& wire: file->connectivity.Wires) {
-        for (auto&& subwire: wire.Subwires) {
+    for(auto&& wire: file->connectivity.Wires) {
+        for(auto&& subwire: wire.Subwires) {
             int color = 240 / layers.size() * layers.at(wire.layerRef.name.value);
             ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
         }
@@ -213,15 +216,15 @@ void MainWindow::drawWires() {
 }
 
 void MainWindow::drawBoardOutline() {
-    for (auto&& contour: file->constructive.boardOutline.Contour_) {
+    for(auto&& contour: file->constructive.boardOutline.Contour_) {
         // QPainterPath path;
-        if (contour.NonfilledFigure)
+        if(contour.NonfilledFigure)
             ui->graphicsView->addItem(
                                 new QGraphicsPathItem{
                                     contour.NonfilledFigure.visit([](auto&& val) -> QPainterPath { return val; })})
                 ->setPen({Qt::yellow, contour.lineWidth});
         // contour.NonfilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
-        if (contour.FilledFigure)
+        if(contour.FilledFigure)
             ui->graphicsView->addItem(
                                 new QGraphicsPathItem{
                                     contour.FilledFigure.visit([](auto&& val) -> QPainterPath { return val; })})
@@ -231,20 +234,20 @@ void MainWindow::drawBoardOutline() {
 }
 
 void MainWindow::drawBoardOutlineVoids() {
-    for (auto&& void_: file->constructive.boardOutline.Voids) {
+    for(auto&& void_: file->constructive.boardOutline.Voids) {
         QPainterPath path;
-        if (void_.NonfilledFigure)
+        if(void_.NonfilledFigure)
             void_.NonfilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
-        if (void_.FilledFigure)
+        if(void_.FilledFigure)
             void_.FilledFigure.visit([&path](auto&& val) { val.drawTo(path); });
         ui->graphicsView->addItem(new QGraphicsPathItem{path})->setPen({Qt::gray, void_.lineWidth});
     }
 }
 
 void MainWindow::drawComponents() {
-    for (auto&& CompInstance: file->componentsOnBoard.Components) {
+    for(auto&& CompInstance: file->componentsOnBoard.Components) {
         auto footprint = file->localLibrary.getFootprint(CompInstance.footprintRef.name);
-        if (!footprint) continue;
+        if(!footprint) continue;
         auto item = graphicsItem(footprint, *file);
         item->setTransform(CompInstance.transform());
         ui->graphicsView->addItem(item);
@@ -253,12 +256,12 @@ void MainWindow::drawComponents() {
 
 void MainWindow::drawFreePads() {
     std::unordered_map<QString, QGraphicsItemGroup*> groups;
-    for (auto&& pad: file->componentsOnBoard.FreePads) {
+    for(auto&& pad: file->componentsOnBoard.FreePads) {
         auto padstack = file->localLibrary.getPadstack(pad.padstackRef);
-        if (!padstack) continue;
-        for (int hue{}; auto&& padShape: padstack->Pads) {
+        if(!padstack) continue;
+        for(int hue{}; auto&& padShape: padstack->Pads) {
             auto ref = padShape.visit([](auto&& pad) { return pad.Reference.visit([](auto&& ref) -> QString { return ref; }); });
-            if (!groups.contains(ref)) groups.emplace(ref, new QGraphicsItemGroup);
+            if(!groups.contains(ref)) groups.emplace(ref, new QGraphicsItemGroup);
             auto path = padShape.visit([](auto&& pad) -> QPainterPath { return pad; });
             auto item = new QGraphicsPathItem{path};
             int color = 240 / padstack->Pads.size() * hue++;
@@ -269,7 +272,7 @@ void MainWindow::drawFreePads() {
             groups[ref]->setToolTip(ref);
         }
     }
-    for (auto&& [key, group]: groups) {
+    for(auto&& [key, group]: groups) {
         group->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
         ui->graphicsView->addItem(group);
     }
