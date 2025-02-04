@@ -27,7 +27,7 @@ struct DisplayControl {
             [XmlAttribute("type")]
             public LayerType type_;*/
         // Наименование слоя.
-        
+
         XmlAttr<QString> name;
     };
     // Настройка отображения: единицы измерения.
@@ -280,6 +280,9 @@ struct DisplayControl {
     // Настройки сетки.
     struct Grid {
         // Настройка отображения сетки: шаг сетки.
+        /* public bool snapToAngleSpecified_ */
+        // Настройка отображения сетки: шаг сетки.
+        // [XmlElement("GridSpace")] public GridSpace gridSpace;
         struct GridSpace {
             // шаг сетки по горизонтали.
             // [XmlAttribute("x", DataType = "double")] public double x_;
@@ -287,28 +290,24 @@ struct DisplayControl {
             // шаг сетки по вертикали.
             // [XmlAttribute("y", DataType = "double")] public double y_;
             XmlAttr<double> y;
-        };
+        } gridSpace;
         // Настройка отображения сетки: цвет сетки.
         // [XmlAttribute("gridColor")] public string gridColor_;
-        XmlAttr<QString> gridColor;
+        Optional<XmlAttr<QString>> gridColor;
         // Настройка отображения сетки: тип сетки.
         // [XmlAttribute("gridKind")] public gridKind gridKind_;
-        XmlAttr<gridKind> gridKind_;
+        Optional<XmlAttr<gridKind>> gridKind_;
         // Настройка отображения сетки: показывать сетку.
         // [XmlAttribute("gridShow")] public Bool gridShow_;
-        XmlAttr<Bool> gridShow;
+        Optional<XmlAttr<Bool>> gridShow;
         /* public bool gridShowSpecified_ */
         // Настройка ручного редактора: выравнивание на сетку.
         // [XmlAttribute("alignToGrid")] public Bool alignTogrid;
-        XmlAttr<Bool> alignTogrid;
+        Optional<XmlAttr<Bool>> alignTogrid;
         /* public bool alignToGridSpecified_ */
         // Настройка ручного редактирования: привязка к углу кратному 45˚.
         // [XmlAttribute("snapToAngle")] public Bool snapToAngle_;
-        XmlAttr<Bool> snapToAngle;
-        /* public bool snapToAngleSpecified_ */
-        // Настройка отображения сетки: шаг сетки.
-        // [XmlElement("GridSpace")] public GridSpace gridSpace;
-        GridSpace gridSpace;
+        Optional<XmlAttr<Bool>> snapToAngle;
     };
     // Настройка отображения: настройки видимости слоя.
     struct LayerOptions {
@@ -328,7 +327,7 @@ struct DisplayControl {
         struct Show {
             // Флаг видимости.
             // [XmlAttribute("visible")] public Bool visible_;
-            XmlAttr<Bool> visible;
+            Optional<XmlAttr<Bool>> visible;
             /* public bool visibleSpecified_ */
             // Настройка отображения слоя: видимость деталей.
             // [XmlAttribute("details")] public Bool details_;

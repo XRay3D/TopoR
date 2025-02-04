@@ -181,27 +181,34 @@ struct XmlArrayElem : std::vector<T>, std::true_type {
     using std::vector<T>::vector;
 };
 
+struct NullVariant { };
+
 template <typename... Ts>
-struct XmlVariant : std::variant<Ts...> {
-    using std::variant<Ts...>::variant;
-    using Variant = std::variant<Ts...>;
-    template <typename Func>
-    auto visit(Func&& func) {
-        return std::visit(std::forward<Func>(func), *this);
-    }
+struct XmlVariant : std::variant<NullVariant, Ts...> {
+    using Variant = std::variant<NullVariant, Ts...>;
+    using Variant::variant;
+
+    using FirstType = std::tuple_element_t<0, std::tuple<Ts...>>;
+
+    // template <typename Func>
+    // auto visit(Func&& func) {
+    //     return std::visit(std::forward<Func>(func), *this);
+    // }
     template <typename Func>
     auto visit(Func&& func) const {
-        return std::visit(std::forward<Func>(func), *this);
+        using Ret = decltype(func(FirstType{}));
+        return std::visit(Overload{[](NullVariant) { return Ret{}; }, std::forward<Func>(func)}, *this);
     }
-    template <typename... Funcs>
-    auto visit(Funcs&&... funcs) {
-        return std::visit(Overload{std::forward<Funcs>(funcs)...}, *this);
-    }
+    // template <typename... Funcs>
+    // auto visit(Funcs&&... funcs) {
+    //     return std::visit(Overload{std::forward<Funcs>(funcs)...}, *this);
+    // }
     template <typename... Funcs>
     auto visit(Funcs&&... funcs) const {
-        return std::visit(Overload{std::forward<Funcs>(funcs)...}, *this);
+        using Ret = std::tuple_element_t<0, std::tuple<decltype(funcs({}))...>>;
+        return std::visit(Overload{[](NullVariant) { return Ret{}; }, std::forward<Funcs>(funcs)...}, *this);
     }
-    bool has_value() const { return Variant::index() != std::variant_npos; }
+    bool has_value() const { return Variant::index() > 0 && Variant::index() != std::variant_npos; }
     operator bool() const { return has_value(); }
 };
 

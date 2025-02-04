@@ -3,9 +3,10 @@
 #include "Commons.h"
 #include "xmlserializertypes.h"
 #include <QAbstractTableModel>
-#include <pfr.hpp> //
+#include <boost/pfr.hpp>
 
 using namespace TopoR;
+namespace pfr = boost::pfr;
 
 template <typename Data>
 class TableModel : public QAbstractTableModel {
@@ -32,11 +33,11 @@ public:
         return Size;
     }
     QVariant data(const QModelIndex& index, int role) const override {
-        if (role == Qt::DisplayRole || role == Qt::EditRole) {
+        if(role == Qt::DisplayRole || role == Qt::EditRole) {
             return [column = index.column(), this]<size_t... Is>(const auto& val, std::index_sequence<Is...>) {
                 QVariant ret;
                 auto readField = [column, &ret, this]<size_t I>(const auto& val, std::integral_constant<size_t, I>) {
-                    if (column == I) ret = get(pfr::get<I>(val));
+                    if(column == I) ret = get(pfr::get<I>(val));
                 };
                 (readField(val, std::integral_constant<size_t, Is>{}), ...);
                 return ret;
@@ -45,12 +46,12 @@ public:
         return {};
     }
     bool setData(const QModelIndex& index, const QVariant& value, int role) override {
-        if (role == Qt::EditRole) {
+        if(role == Qt::EditRole) {
             value_ = value;
             return [column = index.column(), this]<size_t... Is>(auto& val, std::index_sequence<Is...>) {
                 bool ret;
                 auto readField = [column, &ret, this]<size_t I>(auto& val, std::integral_constant<size_t, I>) {
-                    if (column == I) ret = set(pfr::get<I>(val));
+                    if(column == I) ret = set(pfr::get<I>(val));
                 };
                 (readField(val, std::integral_constant<size_t, Is>{}), ...);
                 return ret;
@@ -60,11 +61,11 @@ public:
     }
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override {
-        if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+        if(orientation == Qt::Horizontal && role == Qt::DisplayRole) {
             return [section, this]<size_t... Is>(std::index_sequence<Is...>) {
                 QString ret;
                 (((section == Is)
-                        ? ret = TypeName<decltype(pfr::get<Is>(*data_.data()))> + QByteArray{"\n"} + pfr::get_name<Is, DataType>().data()
+                         ? ret = TypeName<decltype(pfr::get<Is>(*data_.data()))> + QByteArray{"\n"} + pfr::get_name<Is, DataType>().data()
                          : ret),
                     ...);
                 return ret;
@@ -94,7 +95,7 @@ private:
                 return QString::fromStdString(std::string{enumToString(e)});
             },
             [this]<typename T>(const std::optional<T>& optional) -> QVariant { // перенаправление ↑↑↑
-                if (optional.has_value()) return get(optional.value());
+                if(optional.has_value()) return get(optional.value());
                 return {};
             },
             [this]<typename T>(const XmlAttr<T>& attr) -> QVariant { // перенаправление ↑↑↑
@@ -131,12 +132,12 @@ private:
                 requires std::is_enum_v<T>
             {
                 auto E = enumToString<T>(value_.toString().toStdString());
-                if (enumToString(E) == "!!!") return false;
+                if(enumToString(E) == "!!!") return false;
                 return e = E, true;
             },
             [this]<typename T>(std::optional<T>& optional) -> bool { // перенаправление ↑↑↑
                 T val;
-                if (set(val)) return optional = val, true;
+                if(set(val)) return optional = val, true;
                 return false;
             },
             [this]<typename T>(XmlAttr<T>& attr) -> bool { // перенаправление ↑↑↑

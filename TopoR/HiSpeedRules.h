@@ -226,7 +226,7 @@ struct HiSpeedRules {
         XmlAttr<int> maxNetsInCluster;
         // Автоматически задавать связи.
         // [XmlAttribute("createPinPairs")] public Bool createPinPairs_;
-        XmlAttr<Bool> createPinPairs;
+        Optional<XmlAttr<Bool>> createPinPairs;
         /* public bool createPinPairsSpecified_ */
         // Правила именования цепей дифференциальных сигналов.
         /// \note !Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.

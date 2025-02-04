@@ -9,36 +9,19 @@
 #include <QDomDocument>
 #include <QRegularExpression>
 
-#if __has_include(<boost/pfr.hpp>)
 #include <boost/pfr.hpp>
-#else
-#include <pfr/config.hpp>
-#include <pfr/core.hpp>
-#include <pfr/core_name.hpp>
-#include <pfr/functions_for.hpp>
-#include <pfr/functors.hpp>
-#include <pfr/io.hpp>
-#include <pfr/io_fields.hpp>
-#include <pfr/ops.hpp>
-#include <pfr/ops_fields.hpp>
-#include <pfr/traits.hpp>
-#include <pfr/traits_fwd.hpp>
-#include <pfr/tuple_size.hpp>
-#endif
 #include <set>
 #include <source_location>
 
 namespace pfr = boost::pfr;
+using namespace TopoR;
+using sl = std::source_location;
 
 template <typename R> concept Range = requires(R& r) { std::begin(r); std::end(r); };
 template <typename T> concept Struct = !Range<T> && pfr::is_implicitly_reflectable_v<T, T>; //&& pfr::tuple_size_v<T>;
 template <typename T> concept Numbers = std::is_arithmetic_v<T>;
 template <typename T> concept Enums = std::is_enum_v<T>;
 template <typename T> concept To = std::is_base_of_v<std::initializer_list<typename T::value_type>, T> == false || Struct<T>;
-
-using namespace TopoR;
-
-using sl = std::source_location;
 
 QTextStream& operator<<(QTextStream& d, std::string_view sv);
 
@@ -66,6 +49,7 @@ struct Xml {
     mutable QDomNode outNode;
 
     void save(const QString& dir);
+    void debugNode() const;
 
 private:
     template <typename T> struct Tag { };
@@ -226,18 +210,18 @@ private:
 
     /// XmlVariant<Ts...>
     template <typename... Ts> bool read(XmlVariant<Ts...>& variant) { // перенаправление ↑↑↑
-        int ctr{};
+        qCritical() << variant.index();
         if(!node.isElement()) return false;
+        debugNode();
         QStringList list;
+        int ctr{};
         auto reader = [&]<typename T>() {
             if(ctr) return;
-            if(TypeName<T> == "FilledCircle")
+            if(TypeName<T> == "AllNets")
                 qDebug();
             if(T val{}; node.toElement().tagName() == TypeName<T> && read(val)) {
-                {
-                    ++ctr, variant = std::move(val);
-                    list.append(TypeName<T>);
-                }
+                ++ctr, variant = std::move(val);
+                list.append(TypeName<T>);
             } else {
                 auto copy = node;
                 node = node.firstChildElement(TypeName<T>);
@@ -359,14 +343,16 @@ public:
             "", "", node.lineNumber()});
 
         int ok{};
-        pfr::for_each_field_with_name(str, [this, &ok](auto name, auto&& field, auto index) {
-            fieldName = QString::fromUtf8(name.data());
-            if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
-            fieldNum = index;
-            auto copy = node;
-            ok += read(field);
-            node = copy;
-        });
+        if constexpr(pfr::tuple_size_v<T>)
+            pfr::for_each_field_with_name(str, [this, &ok](auto name, auto&& field, auto index) {
+                fieldName = QString::fromUtf8(name.data());
+                if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
+                fieldNum = index;
+                auto copy = node;
+                ok += read(field);
+                node = copy;
+            });
+        else ok = 1;
 
         node = node.parentNode();
         dbgTree = dbgTree->parent();

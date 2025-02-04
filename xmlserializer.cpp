@@ -123,3 +123,15 @@ void Xml::save(const QString& dir) {
         // outDoc.save(out, 4);
     }
 }
+
+void Xml::debugNode() const {
+    QDomDocument outDoc{""};
+    outDoc.insertBefore(node.cloneNode(), outDoc.firstChild());
+    QString text = outDoc.toString(4);
+    text.replace("<![CDATA[", "");
+    text.replace("]]>", "");
+    text.replace("&#xd;", "\x0D");
+    text.replace("&#xa;", "\x0A");
+    qInfo() << node.lineNumber() << '\n'
+            << text.toUtf8().data();
+}

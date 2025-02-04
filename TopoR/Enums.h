@@ -91,7 +91,7 @@ public:
     inline constexpr auto hasStrings<Enum> = true;                                     \
     template <>                                                                        \
     inline constexpr auto Tokens<Enum> = [] {                                          \
-        using enum Enum; /* using enum ↓  P1099R5 */                                   \
+        using enum Enum; /* using enum ↓  P1099R5 */                                 \
         return Tokenizer<Enum, __VA_ARGS__>();                                         \
     }();                                                                               \
     }
