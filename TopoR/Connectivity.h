@@ -19,7 +19,7 @@ struct Connectivity {
     struct Via {
         // Признак фиксации.
         // [XmlAttribute("fixed")] public Bool fixed_;
-        Optional<XmlAttr<Bool>> fixed;
+        XmlAttr<Bool> fixed;
         /* public bool fixedSpecified_ */
         // Ссылка на тип переходного отверстия.
         // [XmlElement("ViastackRef")] public ViastackRef viastackRef;
@@ -64,7 +64,7 @@ struct Connectivity {
         XmlAttr<QString> id;
         // Признак фиксации.
         // [XmlAttribute("fixed")] public Bool fixed_;
-        Optional<XmlAttr<Bool>> fixed;
+        XmlAttr<Bool> fixed;
         /* public bool fixedSpecified_ */
         // Ссылка на слой.
         // [XmlElement("LayerRef")] public LayerRef layerRef;
@@ -96,7 +96,7 @@ struct Connectivity {
             };
             // Признак фиксации.
             // [XmlAttribute("fixed")] public Bool fixed_;
-            Optional<XmlAttr<Bool>> fixed;
+            XmlAttr<Bool> fixed;
             /* public bool fixedSpecified_ */
             // Ширина проводника.
             // [XmlAttribute("width", DataType = "double")] public double width_;
@@ -173,7 +173,7 @@ struct Connectivity {
             // Вырезы в островке области металлизации.
             /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
             // [XmlArray("Voids")][XmlArrayItem(Polygon), XmlArrayItem(FilledContour)] public List<Object> Voids_;
-            XmlArrayElem<XmlVariant<Polygon, FilledContour>> Voids;
+            XmlArrayElem<XmlVariant<Polygon, FilledContour>, DontSkip> Voids;
             // Описание спиц термобарьеров, присутствующих на плате
             // [XmlElement("ThermalSpoke")] public List<ThermalSpoke> ThermalSpokes_;
             XmlArrayElem<ThermalSpoke> ThermalSpokes;
@@ -238,15 +238,16 @@ struct Connectivity {
         /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
         // [XmlArray("Voids")][XmlArrayItem(FilledCircle), XmlArrayItem(FilledRect), XmlArrayItem(Polygon), XmlArrayItem(FilledContour)] public List<Object> Voids_;
         XmlArrayElem<XmlVariant<
-            ArcCCW,
-            ArcCW,
-            ArcByAngle,
-            ArcByMiddle,
-            Circle,
-            Line,
-            Polyline,
-            Rect,
-            Contour>>
+                         ArcCCW,
+                         ArcCW,
+                         ArcByAngle,
+                         ArcByMiddle,
+                         Circle,
+                         Line,
+                         Polyline,
+                         Rect,
+                         Contour>,
+            DontSkip>
             Voids;
         // Островки области металлизации.
         /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
@@ -290,7 +291,7 @@ struct Connectivity {
         LayerRef layerRef;
         // Ссылка на цепь.
         // [XmlElement("NetRef")] public NetRef netRef;
-        NetRef netRef;
+        Optional<NetRef> netRef;
         // Описание контура незаливаемой области металлизации.
         // [XmlElement("Shape")] public Shape Shape_;
         Shape Shape_;

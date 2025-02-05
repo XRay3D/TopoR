@@ -18,15 +18,15 @@ struct Layers {
         XmlAttr<QString> name;
         // Тип слоя. Значение по умолчанию – Signal.
         // [XmlAttribute("type")] public LayerType type_;
-        XmlAttr<LayerType> type;
+        XmlAttr<LayerType, NoOpt> type;
         // Параметр слоя: слой содержит очертания компонентов.
         /// \note !Для сигнальных, опорных, диэлектрических и документирующих слоёв параметр compsOutline отсутствует.
         // [XmlAttribute("compsOutline")] public Bool compsOutline_;
-        std::optional<XmlAttr<Bool>> compsOutline;
+        XmlAttr<Bool> compsOutline;
         // Параметр слоя: толщина.
         /// \note !Для документирующих слоёв и слоёв с типом Assy параметр thickness отсутствует.
         // [XmlAttribute("thickness", DataType = "double")] public double thickness_;
-        std::optional<XmlAttr<double>> thickness;
+        Optional<XmlAttr<double, NoOpt>> thickness;
         /* public bool compsOutlineSpecified_ */
         /* public bool thicknessSpecified_ */
         /*****************************************************************

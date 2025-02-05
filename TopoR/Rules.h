@@ -106,21 +106,14 @@ struct Rules {
         // Флаг применения правила.
         // [XmlAttribute("enabled")] public Bool enabled_;
         XmlAttr<Bool> enabled;
-        /* public bool enabledSpecified_ */
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         // [XmlElement(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
-        XmlVariant<AllLayers,
-            AllLayersInner,
-            AllLayersInnerSignal,
-            AllLayersSignal,
-            AllLayersOuter,
-            LayerGroupRef>
-            LayersRef_;
+        XmlVariant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayerRef_;
         // Ссылка на слои. См. также LayersRef_
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
         // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-        XmlArrayElem<LayerRef> LayersRefs;
+        XmlArray<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         // [XmlArray("ObjectsAffected")][XmlArrayItem("NetRef")] public List<NetRef> ObjectsAffected_;
         XmlArrayElem<NetRef> ObjectsAffected;
@@ -134,17 +127,24 @@ struct Rules {
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         // [XmlElement(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
-        XmlVariant<AllLayers,
+        // XmlVariant<AllLayers,
+        //     AllLayersInner,
+        //     AllLayersInnerSignal,
+        //     AllLayersSignal,
+        //     AllLayersOuter,
+        //     LayerGroupRef>
+        //     LayersRef;
+        // Ссылка на слои. См. также LayersRef_
+        /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
+        // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
+        XmlArray<XmlVariant<AllLayers,
             AllLayersInner,
             AllLayersInnerSignal,
             AllLayersSignal,
             AllLayersOuter,
-            LayerGroupRef>
-            LayersRef;
-        // Ссылка на слои. См. также LayersRef_
-        /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-        // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-        XmlArray<LayerRef> LayersRefs;
+            LayerGroupRef,
+            LayerRef>>
+            LayersRefs;
         // Объекты воздействия правила.
         // [XmlArray("ObjectsAffected"),NetRef,NetGroupRef)] public List<Object> ObjectsAffected_;
         XmlArrayElem<XmlVariant<NetRef, NetGroupRef>> ObjectsAffected;
@@ -153,7 +153,7 @@ struct Rules {
     struct NetProperty {
         // Свойство цепи: гибкая фиксация.
         // [XmlAttribute("flexfix")] public Bool flexfix_;
-        XmlAttr<Bool> flexfix;
+        XmlAttr<Bool, NoOpt> flexfix;
         /* public bool flexfixSpecified_ */
         // Свойство цепи: флаг трассировки для автоматического трассировщика.
         // [XmlAttribute("route")] public Bool route_;
@@ -167,10 +167,10 @@ struct Rules {
     struct PadConnectSettings {
         // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
         // [XmlAttribute("mode")] public mode_PadConnectSettings mode_;
-        XmlAttr<mode_PadConnectSettings> mode;
+        XmlAttr<mode_PadConnectSettings, NoOpt> mode;
         // Ссылки на стеки контактных площадок.
         // [XmlElement("PadstackRef")] public List<PadstackRef> PadstackRefs_;
-        XmlArrayElem<PadstackRef> PadstackRefs;
+        XmlArray /*Elem*/<PadstackRef> PadstackRefs;
         // Ссылки на контакты.
         // [XmlElement("PinRef")] public List<PinRef> PinRefs_;
         XmlArrayElem<PinRef> PinRefs;

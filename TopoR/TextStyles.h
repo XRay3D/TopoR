@@ -24,11 +24,11 @@ struct TextStyles {
         XmlAttr<double> height;
         // Параметр стиля надписей: жирность шрифта.
         // [XmlAttribute("bold")] public Bool bold_;
-        Optional<XmlAttr<Bool>> bold;
+        XmlAttr<Bool> bold;
         /* public bool boldSpecified_ */
         // Параметр стиля надписей: курсив.
         // [XmlAttribute("italic")] public Bool italic_;
-        Optional<XmlAttr<Bool>> italic;
+        XmlAttr<Bool> italic;
         /* public bool italicSpecified_ */
     };
     // Версия раздела.

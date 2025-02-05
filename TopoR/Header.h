@@ -14,10 +14,10 @@ struct Header {
     struct Units {
         // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
         // [XmlAttribute("dist")] public dist dist_;
-        XmlAttr<dist> dist_;
+        XmlAttr<dist, NoOpt> dist_;
         // Единицы измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
         // [XmlAttribute("time")] public time time_;
-        XmlAttr<time> time_;
+        XmlAttr<time, NoOpt> time_;
     };
     // Название формата файла.
     // [XmlElement("Format")] public string Format_;

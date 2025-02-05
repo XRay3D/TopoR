@@ -94,7 +94,7 @@ Xml::Xml(const QString& name) {
 
     // return;
 
-    file.setFileName(file.fileName() % "in.fst");
+    file.setFileName("in.fst");
     qWarning() << file.fileName();
     if(!file.open(QIODevice::WriteOnly)) {
         qWarning() << file.errorString();

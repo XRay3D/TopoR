@@ -52,6 +52,8 @@ struct Groups {
     // Группы компонентов.
     // [XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> CompGroups_;
     XmlArrayElem<CompGroup> CompGroups;
+
+    bool canSkip() const { return LayerGroups.empty() && NetGroups.empty() && CompGroups.empty(); }
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Groups. *
      * Они не являются частью формата TopoR PCB.                      *

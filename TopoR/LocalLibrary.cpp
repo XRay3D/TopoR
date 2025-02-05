@@ -35,51 +35,51 @@ LocalLibrary::PadRect::operator QPainterPath() const { // FIXME addRoundedRect
     QPainterPath path;
     const QRectF rect{-width * .5, -height * .5, width, height};
     if(handlingValue) {
-        if(handlingValue.value() > 0 && custom && custom.value() == Bool::off && handling && handling.value() == Handling::Rounding) {
-            path.addRoundedRect(rect, handlingValue.value(), handlingValue.value());
-        } else if(handlingValue.value() == 0 && custom && custom.value() == Bool::off) {
+        if(handlingValue > 0 && custom == Bool::off && handling == Handling::Rounding) {
+            path.addRoundedRect(rect, handlingValue, handlingValue);
+        } else if(handlingValue == 0 && custom == Bool::off) {
             path.addRect(rect);
         } else if(handling) {
 #define LB topLeft
 #define LT bottomLeft
 #define RB topRight
 #define RT bottomRight
-            double hValue = handlingValue.value();
+            double hValue = handlingValue;
             const QRectF rectInner = rect - QMarginsF{hValue, hValue, hValue, hValue};
             const QRectF cornerRect{-hValue, -hValue, hValue * 2, hValue * 2};
-            if(cornerLB && +cornerLB.value()) {
+            if(!!cornerLB && +cornerLB) {
                 path.moveTo(rect.LB() + QPointF{0, hValue});
-                if(handling.value() == Handling::Rounding) {
+                if(handling == Handling::Rounding) {
                     path.arcTo(cornerRect.translated(rectInner.LB()), 180, -90);
                 } else {
                     path.lineTo(rect.LB() + QPointF{hValue, 0});
                 }
             } else path.moveTo(rect.LB());
-            if(cornerRB && +cornerRB.value()) {
-                if(handling.value() == Handling::Rounding) {
+            if(!!cornerRB && +cornerRB) {
+                if(handling == Handling::Rounding) {
                     path.arcTo(cornerRect.translated(rectInner.RB()), 90, -90);
                 } else {
                     path.lineTo(rect.RB() - QPointF{hValue, 0});
                     path.lineTo(rect.RB() + QPointF{0, hValue});
                 }
             } else path.lineTo(rect.RB());
-            if(cornerRT && +cornerRT.value()) {
-                if(handling.value() == Handling::Rounding) {
+            if(!!cornerRT && +cornerRT) {
+                if(handling == Handling::Rounding) {
                     path.arcTo(cornerRect.translated(rectInner.RT()), 0, -90);
                 } else {
                     path.lineTo(rect.RT() - QPointF{0, hValue});
                     path.lineTo(rect.RT() - QPointF{hValue, 0});
                 }
             } else path.lineTo(rect.RT());
-            if(cornerLT && +cornerLT.value()) {
-                if(handling.value() == Handling::Rounding) {
+            if(!!cornerLT && +cornerLT) {
+                if(handling == Handling::Rounding) {
                     path.arcTo(cornerRect.translated(rectInner.LT()), 270, -90);
                 } else {
                     path.lineTo(rect.LT() + QPointF{hValue, 0});
                     path.lineTo(rect.LT() - QPointF{0, hValue});
                 }
             } else path.lineTo(rect.LT());
-            if(cornerLB && +cornerLB.value()) {
+            if(!!cornerLB && +cornerLB) {
                 path.lineTo(rect.LB() + QPointF{0, hValue});
             } else path.lineTo(rect.LB());
 #undef LB

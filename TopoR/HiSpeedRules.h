@@ -132,6 +132,7 @@ struct HiSpeedRules {
             // Объекты воздействия правила.
             // [XmlArray("ObjectsAffected")][XmlArrayItem("SignalGroupRef")] public List<SignalGroupRef> ObjectsAffected_;
             XmlArrayElem<SignalGroupRef> ObjectsAffected;
+            bool canSkip() const { return ObjectsAffected.empty(); } // FIXME  bugfix for generate empty DelayEqual
         };
         // Описание правила задания абсолютного значения задержки.
         struct DelayConstant {
@@ -184,23 +185,25 @@ struct HiSpeedRules {
             XmlAttr<double> toleranceOver;
             // Первый объект воздействия правила взаимного выравнивания задержек.
             // [XmlElement("ObjectLeft")] public ObjectSignal ObjectLeft_;
-            using ObjectLeft = ObjectSignal;
-            ObjectLeft objectLeft; // FIXME ???
-            // Второй объект воздействия правила взаимного выравнивания задержек.
-            // [XmlElement("ObjectRight")] public ObjectSignal ObjectRight_;
-            using ObjectRight = ObjectSignal;
-            ObjectRight objectRight; // FIXME ???
+            // using ObjectLeft = ObjectSignal;
+            Named<ObjectSignal, "ObjectLeft"> objectLeft;   // FIXME ???
+                                                            // Второй объект воздействия правила взаимного выравнивания задержек.
+                                                            // [XmlElement("ObjectRight")] public ObjectSignal ObjectRight_;
+                                                            // using ObjectRight = ObjectSignal;
+            Named<ObjectSignal, "ObjectRight"> objectRight; // FIXME ???
         };
         // Правила выравнивания задержек для группы цепей или группы дифференциальных пар.
         // [XmlElement("DelayEqual")] public List<DelayEqual> DelayEquals_;
-        XmlArray<DelayEqual> DelayEquals;
+        XmlArray<DelayEqual> delayEquals;
         // Правила задания абсолютного значения задержки.
-        // [XmlElement("DelayConstant")] public List<DelayConstant> DelayConstants_;
-        XmlArray<DelayConstant> DelayConstants;
+        // [XmlElement("DelayConstant")] public List<DelayConstant> delayConstants_;
+        XmlArray<DelayConstant> delayConstants;
         // Правила взаимного выравнивания задержек.
         /// \note !Правила несимметричны относительно ObjectLeft и ObjectRight
-        // [XmlElement("DelayRelation")] public List<DelayRelation> DelayRelations_;
-        XmlArray<DelayRelation> DelayRelations;
+        // [XmlElement("DelayRelation")] public List<DelayRelation> delayRelations_;
+        XmlArray<DelayRelation> delayRelations;
+
+        bool canSkip() const { return delayEquals.empty() && delayConstants.empty() && delayRelations.empty(); }
     };
     // Настройки поиска сигналов.
     struct SignalSearchSettings {
@@ -228,7 +231,7 @@ struct HiSpeedRules {
         XmlAttr<int> maxNetsInCluster;
         // Автоматически задавать связи.
         // [XmlAttribute("createPinPairs")] public Bool createPinPairs_;
-        Optional<XmlAttr<Bool>> createPinPairs;
+        XmlAttr<Bool> createPinPairs;
         /* public bool createPinPairsSpecified_ */
         // Правила именования цепей дифференциальных сигналов.
         /// \note !Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.

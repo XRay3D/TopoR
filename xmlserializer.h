@@ -76,10 +76,7 @@ private:
     bool write(const QString& str) const {
         if(isAttribute) {
             isAttribute = false;
-            if(str.size()) outNode.toElement().setAttribute(fieldName, str);
-            // auto node = outDoc.createAttribute(fieldName);
-            // node.toCharacterData().setData(str);
-            // outNode.toElement().setAttributeNode(node);
+            outNode.toElement().setAttribute(fieldName, str);
         } else {
             auto element = outDoc.createElement(fieldName);
             element.appendChild(outDoc.createTextNode(str));
@@ -156,37 +153,39 @@ private:
                     node.parentNode().lineNumber()});
             }
         }
+        value.replace(' ', '_'); // NOTE workaround for enumerations with spaces
         e = stringToEnum<T>(value.toStdString());
         return value.size();
     }
 
     template <Enums T> bool write(const T& e) const { // enum`ы
-        auto str = enumToString(e);
+        auto str = QString::fromStdString(std::string{enumToString(e)});
+        str.replace('_', ' '); // NOTE workaround for enumerations with spaces
         if(!str.size()) return false;
         if(isAttribute) {
             isAttribute = false;
-            outNode.toElement().setAttribute(fieldName, str.data());
+            outNode.toElement().setAttribute(fieldName, str);
         } else {
             auto element = outDoc.createElement(fieldName);
-            element.appendChild(outDoc.createTextNode(str.data()));
+            element.appendChild(outDoc.createTextNode(str));
             outNode.appendChild(element);
         }
         return true;
     }
 
-    /// std::optional
-    template <typename T> bool read(std::optional<T>& optional) { // перенаправление ↑↑↑
+    /// Optional
+    template <typename T> bool read(Optional<T>& optional) { // перенаправление ↑↑↑
         if(T val; read(val)) optional = std::move(val);
         return optional.has_value();
     }
 
-    template <typename T> bool write(const std::optional<T>& optional) const { // перенаправление ↑↑↑
+    template <typename T> bool write(const Optional<T>& optional) const { // перенаправление ↑↑↑
         if(optional) return write(*optional);
         return optional.has_value();
     }
 
     /// XmlAttr<T>
-    template <typename T> bool read(XmlAttr<T>& attr) { // перенаправление ↑↑↑
+    template <typename T, bool Opt> bool read(XmlAttr<T, Opt>& attr) { // перенаправление ↑↑↑
         auto attributes = node.attributes();
         if(attributes.contains(TypeName<T>)) {
             node = attributes.namedItem(TypeName<T>);
@@ -202,9 +201,9 @@ private:
         return false;
     }
 
-    template <typename T> bool write(const XmlAttr<T>& attr) const { // перенаправление ↑↑↑
+    template <typename T, bool Opt> bool write(const XmlAttr<T, Opt>& attr) const { // перенаправление ↑↑↑
+        if(!attr) return false;
         isAttribute = true;
-        // if(attr.value == T{}) return false;
         return write(attr.value);
     }
 
@@ -237,7 +236,7 @@ private:
     }
 
     /// XmlArrayElem<T>
-    template <typename T> bool read(XmlArrayElem<T>& vector) { // перенаправление ↑↑↑
+    template <typename T, typename CanSkip> bool read(XmlArrayElem<T, CanSkip>& vector) { // перенаправление ↑↑↑
         QDomNode node_ = node.firstChildElement(fieldName);
         if(node_.isNull())
             return false;
@@ -265,8 +264,8 @@ private:
         return ok;
     }
 
-    template <typename T> bool write(const XmlArrayElem<T>& vector) const { // перенаправление ↑↑↑
-        if(vector.empty()) return false;                                    // NOTE maybe true
+    template <typename T, typename CanSkip> bool write(const XmlArrayElem<T, CanSkip>& vector) const { // перенаправление ↑↑↑
+        if(vector.canSkip()) return false;                                                             // NOTE maybe true
         bool ok{true};
         outNode = outNode.appendChild(outDoc.createElement(fieldName));
         for(auto&& var: vector)
@@ -276,26 +275,33 @@ private:
     }
 
     /// XmlArray<T>
-    template <typename T> bool read(XmlArray<T>& vector) { // перенаправление ↑↑↑
+    template <typename T, typename CanSkip> bool read(XmlArray<T, CanSkip>& vector) { // перенаправление ↑↑↑
         if(node.isNull())
             return false;
         auto childNodes = node.childNodes();
-        auto find = [&]<typename Type>(Tag<Type>) -> int {
+
+        struct Range {
+            int min{}, max{};
+        };
+
+        auto find = [this, &childNodes]<typename Type>(Tag<Type>) -> int {
             auto node_ = node.firstChildElement(TypeName<Type>);
             if(!node_.isNull())
                 for(int index{}; index < childNodes.size(); ++index)
                     if(childNodes.at(index) == node_) return index;
             return ArrayNull;
         };
+
         auto index = Overload{
-            [&]<typename... Ts>(Tag<XmlVariant<Ts...>>) -> int {
+            [find]<typename... Ts>(Tag<XmlVariant<Ts...>>) -> int {
                 std::array arr{find(Tag<Ts>{})...};
                 return *std::ranges::min_element(arr);
             },
             find}(Tag<T>{});
+
         if(index == ArrayNull)
             return false;
-        vector.resize(childNodes.size() - index);
+        vector.resize(childNodes.size() - index);// FIXME range overflow попытка чтения в массив других типроы не принадлежащих ему
         if(vector.empty())
             return false;
 
@@ -309,34 +315,39 @@ private:
         return ok;
     }
 
-    template <typename T> bool write(const XmlArray<T>& vector) const { // перенаправление ↑↑↑
-        bool ok{true};
-        for(auto&& var: vector)
-            ok &= write(var);
-        return ok;
+    template <typename T, typename CanSkip> bool write(const XmlArray<T, CanSkip>& vector) const { // перенаправление ↑↑↑
+        if(vector.canSkip()) return false;                                                         // NOTE maybe true
+        int ok{};
+        for(auto&& var: vector) ok += write(var);
+        return ok == vector.size();
     }
 
-    /// Skip<T>
-    template <typename T> bool read(Skip<T>&) { // пропуск поля
-        return true;
+    /// Skip<T> пропуск поля
+    template <typename T> bool read(Skip<T>&) { return true; }
+    template <typename T> bool write(const Skip<T>&) const { return true; }
+
+    /// Named<T>
+    template <typename T, Name NAME> bool read(Named<T, NAME>& named) { // пропуск поля
+        return read(*named, NAME);
     }
 
-    template <typename T> bool write(const Skip<T>&) const { // пропуск поля
-        return true;
+    template <typename T, Name NAME> bool write(const Named<T, NAME>& named) const { // пропуск поля
+        return write(*named, NAME);
     }
 
 public:
-    template <Struct T> bool read(T& str) { // чтение полей структуры
-        if(TypeName<T> == "ComponentsOnBoard") {
+    template <Struct T> bool read(T& str, const QString& name = {}) { // чтение полей структуры
+        if(TypeName<T> == "PlaneLayerNets") {
             // debugNode();
             qDebug();
         }
+        const QString tagName = name.size() ? name : TypeName<T>;
+
         if(!isArray && !isVariant)
-            node = (node.isNull() ? doc : node).firstChildElement(TypeName<T>);
+            node = (node.isNull() ? doc : node).firstChildElement(tagName);
         isArray = isVariant = false;
 
-        dbgTree = dbgTree->addItem(new TreeItem{TypeName<T>, TypeName<T>,
-            "", "", node.lineNumber()});
+        dbgTree = dbgTree->addItem(new TreeItem{tagName, TypeName<T>, "", "", node.lineNumber()});
         int ok{};
         if constexpr(pfr::tuple_size_v<T>)
             pfr::for_each_field_with_name(str, [this, &ok](auto name, auto&& field, auto index) {
@@ -354,12 +365,16 @@ public:
         return ok;
     }
 
-    template <Struct T> bool write(const T& str) const { // чтение полей структуры
+    template <Struct T> bool write(const T& str, const QString& name = {}) const { // чтение полей структуры
+        if constexpr(requires { str.canSkip(); })
+            if(str.canSkip()) return false;
+
+        const QString tagName = name.size() ? name : TypeName<T>;
+
         outNode = outNode.isNull()
-            ? outDoc.appendChild(outDoc.createElement(TypeName<T>))
-            : outNode.appendChild(outDoc.createElement(TypeName<T>));
-        if(TypeName<T> == "Autoroute")
-            qDebug();
+            ? outDoc.appendChild(outDoc.createElement(tagName))
+            : outNode.appendChild(outDoc.createElement(tagName));
+
         int ok{};
         pfr::for_each_field_with_name(str, [this, &ok](auto name, auto&& field, auto index) {
             fieldName = QString::fromUtf8(name.data());

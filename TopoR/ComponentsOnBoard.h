@@ -47,13 +47,13 @@ struct ComponentsOnBoard {
             struct Label {
                 // Задаёт угол в градусах c точностью до тысячных долей.
                 // [XmlAttribute("angle", DataType = "double")] public double angle_;
-                Optional<XmlAttr<double>> angle;
+                XmlAttr<double> angle;
                 // Параметр надписей и ярлыков: зеркальность отображения.
                 // [XmlAttribute("mirror")] public Bool mirror_;
-                Optional<XmlAttr<Bool>> mirror;
+                XmlAttr<Bool> mirror;
                 // Параметр надписей (ярлыков): способ выравнивания текста.
                 // [XmlAttribute("align")] public align align;
-                Optional<XmlAttr<align>> align_;
+                XmlAttr<align> align_;
                 // Флаг видимости.
                 // [XmlAttribute("visible")] public Bool visible_;
                 XmlAttr<Bool> visible;
@@ -77,12 +77,12 @@ struct ComponentsOnBoard {
             };
             // Тип предопределённого атрибута компонента.
             // [XmlAttribute("type")] public type type_;
-            Optional<XmlAttr<type>> type_;
+            Optional<XmlAttr<type, NoOpt>> type_;
             // Имя объекта или ссылка на именованный объект.
             XmlAttr<QString> name;
             // Значение атрибута.
             // [XmlAttribute("value")] public string value_;
-            XmlAttr<QString> value;
+            Optional<XmlAttr<QString, NoOpt>> value;
             // Ярлыки.
             // [XmlElement("Label")] public List<Label> Labels;
             XmlArray<Label> Labels;
@@ -96,13 +96,13 @@ struct ComponentsOnBoard {
         // Сторона объекта.
         /// \note !Значение Both возможно только при описании запретов размещения.
         // [XmlAttribute("side")] public side side_;
-        XmlAttr<side> side_;
+        XmlAttr<side, NoOpt> side_;
         // Задаёт угол в градусах c точностью до тысячных долей.
         // [XmlAttribute("angle", DataType = "double")] public double angle_;
-        Optional<XmlAttr<double>> angle;
+        XmlAttr<double> angle;
         // Признак фиксации.
         // [XmlAttribute("fixed")] public Bool fixed_;
-        Optional<XmlAttr<Bool>> fixed;
+        XmlAttr<Bool> fixed;
         // Ссылка на схемный компонент.
         // [XmlElement("ComponentRef")] public ComponentRef componentRef;
         ComponentRef componentRef;
@@ -133,9 +133,11 @@ struct ComponentsOnBoard {
     };
     // Описание одиночного контакта..
     struct FreePad {
+        // Имя объекта или ссылка на именованный объект.
+        XmlAttr<QString> name;
         // Сторона объекта.
         // [XmlAttribute("side")] public side side_;
-        XmlAttr<side> side_;
+        XmlAttr<side, NoOpt> side_;
         // Задаёт угол в градусах c точностью до тысячных долей.
         // [XmlAttribute("angle", DataType = "double")] public double angle_;
         XmlAttr<double> angle;
@@ -150,7 +152,7 @@ struct ComponentsOnBoard {
         PadstackRef padstackRef;
         // Cсылка на цепь.
         // [XmlElement("NetRef")] public NetRef netRef;
-        NetRef netRef;
+        Optional<NetRef> netRef;
         // Точка привязки объекта.
         // [XmlElement("Org")] public Org org;
         Org org;

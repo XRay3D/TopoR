@@ -128,10 +128,14 @@ struct Overload : Ts... {
 template <typename... Ts>
 Overload(Ts...) -> Overload<Ts...>;
 
-template <typename T>
-struct XmlAttr {
+constexpr bool NoOpt{};
+
+template <typename T, bool Optional = true>
+struct XmlAttr /*: std::integral_constant<bool, Optional>*/ {
     using TypeName = T;
     T value{};
+
+    explicit operator bool() const { return Optional ? value != T{} : true; };
 
     // XmlAttr() { } // disable std::is_aggregate_v<T>
     // XmlAttr(const T& val = {})
@@ -154,16 +158,16 @@ struct XmlAttr {
 template <typename T>
 struct Optional;
 
-template <typename T>
-struct Optional<XmlAttr<T>> : std::optional<XmlAttr<T>> {
-    using opt = std::optional<XmlAttr<T>>;
-    using std::optional<XmlAttr<T>>::optional;
+template <typename T, bool Opt>
+struct Optional<XmlAttr<T, Opt>> : std::optional<XmlAttr<T, Opt>> {
+    using opt = std::optional<XmlAttr<T, Opt>>;
+    using std::optional<XmlAttr<T, Opt>>::optional;
     operator T() const { return (opt::has_value()) ? opt::value().value : T{}; }
 };
 
 template <typename T>
 struct Optional : std::optional<T> {
-    using opt = std::optional<XmlAttr<T>>;
+    using opt = std::optional<T>;
     using std::optional<T>::optional;
     operator T() const { return (opt::has_value()) ? opt::value() : T{}; }
     // using operator bool();
@@ -171,14 +175,20 @@ struct Optional : std::optional<T> {
     // auto& operator=(const T& val) { return Optional::emplace(val), Optional::value(); }
 };
 
-template <typename T>
-struct XmlArray : std::vector<T>, std::false_type {
-    using std::vector<T>::vector;
+using DontSkip = std::false_type;
+
+template <typename T, typename CanSkip = std::true_type>
+struct XmlArray : std::vector<T> /*, std::false_type*/ {
+    using vector = std::vector<T>;
+    using vector::vector;
+    bool canSkip() const { return CanSkip::value ? vector::empty() : false; }
 };
 
-template <typename T>
-struct XmlArrayElem : std::vector<T>, std::true_type {
-    using std::vector<T>::vector;
+template <typename T, typename CanSkip = std::true_type>
+struct XmlArrayElem : std::vector<T>, CanSkip {
+    using vector = std::vector<T>;
+    using vector::vector;
+    bool canSkip() const { return CanSkip::value ? vector::empty() : false; }
 };
 
 struct NullVariant { };
@@ -186,7 +196,8 @@ struct NullVariant { };
 template <typename... Ts>
 struct XmlVariant : std::variant<NullVariant, Ts...> {
     using Variant = std::variant<NullVariant, Ts...>;
-    using Variant::variant;
+    using typename Variant::variant;
+    using Variant::operator=;
 
     using FirstType = std::tuple_element_t<0, std::tuple<Ts...>>;
 
@@ -197,7 +208,7 @@ struct XmlVariant : std::variant<NullVariant, Ts...> {
     template <typename Func>
     auto visit(Func&& func) const {
         using Ret = decltype(func(FirstType{}));
-        return std::visit(Overload{[](NullVariant) { return Ret{}; }, std::forward<Func>(func)}, *this);
+        return std::visit(Overload{[](NullVariant) -> Ret { if constexpr( !std::is_same_v<void ,Ret>) return {}; }, std::forward<Func>(func)}, *this);
     }
     // template <typename... Funcs>
     // auto visit(Funcs&&... funcs) {
@@ -206,7 +217,7 @@ struct XmlVariant : std::variant<NullVariant, Ts...> {
     template <typename... Funcs>
     auto visit(Funcs&&... funcs) const {
         using Ret = std::tuple_element_t<0, std::tuple<decltype(funcs({}))...>>;
-        return std::visit(Overload{[](NullVariant) { return Ret{}; }, std::forward<Funcs>(funcs)...}, *this);
+        return std::visit(Overload{[](NullVariant) -> Ret {if constexpr( !std::is_same_v<void ,Ret>)  return {}; }, std::forward<Funcs>(funcs)...}, *this);
     }
     bool has_value() const { return Variant::index() > 0 && Variant::index() != std::variant_npos; }
     operator bool() const { return has_value(); }
@@ -234,4 +245,20 @@ struct Skip<T> {
     operator const T&() const& { return val; }
     operator T() { return val; }
     operator const T() const { return val; }
+};
+
+template <std::size_t N>
+struct Name {
+    char p[N]{};
+    constexpr Name(char const (&pp)[N]) {
+        std::ranges::copy(pp, p);
+    }
+    operator QString() const { return QString::fromUtf8(p, N - 1); }
+};
+
+template <typename T, Name name>
+struct Named : T {
+    using T::T;
+    T& operator*() { return *this; }
+    const T& operator*() const { return *this; }
 };

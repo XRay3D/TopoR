@@ -91,7 +91,7 @@ public:
     inline constexpr auto hasStrings<Enum> = true;                                     \
     template <>                                                                        \
     inline constexpr auto Tokens<Enum> = [] {                                          \
-        using enum Enum; /* using enum ↓  P1099R5 */                                 \
+        using enum Enum; /* using enum ↓  P1099R5 */                                   \
         return Tokenizer<Enum, __VA_ARGS__>();                                         \
     }();                                                                               \
     }
@@ -232,9 +232,9 @@ XML_ENUM(refine,
 
 // Тип запрета трассировки. Значение по умолчанию – Wires
 XML_ENUM(role,
-    Wires,       // запрет проводников
-    Vias,        // запрет переходных отверстий
-    WiresАndVias // запрет проводников и переходных отверстий
+    Wires,         // запрет проводников
+    Vias,          // запрет переходных отверстий
+    Wires_and_Vias // запрет проводников и переходных отверстий
 )
 
 // Настройка фильтра сообщений: режим показа предупреждений. Значение по умолчанию – ShowChecked.

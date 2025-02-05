@@ -176,63 +176,63 @@ using namespace Reference_Types;
 
 namespace Coordinates {
 struct base_coordinat {
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // координаты точки, вершины.
 struct Dot /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Центр круга (окружности), овала.
 struct Center /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Начальная точка линии, дуги.
 struct Start /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Средняя точка дуги.
 struct Middle /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Конечная точка линии, дуги.
 struct End /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Точка привязки объекта.
 struct Org /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Cмещение точки привязки или объекта по осям x и y.
 struct Shift /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
 
 // Вытягивание по осям x и y.
 struct Stretch /*: base_coordinat*/ { // using base_coordinat::base_coordinat;
-    XmlAttr<double> x, y;
+    XmlAttr<double, NoOpt> x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
 };
@@ -618,9 +618,9 @@ struct Text {
     XmlAttr<align> align_;
 
     // Задаёт угол в градусах c точностью до тысячных долей.
-    Optional<XmlAttr<double>> angle;
+    XmlAttr<double> angle;
     // Параметр надписей и ярлыков: зеркальность отображения.
-    Optional<XmlAttr<Bool>> mirror;
+    XmlAttr<Bool> mirror;
 
     /* public bool mirrorSpecified_ */
     // Ссылка на слой.

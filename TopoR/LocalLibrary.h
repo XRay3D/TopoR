@@ -68,25 +68,25 @@ struct LocalLibrary {
         XmlAttr<double> height;
         // Тип обработки углов прямоугольной контактной площадки.
         // [XmlAttribute("handling")] public Handling handling_;
-        Optional<XmlAttr<Handling>> handling;
+        XmlAttr<Handling> handling;
         // Величина обработки углов прямоугольной контактной площадки. Значение зависит от типа обработки. Для скругления это радиус. Для среза это высота среза.
         // [XmlAttribute("handlingValue", DataType = "double")] public double handlingValue_;
-        Optional<XmlAttr<double>> handlingValue;
+        XmlAttr<double> handlingValue;
         // Флаг выборочной обработки углов прямоугольной контактной площадки. Если не установлен, то все углы обрабатываются одинаковым образом.
         // [XmlAttribute("custom")] public Bool custom_;
-        Optional<XmlAttr<Bool>> custom;
+        XmlAttr<Bool> custom;
         // Флаг обработки левого нижнего угла прямоугольной контактной площадки.
         // [XmlAttribute("cornerLB")] public Bool cornerLB_;
-        Optional<XmlAttr<Bool>> cornerLB;
+        XmlAttr<Bool> cornerLB;
         // Флаг обработки правого нижнего угла прямоугольной контактной площадки.
         // [XmlAttribute("cornerRB")] public Bool cornerRB_;
-        Optional<XmlAttr<Bool>> cornerRB;
+        XmlAttr<Bool> cornerRB;
         // Флаг обработки правого нижнего угла прямоугольной контактной площадки.
         // [XmlAttribute("cornerRT")] public Bool cornerRT_;
-        Optional<XmlAttr<Bool>> cornerRT;
+        XmlAttr<Bool> cornerRT;
         // Флаг обработки левого верхнего угла прямоугольной контактной площадки.
         // [XmlAttribute("cornerLT")] public Bool cornerLT_;
-        Optional<XmlAttr<Bool>> cornerLT;
+        XmlAttr<Bool> cornerLT;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
         // [XmlElement("Shift")] public Shift shift;
         Optional<Shift> shift;
@@ -108,16 +108,16 @@ struct LocalLibrary {
         XmlAttr<QString> name;
         // Тип стека контактных площадок.
         // [XmlAttribute("type")] public type_padstack type_;
-        Optional<XmlAttr<type_padstack>> type;
+        XmlAttr<type_padstack> type;
         // Диаметр отверстия.
         // [XmlAttribute("holeDiameter", DataType = "double")] public double holeDiameter_;
-        Optional<XmlAttr<double>> holeDiameter;
+        XmlAttr<double> holeDiameter;
         // Параметр стека контактной площадки: металлизация отверстия.
         // [XmlAttribute("metallized")] public Bool metallized_;
-        Optional<XmlAttr<Bool>> metallized;
+        XmlAttr<Bool> metallized;
         // Параметр стека контактной площадки: подключение к области металлизации (полигону).
         // [XmlAttribute("connectToCopper")] public ConnectToCopper connectToCopper_;
-        Optional<XmlAttr<ConnectToCopper>> connectToCopper;
+        XmlAttr<ConnectToCopper> connectToCopper;
         // Описание термобарьера.
         // [XmlElement("Thermal")] public Thermal thermal;
         Thermal thermal;
@@ -149,7 +149,7 @@ struct LocalLibrary {
         XmlAttr<double> holeDiameter;
         // Параметр типа переходного отверстия: возможность установить переходное отверстие на контактной площадке.
         // [XmlAttribute("viaOnPin")] public Bool viaOnPin_;
-        Optional<XmlAttr<Bool>> viaOnPin;
+        XmlAttr<Bool> viaOnPin;
         // Диапазон слоев.
         // <value>AllLayers | [LayerRef]</value>
         // [XmlElement(LayerRange)] public LayerRange layerRange;
@@ -221,13 +221,13 @@ struct LocalLibrary {
             XmlAttr<QString> name;
             // Параметр надписей (ярлыков): способ выравнивания текста.
             // [XmlAttribute("align")] public align align;
-            Optional<XmlAttr<align>> align_;
+            XmlAttr<align> align_;
             // Задаёт угол в градусах c точностью до тысячных долей.
             // [XmlAttribute("angle", DataType = "double")] public double angle_;
-            Optional<XmlAttr<double>> angle;
+            XmlAttr<double> angle;
             // Параметр надписей и ярлыков: зеркальность отображения.
             // [XmlAttribute("mirror")] public Bool mirror_;
-            Optional<XmlAttr<Bool>> mirror;
+            XmlAttr<Bool> mirror;
             // Ссылка на слой.
             // [XmlElement("LayerRef")] public LayerRef layerRef;
             LayerRef layerRef;
@@ -242,7 +242,7 @@ struct LocalLibrary {
                 if(org)
                     transform.translate(org.value().x, org.value().y);
                 if(angle)
-                    transform.rotate(angle.value());
+                    transform.rotate(angle);
                 return transform;
             }
         };
@@ -261,12 +261,12 @@ struct LocalLibrary {
             XmlAttr<QString> name;
             // Задаёт угол в градусах c точностью до тысячных долей.
             // [XmlAttribute("angle", DataType = "double")] public double angle_;
-            Optional<XmlAttr<double>> angle;
+            XmlAttr<double> angle;
             // Параметр контакта (вывода) посадочного места: перевёрнутость.
             // Если флаг не установлен, площадка планарного контакта будет находиться на одной стороне с компонентом,
             // иначе площадка будет расположена на противоположной стороне.
             // [XmlAttribute("flipped")] public Bool flipped_;
-            Optional<XmlAttr<Bool>> flipped;
+            XmlAttr<Bool> flipped;
             // Ссылка на стек контактных площадок.
             // [XmlElement("PadstackRef")] public PadstackRef padstackRef;
             PadstackRef padstackRef;
@@ -276,7 +276,7 @@ struct LocalLibrary {
             QTransform transform() const {
                 QTransform transform;
                 transform.translate(org.x, org.y);
-                if(angle) transform.rotate(*angle);
+                if(angle) transform.rotate(angle);
                 return transform;
             }
         };
@@ -323,13 +323,13 @@ struct LocalLibrary {
             XmlAttr<QString> pinSymName;
             // Параметр контакта компонента: эквивалентность.
             // [XmlAttribute("pinEqual", DataType = "int")] public int pinEqual_;
-            XmlAttr<int> pinEqual;
+            XmlAttr<int, NoOpt> pinEqual;
             // Параметр контакта (вывода) компонента: номер вентиля контакта.
             // [XmlAttribute("gate", DataType = "int")] public int gate_;
-            XmlAttr<int> gate;
+            XmlAttr<int, NoOpt> gate;
             // Параметр контакта (вывода) компонента: эквивалентность вентиля контакта.
             // [XmlAttribute("gateEqual", DataType = "int")] public int gateEqual_;
-            XmlAttr<int> gateEqual;
+            XmlAttr<int, NoOpt> gateEqual;
         };
         // Описание атрибута схемного компонента.
         struct Attribute /*_Component*/ {
@@ -359,9 +359,9 @@ struct LocalLibrary {
             XmlAttr<int> padNum;
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
             // [XmlAttribute("valueType")] public valueType valueType_;
-            Optional<XmlAttr<valueType>> valueType_;
+            XmlAttr<valueType> valueType_;
             // Параметр контакта компонента в посадочном месте: задержка сигнала в посадочном месте.
-            Optional<XmlAttr<double>> delay;
+            XmlAttr<double> delay;
         };
         // Ссылка на схемный компонент.
         // [XmlElement("ComponentRef")] public ComponentRef componentRef;

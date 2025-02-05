@@ -153,11 +153,11 @@ struct Constructive {
                 //  XmlElement(AllLayersSignal),
                 //  XmlElement(AllLayersOuter),
                 //  XmlElement(LayerGroupRef)] public Object LayersRef_;
-                XmlVariant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef_;
+                XmlVariant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
                 // Ссылка на слои. См. также LayersRef_
                 /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
                 // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-                XmlArrayElem<LayerRef> LayersRefs;
+                XmlArray<LayerRef> LayersRefs;
             };
             // Тип запрета: запрет размещения.
             struct Place {
@@ -169,10 +169,11 @@ struct Constructive {
             // [XmlElement(Trace)] public Trace trace;
             Trace trace;
             // [XmlElement(Place)] public Place place;
-            Place place;
+            // Place place;
+            XmlAttr<side> Place;
         };
         // [XmlElement(Role)] public Role role;
-        Role role_;
+        Role role;
         // Описание фигуры.
         // [XmlElement(ArcCCW),
         //  XmlElement(ArcCW),
