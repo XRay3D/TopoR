@@ -593,8 +593,8 @@ struct Thermal { // Параметры термобарьера:
 // Описание детали.
 struct Detail {
     XmlAttr<double> lineWidth; // Толщина линии.
-    LayerRef layerRef;        // Ссылка на слой.
-    XmlVariant<               // Описание фигуры.
+    LayerRef layerRef;         // Ссылка на слой.
+    XmlVariant<                // Описание фигуры.
         ArcByAngle,
         ArcByMiddle,
         ArcCCW,
@@ -639,7 +639,7 @@ struct Text {
 
 // Сигналы воздействия правила
 struct ObjectSignal {
-    XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef> ObjectSignal /* NOTE Refs_*/; // FIXME ???
+    XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef> objectSignal /* NOTE Refs_*/; // FIXME ???
 };
 
 } // namespace Thermal_Detail_Text_ObjectSignal

@@ -140,11 +140,11 @@ struct Rules {
             AllLayersSignal,
             AllLayersOuter,
             LayerGroupRef>
-            LayersRef_;
+            LayersRef;
         // Ссылка на слои. См. также LayersRef_
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
         // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-        XmlArrayElem<LayerRef> LayersRefs;
+        XmlArray<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         // [XmlArray("ObjectsAffected"),NetRef,NetGroupRef)] public List<Object> ObjectsAffected_;
         XmlArrayElem<XmlVariant<NetRef, NetGroupRef>> ObjectsAffected;

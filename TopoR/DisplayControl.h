@@ -109,178 +109,52 @@ struct DisplayControl {
     };
     // Настройка отображения: настройки видимости объектов.
     struct Show {
-        // Настройка отображения: текущая схема отображения.
-        // [XmlAttribute("displayScheme")] public string displayScheme_;
-        XmlAttr<QString> displayScheme;
-        // Настройка отображения: показывать контур платы.
-        // [XmlAttribute("showBoardOutline")] public Bool showBoardOutline_;
-        XmlAttr<Bool> showBoardOutline;
-        /* public bool showBoardOutlineSpecified_ */
-        // Настройка отображения: показывать проводники.
-        // [XmlAttribute("showWires")] public Bool showWires_;
-        XmlAttr<Bool> showWires;
-        /* public bool showWiresSpecified_ */
-        // Настройка отображения: показывать области металлизации (полигоны).
-        // [XmlAttribute("showCoppers")] public Bool showCoppers_;
-        XmlAttr<Bool> showCoppers;
-        /* public bool showCoppersSpecified_ */
-        // Настройка отображения: показывать ярлыки (надписи).
-        // [XmlAttribute("showTexts")] public Bool showTexts_;
-        XmlAttr<Bool> showTexts;
-        /* public bool showTextsSpecified_ */
-        // Настройка отображения: показывать сквозные контактные площадки специальным цветом.
-        // [XmlAttribute("throughPad")] public Bool throughPad_;
-        XmlAttr<Bool> throughPad;
-        /* public bool throughPadSpecified_ */
-        // Настройка отображения: показывать сквозные переходные отверстия специальным цветом.
-        // [XmlAttribute("throughVia")] public Bool throughVia_;
-        XmlAttr<Bool> throughVia;
-        /* public bool throughViaSpecified_ */
-        // Настройка отображения: показывать скрытые переходные отверстия специальным цветом
-        // [XmlAttribute("burriedVia")] public Bool burriedVia_;
-        XmlAttr<Bool> burriedVia;
-        /* public bool burriedViaSpecified_ */
-        // Настройка отображения: показывать глухие переходные отверстия специальным цветом.
-        // [XmlAttribute("blindVia")] public Bool blindVia_;
-        XmlAttr<Bool> blindVia;
-        /* public bool blindViaSpecified_ */
-        // Настройка отображения: показывать фиксированные переходные отверстия специальным цветом.
-        // [XmlAttribute("fixedVia")] public Bool fixedVia_;
-        XmlAttr<Bool> fixedVia;
-        /* public bool fixedViaSpecified_ */
-        // Настройка отображения: показывать переходы.
-        // [XmlAttribute("showVias")] public Bool showVias_;
-        XmlAttr<Bool> showVias;
-        /* public bool showViasSpecified_ */
-        // Настройка отображения: показывать металлические слои.
-        // [XmlAttribute("showSignalLayers")] public Bool showSignalLayers_;
-        XmlAttr<Bool> showSignalLayers;
-        /* public bool showSignalLayersSpecified_ */
-        // Настройка отображения: показывать верхние механические слои.
-        // [XmlAttribute("showTopMechLayers")] public Bool showTopMechLayers_;
-        XmlAttr<Bool> showTopMechLayers;
-        /* public bool showTopMechLayersSpecified_ */
-        // Настройка отображения: показывать нижние механические слои.
-        // [XmlAttribute("showBotMechLayers")] public Bool showBotMechLayers_;
-        XmlAttr<Bool> showBotMechLayers;
-        /* public bool showBotMechLayersSpecified_ */
-        // Настройка отображения: показывать документирующие слои.
-        // [XmlAttribute("showDocLayers")] public Bool showDocLayers_;
-        XmlAttr<Bool> showDocLayers;
-        /* public bool showDocLayersSpecified_ */
-        // Настройка отображения: показывать детали на верхних металлических слоях.
-        // [XmlAttribute("showTopMechDetails")] public Bool showTopMechDetails_;
-        XmlAttr<Bool> showTopMechDetails;
-        /* public bool showTopMechDetailsSpecified_ */
-        // Настройка отображения: показывать детали на нижних металлических слоях.
-        // [XmlAttribute("showBotMechDetails")] public Bool showBotMechDetails_;
-        XmlAttr<Bool> showBotMechDetails;
-        /* public bool showBotMechDetailsSpecified_ */
-        // Настройка отображения: показывать контактные площадки на металлических слоях.
-        // [XmlAttribute("showMetalPads")] public Bool showMetalPads_;
-        XmlAttr<Bool> showMetalPads;
-        /* public bool showMetalPadsSpecified_ */
-        // Настройка отображения: показывать КП на верхних металлических слоях.
-        // [XmlAttribute("showTopMechPads")] public Bool showTopMechPads_;
-        XmlAttr<Bool> showTopMechPads;
-        /* public bool showTopMechPadsSpecified_ */
-        // Настройка отображения: показывать контактные площадки на нижних металлических слоях.
-        // [XmlAttribute("showBotMechPads")] public Bool showBotMechPads_;
-        XmlAttr<Bool> showBotMechPads;
-        /* public bool showBotMechPadsSpecified_ */
-        // Настройка отображения: показывать связи.
-        // [XmlAttribute("showNetLines")] public Bool showNetLines_;
-        XmlAttr<Bool> showNetLines;
-        /* public bool showNetLinesSpecified_ */
-        // Настройка отображения: показывать монтажные отверстия.
-        // [XmlAttribute("showMountingHoles")] public Bool showMountingHoles_;
-        XmlAttr<Bool> showMountingHoles;
-        /* public bool showMountingHolesSpecified_ */
-        // Настройка отображения: показывать проводники тонкими линиями.
-        // [XmlAttribute("showThinWires")] public Bool showThinWires_;
-        XmlAttr<Bool> showThinWires;
-        /* public bool showThinWiresSpecified_ */
-        // Настройка отображения: показывать компоненты.
-        // [XmlAttribute("showComponents")] public Bool showComponents_;
-        XmlAttr<Bool> showComponents;
-        /* public bool showComponentsSpecified_ */
-        // Настройка отображения: показывать компоненты на верхней стороне.
-        // [XmlAttribute("showCompTop")] public Bool showCompTop_;
-        XmlAttr<Bool> showCompTop;
-        /* public bool showCompTopSpecified_ */
-        // Настройка отображения: показывать компоненты на нижней стороне.
-        // [XmlAttribute("showCompBot")] public Bool showCompBot_;
-        XmlAttr<Bool> showCompBot;
-        /* public bool showCompBotSpecified_ */
-        // Настройка отображения: показывать позиционные обозначения компонентов.
-        // [XmlAttribute("showCompsDes")] public Bool showCompsDes_;
-        XmlAttr<Bool> showCompsDes;
-        /* public bool showCompsDesSpecified_ */
-        // Настройка отображения: показывать имена контактов.
-        // [XmlAttribute("showPinsName")] public Bool showPinsName_;
-        XmlAttr<Bool> showPinsName;
-        /* public bool showPinsNameSpecified_ */
-        // Настройка отображения: показывать имена цепей контактов.
-        // [XmlAttribute("showPinsNet")] public Bool showPinsNet_;
-        XmlAttr<Bool> showPinsNet;
-        /* public bool showPinsNetSpecified_ */
-        // Настройка отображения: показывать габариты компонентов.
-        // [XmlAttribute("showCompsBound")] public Bool showCompsBound_;
-        XmlAttr<Bool> showCompsBound;
-        /* public bool showCompsBoundSpecified_ */
-        // Настройка отображения: показывать ярлыки атрибута RefDes.
-        // [XmlAttribute("showLabelRefDes")] public Bool showLabelRefDes_;
-        XmlAttr<Bool> showLabelRefDes;
-        /* public bool showLabelRefDesSpecified_ */
-        // Настройка отображения: показывать ярлыки атрибута PartName.
-        // [XmlAttribute("showLabelPartName")] public Bool showLabelPartName_;
-        XmlAttr<Bool> showLabelPartName;
-        /* public bool showLabelPartNameSpecified_ */
-        // Настройка отображения: показывать ярлыки пользовательских атрибутов.
-        // [XmlAttribute("showLabelOther")] public Bool showLabelOther_;
-        XmlAttr<Bool> showLabelOther;
-        /* public bool showLabelOtherSpecified_ */
-        // Настройка отображения: показывать нарушения.
-        // [XmlAttribute("showViolations")] public Bool showViolations_;
-        XmlAttr<Bool> showViolations;
-        /* public bool showViolationsSpecified_ */
-        // Настройка отображения: показывать уменьшение номинального зазора.
-        // [XmlAttribute("showNarrow")] public Bool showNarrow_;
-        XmlAttr<Bool> showNarrow;
-        /* public bool showNarrowSpecified_ */
-        // Настройка отображения: показывать уменьшение ширины проводника.
-        // [XmlAttribute("showTrimmed")] public Bool showTrimmed_;
-        XmlAttr<Bool> showTrimmed;
-        /* public bool showTrimmedSpecified_ */
-        // Настройка отображения: показывать нарушение DRC.
-        // [XmlAttribute("showDRCViolations")] public Bool showDRCViolations_;
-        XmlAttr<Bool> showDRCViolations;
-        /* public bool showDRCViolationsSpecified_ */
-        // Настройка отображения: показывать запреты.
-        // [XmlAttribute("showKeepouts")] public Bool showKeepouts_;
-        XmlAttr<Bool> showKeepouts;
-        /* public bool showKeepoutsSpecified_ */
-        // Настройка отображения: показывать запреты трассировки.
-        // [XmlAttribute("showRouteKeepouts")] public Bool showRouteKeepouts_;
-        XmlAttr<Bool> showRouteKeepouts;
-        /* public bool showRouteKeepoutsSpecified_ */
-        // Настройка отображения: показывать запреты размещения.
-        // [XmlAttribute("showPlaceKeepouts")] public Bool showPlaceKeepouts_;
-        XmlAttr<Bool> showPlaceKeepouts;
-        /* public bool showPlaceKeepoutsSpecified_ */
-        // Настройка отображения: показывать только активный слой.
-        // [XmlAttribute("showActiveLayerOnly")] public Bool showActiveLayerOnly_;
-        XmlAttr<Bool> showActiveLayerOnly;
-        /* public bool showActiveLayerOnlySpecified_ */
-        // Настройка отображения: показывать области змеек.
-        // [XmlAttribute("showSerpentArea")] public Bool showSerpentArea_;
-        XmlAttr<Bool> showSerpentArea;
-        /* public bool showSerpentAreaSpecified_ */
+        Optional<XmlAttr<Bool>> blindVia;            // Настройка отображения: показывать глухие переходные отверстия специальным цветом.
+        Optional<XmlAttr<Bool>> burriedVia;          // Настройка отображения: показывать скрытые переходные отверстия специальным цветом
+        Optional<XmlAttr<Bool>> fixedVia;            // Настройка отображения: показывать фиксированные переходные отверстия специальным цветом.
+        Optional<XmlAttr<Bool>> showActiveLayerOnly; // Настройка отображения: показывать только активный слой.
+        Optional<XmlAttr<Bool>> showBoardOutline;    // Настройка отображения: показывать контур платы.
+        Optional<XmlAttr<Bool>> showBotMechDetails;  // Настройка отображения: показывать детали на нижних металлических слоях.
+        Optional<XmlAttr<Bool>> showBotMechLayers;   // Настройка отображения: показывать нижние механические слои.
+        Optional<XmlAttr<Bool>> showBotMechPads;     // Настройка отображения: показывать контактные площадки на нижних металлических слоях.
+        Optional<XmlAttr<Bool>> showCompBot;         // Настройка отображения: показывать компоненты на нижней стороне.
+        Optional<XmlAttr<Bool>> showCompTop;         // Настройка отображения: показывать компоненты на верхней стороне.
+        Optional<XmlAttr<Bool>> showComponents;      // Настройка отображения: показывать компоненты.
+        Optional<XmlAttr<Bool>> showCompsBound;      // Настройка отображения: показывать габариты компонентов.
+        Optional<XmlAttr<Bool>> showCompsDes;        // Настройка отображения: показывать позиционные обозначения компонентов.
+        Optional<XmlAttr<Bool>> showCoppers;         // Настройка отображения: показывать области металлизации (полигоны).
+        Optional<XmlAttr<Bool>> showDRCViolations;   // Настройка отображения: показывать нарушение DRC.
+        Optional<XmlAttr<Bool>> showDocLayers;       // Настройка отображения: показывать документирующие слои.
+        Optional<XmlAttr<Bool>> showKeepouts;        // Настройка отображения: показывать запреты.
+        Optional<XmlAttr<Bool>> showLabelOther;      // Настройка отображения: показывать ярлыки пользовательских атрибутов.
+        Optional<XmlAttr<Bool>> showLabelPartName;   // Настройка отображения: показывать ярлыки атрибута PartName.
+        Optional<XmlAttr<Bool>> showLabelRefDes;     // Настройка отображения: показывать ярлыки атрибута RefDes.
+        Optional<XmlAttr<Bool>> showMetalPads;       // Настройка отображения: показывать контактные площадки на металлических слоях.
+        Optional<XmlAttr<Bool>> showMountingHoles;   // Настройка отображения: показывать монтажные отверстия.
+        Optional<XmlAttr<Bool>> showNarrow;          // Настройка отображения: показывать уменьшение номинального зазора.
+        Optional<XmlAttr<Bool>> showNetLines;        // Настройка отображения: показывать связи.
+        Optional<XmlAttr<Bool>> showPinsName;        // Настройка отображения: показывать имена контактов.
+        Optional<XmlAttr<Bool>> showPinsNet;         // Настройка отображения: показывать имена цепей контактов.
+        Optional<XmlAttr<Bool>> showPlaceKeepouts;   // Настройка отображения: показывать запреты размещения.
+        Optional<XmlAttr<Bool>> showRouteKeepouts;   // Настройка отображения: показывать запреты трассировки.
+        Optional<XmlAttr<Bool>> showSerpentArea;     // Настройка отображения: показывать области змеек.
+        Optional<XmlAttr<Bool>> showSignalLayers;    // Настройка отображения: показывать металлические слои.
+        Optional<XmlAttr<Bool>> showTexts;           // Настройка отображения: показывать ярлыки (надписи).
+        Optional<XmlAttr<Bool>> showThinWires;       // Настройка отображения: показывать проводники тонкими линиями.
+        Optional<XmlAttr<Bool>> showTopMechDetails;  // Настройка отображения: показывать детали на верхних металлических слоях.
+        Optional<XmlAttr<Bool>> showTopMechLayers;   // Настройка отображения: показывать верхние механические слои.
+        Optional<XmlAttr<Bool>> showTopMechPads;     // Настройка отображения: показывать КП на верхних металлических слоях.
+        Optional<XmlAttr<Bool>> showTrimmed;         // Настройка отображения: показывать уменьшение ширины проводника.
+        Optional<XmlAttr<Bool>> showVias;            // Настройка отображения: показывать переходы.
+        Optional<XmlAttr<Bool>> showViolations;      // Настройка отображения: показывать нарушения.
+        Optional<XmlAttr<Bool>> showWires;           // Настройка отображения: показывать проводники.
+        Optional<XmlAttr<Bool>> throughPad;          // Настройка отображения: показывать сквозные контактные площадки специальным цветом.
+        Optional<XmlAttr<Bool>> throughVia;          // Настройка отображения: показывать сквозные переходные отверстия специальным цветом.
+        Optional<XmlAttr<QString>> displayScheme;    // Настройка отображения: текущая схема отображения.
     };
     // Настройки сетки.
     struct Grid {
         // Настройка отображения сетки: шаг сетки.
-        /* public bool snapToAngleSpecified_ */
         // Настройка отображения сетки: шаг сетки.
         // [XmlElement("GridSpace")] public GridSpace gridSpace;
         struct GridSpace {
@@ -300,14 +174,14 @@ struct DisplayControl {
         // Настройка отображения сетки: показывать сетку.
         // [XmlAttribute("gridShow")] public Bool gridShow_;
         Optional<XmlAttr<Bool>> gridShow;
-        /* public bool gridShowSpecified_ */
         // Настройка ручного редактора: выравнивание на сетку.
         // [XmlAttribute("alignToGrid")] public Bool alignTogrid;
         Optional<XmlAttr<Bool>> alignTogrid;
-        /* public bool alignToGridSpecified_ */
         // Настройка ручного редактирования: привязка к углу кратному 45˚.
         // [XmlAttribute("snapToAngle")] public Bool snapToAngle_;
         Optional<XmlAttr<Bool>> snapToAngle;
+
+        Optional<XmlAttr<Bool>> saveProportion;
     };
     // Настройка отображения: настройки видимости слоя.
     struct LayerOptions {
@@ -328,15 +202,12 @@ struct DisplayControl {
             // Флаг видимости.
             // [XmlAttribute("visible")] public Bool visible_;
             Optional<XmlAttr<Bool>> visible;
-            /* public bool visibleSpecified_ */
             // Настройка отображения слоя: видимость деталей.
             // [XmlAttribute("details")] public Bool details_;
             XmlAttr<Bool> details;
-            /* public bool detailsSpecified_ */
             // Настройка отображения слоя: видимость контактных площадок.
             // [XmlAttribute("pads")] public Bool pads_;
             XmlAttr<Bool> pads;
-            /* public bool padsSpecified_ */
         };
         // Ссылка на слой.
         // [XmlElement("LayerRef")] public LayerRef layerRef;
@@ -374,27 +245,21 @@ struct DisplayControl {
         // Флаг применения правила.
         // [XmlAttribute("enabled")] public Bool enabled_;
         XmlAttr<Bool> enabled;
-        /* public bool enabledSpecified_ */
         // Отображение цепей особым цветом: применять для проводников.
         // [XmlAttribute("colorizeWire")] public Bool colorizeWire_;
         XmlAttr<Bool> colorizeWire;
-        /* public bool colorizeWireSpecified_ */
         // Отображение цепей особым цветом: применять для контактных площадок.
         // [XmlAttribute("colorizePad")] public Bool colorizePad_;
         XmlAttr<Bool> colorizePad;
-        /* public bool colorizePadSpecified_ */
         // Отображение цепей особым цветом: применять для областей металлизации.
         // [XmlAttribute("colorizeCopper")] public Bool colorizeCopper_;
         XmlAttr<Bool> colorizeCopper;
-        /* public bool colorizeCopperSpecified_ */
         // Отображение цепей особым цветом: применять для переходов.
         // [XmlAttribute("colorizeVia")] public Bool colorizeVia_;
         XmlAttr<Bool> colorizeVia;
-        /* public bool colorizeViaSpecified_ */
         // Отображение цепей особым цветом: применять для связей.
         // [XmlAttribute("colorizeNetline")] public Bool colorizeNetline_;
         XmlAttr<Bool> colorizeNetline;
-        /* public bool colorizeNetlineSpecified_ */
         // Отображение цепей особым цветом: установить цвет для цепи / сигнала / группы цепей / группы сигналов.
         // [XmlElement("SetColor")] public List<SetColor> SetColors_;
         XmlArrayElem<SetColor> SetColors;
@@ -404,7 +269,6 @@ struct DisplayControl {
         // Флаг применения правила.
         // [XmlAttribute("enabled")] public Bool enabled_;
         XmlAttr<Bool> enabled;
-        /* public bool enabledSpecified_ */
         // Ссылки на цепь или сигнал
         // [XmlElement(NetRef),
         //  XmlElement(NetGroupRef),

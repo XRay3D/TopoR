@@ -37,7 +37,7 @@ struct Xml {
     TreeItem* dbgTree{item};
     QDomNode node;
     int depth{};
-    mutable int fieldNum{};
+    mutable int fieldIndex{};
     bool isRead{};
     bool isArray{};
     bool isVariant{};
@@ -210,31 +210,23 @@ private:
 
     /// XmlVariant<Ts...>
     template <typename... Ts> bool read(XmlVariant<Ts...>& variant) { // перенаправление ↑↑↑
-        qCritical() << variant.index();
         if(!node.isElement()) return false;
-        debugNode();
-        QStringList list;
+        // debugNode();
         int ctr{};
         auto reader = [&]<typename T>() {
             if(ctr) return;
-            if(TypeName<T> == "AllNets")
-                qDebug();
             if(T val{}; node.toElement().tagName() == TypeName<T> && read(val)) {
                 ++ctr, variant = std::move(val);
-                list.append(TypeName<T>);
             } else {
                 auto copy = node;
                 node = node.firstChildElement(TypeName<T>);
-                if(!node.isNull())
-                    if(isVariant = true; read(val)) {
-                        ++ctr, variant = std::move(val);
-                        list.append(TypeName<T>);
-                    }
+                if(isVariant = true; !node.isNull() && read(val))
+                    ++ctr, variant = std::move(val);
+                isVariant = false;
                 node = copy;
             }
         };
         (reader.template operator()<Ts>(), ...);
-        qWarning() << list;
         assert(ctr < 2);
         return ctr > 0;
     }
@@ -335,19 +327,22 @@ private:
 
 public:
     template <Struct T> bool read(T& str) { // чтение полей структуры
+        if(TypeName<T> == "ComponentsOnBoard") {
+            // debugNode();
+            qDebug();
+        }
         if(!isArray && !isVariant)
             node = (node.isNull() ? doc : node).firstChildElement(TypeName<T>);
         isArray = isVariant = false;
 
         dbgTree = dbgTree->addItem(new TreeItem{TypeName<T>, TypeName<T>,
             "", "", node.lineNumber()});
-
         int ok{};
         if constexpr(pfr::tuple_size_v<T>)
             pfr::for_each_field_with_name(str, [this, &ok](auto name, auto&& field, auto index) {
                 fieldName = QString::fromUtf8(name.data());
                 if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
-                fieldNum = index;
+                fieldIndex = index;
                 auto copy = node;
                 ok += read(field);
                 node = copy;
@@ -363,12 +358,13 @@ public:
         outNode = outNode.isNull()
             ? outDoc.appendChild(outDoc.createElement(TypeName<T>))
             : outNode.appendChild(outDoc.createElement(TypeName<T>));
-
+        if(TypeName<T> == "Autoroute")
+            qDebug();
         int ok{};
         pfr::for_each_field_with_name(str, [this, &ok](auto name, auto&& field, auto index) {
             fieldName = QString::fromUtf8(name.data());
             if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
-            fieldNum = index;
+            fieldIndex = index;
             auto copy = outNode;
             ok += write(field);
             outNode = copy;

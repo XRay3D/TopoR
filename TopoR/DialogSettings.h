@@ -14,99 +14,37 @@ namespace TopoR {
 struct DialogSettings {
     // Настройки DRC.
     struct DRCSettings {
-        // Настройка DRC: выводить отчёт в указанный файл.
-        // [XmlAttribute("createLog")] public Bool createLog_;
-        XmlAttr<Bool> createLog;
-        // Настройка DRC: файл для вывода отчета.
-        // [XmlAttribute("logFileName")] public string logFileName_;
-        XmlAttr<QString> logFileName;
-        // Настройка DRC: максимальное количество сообщений.
-        // [XmlAttribute("messageLimit", DataType = "int")] public int messageLimit_;
-        XmlAttr<int> messageLimit;
-        // Настройка DRC: допуск.
-        // [XmlAttribute("tolerance", DataType = "double")] public double tolerance_;
-        XmlAttr<double> tolerance;
-        // Настройка DRC: проверка целостности цепей.
-        // [XmlAttribute("checkNetIntegrity")] public Bool checkNetIntegrity_;
-        XmlAttr<Bool> checkNetIntegrity;
-        // Настройка DRC: проверка ширины проводников.
-        // [XmlAttribute("checkNetWidth")] public Bool checkNetWidth_;
-        XmlAttr<Bool> checkNetWidth;
-        // Настройка DRC: проверка зазоров.
-        // [XmlAttribute("checkClearances")] public Bool checkClearances_;
-        XmlAttr<Bool> checkClearances;
-        // Настройка DRC: проверять зазоры между надписями и областями металлизации (полигонами).
-        // [XmlAttribute("textToCopper")] public Bool textToCopper_;
-        XmlAttr<Bool> textToCopper;
-        // Настройка DRC: проверять зазоры между надписями и запретами.
-        // [XmlAttribute("textToKeepout")] public Bool textToKeepout_;
-        XmlAttr<Bool> textToKeepout;
-        // Настройка DRC: проверять зазоры между надписями и переходными отверстиями.
-        // [XmlAttribute("textToVia")] public Bool textToVia_;
-        XmlAttr<Bool> textToVia;
-        // Настройка DRC: проверять зазоры между надписями и проводниками.
-        // [XmlAttribute("textToWire")] public Bool textToWire_;
-        XmlAttr<Bool> textToWire;
-        // Настройка DRC: проверять зазоры между надписями и контактными площадками.
-        // [XmlAttribute("textToPad")] public Bool textToPad_;
-        XmlAttr<Bool> textToPad;
-        // Настройка DRC: проверять зазоры от надписей до края платы.
-        // [XmlAttribute("textToBoard")] public Bool textToBoard_;
-        XmlAttr<Bool> textToBoard;
-        // Настройка DRC: проверять зазор между полигонами.
-        // [XmlAttribute("copperToCopper")] public Bool copperToCopper_;
-        XmlAttr<Bool> copperToCopper;
-        // Настройка DRC: проверять зазор между полигонами и запретами.
-        // [XmlAttribute("copperToKeepout")] public Bool copperToKeepout_;
-        XmlAttr<Bool> copperToKeepout;
-        // Настройка DRC: проверять зазор между полигонами и проводниками.
-        // [XmlAttribute("copperToWire")] public Bool copperToWire_;
-        XmlAttr<Bool> copperToWire;
-        // Настройка DRC: проверять зазор между полигонами и переходными отверстиями.
-        // [XmlAttribute("copperToVia")] public Bool copperToVia_;
-        XmlAttr<Bool> copperToVia;
-        // Настройка DRC: проверять зазор между полигонами и контактными площадками.
-        // [XmlAttribute("copperToPad")] public Bool copperToPad_;
-        XmlAttr<Bool> copperToPad;
-        // Настройка DRC: проверять зазор между полигонами и краем платы.
-        // [XmlAttribute("copperToBoard")] public Bool copperToBoard_;
-        XmlAttr<Bool> copperToBoard;
-        // Настройка DRC: проверять зазоры между проводниками и запретами.
-        // [XmlAttribute("wireToKeepout")] public Bool wireToKeepout_;
-        XmlAttr<Bool> wireToKeepout;
-        // Настройка DRC: проверять зазоры между переходными отверстиями и запретами.
-        // [XmlAttribute("viaToKeepout")] public Bool viaToKeepout_;
-        XmlAttr<Bool> viaToKeepout;
-        // Настройка DRC: проверка зазоров между контактными площадками и запретами.
-        // [XmlAttribute("padToKeepout")] public Bool padToKeepout_;
-        XmlAttr<Bool> padToKeepout;
-        // Настройка DRC: проверять зазоры между проводниками.
-        // [XmlAttribute("wireToWire")] public Bool wireToWire_;
-        XmlAttr<Bool> wireToWire;
-        // Настройка DRC: проверять зазоры между проводниками и переходными отверстиями.
-        // [XmlAttribute("wireToVia")] public Bool wireToVia_;
-        XmlAttr<Bool> wireToVia;
-        // Настройка DRC: проверять зазоры между проводниками и контактными площадками.
-        // [XmlAttribute("wireToPad")] public Bool wireToPad_;
-        XmlAttr<Bool> wireToPad;
-        // Настройка DRC: проверять зазоры от проводников до края платы.
-        // [XmlAttribute("wireToBoard")] public Bool wireToBoard_;
-        XmlAttr<Bool> wireToBoard;
-        // Настройка DRC: проверять зазоры между переходными отверстиями.
-        // [XmlAttribute("viaToVia")] public Bool viaToVia_;
-        XmlAttr<Bool> viaToVia;
-        // Настройка DRC: проверять зазоры между переходными отверстиями и контактными площадками.
-        // [XmlAttribute("viaToPad")] public Bool viaToPad_;
-        XmlAttr<Bool> viaToPad;
-        // Настройка DRC: проверять зазоры от переходных отверстий до края платы.
-        // [XmlAttribute("viaToBoard")] public Bool viaToBoard_;
-        XmlAttr<Bool> viaToBoard;
-        // Настройка DRC: проверка зазоров между контактными площадками.
-        // [XmlAttribute("padToPad")] public Bool padToPad_;
-        XmlAttr<Bool> padToPad;
-        // Настройка DRC: проверка зазоров между контактными площадками и краем платы.
-        // [XmlAttribute("padToBoard")] public Bool padToBoard_;
-        XmlAttr<Bool> padToBoard;
+        Optional<XmlAttr<Bool>> checkClearances;   // Настройка DRC: проверка зазоров.
+        Optional<XmlAttr<Bool>> checkNetIntegrity; // Настройка DRC: проверка целостности цепей.
+        Optional<XmlAttr<Bool>> checkNetWidth;     // Настройка DRC: проверка ширины проводников.
+        Optional<XmlAttr<Bool>> copperToBoard;     // Настройка DRC: проверять зазор между полигонами и краем платы.
+        Optional<XmlAttr<Bool>> copperToCopper;    // Настройка DRC: проверять зазор между полигонами.
+        Optional<XmlAttr<Bool>> copperToKeepout;   // Настройка DRC: проверять зазор между полигонами и запретами.
+        Optional<XmlAttr<Bool>> copperToPad;       // Настройка DRC: проверять зазор между полигонами и контактными площадками.
+        Optional<XmlAttr<Bool>> copperToVia;       // Настройка DRC: проверять зазор между полигонами и переходными отверстиями.
+        Optional<XmlAttr<Bool>> copperToWire;      // Настройка DRC: проверять зазор между полигонами и проводниками.
+        Optional<XmlAttr<Bool>> createLog;         // Настройка DRC: выводить отчёт в указанный файл.
+        Optional<XmlAttr<QString>> logFileName;    // Настройка DRC: файл для вывода отчета.
+        Optional<XmlAttr<int>> messageLimit;       // Настройка DRC: максимальное количество сообщений.
+        Optional<XmlAttr<Bool>> padToBoard;        // Настройка DRC: проверка зазоров между контактными площадками и краем платы.
+        Optional<XmlAttr<Bool>> padToKeepout;      // Настройка DRC: проверка зазоров между контактными площадками и запретами.
+        Optional<XmlAttr<Bool>> padToPad;          // Настройка DRC: проверка зазоров между контактными площадками.
+        Optional<XmlAttr<Bool>> textToBoard;       // Настройка DRC: проверять зазоры от надписей до края платы.
+        Optional<XmlAttr<Bool>> textToCopper;      // Настройка DRC: проверять зазоры между надписями и областями металлизации (полигонами).
+        Optional<XmlAttr<Bool>> textToKeepout;     // Настройка DRC: проверять зазоры между надписями и запретами.
+        Optional<XmlAttr<Bool>> textToPad;         // Настройка DRC: проверять зазоры между надписями и контактными площадками.
+        Optional<XmlAttr<Bool>> textToVia;         // Настройка DRC: проверять зазоры между надписями и переходными отверстиями.
+        Optional<XmlAttr<Bool>> textToWire;        // Настройка DRC: проверять зазоры между надписями и проводниками.
+        Optional<XmlAttr<double>> tolerance;       // Настройка DRC: допуск.
+        Optional<XmlAttr<Bool>> viaToBoard;        // Настройка DRC: проверять зазоры от переходных отверстий до края платы.
+        Optional<XmlAttr<Bool>> viaToKeepout;      // Настройка DRC: проверять зазоры между переходными отверстиями и запретами.
+        Optional<XmlAttr<Bool>> viaToPad;          // Настройка DRC: проверять зазоры между переходными отверстиями и контактными площадками.
+        Optional<XmlAttr<Bool>> viaToVia;          // Настройка DRC: проверять зазоры между переходными отверстиями.
+        Optional<XmlAttr<Bool>> wireToBoard;       // Настройка DRC: проверять зазоры от проводников до края платы.
+        Optional<XmlAttr<Bool>> wireToKeepout;     // Настройка DRC: проверять зазоры между проводниками и запретами.
+        Optional<XmlAttr<Bool>> wireToPad;         // Настройка DRC: проверять зазоры между проводниками и контактными площадками.
+        Optional<XmlAttr<Bool>> wireToVia;         // Настройка DRC: проверять зазоры между проводниками и переходными отверстиями.
+        Optional<XmlAttr<Bool>> wireToWire;        // Настройка DRC: проверять зазоры между проводниками.
     };
     // Настройки вывода файлов Gerber.
     struct GerberSettings {
@@ -290,84 +228,50 @@ struct DialogSettings {
         XmlArrayElem<AttributeRef> AttributeRefs;
     };
     // Настройка фильтра сообщений.
-    struct MessagesFilter {
-        // Настройка фильтра сообщений: режим показа предупреждений.
-        // [XmlAttribute("showWarnings")] public showWarnings showWarnings_;
-        XmlAttr<showWarnings> showWarnings_;
-        // Настройка фильтра сообщений: выводить сообщение 5003.
-        // [XmlAttribute("W5003")] public Bool W5003_;
-        XmlAttr<Bool> W5003;
-        // Настройка фильтра сообщений: выводить сообщение 5012.
-        // [XmlAttribute("W5012")] public Bool W5012_;
-        XmlAttr<Bool> W5012;
-        // Настройка фильтра сообщений: выводить сообщение 5013.
-        // [XmlAttribute("W5013")] public Bool W5013_;
-        XmlAttr<Bool> W5013;
-        // Настройка фильтра сообщений: выводить сообщение 5014.
-        // [XmlAttribute("W5014")] public Bool W5014_;
-        XmlAttr<Bool> W5014;
-        // Настройка фильтра сообщений: выводить сообщение 5015.
-        // [XmlAttribute("W5015")] public Bool W5015_;
-        XmlAttr<Bool> W5015;
-        // Настройка фильтра сообщений: выводить сообщение 5016.
-        // [XmlAttribute("W5016")] public Bool W5016_;
-        XmlAttr<Bool> W5016;
-        // Настройка фильтра сообщений: выводить сообщение 5017.
-        // [XmlAttribute("W5017")] public Bool W5017_;
-        XmlAttr<Bool> W5017;
-        // Настройка фильтра сообщений: выводить сообщение 5018.
-        // [XmlAttribute("W5018")] public Bool W5018_;
-        XmlAttr<Bool> W5018;
-        // Настройка фильтра сообщений: выводить сообщение 5023.
-        // [XmlAttribute("W5023")] public Bool W5023_;
-        XmlAttr<Bool> W5023;
-        // Настройка фильтра сообщений: выводить сообщение 5024.
-        // [XmlAttribute("W5024")] public Bool W5024_;
-        XmlAttr<Bool> W5024;
-        // Настройка фильтра сообщений: выводить сообщение 5026.
-        // [XmlAttribute("W5026")] public Bool W5026_;
-        XmlAttr<Bool> W5026;
-        // Настройка фильтра сообщений: выводить сообщение 5034.
-        // [XmlAttribute("W5034")] public Bool W5034_;
-        XmlAttr<Bool> W5034;
-        // Настройка фильтра сообщений: выводить сообщение 5036.
-        // [XmlAttribute("W5036")] public Bool W5036_;
-        XmlAttr<Bool> W5036;
-        // Настройка фильтра сообщений: выводить сообщение 5037.
-        // [XmlAttribute("W5037")] public Bool W5037_;
-        XmlAttr<Bool> W5037;
-        // Настройка фильтра сообщений: быстрая проверка зазоров между компонентами.
-        // [XmlAttribute("WClrnBtwComps")] public Bool WClrnBtwComps_;
-        XmlAttr<Bool> WClrnBtwComps;
-        // Настройка фильтра сообщений: быстрая проверка зазоров между объектами одной цепи.
-        // [XmlAttribute("WClrnBtwObjSameNet")] public Bool WClrnBtwObjSameNet_;
-        XmlAttr<Bool> WClrnBtwObjSameNet;
+    struct MessageFilter {
+        Optional<XmlAttr<Bool>> W5003; // Настройка фильтра сообщений: выводить сообщение 5003.
+        Optional<XmlAttr<Bool>> W5012; // Настройка фильтра сообщений: выводить сообщение 5012.
+        Optional<XmlAttr<Bool>> W5013; // Настройка фильтра сообщений: выводить сообщение 5013.
+        Optional<XmlAttr<Bool>> W5014; // Настройка фильтра сообщений: выводить сообщение 5014.
+        Optional<XmlAttr<Bool>> W5015; // Настройка фильтра сообщений: выводить сообщение 5015.
+        Optional<XmlAttr<Bool>> W5016; // Настройка фильтра сообщений: выводить сообщение 5016.
+        Optional<XmlAttr<Bool>> W5017; // Настройка фильтра сообщений: выводить сообщение 5017.
+        Optional<XmlAttr<Bool>> W5018; // Настройка фильтра сообщений: выводить сообщение 5018.
+        Optional<XmlAttr<Bool>> W5023; // Настройка фильтра сообщений: выводить сообщение 5023.
+        Optional<XmlAttr<Bool>> W5024; // Настройка фильтра сообщений: выводить сообщение 5024.
+        Optional<XmlAttr<Bool>> W5026; // Настройка фильтра сообщений: выводить сообщение 5026.
+        Optional<XmlAttr<Bool>> W5034; // Настройка фильтра сообщений: выводить сообщение 5034.
+        Optional<XmlAttr<Bool>> W5036; // Настройка фильтра сообщений: выводить сообщение 5036.
+        Optional<XmlAttr<Bool>> W5037; // Настройка фильтра сообщений: выводить сообщение 5037.
+
+        Optional<XmlAttr<Bool>> WClrnBtwComps;         // Настройка фильтра сообщений: быстрая проверка зазоров между компонентами.
+        Optional<XmlAttr<Bool>> WClrnBtwObjSameNet;    // Настройка фильтра сообщений: быстрая проверка зазоров между объектами одной цепи.
+        Optional<XmlAttr<showWarnings>> showWarnings_; // Настройка фильтра сообщений: режим показа предупреждений.
     };
     // Версия раздела.
     // [XmlAttribute("version")] public string version_;
     XmlAttr<QString> version;
     // Настройки DRC.
     // [XmlElement("DRCSettings")] public DRCSettings dRCSettings;
-    DRCSettings dRCSettings;
+    Optional<DRCSettings> dRCSettings;
     // Настройки вывода файлов Gerber.
     // [XmlElement("GerberSettings")] public GerberSettings gerberSettings;
-    GerberSettings gerberSettings;
+    Optional<GerberSettings> gerberSettings;
     // Настройки вывода файла DXF.
     // [XmlElement("DXFSettings")] public DXFSettings dXFSettings;
-    DXFSettings dXFSettings;
+    Optional<DXFSettings> dXFSettings;
     // Настройки вывода файлов Drill.
     // [XmlElement("DrillSettings")] public DrillSettings drillSettings;
-    DrillSettings drillSettings;
+    Optional<DrillSettings> drillSettings;
     // Настройки вывода BOM файла.
     // [XmlElement("BOMSettings")] public BOMSettings bOMSettings;
-    BOMSettings bOMSettings;
+    Optional<BOMSettings> bOMSettings;
     // Настройка фильтра сообщений.
     // [XmlElement("MessagesFilter")] public MessagesFilter messagesFilter;
-    MessagesFilter messagesFilter;
+    Optional<MessageFilter> messageFilter;
     /**************************************************************************
      * Здесь находятся функции для работы с элементами класса DialogSettings. *
      * Они не являются частью формата TopoR PCB.                              *
      * ************************************************************************/
-    /**************************************************************************/
 };
 } // namespace TopoR

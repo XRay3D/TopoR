@@ -60,7 +60,7 @@ struct HiSpeedRules {
         struct PinPair {
             // Ссылка на контакт источника сигнала.
             // [XmlElement("PinRef")] public List<PinRef> PinRefs_;
-            XmlArrayElem<PinRef> PinRefs;
+            XmlArray<PinRef> PinRefs;
         };
         // Описание сигнала.
         struct Signal {
@@ -87,7 +87,7 @@ struct HiSpeedRules {
         XmlArrayElem<PinPair> PinPairs;
         // Ссылки на сигналы.
         // [XmlElement("Signal")] public List<Signal> Signals_;
-        XmlArrayElem<Signal> Signals;
+        XmlArray<Signal> Signals;
     };
     // Описание дифференциального сигнала (дифференциальной пары).
     struct DiffSignal {
@@ -101,7 +101,7 @@ struct HiSpeedRules {
         ImpedanceRef impedanceRef;
         // Ссылки на сигналы.
         // [XmlElement("SignalRef")] public List<SignalRef> SignalRefs_;
-        XmlArrayElem<SignalRef> SignalRefs;
+        XmlArray<SignalRef> SignalRefs;
     };
     // Описание группы сигналов.
     struct SignalGroup {
@@ -112,7 +112,7 @@ struct HiSpeedRules {
         // [XmlElement(SignalRef),
         //  XmlElement(DiffSignalRef),
         //  XmlElement(SignalGroupRef)] public List<Object> References_;
-        XmlArrayElem<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> References;
+        XmlArray<XmlVariant<SignalRef, DiffSignalRef, SignalGroupRef>> References;
     };
     // Описание правил выравнивания задержек.
     struct RulesDelay {
@@ -184,21 +184,23 @@ struct HiSpeedRules {
             XmlAttr<double> toleranceOver;
             // Первый объект воздействия правила взаимного выравнивания задержек.
             // [XmlElement("ObjectLeft")] public ObjectSignal ObjectLeft_;
-            ObjectSignal ObjectLeft_; // FIXME ???
+            using ObjectLeft = ObjectSignal;
+            ObjectLeft objectLeft; // FIXME ???
             // Второй объект воздействия правила взаимного выравнивания задержек.
             // [XmlElement("ObjectRight")] public ObjectSignal ObjectRight_;
-            ObjectSignal ObjectRight_; // FIXME ???
+            using ObjectRight = ObjectSignal;
+            ObjectRight objectRight; // FIXME ???
         };
         // Правила выравнивания задержек для группы цепей или группы дифференциальных пар.
         // [XmlElement("DelayEqual")] public List<DelayEqual> DelayEquals_;
-        XmlArrayElem<DelayEqual> DelayEquals;
+        XmlArray<DelayEqual> DelayEquals;
         // Правила задания абсолютного значения задержки.
         // [XmlElement("DelayConstant")] public List<DelayConstant> DelayConstants_;
-        XmlArrayElem<DelayConstant> DelayConstants;
+        XmlArray<DelayConstant> DelayConstants;
         // Правила взаимного выравнивания задержек.
         /// \note !Правила несимметричны относительно ObjectLeft и ObjectRight
         // [XmlElement("DelayRelation")] public List<DelayRelation> DelayRelations_;
-        XmlArrayElem<DelayRelation> DelayRelations;
+        XmlArray<DelayRelation> DelayRelations;
     };
     // Настройки поиска сигналов.
     struct SignalSearchSettings {

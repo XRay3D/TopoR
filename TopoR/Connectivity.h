@@ -37,9 +37,6 @@ struct Connectivity {
         // Идентификатор неименованных объектов.
         // [XmlAttribute("id")] public string id_;
         XmlAttr<QString> id;
-        // Параметр змейки: требуемая длина.
-        // [XmlAttribute("Count", DataType ="double")] public double Count_;
-        XmlAttr<double> Count;
         // Параметр змейки: зазор между соседними изломами.
         // [XmlAttribute("gap", DataType = "double")] public double gap_;
         XmlAttr<double> gap;
@@ -55,6 +52,9 @@ struct Connectivity {
         // Параметр змейки: высота h4 (см. описание змейки Serpent).
         // [XmlAttribute("h4", DataType = "double")] public double h4_;
         XmlAttr<double> h4;
+        // Параметр змейки: требуемая длина.
+        // [XmlAttribute("Count", DataType ="double")] public double Count_;
+        XmlAttr<double> length;
     };
     // Описание застёгнутой пары проводников.
     /// \note !Сегменты(Track) описывают осевую линию пары.Форма проводников пары рассчитывается автоматически.
@@ -80,7 +80,7 @@ struct Connectivity {
         // [XmlElement(TrackLine),
         //  XmlElement(TrackArc),
         //  XmlElement(TrackArcCW)] public List<Object> Tracks_;
-        XmlArrayElem<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
+        XmlArray<XmlVariant<TrackLine, TrackArc, TrackArcCW>> Tracks;
     };
     // Описание проводника.
     struct Wire {
@@ -320,6 +320,5 @@ struct Connectivity {
      * Здесь находятся функции для работы с элементами класса Connectivity. *
      * Они не являются частью формата TopoR PCB.                            *
      * **********************************************************************/
-    /************************************************************************/
 };
 } // namespace TopoR

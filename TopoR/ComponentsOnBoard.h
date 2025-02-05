@@ -170,6 +170,7 @@ struct ComponentsOnBoard {
     // Описание одиночных контактов.(инстанции компонентов)
     // [XmlArray("FreePads")][XmlArrayItem("FreePad")] public List<FreePad> FreePads;
     XmlArrayElem<FreePad> FreePads;
+
     /*****************************************************************************
      * Здесь находятся функции для работы с элементами класса ComponentsOnBoard. *
      * Они не являются частью формата TopoR PCB.                                 *
@@ -180,7 +181,6 @@ struct ComponentsOnBoard {
     /// \param componentRef \brief ссылка на библиотеку компонентов
     /// \param footprintRef \brief ссылка на библиотеку посадочных мест
     /// \return  Имя нового компонента
-
     QString AddComponent(QString name, units units, const QString& componentRef, const QString& footprintRef);
     // Удаление компонента по имени
     /// \param name \brief уникальный имя компонента

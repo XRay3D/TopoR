@@ -75,7 +75,7 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-#if ALL
+#if 0 // ALL
 
 static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_File& file) {
     auto group = new QGraphicsItemGroup;
