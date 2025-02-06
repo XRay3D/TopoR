@@ -14,14 +14,13 @@ cmake_minimum_required(VERSION 3.20)
 # set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CMAKE_COMMAND} -E time")
 # set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CMAKE_COMMAND} -E time")
 
-project(TopoRTest LANGUAGES CXX)
+project(TopoR_Test LANGUAGES CXX)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -85,32 +84,9 @@ set(FST
     # /home/x-ray/Документы/TopoR/Examples/Example_03/arz_standard_routing.fst
 )
 
-add_executable(
-  ${PROJECT_NAME}
-  # ${HEADERS}
-  # ${JSONS}
-  # ${SOURCES}
-  # ${UIS}
-  magicgetruntime.h
-  main.cpp
-  xmlserializer.cpp
-  xmlserializer.h
-  mainwindow.h
-  mainwindow.cpp
-  mainwindow.ui
-  graphicsview.h
-  graphicsview.cpp
-  treeitem.h
-  treemodel.h
-  treeitem.cpp
-  treemodel.cpp
-  listmodel.h
-  listmodel.cpp
-  tablemodel.h
-  tablemodel.cpp
-  xmlserializertypes.h
-  # Coordinates.h
-)
+file(GLOB SOURCES *.cpp *.h *.ui)
+
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 # include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 # set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp
@@ -118,16 +94,16 @@ add_executable(
 
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+add_subdirectory(XmlSerializer)
+add_subdirectory(TopoR)
+
+target_link_libraries(TopoR PRIVATE XmlSerializer)
+
 target_link_libraries(
   ${PROJECT_NAME}
-  PRIVATE TopoR
-          # "stdc++_libbacktrace"
-          Qt${QT_VERSION_MAJOR}::Core
-          Qt${QT_VERSION_MAJOR}::Gui
-          Qt${QT_VERSION_MAJOR}::Widgets
+  PRIVATE TopoR XmlSerializer Qt${QT_VERSION_MAJOR}::Core
+          Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets
           Qt${QT_VERSION_MAJOR}::Xml)
-
-add_subdirectory(TopoR)
 
 if(WIN32_)
   target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
@@ -156,12 +132,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC_")
   # "C:/Program Files/Git/usr/bin/touch.exe" IMPORTED_LOCATION)
   # get_filename_component(_QT_BIN_DIR "${EXECUTABLE}" DIRECTORY)
   # find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
-  add_custom_command(
-    TARGET ${PROJECT_NAME}
-    PRE_BUILD
-    COMMAND "C:/Program Files/Git/usr/bin/touch.exe"
-            "${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp"
-    COMMENT "TOUCH Cruth...")
-endif()
 
-# C:\Program Files\Git\usr\bin\touch.exe
+  # add_custom_command( TARGET ${PROJECT_NAME} PRE_BUILD COMMAND "C:/Program
+  # Files/Git/usr/bin/touch.exe" "${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp"
+  # COMMENT "TOUCH Cruth...")
+endif()

@@ -15,28 +15,28 @@ struct TextStyles {
     // Описание стиля надписей.
     struct TextStyle {
         // Имя объекта или ссылка на именованный объект.
-        XmlAttr<QString> name;
+        Xml::Attr<QString> name;
         // Параметр стиля надписей: название шрифта.
-        // [XmlAttribute("fontName")] public string fontName_;
-        XmlAttr<QString> fontName;
+        // [Xml::Attribute("fontName")] public string fontName_;
+        Xml::Attr<QString> fontName;
         // Параметр стиля надписей: высота символов в текущих единицах.
-        // [XmlAttribute("height", DataType = "double")] public double height_;
-        XmlAttr<double> height;
+        // [Xml::Attribute("height", DataType = "double")] public double height_;
+        Xml::Attr<double> height;
         // Параметр стиля надписей: жирность шрифта.
-        // [XmlAttribute("bold")] public Bool bold_;
-        XmlAttr<Bool> bold;
+        // [Xml::Attribute("bold")] public Bool bold_;
+        Xml::Attr<Bool> bold;
         /* public bool boldSpecified_ */
         // Параметр стиля надписей: курсив.
-        // [XmlAttribute("italic")] public Bool italic_;
-        XmlAttr<Bool> italic;
+        // [Xml::Attribute("italic")] public Bool italic_;
+        Xml::Attr<Bool> italic;
         /* public bool italicSpecified_ */
     };
     // Версия раздела.
-    // [XmlAttribute("version")] public string version_;
-    XmlAttr<QString> version;
+    // [Xml::Attribute("version")] public string version_;
+    Xml::Attr<QString> version;
     // Стили надписей.
-    // [XmlElement("TextStyle")] public List<TextStyle> TextStyles_;
-    XmlArray<TextStyle> TextStyles;
+    // [Xml::Element("TextStyle")] public List<TextStyle> TextStyles_;
+    Xml::Array<TextStyle> TextStyles;
     /**********************************************************************
      * Здесь находятся функции для работы с элементами класса TextStyles. *
      * Они не являются частью формата TopoR PCB.                          *

@@ -17,28 +17,28 @@ struct ComponentsOnBoard {
         /// \note !Если PadstackRef не указан, то стек контактных площадок берётся из посадочного места.
         struct Pin {
             // Номер контакта компонента.
-            // [XmlAttribute("padNum", DataType = "int")] public int padNum_;
-            XmlAttr<int> padNum;
+            // [Xml::Attribute("padNum", DataType = "int")] public int padNum_;
+            Xml::Attr<int> padNum;
             // Ссылка на стек контактных площадок.
-            // [XmlElement("PadstackRef")] public PadstackRef padstackRef;
+            // [Xml::Element("PadstackRef")] public PadstackRef padstackRef;
             PadstackRef padstackRef;
             // Точка привязки объекта.
-            // [XmlElement("Org")] public Org org;
+            // [Xml::Element("Org")] public Org org;
             Org org;
         };
         // Описание монтажного отверстия в компоненте на плате.
         struct Mnthole {
             // Ссылка на монтажное отверстие в посадочном месте.
-            // [XmlAttribute("mntholeRef")] public string mntholeRef_;
-            XmlAttr<QString> mntholeRef;
+            // [Xml::Attribute("mntholeRef")] public string mntholeRef_;
+            Xml::Attr<QString> mntholeRef;
             // Задаёт угол в градусах c точностью до тысячных долей.
-            // [XmlAttribute("angle", DataType = "double")] public double angle_;
-            XmlAttr<double> angle;
+            // [Xml::Attribute("angle", DataType = "double")] public double angle_;
+            Xml::Attr<double> angle;
             // Ссылка на стек контактных площадок.
-            // [XmlElement("PadstackRef")] public PadstackRef padstackRef;
+            // [Xml::Element("PadstackRef")] public PadstackRef padstackRef;
             PadstackRef padstackRef;
             // Cсылка на цепь.
-            // [XmlElement("NetRef")] public NetRef netRef;
+            // [Xml::Element("NetRef")] public NetRef netRef;
             NetRef netRef;
         };
         // Описание атрибута компонента на плате.
@@ -46,27 +46,27 @@ struct ComponentsOnBoard {
             // Описание ярлыка компонента на плате.
             struct Label {
                 // Задаёт угол в градусах c точностью до тысячных долей.
-                // [XmlAttribute("angle", DataType = "double")] public double angle_;
-                XmlAttr<double> angle;
+                // [Xml::Attribute("angle", DataType = "double")] public double angle_;
+                Xml::Attr<double> angle;
                 // Параметр надписей и ярлыков: зеркальность отображения.
-                // [XmlAttribute("mirror")] public Bool mirror_;
-                XmlAttr<Bool> mirror;
+                // [Xml::Attribute("mirror")] public Bool mirror_;
+                Xml::Attr<Bool> mirror;
                 // Параметр надписей (ярлыков): способ выравнивания текста.
-                // [XmlAttribute("align")] public align align;
-                XmlAttr<align> align_;
+                // [Xml::Attribute("align")] public align align;
+                Xml::Attr<align> align_;
                 // Флаг видимости.
-                // [XmlAttribute("visible")] public Bool visible_;
-                XmlAttr<Bool> visible;
-                // [XmlIgnore] public bool visibleSpecified_ */
+                // [Xml::Attribute("visible")] public Bool visible_;
+                Xml::Attr<Bool> visible;
+                // [Xml::Ignore] public bool visibleSpecified_ */
                 bool getVisibleSpecified() const;
                 // Ссылка на слой.
-                // [XmlElement("LayerRef")] public LayerRef layerRef;
+                // [Xml::Element("LayerRef")] public LayerRef layerRef;
                 LayerRef layerRef;
                 // Ссылка на стиль надписей.
-                // [XmlElement("TextStyleRef")] public TextStyleRef textStyleRef;
+                // [Xml::Element("TextStyleRef")] public TextStyleRef textStyleRef;
                 TextStyleRef textStyleRef;
                 // Точка привязки объекта.
-                // [XmlElement("Org")] public Org org;
+                // [Xml::Element("Org")] public Org org;
                 Org org;
                 QTransform transform() const {
                     QTransform transform;
@@ -76,51 +76,51 @@ struct ComponentsOnBoard {
                 }
             };
             // Тип предопределённого атрибута компонента.
-            // [XmlAttribute("type")] public type type_;
-            Optional<XmlAttr<type, NoOpt>> type_;
+            // [Xml::Attribute("type")] public type type_;
+           Xml::Optional<Xml::Attr<type, NoOpt>> type_;
             // Имя объекта или ссылка на именованный объект.
-            XmlAttr<QString> name;
+            Xml::Attr<QString> name;
             // Значение атрибута.
-            // [XmlAttribute("value")] public string value_;
-            Optional<XmlAttr<QString, NoOpt>> value;
+            // [Xml::Attribute("value")] public string value_;
+           Xml::Optional<Xml::Attr<QString, NoOpt>> value;
             // Ярлыки.
-            // [XmlElement("Label")] public List<Label> Labels;
-            XmlArray<Label> Labels;
+            // [Xml::Element("Label")] public List<Label> Labels;
+            Xml::Array<Label> Labels;
         };
         // Имя объекта или ссылка на именованный объект.
-        XmlAttr<QString> name;
+        Xml::Attr<QString> name;
         // Уникальный идентификатор компонента. Используется при синхронизации. Необязательный атрибут.
         // Если не задан, то будет создан при импорте файла.
-        // [XmlAttribute("uniqueId")] public string uniqueId_;
-        XmlAttr<QString> uniqueId;
+        // [Xml::Attribute("uniqueId")] public string uniqueId_;
+        Xml::Attr<QString> uniqueId;
         // Сторона объекта.
         /// \note !Значение Both возможно только при описании запретов размещения.
-        // [XmlAttribute("side")] public side side_;
-        XmlAttr<side, NoOpt> side_;
+        // [Xml::Attribute("side")] public side side_;
+        Xml::Attr<side, NoOpt> side_;
         // Задаёт угол в градусах c точностью до тысячных долей.
-        // [XmlAttribute("angle", DataType = "double")] public double angle_;
-        XmlAttr<double> angle;
+        // [Xml::Attribute("angle", DataType = "double")] public double angle_;
+        Xml::Attr<double> angle;
         // Признак фиксации.
-        // [XmlAttribute("fixed")] public Bool fixed_;
-        XmlAttr<Bool> fixed;
+        // [Xml::Attribute("fixed")] public Bool fixed_;
+        Xml::Attr<Bool> fixed;
         // Ссылка на схемный компонент.
-        // [XmlElement("ComponentRef")] public ComponentRef componentRef;
+        // [Xml::Element("ComponentRef")] public ComponentRef componentRef;
         ComponentRef componentRef;
         // Ссылка на посадочное место.
-        // [XmlElement("FootprintRef")] public FootprintRef footprintRef;
+        // [Xml::Element("FootprintRef")] public FootprintRef footprintRef;
         FootprintRef footprintRef;
         // Точка привязки объекта.
-        // [XmlElement("Org")] public Org org;
+        // [Xml::Element("Org")] public Org org;
         Org org;
         // Контакты компонента на плате.
-        // [XmlArray("Pins")][XmlArrayItem("Pin")] public List<Pin> Pins;
-        XmlArrayElem<Pin> Pins;
+        // [Xml::Array("Pins")][Xml::ArrayItem("Pin")] public List<Pin> Pins;
+        Xml::ArrayElem<Pin> Pins;
         // Монтажные отверстия.
-        // [XmlArray("Mntholes")][XmlArrayItem("Mnthole")] public List<Mnthole> Mntholes;
-        XmlArrayElem<Mnthole> Mntholes;
+        // [Xml::Array("Mntholes")][Xml::ArrayItem("Mnthole")] public List<Mnthole> Mntholes;
+        Xml::ArrayElem<Mnthole> Mntholes;
         // Атрибуты компонента.
-        // [XmlArray("Attributes")][XmlArrayItem("Attribute")] public List<Attribute> Attributes;
-        XmlArrayElem<Attribute> Attributes;
+        // [Xml::Array("Attributes")][Xml::ArrayItem("Attribute")] public List<Attribute> Attributes;
+        Xml::ArrayElem<Attribute> Attributes;
         /************************************************************************
          * Здесь находятся функции для работы с элементами класса CompInstance. *
          * Они не являются частью формата TopoR PCB.                            *
@@ -134,27 +134,27 @@ struct ComponentsOnBoard {
     // Описание одиночного контакта..
     struct FreePad {
         // Имя объекта или ссылка на именованный объект.
-        XmlAttr<QString> name;
+        Xml::Attr<QString> name;
         // Сторона объекта.
-        // [XmlAttribute("side")] public side side_;
-        XmlAttr<side, NoOpt> side_;
+        // [Xml::Attribute("side")] public side side_;
+        Xml::Attr<side, NoOpt> side_;
         // Задаёт угол в градусах c точностью до тысячных долей.
-        // [XmlAttribute("angle", DataType = "double")] public double angle_;
-        XmlAttr<double> angle;
+        // [Xml::Attribute("angle", DataType = "double")] public double angle_;
+        Xml::Attr<double> angle;
         // Признак фиксации.
-        // [XmlAttribute("fixed")] public Bool fixed_;
-        XmlAttr<Bool> fixed;
+        // [Xml::Attribute("fixed")] public Bool fixed_;
+        Xml::Attr<Bool> fixed;
 
-        // [XmlIgnore] public bool fixedSpecified_ */
+        // [Xml::Ignore] public bool fixedSpecified_ */
         bool getFixedSpecified() const;
         // Ссылка на стек контактных площадок.
-        // [XmlElement("PadstackRef")] public PadstackRef padstackRef;
+        // [Xml::Element("PadstackRef")] public PadstackRef padstackRef;
         PadstackRef padstackRef;
         // Cсылка на цепь.
-        // [XmlElement("NetRef")] public NetRef netRef;
-        Optional<NetRef> netRef;
+        // [Xml::Element("NetRef")] public NetRef netRef;
+       Xml::Optional<NetRef> netRef;
         // Точка привязки объекта.
-        // [XmlElement("Org")] public Org org;
+        // [Xml::Element("Org")] public Org org;
         Org org;
         QTransform transform() const {
             QTransform transform;
@@ -164,14 +164,14 @@ struct ComponentsOnBoard {
         }
     };
     // Версия раздела.
-    // [XmlAttribute("version")] public string version_;
-    XmlAttr<QString> version;
+    // [Xml::Attribute("version")] public string version_;
+    Xml::Attr<QString> version;
     // Описание компонентов на плате (инстанции компонентов)
-    // [XmlArray("Components")][XmlArrayItem("CompInstance")] public List<CompInstance> Components;
-    XmlArrayElem<CompInstance> Components;
+    // [Xml::Array("Components")][Xml::ArrayItem("CompInstance")] public List<CompInstance> Components;
+    Xml::ArrayElem<CompInstance> Components;
     // Описание одиночных контактов.(инстанции компонентов)
-    // [XmlArray("FreePads")][XmlArrayItem("FreePad")] public List<FreePad> FreePads;
-    XmlArrayElem<FreePad> FreePads;
+    // [Xml::Array("FreePads")][Xml::ArrayItem("FreePad")] public List<FreePad> FreePads;
+    Xml::ArrayElem<FreePad> FreePads;
 
     /*****************************************************************************
      * Здесь находятся функции для работы с элементами класса ComponentsOnBoard. *

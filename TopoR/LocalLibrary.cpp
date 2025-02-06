@@ -167,7 +167,7 @@ QGraphicsItem* LocalLibrary::Footprint::graphicsItem(const TopoR_PCB_File& file)
     return group;
 }
 
-QString LocalLibrary::Padstack::getReference(const XmlVariant<PadCircle, PadOval, PadRect, PadPoly>& padShape) {
+QString LocalLibrary::Padstack::getReference(const Xml::Variant<PadCircle, PadOval, PadRect, PadPoly>& padShape) {
     return padShape.visit([](auto&& pad) { return pad.Reference.visit([](auto&& ref) -> QString { return ref; }); });
 }
 

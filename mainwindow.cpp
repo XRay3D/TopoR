@@ -8,14 +8,9 @@
 #include <QDebug>
 #include <QSettings>
 #include <QtWidgets>
-// #include <stacktrace>
-// #define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
-// #include <boost/stacktrace.hpp>
-// #include <magicgetruntime.h>
-// #include <unistd.h>
+
 #include "TopoR_PCB_File.h"
 using namespace TopoR;
-// #include "xmlserializer.h"
 
 #if COMPONENTSONBOARD && CONNECTIVITY && CONSTRUCTIVE && DIALOGSETTINGS && DISPLAYCONTROL && GROUPS && HEADER && HISPEEDRULES && LAYERS && LOCALLIBRARY && NETLIST && RULES && SETTINGS && TEXTSTYLES
 #define ALL 1

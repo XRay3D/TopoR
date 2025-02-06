@@ -14,9 +14,6 @@ cmake_minimum_required(VERSION 3.20)
 project(TopoR LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(QT NAMES Qt6 Qt5 Widgets)
 find_package(
@@ -49,43 +46,30 @@ set(FST
 
 add_library(${PROJECT_NAME} STATIC)
 
+file(GLOB SRC ${CMAKE_CURRENT_LIST_DIR}/*.cpp)
+
 target_sources(
   ${PROJECT_NAME}
-  PRIVATE # PUBLIC
-          Commons.cpp
-          ComponentsOnBoard.cpp
-          Connectivity.cpp
-          Constructive.cpp
-          DialogSettings.cpp
-          DisplayControl.cpp
-          Groups.cpp
-          Header.cpp
-          HiSpeedRules.cpp
-          Layers.cpp
-          LocalLibrary.cpp
-          NetList.cpp
-          Rules.cpp
-          Settings.cpp
-          TextStyles.cpp
-          TopoR_PCB_File.cpp
-  PUBLIC ${CMAKE_CURRENT_LIST_DIR}/Commons.h
-         ${CMAKE_CURRENT_LIST_DIR}/ComponentsOnBoard.h
-         ${CMAKE_CURRENT_LIST_DIR}/Connectivity.h
-         ${CMAKE_CURRENT_LIST_DIR}/Constructive.h
-         ${CMAKE_CURRENT_LIST_DIR}/Coordinates.h
-         ${CMAKE_CURRENT_LIST_DIR}/DialogSettings.h
-         ${CMAKE_CURRENT_LIST_DIR}/DisplayControl.h
-         ${CMAKE_CURRENT_LIST_DIR}/Enums.h
-         ${CMAKE_CURRENT_LIST_DIR}/Groups.h
-         ${CMAKE_CURRENT_LIST_DIR}/Header.h
-         ${CMAKE_CURRENT_LIST_DIR}/HiSpeedRules.h
-         ${CMAKE_CURRENT_LIST_DIR}/Layers.h
-         ${CMAKE_CURRENT_LIST_DIR}/LocalLibrary.h
-         ${CMAKE_CURRENT_LIST_DIR}/NetList.h
-         ${CMAKE_CURRENT_LIST_DIR}/Rules.h
-         ${CMAKE_CURRENT_LIST_DIR}/Settings.h
-         ${CMAKE_CURRENT_LIST_DIR}/TextStyles.h
-         ${CMAKE_CURRENT_LIST_DIR}/TopoR_PCB_File.h)
+  PRIVATE ${SRC}
+          #[[PUBLIC]]
+          ${CMAKE_CURRENT_LIST_DIR}/Commons.h
+          ${CMAKE_CURRENT_LIST_DIR}/ComponentsOnBoard.h
+          ${CMAKE_CURRENT_LIST_DIR}/Connectivity.h
+          ${CMAKE_CURRENT_LIST_DIR}/Constructive.h
+          ${CMAKE_CURRENT_LIST_DIR}/Coordinates.h
+          ${CMAKE_CURRENT_LIST_DIR}/DialogSettings.h
+          ${CMAKE_CURRENT_LIST_DIR}/DisplayControl.h
+          ${CMAKE_CURRENT_LIST_DIR}/Enums.h
+          ${CMAKE_CURRENT_LIST_DIR}/Groups.h
+          ${CMAKE_CURRENT_LIST_DIR}/Header.h
+          ${CMAKE_CURRENT_LIST_DIR}/HiSpeedRules.h
+          ${CMAKE_CURRENT_LIST_DIR}/Layers.h
+          ${CMAKE_CURRENT_LIST_DIR}/LocalLibrary.h
+          ${CMAKE_CURRENT_LIST_DIR}/NetList.h
+          ${CMAKE_CURRENT_LIST_DIR}/Rules.h
+          ${CMAKE_CURRENT_LIST_DIR}/Settings.h
+          ${CMAKE_CURRENT_LIST_DIR}/TextStyles.h
+          ${CMAKE_CURRENT_LIST_DIR}/TopoR_PCB_File.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 

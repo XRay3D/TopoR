@@ -1,8 +1,26 @@
 #include "mainwindow.h"
-#include "qregularexpression.h"
-#include "xmlserializer.h"
 #include <QApplication>
+#include <QDebug>
 #include <set>
+
+QTextStream& operator<<(QTextStream& d, std::string_view sv) {
+    return d << QByteArray{sv.data(), static_cast<int>(sv.size())};
+}
+
+QDebug operator<<(QDebug d, std::string_view sv) {
+    return d.noquote() << QByteArray{sv.data(), static_cast<int>(sv.size())};
+}
+
+QDebug operator<<(QDebug d, std::set<QString> c) {
+    const bool oldSetting = d.autoInsertSpaces();
+    d.nospace() << "set" << '(';
+    auto it = c.begin(), end = c.end();
+    if(it != end) d << *it++;
+    while(it != end) d << ", " << *it++;
+    d << ')';
+    d.setAutoInsertSpaces(oldSetting);
+    return d.maybeSpace();
+}
 
 auto messageHandler = qInstallMessageHandler(nullptr);
 void myMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& message) {
@@ -58,15 +76,15 @@ using namespace TopoR;
 #include "xmlserializer.h"
 
 void MainWindow::loadFile() {
-    Xml xml{dir};
+    Xml::Serializer xml{dir};
 
     // for(auto&& tk: TopoR::Enumerations::Impl::Tokens<TopoR::Enumerations::Handling>.tokens) {
     //     qInfo() << tk.name.data() << +tk.value;
     // }
 
     try {
-        xml.read(*file);
-        xml.write(*file);
+        xml >> *file;
+        xml << *file;
         xml.save("out.fst");
     } catch(const std::set<QString>& names) {
         qCritical() << names;
@@ -93,7 +111,7 @@ void MainWindow::loadFile() {
     });
 
     const QStringList headers({tr("Title"), tr("Description")});
-    TreeModel* model = new TreeModel{xml.item, headers, this};
+    TreeModel* model = new TreeModel{xml.getItem(), headers, this};
 
     ui->treeView->setModel(model);
     ui->treeView->header()->setSectionResizeMode(QHeaderView::Stretch);

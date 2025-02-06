@@ -78,9 +78,11 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  *
- * NOTE XmlArrayElem<Package> пустые пропускать и не сериализовать.
+ * NOTE Xml::ArrayElem<Package> пустые пропускать и не сериализовать.
  */
+
 namespace TopoR {
+
 struct TopoR_PCB_File {                  // Корневой тег TopoR_PCB_File. Включает все разделы файла.
     Header header;                       // Раздел «Заголовок файла».
     Layers layers;                       // Раздел «Слои». (Обязательный раздел)
@@ -99,4 +101,20 @@ struct TopoR_PCB_File {                  // Корневой тег TopoR_PCB_Fi
     DisplayControl displayControl;       // Раздел «Настройки отображения».
     DialogSettings dialogSettings;       // Раздел «Настройки диалогов».
 };
+
 } // namespace TopoR
+
+#undef ComponentsOnBoard
+#undef Connectivity
+#undef Constructive
+#undef DialogSettings
+#undef DisplayControl
+#undef Groups
+#undef Header
+#undef HiSpeedRules
+#undef Layers
+#undef LocalLibrary
+#undef NetList
+#undef Rules
+#undef Settings
+#undef TextStyles

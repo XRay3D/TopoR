@@ -15,18 +15,18 @@ struct Layers {
     // Описание слоя.
     struct Layer {
         // Имя объекта или ссылка на именованный объект.
-        XmlAttr<QString> name;
+        Xml::Attr<QString> name;
         // Тип слоя. Значение по умолчанию – Signal.
-        // [XmlAttribute("type")] public LayerType type_;
-        XmlAttr<LayerType, NoOpt> type;
+        // [Xml::Attribute("type")] public LayerType type_;
+        Xml::Attr<LayerType, NoOpt> type;
         // Параметр слоя: слой содержит очертания компонентов.
         /// \note !Для сигнальных, опорных, диэлектрических и документирующих слоёв параметр compsOutline отсутствует.
-        // [XmlAttribute("compsOutline")] public Bool compsOutline_;
-        XmlAttr<Bool> compsOutline;
+        // [Xml::Attribute("compsOutline")] public Bool compsOutline_;
+        Xml::Attr<Bool> compsOutline;
         // Параметр слоя: толщина.
         /// \note !Для документирующих слоёв и слоёв с типом Assy параметр thickness отсутствует.
-        // [XmlAttribute("thickness", DataType = "double")] public double thickness_;
-        Optional<XmlAttr<double, NoOpt>> thickness;
+        // [Xml::Attribute("thickness", DataType = "double")] public double thickness_;
+       Xml::Optional<Xml::Attr<double, NoOpt>> thickness;
         /* public bool compsOutlineSpecified_ */
         /* public bool thicknessSpecified_ */
         /*****************************************************************
@@ -47,14 +47,14 @@ struct Layers {
         /*****************************************************************/
     };
     // Версия раздела.
-    // [XmlAttribute("version")] public string version_;
-    XmlAttr<QString> version;
+    // [Xml::Attribute("version")] public string version_;
+    Xml::Attr<QString> version;
     // Описание слоёв в стеке. Порядок описания должен соответствовать порядку слоёв в стеке.
-    // [XmlArray("StackUpLayers")][XmlArrayItem("Layer")] public List<Layer> StackUpLayers_;
-    XmlArrayElem<Layer> StackUpLayers;
+    // [Xml::Array("StackUpLayers")][Xml::ArrayItem("Layer")] public List<Layer> StackUpLayers_;
+    Xml::ArrayElem<Layer> StackUpLayers;
     // Описание слоёв вне стека.
-    // [XmlArray("UnStackLayers")][XmlArrayItem("Layer")] public List<Layer> UnStackLayers_;
-    XmlArrayElem<Layer> UnStackLayers;
+    // [Xml::Array("UnStackLayers")][Xml::ArrayItem("Layer")] public List<Layer> UnStackLayers_;
+    Xml::ArrayElem<Layer> UnStackLayers;
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Layers. *
      * Они не являются частью формата TopoR PCB.                      *

@@ -11,97 +11,97 @@ struct Settings {
     // Настройки автоматической трассировки.
     struct Autoroute {
         // Настройка автоматической трассировки: режим трассировки.
-        // [XmlAttribute("mode")] public mode_Autoroute mode_;
-        XmlAttr<mode_Autoroute> mode;
+        // [Xml::Attribute("mode")] public mode_Autoroute mode_;
+        Xml::Attr<mode_Autoroute> mode;
         // Параметр автоматической трассировки: использование функциональной эквивалентности.
-        // [XmlAttribute("autoEqu")] public autoEqu autoEqu_;
-        XmlAttr<autoEqu> autoEqu_;
+        // [Xml::Attribute("autoEqu")] public autoEqu autoEqu_;
+        Xml::Attr<autoEqu> autoEqu_;
         // Параметр автоматической трассировки: форма проводников.
-        // [XmlAttribute("wireShape")] public wireShape wireShape_;
-        XmlAttr<wireShape> wireShape_;
+        // [Xml::Attribute("wireShape")] public wireShape wireShape_;
+        Xml::Attr<wireShape> wireShape_;
         // Параметр автоматической трассировки: создавать «капельки».
-        // [XmlAttribute("teardrops")] public Bool teardrops_;
-        XmlAttr<Bool> teardrops;
+        // [Xml::Attribute("teardrops")] public Bool teardrops_;
+        Xml::Attr<Bool> teardrops;
         // public bool teardropsSpecified_
         // Параметр автоматической трассировки: ослабленный контроль зазоров.
-        // [XmlAttribute("weakCheck")] public Bool weakCheck_;
-        XmlAttr<Bool> weakCheck;
+        // [Xml::Attribute("weakCheck")] public Bool weakCheck_;
+        Xml::Attr<Bool> weakCheck;
         // public bool weakCheckSpecified_
         // Параметр автоматической трассировки: использовать имеющуюся разводку в качестве начального варианта.
-        // [XmlAttribute("takeCurLayout")] public Bool takeCurLayout_;
-        XmlAttr<Bool> takeCurLayout;
+        // [Xml::Attribute("takeCurLayout")] public Bool takeCurLayout_;
+        Xml::Attr<Bool> takeCurLayout;
         // public bool takeCurLayoutSpecified_
         // Настройка автоматической трассировки: соединять планарные контакты напрямую.
-        // [XmlAttribute("directConnectSMD")] public Bool directConnectSMD_;
-        XmlAttr<Bool> directConnectSMD;
+        // [Xml::Attribute("directConnectSMD")] public Bool directConnectSMD_;
+        Xml::Attr<Bool> directConnectSMD;
         // public bool directConnectSMDSpecified_
         // Настройка автоматической трассировки: не дотягивать проводник до точки привязки полигонального контакта.
-        // [XmlAttribute("dontStretchWireToPolypin")] public Bool dontStretchWireToPolypin_;
-        XmlAttr<Bool> dontStretchWireToPolypin;
+        // [Xml::Attribute("dontStretchWireToPolypin")] public Bool dontStretchWireToPolypin_;
+        Xml::Attr<Bool> dontStretchWireToPolypin;
         // public bool dontStretchWireToPolypinSpecified_
     };
     // Настройки автоматических процедур.
     struct Autoproc {
         // Настройка автоматической перекладки проводников.
-        // [XmlAttribute("refine")] public refine refine_;
-        XmlAttr<refine> refine_;
+        // [Xml::Attribute("refine")] public refine refine_;
+        Xml::Attr<refine> refine_;
         // Настройка автоматической подвижки.
-        // [XmlAttribute("automove")] public automove automove_;
-        XmlAttr<automove> automove_;
+        // [Xml::Attribute("automove")] public automove automove_;
+        Xml::Attr<automove> automove_;
     };
     // Настройки автоматического размещения компонентов.
     struct Placement {
         // Настройки автоматического размещения компонентов: область размещения. Область прямоугольная, задаётся двумя вершинами(верхняя левая и правая нижняя).
         // struct PlacementArea {
         // Координаты точек, вершин
-        // [XmlElement("Dot")] public List<Dot> Dots_;
-        XmlArrayElem<Dot> PlacementArea;
+        // [Xml::Element("Dot")] public List<Dot> Dots_;
+        Xml::ArrayElem<Dot> PlacementArea;
         // };
         // Настройки автоматического размещения компонентов: область размещения. Область прямоугольная, задаётся двумя вершинами(верхняя левая и правая нижняя).
-        // [XmlElement("PlacementArea")] public PlacementArea placementArea;
+        // [Xml::Element("PlacementArea")] public PlacementArea placementArea;
         // PlacementArea placementArea;
     };
     // Настройки ориентации ярлыков.
     struct Labels {
         // Настройка ориентации ярлыков: вращать ярлык при вращении компонента.
-        // [XmlAttribute("rotateWithComp")] public Bool rotateWithComp_;
-        XmlAttr<Bool> rotateWithComp;
+        // [Xml::Attribute("rotateWithComp")] public Bool rotateWithComp_;
+        Xml::Attr<Bool> rotateWithComp;
         // public bool rotateWithCompSpecified_
         // Настройка редактирования ярлыков: использовать правила ориентации.
-        // [XmlAttribute("useOrientRules")] public Bool useOrientRules_;
-        XmlAttr<Bool> useOrientRules;
+        // [Xml::Attribute("useOrientRules")] public Bool useOrientRules_;
+        Xml::Attr<Bool> useOrientRules;
         // public bool useOrientRulesSpecified_
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на верхней стороне.
-        // [XmlAttribute("topHorzRotate")] public Bool topHorzRotate_;
-        XmlAttr<Bool> topHorzRotate;
+        // [Xml::Attribute("topHorzRotate")] public Bool topHorzRotate_;
+        Xml::Attr<Bool> topHorzRotate;
         // public bool topHorzRotateSpecified_
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на верхней стороне.
-        // [XmlAttribute("topVertRotate")] public Bool topVertRotate_;
-        XmlAttr<Bool> topVertRotate;
+        // [Xml::Attribute("topVertRotate")] public Bool topVertRotate_;
+        Xml::Attr<Bool> topVertRotate;
         // public bool topVertRotateSpecified_
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на нижней стороне.
-        // [XmlAttribute("bottomHorzRotate")] public Bool bottomHorzRotate_;
-        XmlAttr<Bool> bottomHorzRotate;
+        // [Xml::Attribute("bottomHorzRotate")] public Bool bottomHorzRotate_;
+        Xml::Attr<Bool> bottomHorzRotate;
         // public bool bottomHorzRotateSpecified_
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на нижней стороне.
-        // [XmlAttribute("bottomVertRotate")] public Bool bottomVertRotate_;
-        XmlAttr<Bool> bottomVertRotate;
+        // [Xml::Attribute("bottomVertRotate")] public Bool bottomVertRotate_;
+        Xml::Attr<Bool> bottomVertRotate;
         // public bool bottomVertRotateSpecified_
     };
     // Версия раздела.
-    // [XmlAttribute("version")] public string version_;
-    XmlAttr<QString> version;
+    // [Xml::Attribute("version")] public string version_;
+    Xml::Attr<QString> version;
     // Настройки автоматической трассировки.
-    // [XmlElement("Autoroute")] public Autoroute autoroute;
+    // [Xml::Element("Autoroute")] public Autoroute autoroute;
     Autoroute autoroute;
     // Настройки автоматических процедур.
-    // [XmlElement("Autoproc")] public Autoproc autoproc;
+    // [Xml::Element("Autoproc")] public Autoproc autoproc;
     Autoproc autoproc;
     // Настройки автоматического размещения компонентов.
-    // [XmlElement("Placement")] public Placement placement;
+    // [Xml::Element("Placement")] public Placement placement;
     Placement placement;
     // Настройки ориентации ярлыков.
-    // [XmlElement("Labels")] public Labels Labels_;
+    // [Xml::Element("Labels")] public Labels Labels_;
     Labels labels;
     /********************************************************************
      * Здесь находятся функции для работы с элементами класса Settings. *

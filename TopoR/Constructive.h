@@ -18,19 +18,19 @@ struct Constructive {
 #if 0
         struct ShapeContour {
             // Толщина линии.
-            // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
-            XmlAttr<double> lineWidth;
+            // [Xml::Attribute("lineWidth", DataType = "double")] public double lineWidth_;
+            Xml::Attr<double> lineWidth;
             // Незалитая фигура.
-            // [XmlElement(ArcCCW),
-            //  XmlElement(ArcCW),
-            //  XmlElement(ArcByAngle),
-            //  XmlElement(ArcByMiddle),
-            //  XmlElement(Circle),
-            //  XmlElement(Line),
-            //  XmlElement(Polyline),
-            //  XmlElement(Rect),
-            //  XmlElement(Contour)] public Object NonfilledFigure_;
-            XmlVariant<
+            // [Xml::Element(ArcCCW),
+            //  Xml::Element(ArcCW),
+            //  Xml::Element(ArcByAngle),
+            //  Xml::Element(ArcByMiddle),
+            //  Xml::Element(Circle),
+            //  Xml::Element(Line),
+            //  Xml::Element(Polyline),
+            //  Xml::Element(Rect),
+            //  Xml::Element(Contour)] public Object NonfilledFigure_;
+            Xml::Variant<
                 ArcCCW,
                 ArcCW,
                 ArcByAngle,
@@ -51,14 +51,14 @@ struct Constructive {
         };
         struct ShapeVoids {
             // Толщина линии.
-            // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
-            XmlAttr<double> lineWidth;
+            // [Xml::Attribute("lineWidth", DataType = "double")] public double lineWidth_;
+            Xml::Attr<double> lineWidth;
             // Описание залитой фигуры.
-            // [XmlElement(FilledCircle),
-            //  XmlElement(FilledRect),
-            //  XmlElement(Polygon),
-            //  XmlElement(FilledContour)] public Object FilledFigure_;
-            XmlVariant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure_;
+            // [Xml::Element(FilledCircle),
+            //  Xml::Element(FilledRect),
+            //  Xml::Element(Polygon),
+            //  Xml::Element(FilledContour)] public Object FilledFigure_;
+            Xml::Variant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure_;
             /**********************************************************************
              * Здесь находятся функции для работы с элементами класса Shape_Voids. *
              * Они не являются частью формата TopoR PCB.                           *
@@ -68,18 +68,18 @@ struct Constructive {
             /***********************************************************************/
         };
         // Описание контура платы.
-        // [XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> Contours_;
-        XmlArrayElem<ShapeContour> Contours;
+        // [Xml::Array("Contour")][Xml::ArrayItem("Shape")] public List<Shape_Contour> Contours_;
+        Xml::ArrayElem<ShapeContour> Contours;
         // Вырезы в плате.
-        // [XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> Voids_;
-        XmlArrayElem<ShapeVoids> Voids;
+        // [Xml::Array("Voids")][Xml::ArrayItem("Shape")] public List<Shape_Voids> Voids_;
+        Xml::ArrayElem<ShapeVoids> Voids;
 #else
         struct Shape {
             // Толщина линии.
-            // [XmlAttribute("lineWidth", DataType = "double")] public double lineWidth_;
-            XmlAttr<double> lineWidth;
+            // [Xml::Attribute("lineWidth", DataType = "double")] public double lineWidth_;
+            Xml::Attr<double> lineWidth;
             // Незалитая фигура.
-            XmlVariant<
+            Xml::Variant<
                 ArcCCW,      // Contour
                 ArcCW,       // Contour
                 ArcByAngle,  // Contour
@@ -92,7 +92,7 @@ struct Constructive {
                 >
                 NonfilledFigure;
             // Описание залитой фигуры.
-            XmlVariant<
+            Xml::Variant<
                 FilledCircle, // Voids
                 FilledRect,   // Voids
                 Polygon,      // Voids
@@ -108,30 +108,30 @@ struct Constructive {
             /*************************************************************************/
         };
         // Описание контура платы.
-        // [XmlArray("Contour")][XmlArrayItem("Shape")] public List<Shape_Contour> Contours_;
-        XmlArrayElem<Shape> Contour_;
+        // [Xml::Array("Contour")][Xml::ArrayItem("Shape")] public List<Shape_Contour> Contours_;
+        Xml::ArrayElem<Shape> Contour_;
         // Вырезы в плате.
-        // [XmlArray("Voids")][XmlArrayItem("Shape")] public List<Shape_Voids> Voids_;
-        XmlArrayElem<Shape> Voids;
+        // [Xml::Array("Voids")][Xml::ArrayItem("Shape")] public List<Shape_Voids> Voids_;
+        Xml::ArrayElem<Shape> Voids;
 #endif
     };
     // Описание монтажного отверстия на плате.
     struct MntholeInstance {
         // Задаёт угол в градусах c точностью до тысячных долей.
-        // [XmlAttribute("angle", DataType = "double")] public double angle_;
-        XmlAttr<double> angle;
+        // [Xml::Attribute("angle", DataType = "double")] public double angle_;
+        Xml::Attr<double> angle;
         // Признак фиксации.
-        // [XmlAttribute("fixed")] public Bool fixed_;
-        XmlAttr<Bool> fixed;
+        // [Xml::Attribute("fixed")] public Bool fixed_;
+        Xml::Attr<Bool> fixed;
         /* public bool fixedSpecified_ */
         // Ссылка на стек контактных площадок.
-        // [XmlElement("PadstackRef")] public PadstackRef padstackRef;
+        // [Xml::Element("PadstackRef")] public PadstackRef padstackRef;
         PadstackRef padstackRef;
         // ссылка на цепь.
-        // [XmlElement("NetRef")] public NetRef netRef;
+        // [Xml::Element("NetRef")] public NetRef netRef;
         NetRef netRef;
         // Точка привязки объекта.
-        // [XmlElement("Org")] public Org org;
+        // [Xml::Element("Org")] public Org org;
         Org org;
 
         //    void UnitsConvert(dist in_units, dist out_units);
@@ -143,52 +143,52 @@ struct Constructive {
             // Тип запрета: запрет трассировки.
             struct Trace {
                 // Тип запрета трассировки.
-                // [XmlAttribute("role")] public role role_;
-                XmlAttr<role> role_;
+                // [Xml::Attribute("role")] public role role_;
+                Xml::Attr<role> role_;
                 // Ссылка на слои. См. также LayersRefs_
                 /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-                // [XmlElement(AllLayers),
-                //  XmlElement(AllLayersInner),
-                //  XmlElement(AllLayersInnerSignal),
-                //  XmlElement(AllLayersSignal),
-                //  XmlElement(AllLayersOuter),
-                //  XmlElement(LayerGroupRef)] public Object LayersRef_;
-                XmlVariant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+                // [Xml::Element(AllLayers),
+                //  Xml::Element(AllLayersInner),
+                //  Xml::Element(AllLayersInnerSignal),
+                //  Xml::Element(AllLayersSignal),
+                //  Xml::Element(AllLayersOuter),
+                //  Xml::Element(LayerGroupRef)] public Object LayersRef_;
+                Xml::Variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
                 // Ссылка на слои. См. также LayersRef_
                 /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-                // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-                XmlArray<LayerRef> LayersRefs;
+                // [Xml::Element("LayerRef")] public List<LayerRef> LayersRefs_;
+                Xml::Array<LayerRef> LayersRefs;
             };
             // Тип запрета: запрет размещения.
             struct Place {
                 // Сторона объекта.
-                // [XmlAttribute("side")] public side side_;
-                XmlAttr<side> side_;
+                // [Xml::Attribute("side")] public side side_;
+                Xml::Attr<side> side_;
             };
             // Тип запрета: запрет трассировки.
-            // [XmlElement(Trace)] public Trace trace;
+            // [Xml::Element(Trace)] public Trace trace;
             Trace trace;
-            // [XmlElement(Place)] public Place place;
+            // [Xml::Element(Place)] public Place place;
             // Place place;
-            XmlAttr<side> Place;
+            Xml::Attr<side> Place;
         };
-        // [XmlElement(Role)] public Role role;
+        // [Xml::Element(Role)] public Role role;
         Role role;
         // Описание фигуры.
-        // [XmlElement(ArcCCW),
-        //  XmlElement(ArcCW),
-        //  XmlElement(ArcByAngle),
-        //  XmlElement(ArcByMiddle),
-        //  XmlElement(Line),
-        //  XmlElement(Circle),
-        //  XmlElement(Rect),
-        //  XmlElement(FilledCircle),
-        //  XmlElement(FilledRect),
-        //  XmlElement(Polygon),
-        //  XmlElement(Contour),
-        //  XmlElement(FilledContour),
-        //  XmlElement(Polyline)] public Object FigureContPolyline_;
-        XmlVariant<ArcCCW,
+        // [Xml::Element(ArcCCW),
+        //  Xml::Element(ArcCW),
+        //  Xml::Element(ArcByAngle),
+        //  Xml::Element(ArcByMiddle),
+        //  Xml::Element(Line),
+        //  Xml::Element(Circle),
+        //  Xml::Element(Rect),
+        //  Xml::Element(FilledCircle),
+        //  Xml::Element(FilledRect),
+        //  Xml::Element(Polygon),
+        //  Xml::Element(Contour),
+        //  Xml::Element(FilledContour),
+        //  Xml::Element(Polyline)] public Object FigureContPolyline_;
+        Xml::Variant<ArcCCW,
             ArcCW,
             ArcByAngle,
             ArcByMiddle,
@@ -211,23 +211,23 @@ struct Constructive {
         /********************************************************************************/
     };
     // Версия раздела.
-    // [XmlAttribute("version")] public string version_;
-    XmlAttr<QString> version;
+    // [Xml::Attribute("version")] public string version_;
+    Xml::Attr<QString> version;
     // Контур платы и вырезы в плате.
-    // [XmlElement("BoardOutline")] public BoardOutline boardOutline;
+    // [Xml::Element("BoardOutline")] public BoardOutline boardOutline;
     BoardOutline boardOutline;
     // Монтажные отверстия на плате.
-    // [XmlArray("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> Mntholes_;
-    XmlArrayElem<MntholeInstance> Mntholes;
+    // [Xml::Array("Mntholes"), DefaultValue(null)][Xml::ArrayItem("MntholeInstance")] public List<MntholeInstance> Mntholes_;
+    Xml::ArrayElem<MntholeInstance> Mntholes;
     // Детали на механических слоях.
-    // [XmlArray("MechLayerObjects"), DefaultValue(null)][XmlArrayItem("Detail")] public List<Detail> MechLayerObjects_;
-    XmlArrayElem<Detail> MechLayerObjects;
+    // [Xml::Array("MechLayerObjects"), DefaultValue(null)][Xml::ArrayItem("Detail")] public List<Detail> MechLayerObjects_;
+    Xml::ArrayElem<Detail> MechLayerObjects;
     // Описание надписей.
-    // [XmlArray("Texts"), DefaultValue(null)][XmlArrayItem("Text")] public List<Text> Texts_;
-    XmlArrayElem<Text> Texts;
+    // [Xml::Array("Texts"), DefaultValue(null)][Xml::ArrayItem("Text")] public List<Text> Texts_;
+    Xml::ArrayElem<Text> Texts;
     // Описание запретов.
-    // [XmlArray("Keepouts"), DefaultValue(null)][XmlArrayItem("Keepout")] public List<Keepout_Сonstructive> Keepouts_;
-    XmlArrayElem<Keepout> Keepouts;
+    // [Xml::Array("Keepouts"), DefaultValue(null)][Xml::ArrayItem("Keepout")] public List<Keepout_Сonstructive> Keepouts_;
+    Xml::ArrayElem<Keepout> Keepouts;
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Сonstructive. *
      * Они не являются частью формата TopoR PCB.                            *

@@ -12,19 +12,19 @@ struct Rules {
     // Описание правила ширины проводников.
     struct WidthOfWires {
         // Флаг применения правила.
-        // [XmlAttribute("enabled")] public Bool enabled_;
-        XmlAttr<Bool> enabled;
+        // [Xml::Attribute("enabled")] public Bool enabled_;
+        Xml::Attr<Bool> enabled;
         /* public bool enabledSpecified_ */
         // Параметр правила ширины проводников: минимальная ширина проводника.
-        // [XmlAttribute("widthMin", DataType = "double")] public double widthMin_;
-        XmlAttr<double> widthMin;
+        // [Xml::Attribute("widthMin", DataType = "double")] public double widthMin_;
+        Xml::Attr<double> widthMin;
         // Параметр правила ширины проводников: номинальная ширина проводника.
-        // [XmlAttribute("widthNom", DataType = "double")] public double widthNom_;
-        XmlAttr<double> widthNom;
+        // [Xml::Attribute("widthNom", DataType = "double")] public double widthNom_;
+        Xml::Attr<double> widthNom;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-        // [XmlElement(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
-        XmlVariant<
+        // [Xml::Element(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
+        Xml::Variant<
             AllLayers,
             AllLayersInner,
             AllLayersInnerSignal,
@@ -36,98 +36,98 @@ struct Rules {
             LayersRef;
         // Ссылка на слои. См. также LayersRef_
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-        // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-        XmlArrayElem<LayerRef> LayersRefs;
+        // [Xml::Element("LayerRef")] public List<LayerRef> LayersRefs_;
+        Xml::ArrayElem<LayerRef> LayersRefs;
         // Объекты воздействия правила.
-        // [XmlArray("ObjectsAffected")][XmlArrayItem(NetRef,NetGroupRef,AllNets)] public List<Object> ObjectsAffected_;
-        XmlArrayElem<XmlVariant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
+        // [Xml::Array("ObjectsAffected")][Xml::ArrayItem(NetRef,NetGroupRef,AllNets)] public List<Object> ObjectsAffected_;
+        Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
     };
     // Описание правила зазоров между цепями.
     struct ClearanceNetToNet {
         // Флаг применения правила.
-        // [XmlAttribute("enabled")] public Bool enabled_;
-        XmlAttr<Bool> enabled;
+        // [Xml::Attribute("enabled")] public Bool enabled_;
+        Xml::Attr<Bool> enabled;
         /* public bool enabledSpecified_ */
         // Параметр правила зазоров между цепями: минимальный зазор.
-        // [XmlAttribute("clrnMin", DataType = "double")] public double clrnMin_;
-        XmlAttr<double> clrnMin;
+        // [Xml::Attribute("clrnMin", DataType = "double")] public double clrnMin_;
+        Xml::Attr<double> clrnMin;
         // Параметр правила зазоров между цепями: номинальный зазор.
-        // [XmlAttribute("clrnNom", DataType = "double")] public double clrnNom_;
-        XmlAttr<double> clrnNom;
+        // [Xml::Attribute("clrnNom", DataType = "double")] public double clrnNom_;
+        Xml::Attr<double> clrnNom;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-        // [XmlElement(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
-        XmlVariant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef_;
+        // [Xml::Element(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
+        Xml::Variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef_;
         // Ссылка на слои. См. также LayersRef_
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-        // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-        XmlArrayElem<LayerRef> LayersRefs;
+        // [Xml::Element("LayerRef")] public List<LayerRef> LayersRefs_;
+        Xml::ArrayElem<LayerRef> LayersRefs;
         // Объекты воздействия правила.
-        // [XmlArray("ObjectsAffected")][XmlArrayItem(NetRef,NetGroupRef,AllNets,SignalRef,DiffSignalRef,SignalGroupRef)] public List<Object> ObjectsAffected_;
-        XmlArrayElem<XmlVariant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        // [Xml::Array("ObjectsAffected")][Xml::ArrayItem(NetRef,NetGroupRef,AllNets,SignalRef,DiffSignalRef,SignalGroupRef)] public List<Object> ObjectsAffected_;
+        Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
     };
     // Описание правила зазоров между компонентами.
     struct ClearanceCompToComp {
         // Флаг применения правила.
-        // [XmlAttribute("enabled")] public Bool enabled_;
-        XmlAttr<Bool> enabled;
+        // [Xml::Attribute("enabled")] public Bool enabled_;
+        Xml::Attr<Bool> enabled;
         /* public bool enabledSpecified_ */
         // Параметр правила зазоров между цепями: минимальный зазор.
-        // [XmlAttribute("clrn", DataType = "double")] public double clrn_;
-        XmlAttr<double> clrn;
+        // [Xml::Attribute("clrn", DataType = "double")] public double clrn_;
+        Xml::Attr<double> clrn;
         // Объекты воздействия правила.
-        // [XmlArray("ObjectsAffected")][XmlArrayItem(ComponentRef,CompGroupRef,AllComps)] public List<Object> ObjectsAffected_;
-        XmlArrayElem<XmlVariant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
+        // [Xml::Array("ObjectsAffected")][Xml::ArrayItem(ComponentRef,CompGroupRef,AllComps)] public List<Object> ObjectsAffected_;
+        Xml::ArrayElem<Xml::Variant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
     };
     // Описание зазоров до края платы.
     struct RulesClearancesToBoard {
         // Устанавливает зазор от проводников до края платы.
-        // [XmlAttribute("wires", DataType = "double")] public double clrn_;
-        XmlAttr<double> wires;
+        // [Xml::Attribute("wires", DataType = "double")] public double clrn_;
+        Xml::Attr<double> wires;
         // Устанавливает зазор от компонентов до края платы.
-        // [XmlAttribute("comps", DataType = "double")] public double comps_;
-        XmlAttr<double> comps;
+        // [Xml::Attribute("comps", DataType = "double")] public double comps_;
+        Xml::Attr<double> comps;
     };
     // Описание правила назначения цепям стеков переходных отверстий.
     struct ViastacksOfNets {
         // Флаг применения правила.
-        // [XmlAttribute("enabled")] public Bool enabled_;
-        XmlAttr<Bool> enabled;
+        // [Xml::Attribute("enabled")] public Bool enabled_;
+        Xml::Attr<Bool> enabled;
         /* public bool enabledSpecified_ */
         // Объекты воздействия правила.
-        // [XmlArray("ObjectsAffected")][XmlArrayItem(NetRef,NetGroupRef,AllNets,SignalRef,DiffSignalRef,SignalGroupRef)] public List<Object> ObjectsAffected_;
-        XmlArrayElem<XmlVariant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        // [Xml::Array("ObjectsAffected")][Xml::ArrayItem(NetRef,NetGroupRef,AllNets,SignalRef,DiffSignalRef,SignalGroupRef)] public List<Object> ObjectsAffected_;
+        Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         // Назначенные типы переходных отверстий.
-        // [XmlArray("Viastacks")][XmlArrayItem(AllViastacks,AllViastacksThrough,AllViastacksNotThrough,ViastackRef)] public List<Object> Viastacks_;
-        XmlArrayElem<XmlVariant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
+        // [Xml::Array("Viastacks")][Xml::ArrayItem(AllViastacks,AllViastacksThrough,AllViastacksNotThrough,ViastackRef)] public List<Object> Viastacks_;
+        Xml::ArrayElem<Xml::Variant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
     };
     // Описание правила назначения цепям опорных слоёв.
     struct PlaneLayerNets {
         // Флаг применения правила.
-        // [XmlAttribute("enabled")] public Bool enabled_;
-        XmlAttr<Bool> enabled;
+        // [Xml::Attribute("enabled")] public Bool enabled_;
+        Xml::Attr<Bool> enabled;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-        // [XmlElement(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
-        XmlVariant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayerRef_;
+        // [Xml::Element(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
+        Xml::Variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayerRef_;
         // Ссылка на слои. См. также LayersRef_
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-        // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-        XmlArray<LayerRef> LayersRefs;
+        // [Xml::Element("LayerRef")] public List<LayerRef> LayersRefs_;
+        Xml::Array<LayerRef> LayersRefs;
         // Объекты воздействия правила.
-        // [XmlArray("ObjectsAffected")][XmlArrayItem("NetRef")] public List<NetRef> ObjectsAffected_;
-        XmlArrayElem<NetRef> ObjectsAffected;
+        // [Xml::Array("ObjectsAffected")][Xml::ArrayItem("NetRef")] public List<NetRef> ObjectsAffected_;
+        Xml::ArrayElem<NetRef> ObjectsAffected;
     };
     // Описание правила назначения цепям сигнальных слоёв.
     struct SignalLayerNets {
         // Флаг применения правила.
-        // [XmlAttribute("enabled")] public Bool enabled_;
-        XmlAttr<Bool> enabled;
+        // [Xml::Attribute("enabled")] public Bool enabled_;
+        Xml::Attr<Bool> enabled;
         /* public bool enabledSpecified_ */
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-        // [XmlElement(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
-        // XmlVariant<AllLayers,
+        // [Xml::Element(AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef)] public Object LayersRef_;
+        // Xml::Variant<AllLayers,
         //     AllLayersInner,
         //     AllLayersInnerSignal,
         //     AllLayersSignal,
@@ -136,8 +136,8 @@ struct Rules {
         //     LayersRef;
         // Ссылка на слои. См. также LayersRef_
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-        // [XmlElement("LayerRef")] public List<LayerRef> LayersRefs_;
-        XmlArray<XmlVariant<AllLayers,
+        // [Xml::Element("LayerRef")] public List<LayerRef> LayersRefs_;
+        Xml::Array<Xml::Variant<AllLayers,
             AllLayersInner,
             AllLayersInnerSignal,
             AllLayersSignal,
@@ -146,67 +146,67 @@ struct Rules {
             LayerRef>>
             LayersRefs;
         // Объекты воздействия правила.
-        // [XmlArray("ObjectsAffected"),NetRef,NetGroupRef)] public List<Object> ObjectsAffected_;
-        XmlArrayElem<XmlVariant<NetRef, NetGroupRef>> ObjectsAffected;
+        // [Xml::Array("ObjectsAffected"),NetRef,NetGroupRef)] public List<Object> ObjectsAffected_;
+        Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef>> ObjectsAffected;
     };
     // Свойства цепи.
     struct NetProperty {
         // Свойство цепи: гибкая фиксация.
-        // [XmlAttribute("flexfix")] public Bool flexfix_;
-        XmlAttr<Bool, NoOpt> flexfix;
+        // [Xml::Attribute("flexfix")] public Bool flexfix_;
+        Xml::Attr<Bool, NoOpt> flexfix;
         /* public bool flexfixSpecified_ */
         // Свойство цепи: флаг трассировки для автоматического трассировщика.
-        // [XmlAttribute("route")] public Bool route_;
-        XmlAttr<Bool> route;
+        // [Xml::Attribute("route")] public Bool route_;
+        Xml::Attr<Bool> route;
         /* public bool routeSpecified_ */
         // Ссылка на цепь.
-        // [XmlElement("NetRef")] public List<NetRef> NetRefs_;
-        XmlArray<NetRef> NetRefs;
+        // [Xml::Element("NetRef")] public List<NetRef> NetRefs_;
+        Xml::Array<NetRef> NetRefs;
     };
     // Настройки подключения к углам прямоугольных контактных площадок.
     struct PadConnectSettings {
         // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
-        // [XmlAttribute("mode")] public mode_PadConnectSettings mode_;
-        XmlAttr<mode_PadConnectSettings, NoOpt> mode;
+        // [Xml::Attribute("mode")] public mode_PadConnectSettings mode_;
+        Xml::Attr<mode_PadConnectSettings, NoOpt> mode;
         // Ссылки на стеки контактных площадок.
-        // [XmlElement("PadstackRef")] public List<PadstackRef> PadstackRefs_;
-        XmlArray /*Elem*/<PadstackRef> PadstackRefs;
+        // [Xml::Element("PadstackRef")] public List<PadstackRef> PadstackRefs_;
+        Xml::Array /*Elem*/<PadstackRef> PadstackRefs;
         // Ссылки на контакты.
-        // [XmlElement("PinRef")] public List<PinRef> PinRefs_;
-        XmlArrayElem<PinRef> PinRefs;
+        // [Xml::Element("PinRef")] public List<PinRef> PinRefs_;
+        Xml::ArrayElem<PinRef> PinRefs;
         // Ссылки на выводы посадочных мест.
-        // [XmlElement("PadRef")] public List<PadRef> PadRefs_;
-        XmlArrayElem<PadRef> PadRefs;
+        // [Xml::Element("PadRef")] public List<PadRef> PadRefs_;
+        Xml::ArrayElem<PadRef> PadRefs;
     };
     // Версия раздела.
-    // [XmlAttribute("version")] public string version_;
-    XmlAttr<QString> version;
+    // [Xml::Attribute("version")] public string version_;
+    Xml::Attr<QString> version;
     // Правила ширин проводников.
-    // [XmlArray("RulesWidthOfWires")][XmlArrayItem("WidthOfWires")] public List<WidthOfWires> RulesWidthOfWires_;
-    XmlArrayElem<WidthOfWires> RulesWidthOfWires;
+    // [Xml::Array("RulesWidthOfWires")][Xml::ArrayItem("WidthOfWires")] public List<WidthOfWires> RulesWidthOfWires_;
+    Xml::ArrayElem<WidthOfWires> RulesWidthOfWires;
     // Правила зазоров между цепями.
-    // [XmlArray("RulesClearancesNetToNet")][XmlArrayItem("ClearanceNetToNet")] public List<ClearanceNetToNet> RulesClearancesNetToNet_;
-    XmlArrayElem<ClearanceNetToNet> RulesClearancesNetToNet;
+    // [Xml::Array("RulesClearancesNetToNet")][Xml::ArrayItem("ClearanceNetToNet")] public List<ClearanceNetToNet> RulesClearancesNetToNet_;
+    Xml::ArrayElem<ClearanceNetToNet> RulesClearancesNetToNet;
     // Правила зазоров между компонентами.
-    // [XmlArray("RulesClearancesCompToComp")][XmlArrayItem("ClearanceCompToComp")] public List<ClearanceCompToComp> RulesClearancesCompToComp_;
-    XmlArrayElem<ClearanceCompToComp> RulesClearancesCompToComp;
+    // [Xml::Array("RulesClearancesCompToComp")][Xml::ArrayItem("ClearanceCompToComp")] public List<ClearanceCompToComp> RulesClearancesCompToComp_;
+    Xml::ArrayElem<ClearanceCompToComp> RulesClearancesCompToComp;
     // Правило зазоров до края платы.
-    // [XmlElement("RulesClearancesToBoard")] public RulesClearancesToBoard rulesClearancesToBoard;
+    // [Xml::Element("RulesClearancesToBoard")] public RulesClearancesToBoard rulesClearancesToBoard;
     RulesClearancesToBoard rulesClearancesToBoard;
     // Правила назначения цепям стеков переходных отверстий.
-    // [XmlArray("RulesViastacksOfNets")][XmlArrayItem("ViastacksOfNets")] public List<ViastacksOfNets> RulesViastacksOfNets_;
-    XmlArrayElem<ViastacksOfNets> RulesViastacksOfNets;
+    // [Xml::Array("RulesViastacksOfNets")][Xml::ArrayItem("ViastacksOfNets")] public List<ViastacksOfNets> RulesViastacksOfNets_;
+    Xml::ArrayElem<ViastacksOfNets> RulesViastacksOfNets;
     // Правила назначения цепям опорных слоёв.
-    // [XmlArray("RulesPlaneLayersNets")][XmlArrayItem("PlaneLayerNets")] public List<PlaneLayerNets> RulesPlaneLayersNets_;
-    XmlArrayElem<PlaneLayerNets> RulesPlaneLayersNets;
+    // [Xml::Array("RulesPlaneLayersNets")][Xml::ArrayItem("PlaneLayerNets")] public List<PlaneLayerNets> RulesPlaneLayersNets_;
+    Xml::ArrayElem<PlaneLayerNets> RulesPlaneLayersNets;
     // Правила назначения цепям сигнальных слоёв.
-    // [XmlArray("RulesSignalLayersNets")][XmlArrayItem("SignalLayerNets")] public List<SignalLayerNets> RulesSignalLayersNets_;
-    XmlArrayElem<SignalLayerNets> RulesSignalLayersNets;
+    // [Xml::Array("RulesSignalLayersNets")][Xml::ArrayItem("SignalLayerNets")] public List<SignalLayerNets> RulesSignalLayersNets_;
+    Xml::ArrayElem<SignalLayerNets> RulesSignalLayersNets;
     // Свойства цепей
-    // [XmlArray("NetProperties")][XmlArrayItem("NetProperty")] public List<NetProperty> NetProperties_;
-    XmlArrayElem<NetProperty> NetProperties;
+    // [Xml::Array("NetProperties")][Xml::ArrayItem("NetProperty")] public List<NetProperty> NetProperties_;
+    Xml::ArrayElem<NetProperty> NetProperties;
     // Настройки подключения к углам прямоугольных контактных площадок.
-    // [XmlElement("PadConnectSettings")] public PadConnectSettings padConnectSettings;
+    // [Xml::Element("PadConnectSettings")] public PadConnectSettings padConnectSettings;
     PadConnectSettings padConnectSettings;
     /*****************************************************************
      * Здесь находятся функции для работы с элементами класса Rules. *

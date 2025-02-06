@@ -11,18 +11,18 @@ struct NetList {
     // Раздел «Текущий список соединени
     struct Net {
         // Имя объекта или ссылка на именованный объект.
-        XmlAttr<QString> name;
+        Xml::Attr<QString> name;
         // Ссылка на контакт или вывод посадочного места (объект класса PinRef или PadRef).
-        // [XmlElement(PinRef),
-        //  XmlElement(PadRef)] public List<Object> refs_;
-        XmlArray<XmlVariant<PinRef, PadRef>> refs;
+        // [Xml::Element(PinRef),
+        //  Xml::Element(PadRef)] public List<Object> refs_;
+        Xml::Array<Xml::Variant<PinRef, PadRef>> refs;
     };
     // Версия раздела.
-    // [XmlAttribute("version")] public string version_;
-    XmlAttr<QString> version;
+    // [Xml::Attribute("version")] public string version_;
+    Xml::Attr<QString> version;
     // Описания цепей.
-    // [XmlElement("Net")] public List<Net> Nets_;
-    XmlArray<Net> Nets;
+    // [Xml::Element("Net")] public List<Net> Nets_;
+    Xml::Array<Net> Nets;
     /*******************************************************************
      * Здесь находятся функции для работы с элементами класса Nets. *
      * Они не являются частью формата TopoR PCB.                       *

@@ -13,32 +13,32 @@ struct Header {
     // Единицы измерений для всего файла.
     struct Units {
         // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
-        // [XmlAttribute("dist")] public dist dist_;
-        XmlAttr<dist, NoOpt> dist_;
+        // [Xml::Attribute("dist")] public dist dist_;
+        Xml::Attr<dist, NoOpt> dist_;
         // Единицы измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
-        // [XmlAttribute("time")] public time time_;
-        XmlAttr<time, NoOpt> time_;
+        // [Xml::Attribute("time")] public time time_;
+        Xml::Attr<time, NoOpt> time_;
     };
     // Название формата файла.
-    // [XmlElement("Format")] public string Format_;
+    // [Xml::Element("Format")] public string Format_;
     QString Format;
     // Версия формата.
-    // [XmlElement("Version")] public string Version_;
+    // [Xml::Element("Version")] public string Version_;
     QString Version;
     // Название программы, создавшей файл.
-    // [XmlElement("Program")] public string Program_;
+    // [Xml::Element("Program")] public string Program_;
     QString Program;
     // Дата и время создания файла (в произвольной форме).
-    // [XmlElement("Date")] public string Date_;
+    // [Xml::Element("Date")] public string Date_;
     QString Date;
     // Формат импортированного файла, из которого был получен дизайн.
-    // [XmlElement("OriginalFormat")] public string OriginalFormat_;
+    // [Xml::Element("OriginalFormat")] public string OriginalFormat_;
     QString OriginalFormat;
     // Импортированный файл. Путь к файлу задаётся относительно каталога содержащего файл проекта.
-    // [XmlElement("OriginalFile")] public string OriginalFile_;
+    // [Xml::Element("OriginalFile")] public string OriginalFile_;
     QString OriginalFile;
     // Единицы измерения для всего файла.
-    // [XmlElement("Units")] public unitsHeader units;
+    // [Xml::Element("Units")] public unitsHeader units;
     Units units;
 };
 } // namespace TopoR

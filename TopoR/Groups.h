@@ -11,10 +11,10 @@ struct Groups {
     // Описание групп слоёв.
     struct LayerGroup {
         // Имя объекта или ссылка на именованный объект.
-        XmlAttr<QString> name;
+        Xml::Attr<QString> name;
         // Ссылка на слой или ссылка на группу слоёв.
-        // [XmlElement(LayerRef, LayerGroupRef)] public List<Object> LayerRefs_;
-        XmlArray<XmlVariant<LayerRef, LayerGroupRef>> LayerRefs;
+        // [Xml::Element(LayerRef, LayerGroupRef)] public List<Object> LayerRefs_;
+        Xml::Array<Xml::Variant<LayerRef, LayerGroupRef>> LayerRefs;
         /**********************************************************************
          * Здесь находятся функции для работы с элементами класса LayerGroup. *
          * Они не являются частью формата TopoR PCB.                          *
@@ -25,35 +25,35 @@ struct Groups {
     // Описание группы цепей.
     struct NetGroup {
         // Имя объекта или ссылка на именованный объект.
-        XmlAttr<QString> name;
+        Xml::Attr<QString> name;
         // Ссылка на цепь или ссылка на группу цепей.
-        // [XmlElement(NetRef),
-        //  XmlElement(NetGroupRef)] public List<Object> NetRefs_;
-        XmlArray<XmlVariant<NetRef, NetGroupRef>> NetRefs;
+        // [Xml::Element(NetRef),
+        //  Xml::Element(NetGroupRef)] public List<Object> NetRefs_;
+        Xml::Array<Xml::Variant<NetRef, NetGroupRef>> NetRefs;
     };
     // Описание группы компонентов.
     struct CompGroup {
         // Имя объекта или ссылка на именованный объект.
-        XmlAttr<QString> name;
+        Xml::Attr<QString> name;
         // Ссылка на компонент на плате или ссылка на группу компонентов.
-        // [XmlElement(CompInstanceRef),
-        //  XmlElement(CompGroupRef)] public List<Object> CompRefs_;
-        XmlArray<XmlVariant<CompInstanceRef, CompGroupRef>> CompRefs;
+        // [Xml::Element(CompInstanceRef),
+        //  Xml::Element(CompGroupRef)] public List<Object> CompRefs_;
+        Xml::Array<Xml::Variant<CompInstanceRef, CompGroupRef>> CompRefs;
     };
     // Версия раздела.
-    // [XmlAttribute("version")] public string version_;
-    XmlAttr<QString> version;
+    // [Xml::Attribute("version")] public string version_;
+    Xml::Attr<QString> version;
     // Группы слоёв.
-    // [XmlArray("LayerGroups")][XmlArrayItem("LayerGroup")] public List<LayerGroup> LayerGroups_;
-    XmlArrayElem<LayerGroup> LayerGroups;
+    // [Xml::Array("LayerGroups")][Xml::ArrayItem("LayerGroup")] public List<LayerGroup> LayerGroups_;
+    Xml::ArrayElem<LayerGroup> LayerGroups;
     // Группы цепей.
-    // [XmlArray("NetGroups")][XmlArrayItem("NetGroup")] public List<NetGroup> NetGroups_;
-    XmlArrayElem<NetGroup> NetGroups;
+    // [Xml::Array("NetGroups")][Xml::ArrayItem("NetGroup")] public List<NetGroup> NetGroups_;
+    Xml::ArrayElem<NetGroup> NetGroups;
     // Группы компонентов.
-    // [XmlArray("CompGroups")][XmlArrayItem("CompGroup")] public List<CompGroup> CompGroups_;
-    XmlArrayElem<CompGroup> CompGroups;
+    // [Xml::Array("CompGroups")][Xml::ArrayItem("CompGroup")] public List<CompGroup> CompGroups_;
+    Xml::ArrayElem<CompGroup> CompGroups;
 
-    bool canSkip() const { return LayerGroups.empty() && NetGroups.empty() && CompGroups.empty(); }
+    bool isEmpty() const { return LayerGroups.empty() && NetGroups.empty() && CompGroups.empty(); }
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Groups. *
      * Они не являются частью формата TopoR PCB.                      *
