@@ -70,7 +70,7 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-#if 0 // ALL
+#if ALL
 
 static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const TopoR_PCB_File& file) {
     auto group = new QGraphicsItemGroup;
@@ -79,7 +79,7 @@ static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint* fp, const Topo
         if(auto padstack = file.localLibrary.getPadstack(pad.padstackRef.name); padstack) {
             QPainterPath path;
             if(padstack->holeDiameter)
-                path.addEllipse({}, *padstack->holeDiameter * 0.5, *padstack->holeDiameter * 0.5);
+                path.addEllipse({}, padstack->holeDiameter * 0.5, padstack->holeDiameter * 0.5);
             auto item = new QGraphicsPathItem{path};
             item->setPen({Qt::magenta, 0.0});
             item->setTransform(pad.transform());

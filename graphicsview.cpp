@@ -54,7 +54,7 @@ void setCursor(QWidget* w) {
 }
 
 GraphicsView::GraphicsView(QWidget* parent)
-    : QGraphicsView(parent)
+    : QGraphicsView{parent}
 //     , hRuler{          new Ruler{Qt::Horizontal, this}
 // },    vRuler{new Ruler{Qt::Vertical, this}}
 // , gridLayout{new QGridLayout{this}}
@@ -348,7 +348,7 @@ void GraphicsView::wheelEvent(QWheelEvent* event) {
             return;
         }
     }
-    mouseMove(mapToScene(pos));
+    emit mouseMove(mapToScene(pos));
     event->accept();
     update();
 }

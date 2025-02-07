@@ -1,14 +1,13 @@
-# /*******************************************************************************
-# * Author    :  Damir Bakiev *
-# * Version   :  na *
-# * Date      :  03 October 2022 *
-# * Website   :  na *
-# * Copyright :  Damir Bakiev 2016-2022 *
-# * License   : *
-# * Use, modification & distribution is subject to Boost Software License Ver 1.
-#   *
-# * http://www.boost.org/LICENSE_1_0.txt *
-# *******************************************************************************/
+#[[#############################################################################
+# Author    :  Damir Bakiev                                                    #
+# Version   :  na                                                              #
+# Date      :  06.02.2025                                                      #
+# Website   :  na                                                              #
+# Copyright :  Damir Bakiev 2016-2025                                          #
+# License   :                                                                  #
+# Use, modification & distribution is subject to Boost Software License Ver 1. #                                                                               #
+# http://www.boost.org/LICENSE_1_0.txt                                         #
+##############################################################################]]
 cmake_minimum_required(VERSION 3.20)
 
 # set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CMAKE_COMMAND} -E time")
@@ -44,7 +43,7 @@ add_compile_options(
   # $<$<CXX_COMPILER_ID:MSVC>:/X> $<$<CXX_COMPILER_ID:MSVC>:/I>
   # $<$<CXX_COMPILER_ID:MSVC>:"C:/Program Files/Microsoft Visual
   # Studio/2022/Community/VC/Tools/MSVC/14.42.34433/include">
-  $<$<CXX_COMPILER_ID:GNU>:-Wa,-mbig-obj>
+  $<$<AND:$<BOOL:${CMAKE_HOST_WIN32}>,$<CXX_COMPILER_ID:GNU>>:-Wa,-mbig-obj>
   # $<$<CXX_COMPILER_ID:GNU>:-rdynamic># stacktrace
   # $<$<CXX_COMPILER_ID:GNU>:-lstdc++_libbacktrace># stacktrace - fconstexpr -
   # depth = 50 - fpermissive
@@ -56,33 +55,17 @@ add_compile_options(
 # JSONS ${CMAKE_CURRENT_SOURCE_DIR}/*.json) file(GLOB_RECURSE SOURCES
 # ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp) file(GLOB_RECURSE UIS
 # ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
-
-find_package(Boost)
-if(Boost_FOUND)
-  # workaround for msys2 used in msvc
-  # include_directories(C:/Qt/Tools/Android/Boost-for-Android/boost_1_84_0)
-  include_directories(${Boost_INCLUDE_DIR})
-  message(==> ${Boost_INCLUDE_DIR})
-else()
-  message(FATAL_ERROR "Boost not found!!!")
-endif()
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../pfr/include)
+# find_package(Boost) if(Boost_FOUND) # workaround for msys2 used in msvc #
+# include_directories(C:/Qt/Tools/Android/Boost-for-Android/boost_1_84_0)
+# include_directories(${Boost_INCLUDE_DIR}) message(==> ${Boost_INCLUDE_DIR})
+# else() message(FATAL_ERROR "Boost not found!!!") endif()
 
 include_directories(pfr_non_boost/include
                     compile-time-regular-expressions/single-header)
 
-set(FST
-    # /home/x-ray/Документы/TopoR/Examples/Example_04/Arcs.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_04/Arcs_standard_routing.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_05/MinVia.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_05/MinVia_standard_routing.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_02/Placement.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_02/Placement_standard_routing.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_06/Signals.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_01/SingleLayer.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_03/arz_2L.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_03/arz_4L.fst
-    # /home/x-ray/Документы/TopoR/Examples/Example_03/arz_standard_routing.fst
-)
+file(GLOB_RECURSE FST *.fst)
+add_custom_target(FST_Test SOURCES ${FST})
 
 file(GLOB SOURCES *.cpp *.h *.ui)
 

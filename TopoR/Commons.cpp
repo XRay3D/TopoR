@@ -1,5 +1,7 @@
 #include "Commons.h"
-#include <QPainterPath>
+
+#include <QPoint>
+#include <QTransform>
 
 namespace TopoR {
 

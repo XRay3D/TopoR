@@ -173,7 +173,7 @@ struct Constructive {
             Xml::Attr<side> Place;
         };
         // [Xml::Element(Role)] public Role role;
-        Role role;
+        Role role_;
         // Описание фигуры.
         // [Xml::Element(ArcCCW),
         //  Xml::Element(ArcCW),
