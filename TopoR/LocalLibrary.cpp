@@ -171,6 +171,7 @@ QString LocalLibrary::Padstack::getReference(const Xml::Variant<PadCircle, PadOv
     return padShape.visit([](auto&& pad) { return pad.Reference.visit([](auto&& ref) -> QString { return ref; }); });
 }
 
+
 } // namespace TopoR
 
 #endif

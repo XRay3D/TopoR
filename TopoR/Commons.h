@@ -11,6 +11,7 @@ class QPainterPath;
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
+ * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
 
 #define COMPONENTSONBOARD 1
@@ -33,63 +34,92 @@ namespace TopoR {
 namespace Reference_Types {
 // базовый класс ссылок.
 struct BaseRef {
-    Xml::Attr<QString> name; // Имя объекта или ссылка на именованный объект.
+    // Имя объекта или ссылка на именованный объект.
+    Xml::Attr<QString> name;
     operator QString() const { return name; }
 };
 
-#define REF(NAME)                                 \
+#define ELEMENT_REF(NAME)                         \
     struct NAME {                                 \
         Xml::Attr<QString> name;                  \
         operator QString() const { return name; } \
     };
 
-REF(AttributeRef)    // Ссылка на атрибут.
-REF(LayerTypeRef)    // Ссылка на тип слоя.
-REF(LayerGroupRef)   // Ссылка на группу слоёв.
-REF(LayerRef)        // Ссылка на слой.
-                     /// \note !Если в дизайне определён только один слой с заданным именем, то тип слоя не указывается.
-                     // struct LayerRef : BaseRef { };
-                     // Тип слоя или ссылка на именованный cлой
-                     /// \note В документации сказано ещё и про возможность установки типа, если имя слоя неуникально, в данный момент это отключено
-                     // TODO:
-                     // Xml::Attribute("type", typeof(type_layer)),
-REF(ViastackRef)     // Ссылка на тип переходного отверстия.
-REF(NetRef)          // Ссылка на стек контактных площадок.
-REF(CompGroupRef)    // Ссылка на группу компонентов.
-REF(CompInstanceRef) // Ссылка на компонент на плате.
-REF(NetGroupRef)     // Ссылка на группу цепей.
-REF(ImpedanceRef)    // Ссылка на волновое сопротивление.
-REF(SignalRef)       // Ссылка на сигнал.
-REF(SignalGroupRef)  // Ссылка на группу сигналов..
-REF(DiffSignalRef)   // Ссылка на дифференциальный сигнал.
-REF(PadstackRef)     // Ссылка на стек контактных площадок.
-REF(TextStyleRef)    // Ссылка на стиль надписей.
-REF(ComponentRef)    // Ссылка на схемный компонент.
-REF(FootprintRef)    // Ссылка на посадочное место.
+// Ссылка на слой.
+ELEMENT_REF(LayerRef)
+/// \note !Если в дизайне определён только один слой с заданным именем, то тип слоя не указывается.
+// struct LayerRef : BaseRef { };
+// Тип слоя или ссылка на именованный cлой
+/// \note В документации сказано ещё и про возможность установки типа, если имя слоя неуникально, в данный момент это отключено
+// TODO:
+// Xml::Attribute("type", typeof(type_layer)),
+
+// Ссылка на атрибут.
+ELEMENT_REF(AttributeRef)
+// Ссылка на тип слоя.
+ELEMENT_REF(LayerTypeRef)
+// Ссылка на группу слоёв.
+ELEMENT_REF(LayerGroupRef)
+// Ссылка на тип переходного отверстия.
+ELEMENT_REF(ViastackRef)
+// Ссылка на стек контактных площадок.
+ELEMENT_REF(NetRef)
+// Ссылка на группу компонентов.
+ELEMENT_REF(CompGroupRef)
+// Ссылка на компонент на плате.
+ELEMENT_REF(CompInstanceRef)
+// Ссылка на группу цепей.
+ELEMENT_REF(NetGroupRef)
+// Ссылка на волновое сопротивление.
+ELEMENT_REF(ImpedanceRef)
+// Ссылка на сигнал.
+ELEMENT_REF(SignalRef)
+// Ссылка на группу сигналов..
+ELEMENT_REF(SignalGroupRef)
+// Ссылка на дифференциальный сигнал.
+ELEMENT_REF(DiffSignalRef)
+// Ссылка на стек контактных площадок.
+ELEMENT_REF(PadstackRef)
+// Ссылка на стиль надписей.
+ELEMENT_REF(TextStyleRef)
+// Ссылка на схемный компонент.
+ELEMENT_REF(ComponentRef)
+// Ссылка на посадочное место.
+ELEMENT_REF(FootprintRef)
 
 // Ссылка на контакт.
 struct PinRef {
-    Xml::Attr<QString> compName; // Имя компонента, используется для ссылки на компонент.
-    Xml::Attr<QString> pinName;  // Имя контакта компонента, используется для ссылки.
+    // Имя компонента, используется для ссылки на компонент.
+    Xml::Attr<QString> compName;
+    // Имя контакта компонента, используется для ссылки.
+    Xml::Attr<QString> pinName;
 };
 
 // Ссылка на контакт источника сигнала.
-struct SourcePinRef /*: PinRef */ { // using PinRef::PinRef;
-    Xml::Attr<QString> compName;    // Имя компонента, используется для ссылки на компонент.
-    Xml::Attr<QString> pinName;     // Имя контакта компонента, используется для ссылки.
+struct SourcePinRef /*: PinRef */ {
+    // using PinRef::PinRef;
+    // Имя компонента, используется для ссылки на компонент.
+    Xml::Attr<QString> compName;
+    // Имя контакта компонента, используется для ссылки.
+    Xml::Attr<QString> pinName;
 };
 
 // Ссылка на контакт приёмника сигнала.
-struct ReceiverPinRef /*: PinRef */ { // using PinRef::PinRef;
-    Xml::Attr<QString> compName;      // Имя компонента, используется для ссылки на компонент.
-    Xml::Attr<QString> pinName;       // Имя контакта компонента, используется для ссылки.
+struct ReceiverPinRef /*: PinRef */ {
+    // using PinRef::PinRef;
+    // Имя компонента, используется для ссылки на компонент.
+    Xml::Attr<QString> compName;
+    // Имя контакта компонента, используется для ссылки.
+    Xml::Attr<QString> pinName;
 };
 
 // Ссылка на вывод посадочного места.
 struct PadRef {
     // Ссылка на имя компонента
-    Xml::Attr<QString> compName; // Имя компонента, используется для ссылки на компонент.
-    Xml::Attr<int> padNum;       // Номер контактной площадки (вывода) посадочного места.
+    // Имя компонента, используется для ссылки на компонент.
+    Xml::Attr<QString> compName;
+    // Номер контактной площадки (вывода) посадочного места.
+    Xml::Attr<int> padNum;
 };
 
 } // namespace Reference_Types
@@ -105,48 +135,48 @@ struct BaseCoordinat {
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
     template <int I> friend auto get(const BaseCoordinat&);
-
-    // template <size_t I>
-    // auto& get() & {
-    //     if constexpr(I == 0) return x;
-    //     if constexpr(I == 1) return y;
-    // }
-    // template <size_t I>
-    // auto const& get() const& {
-    //     if constexpr(I == 0) return x;
-    //     if constexpr(I == 1) return y;
-    // }
-    // template <size_t I>
-    // auto&& get() && {
-    //     if constexpr(I == 0) return std::move(x);
-    //     if constexpr(I == 1) return std::move(y);
-    // }
 };
 
-// using Dot = Xml::Named<BaseCoordinat, "Dot">;         // координаты точки, вершины.
-// using Center = Xml::Named<BaseCoordinat, "Center">;   // Центр круга (окружности), овала.
-// using Start = Xml::Named<BaseCoordinat, "Start">;     // Начальная точка линии, дуги.
-// using Middle = Xml::Named<BaseCoordinat, "Middle">;   // Средняя точка дуги.
-// using End = Xml::Named<BaseCoordinat, "End">;         // Конечная точка линии, дуги.
-// using Org = Xml::Named<BaseCoordinat, "Org">;         // Точка привязки объекта.
-// using Shift = Xml::Named<BaseCoordinat, "Shift">;     // Cмещение точки привязки или объекта по осям x и y.
-// using Stretch = Xml::Named<BaseCoordinat, "Stretch">; // Вытягивание по осям x и y.
+// координаты точки, вершины.
+// using Dot = Xml::Named<BaseCoordinat, "Dot">;
+// Центр круга (окружности), овала.
+// using Center = Xml::Named<BaseCoordinat, "Center">;
+// Начальная точка линии, дуги.
+// using Start = Xml::Named<BaseCoordinat, "Start">;
+// Средняя точка дуги.
+// using Middle = Xml::Named<BaseCoordinat, "Middle">;
+// Конечная точка линии, дуги.
+// using End = Xml::Named<BaseCoordinat, "End">;
+// Точка привязки объекта.
+// using Org = Xml::Named<BaseCoordinat, "Org">;
+// Cмещение точки привязки или объекта по осям x и y.
+// using Shift = Xml::Named<BaseCoordinat, "Shift">;
+// Вытягивание по осям x и y.
+// using Stretch = Xml::Named<BaseCoordinat, "Stretch">;
 
-#define COORDINAT(NAME)                             \
+#define ELEMENT_COORD(NAME)                         \
     struct NAME {                                   \
         Xml::Attr<double, NoOpt> x, y;              \
         operator QPointF() const { return {x, y}; } \
         QPointF toPoint() const { return *this; }   \
     };
 
-COORDINAT(Center)  // Центр круга (окружности), овала.
-COORDINAT(Dot)     // координаты точки, вершины.
-COORDINAT(End)     // Конечная точка линии, дуги.
-COORDINAT(Middle)  // Средняя точка дуги.
-COORDINAT(Org)     // Точка привязки объекта.
-COORDINAT(Shift)   // Cмещение точки привязки или объекта по осям x и y.
-COORDINAT(Start)   // Начальная точка линии, дуги.
-COORDINAT(Stretch) // Вытягивание по осям x и y.
+// Центр круга (окружности), овала.
+ELEMENT_COORD(Center)
+// координаты точки, вершины.
+ELEMENT_COORD(Dot)
+// Конечная точка линии, дуги.
+ELEMENT_COORD(End)
+// Средняя точка дуги.
+ELEMENT_COORD(Middle)
+// Точка привязки объекта.
+ELEMENT_COORD(Org)
+// Cмещение точки привязки или объекта по осям x и y.
+ELEMENT_COORD(Shift)
+// Начальная точка линии, дуги.
+ELEMENT_COORD(Start)
+// Вытягивание по осям x и y.
+ELEMENT_COORD(Stretch)
 
 } // namespace Coordinates
 using namespace Coordinates;
@@ -156,7 +186,8 @@ namespace Segments {
 struct IBaseFigure { };
 // Описание прямолинейного сегмента контура.
 struct SegmentLine /*: IBaseSegment */ {
-    End end; // Конечная точка линии, дуги.
+    // Конечная точка линии, дуги.
+    End end;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -165,38 +196,46 @@ struct SegmentLine /*: IBaseSegment */ {
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся центром. Обход против часовой стрелки.
 struct SegmentArcCCW /*: SegmentLine */ {
-    End end;       // SegmentLine
-    Center center; // Центр круга (окружности), овала.
+    // SegmentLine
+    End end;
+    // Центр круга (окружности), овала.
+    Center center;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
 };
 
 // Описание дугообразного сегмента контура.
-// Дуга, задаётся центром. Обход по часовой стрелки.
 struct SegmentArcCW /*: SegmentArcCCW */ {
-    End end;       // SegmentLine
-    Center center; // Центр круга (окружности), овала. SegmentArcCCW
+    // Дуга, задаётся центром. Обход по часовой стрелки.
+    // SegmentLine
+    End end;
+    // Центр круга (окружности), овала. SegmentArcCCW
+    Center center;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
 };
 
 // Описание дугообразного сегмента контура.
-// Дуга, задаётся углом. Отрицательный угол означает обход по часовой стрелке.
 struct SegmentArcByAngle /*: SegmentLine */ {
-    End end;                 // SegmentLine
-    Xml::Attr<double> angle; // Задаёт угол в градусах c точностью до тысячных долей.
+    // Дуга, задаётся углом. Отрицательный угол означает обход по часовой стрелке.
+    // SegmentLine
+    End end;
+    // Задаёт угол в градусах c точностью до тысячных долей.
+    Xml::Attr<double> angle;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
 };
 
 // Описание дугообразного сегмента контура.
-// Дуга, задаётся тремя точками: начало, середина и конец.
 struct SegmentArcByMiddle /*: SegmentLine */ {
-    End end;       // SegmentLine
-    Middle middle; // Конечная точка линии, дуги.
+    // Дуга, задаётся тремя точками: начало, середина и конец.
+    // SegmentLine
+    End end;
+    // Конечная точка линии, дуги.
+    Middle middle;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -212,9 +251,12 @@ struct IBaseFigure { };
 
 // Дуга, заданная центром. Обход против часовой стрелки.
 struct ArcCCW /*: IBaseFigure */ {
-    Center center; // Центр круга (окружности), овала.
-    Start start;   // Начальная точка линии, дуги.
-    End end;       // Конечная точка линии, дуги.
+    // Центр круга (окружности), овала.
+    Center center;
+    // Начальная точка линии, дуги.
+    Start start;
+    // Конечная точка линии, дуги.
+    End end;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -222,9 +264,12 @@ struct ArcCCW /*: IBaseFigure */ {
 
 // Дуга, заданная центром. Обход по часовой стрелке.
 struct ArcCW /*: ArcCCW */ {
-    Center center; // Центр круга (окружности), овала. ArcCCW
-    Start start;   // Начальная точка линии, дуги. ArcCCW
-    End end;       // Конечная точка линии, дуги. ArcCCW
+    // Центр круга (окружности), овала. ArcCCW
+    Center center;
+    // Начальная точка линии, дуги. ArcCCW
+    Start start;
+    // Конечная точка линии, дуги. ArcCCW
+    End end;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -232,9 +277,12 @@ struct ArcCW /*: ArcCCW */ {
 
 // Дуга, заданная углом. Отрицательный угол означает обход по часовой стрелке.
 struct ArcByAngle /*: IBaseFigure */ {
-    Xml::Attr<double> angle; // Задаёт угол в градусах c точностью до тысячных долей.
-    Start start;             // Начальная точка линии, дуги.
-    End end;                 // Конечная точка линии, дуги.
+    // Задаёт угол в градусах c точностью до тысячных долей.
+    Xml::Attr<double> angle;
+    // Начальная точка линии, дуги.
+    Start start;
+    // Конечная точка линии, дуги.
+    End end;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -242,9 +290,12 @@ struct ArcByAngle /*: IBaseFigure */ {
 
 // Дуга, заданная тремя точками: начало, середина и конец.
 struct ArcByMiddle /*: IBaseFigure */ {
-    Start start;   // Начальная точка линии, дуги.
-    Middle middle; // Конечная точка линии, дуги.
-    End end;       // Конечная точка линии, дуги.
+    // Начальная точка линии, дуги.
+    Start start;
+    // Конечная точка линии, дуги.
+    Middle middle;
+    // Конечная точка линии, дуги.
+    End end;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -252,8 +303,10 @@ struct ArcByMiddle /*: IBaseFigure */ {
 
 // Описание окружности (незалитого круга).
 struct Circle /*: IBaseFigure */ {
-    Xml::Attr<double> diameter; // Диаметр окружности, круга, овала.
-    Center center;              // Центр круга (окружности), овала.
+    // Диаметр окружности, круга, овала.
+    Xml::Attr<double> diameter;
+    // Центр круга (окружности), овала.
+    Center center;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -261,38 +314,32 @@ struct Circle /*: IBaseFigure */ {
 
 // Описание линии.
 struct Line /*: IBaseFigure */ {
-    Xml::Array<Dot> Dots; // Массив координат точек, вершин.
+    // Массив координат точек, вершин.
+    Xml::Array<Dot> Dots;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
 };
 
+using Segments = Xml::Array<Xml::Variant<SegmentArcByAngle, SegmentArcByMiddle, SegmentArcCCW, SegmentArcCW, SegmentLine>>;
+
 // Описание полилинии.
 struct Polyline /*: IBaseFigure */ {
-    Start start; // Начальная точка линии, дуги.
-    Xml::Array<Xml::Variant<
-        SegmentArcByAngle,
-        SegmentArcByMiddle,
-        SegmentArcCCW,
-        SegmentArcCW,
-        SegmentLine>>
-        Segments; // Сегменты.
+    // Начальная точка линии, дуги.
+    Start start;
+    // Сегменты.
+    Segments segments;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
 };
 
 // Описание незалитого контура.
-// Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
 struct Contour /*: Polyline */ {
+    // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
     Start start;
-    Xml::Array<Xml::Variant<
-        SegmentArcByAngle,
-        SegmentArcByMiddle,
-        SegmentArcCCW,
-        SegmentArcCW,
-        SegmentLine>>
-        Segments;
+    // Сегменты.
+    Segments segments;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -307,16 +354,11 @@ struct Rect /*: Line */ {
 };
 
 // Описание залитого контура.
-// Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
 struct FilledContour /*: Polyline */ {
+    // Если конечная точка последнего сегмента не совпадает с начальной точкой контура, контур замыкается линейным сегментом.
     Start start;
-    Xml::Array<Xml::Variant<
-        SegmentArcByAngle,
-        SegmentArcByMiddle,
-        SegmentArcCCW,
-        SegmentArcCW,
-        SegmentLine>>
-        Segments;
+    // Сегменты.
+    Segments segments;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -340,8 +382,8 @@ struct FilledRect /*: Rect */ {
 };
 
 // Описание многоугольника.
-// Тег поддерживается, но является устаревшим.Следует использовать тег FilledContour.
 struct Polygon /*: Line */ {
+    // Тег поддерживается, но является устаревшим.Следует использовать тег FilledContour.
     Xml::Array<Dot> Dots;
     [[deprecated("Следует использовать тег FilledContour")]] void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
@@ -349,21 +391,26 @@ struct Polygon /*: Line */ {
 };
 
 // Описание дугообразного сегмента проводника (дуга по часовой стрелке).
-/// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
 struct TrackArcCW /*: IBaseFigure */ {
-    Center center;              // Центр круга (окружности), овала.
-    End end;                    // Конечная точка линии, дуги.
-    Xml::Attr<QString> serpRef; // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
+    /// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
+    // Центр круга (окружности), овала.
+    Center center;
+    // Конечная точка линии, дуги.
+    End end;
+    // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
+    Xml::Attr<QString> serpRef;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
 };
 
 // Описание дугообразного сегмента проводника (дуга против часовой стрелки).
-/// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
 struct TrackArc {
-    Center center; // TrackArcCW
-    End end;       // TrackArcCW
+    /// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
+    // TrackArcCW
+    Center center;
+    // TrackArcCW
+    End end;
     Xml::Attr<QString> serpRef;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
@@ -371,10 +418,12 @@ struct TrackArc {
 };
 
 // Описание прямолинейного сегмента проводника.
-/// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
 struct TrackLine /*: IBaseFigure */ {
-    End end;                    // Конечная точка линии, дуги.
-    Xml::Attr<QString> serpRef; // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
+    /// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
+    // Конечная точка линии, дуги.
+    End end;
+    // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
+    Xml::Attr<QString> serpRef;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -383,35 +432,55 @@ struct TrackLine /*: IBaseFigure */ {
 } // namespace Figures
 using namespace Figures;
 
-namespace Rules_Area {             // Xml::Element empty tag always
-struct AllLayers { };              // Устанавливает область действия правила: все слои.
-struct AllComps { };               // Устанавливает область действия правила: все компоненты.
-struct AllNets { };                // Устанавливает область действия правила: все цепи.
-struct AllLayersInner { };         // Устанавливает область действия правила: все внутренние слои.
-struct AllLayersInnerSignal { };   // Устанавливает область действия правила: все внутренние сигнальные слои.
-struct AllLayersSignal { };        // Устанавливает область действия правила: все сигнальные слои.
-struct AllLayersOuter { };         // Устанавливает область действия правила: все внешние слои.
-struct AllViastacks { };           // Устанавливает доступные типы переходных отверстий для правила: все типы.
-struct AllViastacksThrough { };    // Устанавливает доступные типы переходных отверстий для правила: все сквозные типы.
-struct AllViastacksNotThrough { }; // Устанавливает доступные типы переходных отверстий для правила: все несквозные типы.
+// Xml::Element empty tag always
+namespace Rules_Area {
+// Устанавливает область действия правила: все слои.
+struct AllLayers { };
+// Устанавливает область действия правила: все компоненты.
+struct AllComps { };
+// Устанавливает область действия правила: все цепи.
+struct AllNets { };
+// Устанавливает область действия правила: все внутренние слои.
+struct AllLayersInner { };
+// Устанавливает область действия правила: все внутренние сигнальные слои.
+struct AllLayersInnerSignal { };
+// Устанавливает область действия правила: все сигнальные слои.
+struct AllLayersSignal { };
+// Устанавливает область действия правила: все внешние слои.
+struct AllLayersOuter { };
+// Устанавливает доступные типы переходных отверстий для правила: все типы.
+struct AllViastacks { };
+// Устанавливает доступные типы переходных отверстий для правила: все сквозные типы.
+struct AllViastacksThrough { };
+// Устанавливает доступные типы переходных отверстий для правила: все несквозные типы.
+struct AllViastacksNotThrough { };
 } // namespace Rules_Area
 using namespace Rules_Area;
 
 namespace Thermal_Detail_Text_ObjectSignal {
 // Описание термобарьера.
-struct Thermal {                  // Параметры термобарьера:
-    Xml::Attr<int> spokeNum{4};   // Число спиц.! В TopoR поддерживается только одно значение – 4.
-    Xml::Attr<int> minSpokeNum;   // Минимальное число спиц.
-    Xml::Attr<double> angle;      // Задаёт угол в градусах c точностью до тысячных долей.
-    Xml::Attr<double> spokeWidth; // Ширина спицы.
-    Xml::Attr<double> backoff;    // Зазор между контактной площадкой и областью металлизации.
+struct Thermal {
+    // Параметры термобарьера:
+    // Число спиц.! В TopoR поддерживается только одно значение – 4.
+    Xml::Attr<int> spokeNum{4};
+    // Минимальное число спиц.
+    Xml::Attr<int> minSpokeNum;
+    // Задаёт угол в градусах c точностью до тысячных долей.
+    Xml::Attr<double> angle;
+    // Ширина спицы.
+    Xml::Attr<double> spokeWidth;
+    // Зазор между контактной площадкой и областью металлизации.
+    Xml::Attr<double> backoff;
 };
 
 // Описание детали.
 struct Detail {
-    Xml::Attr<double> lineWidth; // Толщина линии.
-    LayerRef layerRef;           // Ссылка на слой.
-    Xml::Variant<                // Описание фигуры.
+    // Толщина линии.
+    Xml::Attr<double> lineWidth;
+    // Ссылка на слой.
+    LayerRef layerRef;
+    // Описание фигуры.
+    Xml::Variant<
         ArcByAngle,
         ArcByMiddle,
         ArcCCW,
@@ -427,14 +496,22 @@ struct Detail {
         Figure;
 };
 
-struct Text {                  // Описание надписи.
-    Xml::Attr<QString> text;   // Параметр надписи: текст надписи.
-    Xml::Attr<align> align_;   // Параметр надписей (ярлыков): способ выравнивания текста.
-    Xml::Attr<double> angle;   // Задаёт угол в градусах c точностью до тысячных долей.
-    Xml::Attr<Bool> mirror;    // Параметр надписей и ярлыков: зеркальность отображения.
-    LayerRef layerRef;         // Ссылка на слой.
-    TextStyleRef textStyleRef; // Ссылка на стиль надписей.
-    Org org;                   // Точка привязки объекта.
+// Описание надписи.
+struct Text {
+    // Параметр надписи: текст надписи.
+    Xml::Attr<QString> text;
+    // Параметр надписей (ярлыков): способ выравнивания текста.
+    Xml::Attr<align> align_;
+    // Задаёт угол в градусах c точностью до тысячных долей.
+    Xml::Attr<double> angle;
+    // Параметр надписей и ярлыков: зеркальность отображения.
+    Xml::Attr<Bool> mirror;
+    // Ссылка на слой.
+    LayerRef layerRef;
+    // Ссылка на стиль надписей.
+    TextStyleRef textStyleRef;
+    // Точка привязки объекта.
+    Org org;
     // TODO: конвертировать текстовые стили по ссылке
     // <param name="in_units"></param>
     // <param name="out_units"></param>
@@ -442,15 +519,17 @@ struct Text {                  // Описание надписи.
 
 // Сигналы воздействия правила
 struct ObjectSignal {
-    Xml::Variant<SignalRef, DiffSignalRef, SignalGroupRef> objectSignal /* NOTE Refs_*/; // FIXME ???
+    // FIXME ???
+    Xml::Variant<SignalRef, DiffSignalRef, SignalGroupRef> objectSignal /* NOTE Refs_*/;
 };
 
 } // namespace Thermal_Detail_Text_ObjectSignal
 using namespace Thermal_Detail_Text_ObjectSignal;
-// #endregion
+
 // Различные сервисные функции
 struct Ut final {
     // Конвертация единиц измерения
+
     /// \param value \brief значение
     /// \param inUnits \brief текущие единицы измерения
     /// \param outUnits \brief выходные единицы измерения
@@ -460,21 +539,3 @@ struct Ut final {
 
 } // namespace TopoR
 using namespace TopoR;
-
-template <int I>
-auto& get(const BaseCoordinat& c) {
-    if constexpr(I == 0) return c.x;
-    if constexpr(I == 1) return c.y;
-}
-
-namespace std {
-
-template <> struct tuple_size<BaseCoordinat> : integral_constant<size_t, 2> { };
-template <> struct tuple_element<0, BaseCoordinat> {
-    using type = double;
-};
-template <> struct tuple_element<1, BaseCoordinat> {
-    using type = double;
-};
-
-} // namespace std

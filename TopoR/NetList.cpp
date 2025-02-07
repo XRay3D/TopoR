@@ -14,6 +14,7 @@ void NetList::Rename_compName(const QString& oldname, const QString& newname) {
             std::visit([&](auto& ref) { ref.compName = newname; }, b);
 }
 
+
 } // namespace TopoR
 
 #endif

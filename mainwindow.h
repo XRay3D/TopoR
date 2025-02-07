@@ -10,6 +10,7 @@ class MainWindow;
 
 namespace TopoR {
 struct TopoR_PCB_File;
+
 } // namespace TopoR
 
 struct QGraphicsItem;

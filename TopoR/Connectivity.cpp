@@ -86,6 +86,7 @@ QGraphicsItem* Connectivity::Wire::Subwire::graphicsItem(const QColor& color) co
     return item;
 }
 
+
 } // namespace TopoR
 
 #endif

@@ -110,7 +110,7 @@ jobs:
       id: cache-boost
       with:
         path: "~/boost"
-        key: libboost1.65-dev
+        key: libboost1.75-dev
     - name: Install boost
       env:
         CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}

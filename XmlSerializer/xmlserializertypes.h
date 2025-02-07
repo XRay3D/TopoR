@@ -48,7 +48,7 @@ Overload(Ts...) -> Overload<Ts...>;
 constexpr bool NoOpt{};
 
 template <typename T, bool Optional = true>
-struct Attr /*: std::integral_constant<bool, Optional>*/ {
+struct Attr /*: std::integral_constant<bool, Optional>*/ {// xml attribute
     using TypeName = T;
     T value{};
 
@@ -95,14 +95,14 @@ struct Optional : std::optional<T> {
 using DontSkip = std::false_type;
 
 template <typename T, typename CanSkip = std::true_type>
-struct Array : std::vector<T> /*, std::false_type*/ {
+struct Array : std::vector<T> /*, std::false_type*/ { // xml inpace array of elements of type T
     using vector = std::vector<T>;
     using vector::vector;
     bool canSkip() const { return CanSkip::value ? vector::empty() : false; }
 };
 
 template <typename T, typename CanSkip = std::true_type>
-struct ArrayElem : std::vector<T>, CanSkip {
+struct ArrayElem : std::vector<T>, CanSkip { // xml element
     using vector = std::vector<T>;
     using vector::vector;
     bool canSkip() const { return CanSkip::value ? vector::empty() : false; }
@@ -174,7 +174,7 @@ struct Name {
 };
 
 template <typename T, Name name>
-struct Named : T {
+struct NamedTag : T {
     using T::T;
     T& operator*() { return *this; }
     const T& operator*() const { return *this; }

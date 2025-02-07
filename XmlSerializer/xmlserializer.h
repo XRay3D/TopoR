@@ -15,7 +15,7 @@
 
 namespace Xml {
 
-// namespace TopoR {
+
 // };
 // using namespace TopoR; // call to function 'stringToEnum' ADL
 
@@ -342,11 +342,11 @@ private:
     template <typename T> bool write(const Skip<T>&) const { return true; }
 
     /// Named<T>
-    template <typename T, Name NAME> bool read(Named<T, NAME>& named) { // чтение именованного поля
+    template <typename T, Name NAME> bool read(NamedTag<T, NAME>& named) { // чтение именованного поля
         return read(*named, NAME);
     }
 
-    template <typename T, Name NAME> bool write(const Named<T, NAME>& named) const { // чтение именованного поля
+    template <typename T, Name NAME> bool write(const NamedTag<T, NAME>& named) const { // чтение именованного поля
         return write(*named, NAME);
     }
 

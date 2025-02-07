@@ -35,6 +35,20 @@ QString ComponentsOnBoard::AddComponent(QString name, units units, const QString
     return Components.emplace_back(std::move(c)).name;
 }
 
+QTransform ComponentsOnBoard::CompInstance::Attribute::Label::transform() const {
+    QTransform transform;
+    transform.translate(org.x, org.y);
+    transform.rotate(angle);
+    return transform;
+}
+
+QTransform ComponentsOnBoard::FreePad::transform() const {
+    QTransform transform;
+    transform.translate(org.x, org.y);
+    transform.rotate(angle);
+    return transform;
+}
+
 bool ComponentsOnBoard::RemoveComponent(const QString& name) {
     auto it = std::ranges::find(Components, name, &CompInstance::name);
     return (it != Components.end()) ? Components.erase(it), true : false;
@@ -74,6 +88,7 @@ QTransform ComponentsOnBoard::CompInstance::transform() const {
     transform.rotate(angle); // FIXME
     return transform;
 }
+
 
 } // namespace TopoR
 

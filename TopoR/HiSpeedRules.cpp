@@ -24,6 +24,7 @@ void HiSpeedRules::Rename_compName(const QString& oldname, const QString& newnam
      }*/
 }
 
+
 } // namespace TopoR
 
 #endif

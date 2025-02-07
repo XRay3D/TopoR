@@ -17,6 +17,7 @@ enum ArcDir {
     CW,
     CCW
 };
+
 // 23:10:03: Прошло времени: 00:40.
 namespace Enumerations { // Все enum в алфавитном порядке
 
@@ -91,7 +92,7 @@ public:
     inline constexpr auto hasStrings<Enum> = true;                                     \
     template <>                                                                        \
     inline constexpr auto Tokens<Enum> = [] {                                          \
-        using enum Enum; /* using enum ↓  P1099R5 */                                   \
+        using enum Enum; /* using enum ↓  P1099R5 */                                 \
         return Tokenizer<Enum, __VA_ARGS__>();                                         \
     }();                                                                               \
     }

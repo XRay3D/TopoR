@@ -16,6 +16,7 @@ void Groups::Rename_compName(const QString& oldname, const QString& newname) {
               }))
               b->_ReferenceName = newname;*/
 }
+
 } // namespace TopoR
 
 #endif

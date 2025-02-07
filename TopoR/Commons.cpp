@@ -129,7 +129,7 @@ QPainterPath Polyline::toPPath() const {
 }
 void Polyline::drawTo(QPainterPath& path) const {
     path.moveTo(start);
-    for(auto&& segment: Segments)
+    for(auto&& segment: segments)
         segment.visit([&path](auto&& segment) { segment.drawTo(path); });
 }
 
@@ -139,7 +139,7 @@ QPainterPath Contour::toPPath() const {
 }
 void Contour::drawTo(QPainterPath& path) const {
     path.moveTo(start);
-    for(auto&& segment: Segments)
+    for(auto&& segment: segments)
         segment.visit([&path](auto&& segment) { segment.drawTo(path); });
     if(path.currentPosition() != start)
         path.lineTo(start);
@@ -162,7 +162,7 @@ QPainterPath FilledContour::toPPath() const {
 }
 void FilledContour::drawTo(QPainterPath& path) const {
     path.moveTo(start);
-    for(auto&& segment: Segments)
+    for(auto&& segment: segments)
         segment.visit([&path](auto&& segment) { segment.drawTo(path); });
     if(path.currentPosition() != start)
         path.lineTo(start);
@@ -246,4 +246,5 @@ double Ut::UnitsConvert(dist inUnits, dist outUnits) {
     }
     // clang-format on
 }
+
 } // namespace TopoR

@@ -1,120 +1,61 @@
 #pragma once
 
-#include "Commons.h"
-
-#if HEADER
-#include "Header.h"
-#else
-#define Header void*
-#endif
-#if LAYERS
-#include "Layers.h"
-#else
-#define Layers void*
-#endif
-#if TEXTSTYLES
-#include "TextStyles.h"
-#else
-#define TextStyles void*
-#endif
-#if COMPONENTSONBOARD
-#include "ComponentsOnBoard.h"
-#else
-#define ComponentsOnBoard void*
-#endif
-#if CONNECTIVITY
-#include "Connectivity.h"
-#else
-#define Connectivity void*
-#endif
-#if CONSTRUCTIVE
-#include "Constructive.h"
-#else
-#define Constructive void*
-#endif
-#if DIALOGSETTINGS
-#include "DialogSettings.h"
-#else
-#define DialogSettings void*
-#endif
-#if DISPLAYCONTROL
-#include "DisplayControl.h"
-#else
-#define DisplayControl void*
-#endif
-#if GROUPS
-#include "Groups.h"
-#else
-#define Groups void*
-#endif
-#if HISPEEDRULES
-#include "HiSpeedRules.h"
-#else
-#define HiSpeedRules void*
-#endif
-#if LOCALLIBRARY
-#include "LocalLibrary.h"
-#else
-#define LocalLibrary void*
-#endif
-#if NETLIST
-#include "NetList.h"
-#else
-#define NetList void*
-#endif
-#if RULES
-#include "Rules.h"
-#else
-#define Rules void*
-#endif
-#if SETTINGS
-#include "Settings.h"
-#else
-#define Settings void*
-#endif
-
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
- *
- * NOTE Xml::ArrayElem<Package> пустые пропускать и не сериализовать.
+ * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
+
+#include "ComponentsOnBoard.h"
+#include "Connectivity.h"
+#include "Constructive.h"
+#include "DialogSettings.h"
+#include "DisplayControl.h"
+#include "Groups.h"
+#include "Header.h"
+#include "HiSpeedRules.h"
+#include "Layers.h"
+#include "LocalLibrary.h"
+#include "NetList.h"
+#include "Rules.h"
+#include "Settings.h"
+#include "TextStyles.h"
 
 namespace TopoR {
 
-struct TopoR_PCB_File {                  // Корневой тег TopoR_PCB_File. Включает все разделы файла.
-    Header header;                       // Раздел «Заголовок файла».
-    Layers layers;                       // Раздел «Слои». (Обязательный раздел)
-    TextStyles textStyles;               // Раздел «Стили надписей».
-    LocalLibrary localLibrary;           // Раздел «Библиотечные элементы». (Обязательный раздел)
-    Constructive constructive;           // Раздел «Конструктив платы».
-    ComponentsOnBoard componentsOnBoard; // Раздел «Компоненты на плате». (Обязательный раздел).
-    NetList netList;                     // Раздел «Текущий список соединений».
-    Groups groups;                       // Раздел «Группировка объектов».
-    HiSpeedRules hiSpeedRules;           // Раздел «Правила для высокоскоростных устройств».
-    Rules rules;                         // Раздел «ПРАВИЛА»
-                                         /// \note !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
-    Connectivity connectivity;           // Раздел «Соединения на плате».
-                                         /// \note В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
-    Settings settings;                   // Раздел «Настройки дизайна».
-    DisplayControl displayControl;       // Раздел «Настройки отображения».
-    DialogSettings dialogSettings;       // Раздел «Настройки диалогов».
+// Корневой тег TopoR_PCB_File. Включает все разделы файла.
+struct TopoR_PCB_File {
+    // Раздел «Заголовок файла».
+    Header header;
+    // Раздел «Слои». (Обязательный раздел)
+    Layers layers;
+    // Раздел «Стили надписей».
+    TextStyles textStyles;
+    // Раздел «Библиотечные элементы». (Обязательный раздел)
+    LocalLibrary localLibrary;
+    // Раздел «Конструктив платы».
+    Constructive constructive;
+    // Раздел «Компоненты на плате». (Обязательный раздел).
+    ComponentsOnBoard componentsOnBoard;
+    // Раздел «Текущий список соединений».
+    NetList netList;
+    // Раздел «Группировка объектов».
+    Groups groups;
+    // Раздел «Правила для высокоскоростных устройств».
+    HiSpeedRules hiSpeedRules;
+    // Раздел «ПРАВИЛА»
+    /// \note !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
+    Rules rules;
+    // Раздел «Соединения на плате».
+    /// \note В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
+    Connectivity connectivity;
+    // Раздел «Настройки дизайна».
+    Settings settings;
+    // Раздел «Настройки отображения».
+    DisplayControl displayControl;
+    // Раздел «Настройки диалогов».
+    DialogSettings dialogSettings;
 };
 
 } // namespace TopoR
-
-#undef ComponentsOnBoard
-#undef Connectivity
-#undef Constructive
-#undef DialogSettings
-#undef DisplayControl
-#undef Groups
-#undef Header
-#undef HiSpeedRules
-#undef Layers
-#undef LocalLibrary
-#undef NetList
-#undef Rules
-#undef Settings
-#undef TextStyles

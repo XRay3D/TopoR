@@ -15,6 +15,7 @@ void Rules::Rename_compName(const QString& oldname, const QString& newname) {
     /****************************************************************/
 }
 
+
 } // namespace TopoR
 
 #endif

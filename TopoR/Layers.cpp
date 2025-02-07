@@ -15,6 +15,7 @@ bool Layers::LayerUnStackContain(LayerRef lref) const {
     return std::ranges::find(UnStackLayers, lref.name, &Layer::name) != UnStackLayers.cend();
 }
 
+
 } // namespace TopoR
 
 #endif
