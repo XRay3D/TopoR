@@ -56,10 +56,13 @@ add_compile_options(
 # ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp) file(GLOB_RECURSE UIS
 # ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../pfr/include)
-# find_package(Boost) if(Boost_FOUND) # workaround for msys2 used in msvc #
-# include_directories(C:/Qt/Tools/Android/Boost-for-Android/boost_1_84_0)
-# include_directories(${Boost_INCLUDE_DIR}) message(==> ${Boost_INCLUDE_DIR})
-# else() message(FATAL_ERROR "Boost not found!!!") endif()
+find_package(Boost)
+if(Boost_FOUND) # workaround for msys2 used in msvc #
+  include_directories(${Boost_INCLUDE_DIR})
+  message(==> ${Boost_INCLUDE_DIR})
+else()
+  message(FATAL_ERROR "Boost not found!!!")
+endif()
 
 include_directories(pfr_non_boost/include
                     compile-time-regular-expressions/single-header)
