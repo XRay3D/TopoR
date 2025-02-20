@@ -86,6 +86,7 @@ void MainWindow::loadFile() {
         xml >> *file;
         xml << *file;
         xml.save("out.fst");
+        edit();
     } catch(const std::set<QString>& names) {
         qCritical() << names;
     } catch(const std::exception& ex) {

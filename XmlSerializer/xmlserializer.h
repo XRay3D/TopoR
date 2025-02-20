@@ -15,7 +15,6 @@
 
 namespace Xml {
 
-
 // };
 // using namespace TopoR; // call to function 'stringToEnum' ADL
 
@@ -70,6 +69,7 @@ struct Serializer {
     }
 
     TreeItem* getItem() const { return item; }
+    QString toString() const;
 
 private:
     QString fileName;

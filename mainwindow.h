@@ -36,6 +36,9 @@ public:
     QMap<QString, bool> isDetailsVisible;
     QMap<QString, bool> isPadsVisible;
     QMap<QString, bool> isVisible;
+
+    void edit();
+
     void loadFile();
     void drawFile();
     void drawVias();

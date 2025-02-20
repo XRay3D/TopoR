@@ -52,7 +52,7 @@ bool Serializer::load() {
     return false;
 }
 
-bool Serializer::save() {
+QString Serializer::toString() const {
     QDomNode xmlNode = outDoc.createProcessingInstruction("xml", R"(version='1.0' encoding='UTF-8')");
     outDoc.insertBefore(xmlNode, outDoc.firstChild());
     QString text = outDoc.toString(4);
@@ -60,8 +60,12 @@ bool Serializer::save() {
     text.replace("]]>", "");
     text.replace("&#xd;", "\x0D");
     text.replace("&#xa;", "\x0A");
+    return text;
+}
+
+bool Serializer::save() {
     if(QFile file{fileName}; file.open(QFile::WriteOnly)) {
-        file.write(text.toUtf8());
+        file.write(toString().toUtf8());
         return true;
     } else
         qWarning() << file.errorString();
