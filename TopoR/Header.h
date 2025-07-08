@@ -28,9 +28,9 @@ struct Header {
     // Единицы измерения для всего файла. Xml::Element
     struct Units {
         // Единицы измерения длины для всего файла. Значение по умолчанию – mm (миллиметр).
-        Xml::Attr<dist, NoOpt> dist_;
+        [[= Xml::Attr(NoOpt)]] dist dist_;
         // Единицы измерения времени для всего файла. Значение по умолчанию – ps (пикосекунда).
-        Xml::Attr<time, NoOpt> time_;
+        [[= Xml::Attr(NoOpt)]] time time_;
     } units;
 };
 

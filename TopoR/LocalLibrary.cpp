@@ -39,7 +39,7 @@ LocalLibrary::PadRect::operator QPainterPath() const { // FIXME addRoundedRect
             path.addRoundedRect(rect, handlingValue, handlingValue);
         } else if(handlingValue == 0 && custom == Bool::off) {
             path.addRect(rect);
-        } else if(handling) {
+        } else if(+handling) {
 #define LB topLeft
 #define LT bottomLeft
 #define RB topRight
@@ -47,7 +47,7 @@ LocalLibrary::PadRect::operator QPainterPath() const { // FIXME addRoundedRect
             double hValue = handlingValue;
             const QRectF rectInner = rect - QMarginsF{hValue, hValue, hValue, hValue};
             const QRectF cornerRect{-hValue, -hValue, hValue * 2, hValue * 2};
-            if(!!cornerLB && +cornerLB) {
+            if(/*!!cornerLB &&*/ +cornerLB) {
                 path.moveTo(rect.LB() + QPointF{0, hValue});
                 if(handling == Handling::Rounding) {
                     path.arcTo(cornerRect.translated(rectInner.LB()), 180, -90);
@@ -55,7 +55,7 @@ LocalLibrary::PadRect::operator QPainterPath() const { // FIXME addRoundedRect
                     path.lineTo(rect.LB() + QPointF{hValue, 0});
                 }
             } else path.moveTo(rect.LB());
-            if(!!cornerRB && +cornerRB) {
+            if(/*!!cornerRB &&*/ +cornerRB) {
                 if(handling == Handling::Rounding) {
                     path.arcTo(cornerRect.translated(rectInner.RB()), 90, -90);
                 } else {
@@ -63,7 +63,7 @@ LocalLibrary::PadRect::operator QPainterPath() const { // FIXME addRoundedRect
                     path.lineTo(rect.RB() + QPointF{0, hValue});
                 }
             } else path.lineTo(rect.RB());
-            if(!!cornerRT && +cornerRT) {
+            if(/*!!cornerRT &&*/ +cornerRT) {
                 if(handling == Handling::Rounding) {
                     path.arcTo(cornerRect.translated(rectInner.RT()), 0, -90);
                 } else {
@@ -71,7 +71,7 @@ LocalLibrary::PadRect::operator QPainterPath() const { // FIXME addRoundedRect
                     path.lineTo(rect.RT() - QPointF{hValue, 0});
                 }
             } else path.lineTo(rect.RT());
-            if(!!cornerLT && +cornerLT) {
+            if(/*!!cornerLT &&*/ +cornerLT) {
                 if(handling == Handling::Rounding) {
                     path.arcTo(cornerRect.translated(rectInner.LT()), 270, -90);
                 } else {
@@ -79,7 +79,7 @@ LocalLibrary::PadRect::operator QPainterPath() const { // FIXME addRoundedRect
                     path.lineTo(rect.LT() - QPointF{0, hValue});
                 }
             } else path.lineTo(rect.LT());
-            if(!!cornerLB && +cornerLB) {
+            if(/*!!cornerLB &&*/ +cornerLB) {
                 path.lineTo(rect.LB() + QPointF{0, hValue});
             } else path.lineTo(rect.LB());
 #undef LB
@@ -170,7 +170,6 @@ QGraphicsItem* LocalLibrary::Footprint::graphicsItem(const TopoR_PCB_File& file)
 QString LocalLibrary::Padstack::getReference(const Xml::Variant<PadCircle, PadOval, PadRect, PadPoly>& padShape) {
     return padShape.visit([](auto&& pad) { return pad.Reference.visit([](auto&& ref) -> QString { return ref; }); });
 }
-
 
 } // namespace TopoR
 

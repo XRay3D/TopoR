@@ -18,11 +18,14 @@ struct Rules {
     // Описание правила ширины проводников.
     struct WidthOfWires {
         // Флаг применения правила.
-        Xml::Attr<Bool> enabled;
+        [[=Xml::Attr]]
+Bool enabled;
         // Параметр правила ширины проводников: минимальная ширина проводника.
-        Xml::Attr<double> widthMin;
+        [[=Xml::Attr]]
+double widthMin;
         // Параметр правила ширины проводников: номинальная ширина проводника.
-        Xml::Attr<double> widthNom;
+        [[=Xml::Attr]]
+double widthNom;
         // Ссылка на слои. См. также LayersRefs
         /// \note !При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
@@ -35,11 +38,14 @@ struct Rules {
     // Описание правила зазоров между цепями.
     struct ClearanceNetToNet {
         // Флаг применения правила.
-        Xml::Attr<Bool> enabled;
+        [[=Xml::Attr]]
+Bool enabled;
         // Параметр правила зазоров между цепями: минимальный зазор.
-        Xml::Attr<double> clrnMin;
+        [[=Xml::Attr]]
+double clrnMin;
         // Параметр правила зазоров между цепями: номинальный зазор.
-        Xml::Attr<double> clrnNom;
+        [[=Xml::Attr]]
+double clrnNom;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
@@ -52,23 +58,28 @@ struct Rules {
     // Описание правила зазоров между компонентами.
     struct ClearanceCompToComp {
         // Флаг применения правила.
-        Xml::Attr<Bool> enabled;
+        [[=Xml::Attr]]
+Bool enabled;
         // Параметр правила зазоров между цепями: минимальный зазор.
-        Xml::Attr<double> clrn;
+        [[=Xml::Attr]]
+double clrn;
         // Объекты воздействия правила.
         Xml::ArrayElem<Xml::Variant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
     };
     // Описание зазоров до края платы.
     struct RulesClearancesToBoard {
         // Устанавливает зазор от проводников до края платы.
-        Xml::Attr<double> wires;
+        [[=Xml::Attr]]
+double wires;
         // Устанавливает зазор от компонентов до края платы.
-        Xml::Attr<double> comps;
+        [[=Xml::Attr]]
+double comps;
     };
     // Описание правила назначения цепям стеков переходных отверстий.
     struct ViastacksOfNets {
         // Флаг применения правила.
-        Xml::Attr<Bool> enabled;
+        [[=Xml::Attr]]
+Bool enabled;
         // Объекты воздействия правила.
         Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         // Назначенные типы переходных отверстий.
@@ -77,7 +88,8 @@ struct Rules {
     // Описание правила назначения цепям опорных слоёв.
     struct PlaneLayerNets {
         // Флаг применения правила.
-        Xml::Attr<Bool> enabled;
+        [[=Xml::Attr]]
+Bool enabled;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayerRef_;
@@ -90,7 +102,8 @@ struct Rules {
     // Описание правила назначения цепям сигнальных слоёв.
     struct SignalLayerNets {
         // Флаг применения правила.
-        Xml::Attr<Bool> enabled;
+        [[=Xml::Attr]]
+Bool enabled;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
@@ -103,16 +116,17 @@ struct Rules {
     // Свойства цепи.
     struct NetProperty {
         // Свойство цепи: гибкая фиксация.
-        Xml::Attr<Bool, NoOpt> flexfix;
+        [[= Xml::Attr(NoOpt)]] Bool flexfix;
         // Свойство цепи: флаг трассировки для автоматического трассировщика.
-        Xml::Attr<Bool> route;
+        [[=Xml::Attr]]
+Bool route;
         // Ссылка на цепь.
         Xml::Array<NetRef> NetRefs;
     };
     // Настройки подключения к углам прямоугольных контактных площадок.
     struct PadConnectSettings {
         // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
-        Xml::Attr<mode_PadConnectSettings, NoOpt> mode;
+        [[= Xml::Attr(NoOpt)]] mode_PadConnectSettings mode;
         // Ссылки на стеки контактных площадок.
         Xml::Array<PadstackRef> PadstackRefs;
         // Ссылки на контакты.
@@ -121,7 +135,8 @@ struct Rules {
         Xml::ArrayElem<PadRef> PadRefs; // NOTE ???  Xml::Array
     };
     // Версия раздела.
-    Xml::Attr<QString> version;
+    [[=Xml::Attr]]
+QString version;
     // Правила ширин проводников.
     Xml::ArrayElem<WidthOfWires> RulesWidthOfWires;
     // Правила зазоров между цепями.

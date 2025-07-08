@@ -11,15 +11,15 @@ void MainWindow::edit() {
     std::map<QString, QStringList> map;
 
     for(auto&& net: file->netList.Nets) {
-        if(net.name.value.contains(re)) {
+        if(net.name.contains(re)) {
             qWarning() << net.name;
             for(auto&& ref: net.refs) {
                 ref.visit(
                     [&map, &net](const auto& val) {
-                        if(val.compName.value.startsWith('R')
-                            || val.compName.value.startsWith("VT")
-                                && !map[val.compName].contains(net.name.value))
-                            map[val.compName].push_back(net.name.value);
+                        if(val.compName.startsWith('R')
+                            || val.compName.startsWith("VT")
+                                && !map[val.compName].contains(net.name))
+                            map[val.compName].push_back(net.name);
                     });
             }
         }
@@ -30,8 +30,8 @@ void MainWindow::edit() {
             for(auto&& ref: net.refs) {
                 ref.visit(
                     [&](const PinRef& val) -> void {
-                        if(val.compName.value == compName && val.pinName.value == "2")
-                            map[val.compName].push_back(net.name.value);
+                        if(val.compName == compName && val.pinName == "2")
+                            map[val.compName].push_back(net.name);
                     },
                     [](const PadRef& val) -> void {
                     });

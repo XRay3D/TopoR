@@ -15,7 +15,8 @@ struct Groups {
     // Описание групп слоёв.
     struct LayerGroup {
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
         // Ссылка на слой или ссылка на группу слоёв.
         Xml::Array<Xml::Variant<LayerRef, LayerGroupRef>> LayerRefs;
         /**********************************************************************
@@ -28,19 +29,22 @@ struct Groups {
     // Описание группы цепей.
     struct NetGroup {
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
         // Ссылка на цепь или ссылка на группу цепей.
         Xml::Array<Xml::Variant<NetRef, NetGroupRef>> NetRefs;
     };
     // Описание группы компонентов.
     struct CompGroup {
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
         // Ссылка на компонент на плате или ссылка на группу компонентов.
         Xml::Array<Xml::Variant<CompInstanceRef, CompGroupRef>> CompRefs;
     };
     // Версия раздела.
-    Xml::Attr<QString> version;
+    [[=Xml::Attr]]
+QString version;
     // Группы слоёв.
     Xml::ArrayElem<LayerGroup> LayerGroups;
     // Группы цепей.

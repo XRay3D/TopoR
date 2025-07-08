@@ -10,12 +10,12 @@
 ##############################################################################]]
 cmake_minimum_required(VERSION 3.20)
 
-# set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CMAKE_COMMAND} -E time")
-# set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CMAKE_COMMAND} -E time")
-# build times
-# Прошло времени: 02:04. initial
-# Прошло времени: 01:10. reflected enum
-# Прошло времени: 00:51. reflected fields of structs
+#[[
+Прошло времени: 01:27. init - templates and boost::pfr
+Прошло времени: 01:06. reflected enum
+Прошло времени: 00:48. reflected fields
+Прошло времени: 00:34. reflected attributes
+]]
 
 project(TopoR_Test LANGUAGES CXX)
 
@@ -28,42 +28,26 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-  ${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}_${CMAKE_CXX_COMPILER_ID}
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}_${CMAKE_CXX_COMPILER_ID}
 )
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 
 add_definitions(-DQT_MESSAGELOGCONTEXT # qDebug()
-  -DQT_DISABLE_DEPRECATED_BEFORE=0x060000)
+                -DQT_DISABLE_DEPRECATED_BEFORE=0x060000)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   get_filename_component(CLANG_P2996_PATH ${CMAKE_CXX_COMPILER} PATH)
   get_filename_component(CLANG_P2996_PATH ${CLANG_P2996_PATH} PATH)
   message(==> ${CLANG_P2996_PATH})
   include_directories(${CLANG_P2996_PATH}/include/c++/v1)
-  add_compile_options(
-    # -help
-    # -Winvalid-static-assert-message
-    # -stdlib=libc++
-    # -std=c++26
-    -fexpansion-statements
-    -freflection-latest
-    -stdlib++-isystem ${CLANG_P2996_PATH}/include/c++/v1
-  )
-add_link_options(
-  -fuse-ld=lld
-  -L${CLANG_P2996_PATH}/lib/
-  # -lpthread
-  # -lunwind
-  # -nostdlib++
-  -lc++
-  -lc++abi
-)
+  add_compile_options(-fexpansion-statements -freflection-latest
+                      -stdlib++-isystem ${CLANG_P2996_PATH}/include/c++/v1)
+  add_link_options(-fuse-ld=lld -L${CLANG_P2996_PATH}/lib/ -lc++ -lc++abi)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # add_compile_options(/X /IC:/msys64/ucrt64/include)
   add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
 endif()
-
 
 find_package(QT NAMES Qt6 Qt5 Core)
 find_package(
@@ -98,7 +82,7 @@ else()
 endif()
 
 include_directories(pfr_non_boost/include
-  compile-time-regular-expressions/single-header)
+                    compile-time-regular-expressions/single-header)
 
 file(GLOB_RECURSE FST *.fst)
 add_custom_target(FST_Test SOURCES ${FST})
@@ -121,24 +105,24 @@ target_link_libraries(TopoR PRIVATE XmlSerializer)
 target_link_libraries(
   ${PROJECT_NAME}
   PRIVATE TopoR XmlSerializer Qt${QT_VERSION_MAJOR}::Core
-  Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets
-  Qt${QT_VERSION_MAJOR}::Xml)
+          Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets
+          Qt${QT_VERSION_MAJOR}::Xml)
 
 if(WIN32_)
   target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
   # windeployqt
   set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
   get_target_property(_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake
-    IMPORTED_LOCATION)
+                      IMPORTED_LOCATION)
   get_filename_component(_QT_BIN_DIR "${_QMAKE_EXECUTABLE}" DIRECTORY)
   find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
   add_custom_command(
     TARGET ${PROJECT_NAME}
     POST_BUILD
     COMMAND
-    "${CMAKE_COMMAND}" -E env PATH="${_QT_BIN_DIR}"
-    "${WINDEPLOYQT_EXECUTABLE}" --verbose 1 --no-compiler-runtime
-    \"$<TARGET_FILE:${PROJECT_NAME}>\"
+      "${CMAKE_COMMAND}" -E env PATH="${_QT_BIN_DIR}"
+      "${WINDEPLOYQT_EXECUTABLE}" --verbose 1 --no-compiler-runtime
+      \"$<TARGET_FILE:${PROJECT_NAME}>\"
     COMMENT "Deploying Qt...")
 elseif(UNIX) # LINUX
   # cqtdeployer -bin myApp -qmake path/to/Qt/5.x.x/build/bin/qmake -qmlDir

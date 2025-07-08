@@ -17,14 +17,17 @@ struct HiSpeedRules {
     struct Impedance {
         struct LayerRule {
             // Ширина проводника.
-            Xml::Attr<double> width;
+            [[=Xml::Attr]]
+double width;
             // Ссылка на слой.
             LayerRef layerRef;
         };
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
-        Xml::Attr<double> Z0;
+        [[=Xml::Attr]]
+double Z0;
         // Правило разводки сигнала для слоя.
         Xml::Array<LayerRule> LayerImpedanceRules;
     };
@@ -32,16 +35,20 @@ struct HiSpeedRules {
     struct ImpedanceDiff {
         struct LayerRule {
             // Ширина проводника.
-            Xml::Attr<double> width;
+            [[=Xml::Attr]]
+double width;
             // Параметр правила разводки дифференциальных пар: зазор между проводниками пары.
-            Xml::Attr<double> gap;
+            [[=Xml::Attr]]
+double gap;
             // Ссылка на слой.
             LayerRef layerRef;
         };
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
         // Параметр правила разводки дифференциальной пары: значение волнового сопротивления в Омах.
-        Xml::Attr<double> Z0;
+        [[=Xml::Attr]]
+double Z0;
         // Правило разводки дифференциальной пары для слоя.
         Xml::Array<LayerRule> LayerImpedanceDiffRules;
     };
@@ -55,7 +62,8 @@ struct HiSpeedRules {
         // Описание сигнала.
         struct Signal {
             // Имя объекта или ссылка на именованный объект.
-            Xml::Attr<QString> name;
+            [[=Xml::Attr]]
+QString name;
             // Ссылка на контакт источника сигнала.
             ReceiverPinRef receiverPinRef;
             // Пассивные компоненты на пути следования сигнала.
@@ -76,9 +84,11 @@ struct HiSpeedRules {
     // Описание дифференциального сигнала (дифференциальной пары).
     struct DiffSignal {
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
         // Параметр дифференциальной пары: допустимый разброс длины между проводниками пары.
-        Xml::Attr<double> mismatch;
+        [[=Xml::Attr]]
+double mismatch;
         // Ссылка на волновое сопротивление.
         ImpedanceRef impedanceRef;
         // Ссылки на сигналы.
@@ -87,7 +97,8 @@ struct HiSpeedRules {
     // Описание группы сигналов.
     struct SignalGroup {
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
         // Ссылки на сигнал, диф.сигнал, или группу сигналов
         Xml::Array<Xml::Variant<SignalRef, DiffSignalRef, SignalGroupRef>> References;
     };
@@ -96,12 +107,15 @@ struct HiSpeedRules {
         // Описание правила выравнивания задержек для группы цепей или группы дифференциальных пар.
         struct DelayEqual {
             // Флаг применения правила.
-            Xml::Attr<Bool> enabled;
+            [[=Xml::Attr]]
+Bool enabled;
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
-            Xml::Attr<valueType> valueType_;
+            [[=Xml::Attr]]
+valueType valueType_;
             // Параметр правила выравнивания задержек внутри группы цепей: допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            Xml::Attr<double> tolerance;
+            [[=Xml::Attr]]
+double tolerance;
             // Объекты воздействия правила.
             Xml::ArrayElem<SignalGroupRef> ObjectsAffected;
             bool isEmpty() const { return ObjectsAffected.empty(); } // FIXME  bugfix for generate empty DelayEqual // to skip serialization
@@ -109,18 +123,23 @@ struct HiSpeedRules {
         // Описание правила задания абсолютного значения задержки.
         struct DelayConstant {
             // Флаг применения правила.
-            Xml::Attr<Bool> enabled;
+            [[=Xml::Attr]]
+Bool enabled;
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
-            Xml::Attr<valueType> valueType_;
+            [[=Xml::Attr]]
+valueType valueType_;
             // Значение константы в правилах выравнивания задержек.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            Xml::Attr<double> constant;
+            [[=Xml::Attr]]
+double constant;
             // Параметр правила выравнивания задержек: нижний допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            Xml::Attr<double> toleranceUnder;
+            [[=Xml::Attr]]
+double toleranceUnder;
             // Параметр правила выравнивания задержек: верхний допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            Xml::Attr<double> toleranceOver;
+            [[=Xml::Attr]]
+double toleranceOver;
             // Объекты воздействия правила.
             Xml::ArrayElem<Xml::Variant<SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         };
@@ -128,18 +147,23 @@ struct HiSpeedRules {
         /// \note !Правило несимметрично относительно ObjectLeft и ObjectRight
         struct DelayRelation {
             // Флаг применения правила.
-            Xml::Attr<Bool> enabled;
+            [[=Xml::Attr]]
+Bool enabled;
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
-            Xml::Attr<valueType> valueType_;
+            [[=Xml::Attr]]
+valueType valueType_;
             // Значение константы в правилах выравнивания задержек.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            Xml::Attr<double> constant;
+            [[=Xml::Attr]]
+double constant;
             // Параметр правила выравнивания задержек: нижний допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            Xml::Attr<double> toleranceUnder;
+            [[=Xml::Attr]]
+double toleranceUnder;
             // Параметр правила выравнивания задержек: верхний допуск.
             /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
-            Xml::Attr<double> toleranceOver;
+            [[=Xml::Attr]]
+double toleranceOver;
             // Первый объект воздействия правила взаимного выравнивания задержек.
             Xml::NamedTag<ObjectSignal, "ObjectLeft"> objectLeft;
             Xml::NamedTag<ObjectSignal, "ObjectRight"> objectRight;
@@ -159,24 +183,30 @@ struct HiSpeedRules {
         // Правило именования цепей дифференциальных сигналов.
         struct RuleDiffSignalNetsNames {
             // Флаг применения правила.
-            Xml::Attr<Bool> enabled;
+            [[=Xml::Attr]]
+Bool enabled;
             // Параметр правила именования цепей дифференциальных сигналов: подстрока, определяющая цепь позитивного сигнала.
-            Xml::Attr<QString> posStr;
+            [[=Xml::Attr]]
+QString posStr;
             // Параметр правила именования цепей дифференциальных сигналов: подстрока, определяющая цепь негативного сигнала.
-            Xml::Attr<QString> negStr;
+            [[=Xml::Attr]]
+QString negStr;
             operator bool() const { return +enabled; }
         };
         // Список цепей, исключённых из поиска сигналов.
         struct ExcludedNets {
             // Минимальное количество контактов в силовой цепи. Параметр используется для автоматического определения силовых цепей.
-            Xml::Attr<int> minPinsNumber;
+            [[=Xml::Attr]]
+int minPinsNumber;
             // Cсылки на цепи.
             Xml::Array<NetRef> NetRefs;
         };
         // Максимальное число цепей в сигнальном кластере. Параметр используется при автоматическом определении цепей сигнального кластера.
-        Xml::Attr<int> maxNetsInCluster;
+        [[=Xml::Attr]]
+int maxNetsInCluster;
         // Автоматически задавать связи.
-        Xml::Attr<Bool> createPinPairs;
+        [[=Xml::Attr]]
+Bool createPinPairs;
         // Правила именования цепей дифференциальных сигналов.
         /// \note !Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.
         Xml::ArrayElem<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames;
@@ -184,7 +214,8 @@ struct HiSpeedRules {
         ExcludedNets excludedNets;
     };
     // Версия раздела.
-    Xml::Attr<QString> version;
+    [[=Xml::Attr]]
+QString version;
     // Волновые сопротивления и правила разводки сигналов.
     Xml::ArrayElem<Xml::Variant<Impedance, ImpedanceDiff>> RulesImpedances;
     // Сигнальные кластеры цепей.

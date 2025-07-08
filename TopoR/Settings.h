@@ -16,29 +16,39 @@ struct Settings {
     // Настройки автоматической трассировки.
     struct Autoroute {
         // Настройка автоматической трассировки: режим трассировки.
-        Xml::Attr<mode_Autoroute> mode;
+        [[=Xml::Attr]]
+mode_Autoroute mode;
         // Параметр автоматической трассировки: использование функциональной эквивалентности.
-        Xml::Attr<autoEqu> autoEqu_;
+        [[=Xml::Attr]]
+autoEqu autoEqu_;
         // Параметр автоматической трассировки: форма проводников.
-        Xml::Attr<wireShape> wireShape_;
+        [[=Xml::Attr]]
+wireShape wireShape_;
         // Параметр автоматической трассировки: создавать «капельки».
-        Xml::Attr<Bool> teardrops;
+        [[=Xml::Attr]]
+Bool teardrops;
         // Параметр автоматической трассировки: ослабленный контроль зазоров.
-        Xml::Attr<Bool> weakCheck;
+        [[=Xml::Attr]]
+Bool weakCheck;
         // Параметр автоматической трассировки: использовать имеющуюся разводку в качестве начального варианта.
-        Xml::Attr<Bool> takeCurLayout;
+        [[=Xml::Attr]]
+Bool takeCurLayout;
         // Настройка автоматической трассировки: соединять планарные контакты напрямую.
-        Xml::Attr<Bool> directConnectSMD;
+        [[=Xml::Attr]]
+Bool directConnectSMD;
         // Настройка автоматической трассировки: не дотягивать проводник до точки привязки полигонального контакта.
-        Xml::Attr<Bool> dontStretchWireToPolypin;
+        [[=Xml::Attr]]
+Bool dontStretchWireToPolypin;
     };
 
     // Настройки автоматических процедур.
     struct Autoproc {
         // Настройка автоматической перекладки проводников.
-        Xml::Attr<refine> refine_;
+        [[=Xml::Attr]]
+refine refine_;
         // Настройка автоматической подвижки.
-        Xml::Attr<automove> automove_;
+        [[=Xml::Attr]]
+automove automove_;
     };
     // Настройки автоматического размещения компонентов.
     struct Placement {
@@ -50,21 +60,28 @@ struct Settings {
     // Настройки ориентации ярлыков.
     struct Labels {
         // Настройка ориентации ярлыков: вращать ярлык при вращении компонента.
-        Xml::Attr<Bool> rotateWithComp;
+        [[=Xml::Attr]]
+Bool rotateWithComp;
         // Настройка редактирования ярлыков: использовать правила ориентации.
-        Xml::Attr<Bool> useOrientRules;
+        [[=Xml::Attr]]
+Bool useOrientRules;
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на верхней стороне.
-        Xml::Attr<Bool> topHorzRotate;
+        [[=Xml::Attr]]
+Bool topHorzRotate;
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на верхней стороне.
-        Xml::Attr<Bool> topVertRotate;
+        [[=Xml::Attr]]
+Bool topVertRotate;
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на нижней стороне.
-        Xml::Attr<Bool> bottomHorzRotate;
+        [[=Xml::Attr]]
+Bool bottomHorzRotate;
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на нижней стороне.
-        Xml::Attr<Bool> bottomVertRotate;
+        [[=Xml::Attr]]
+Bool bottomVertRotate;
     };
 
     // Версия раздела.
-    Xml::Attr<QString> version;
+    [[=Xml::Attr]]
+QString version;
     // Настройки автоматической трассировки.
     Autoroute autoroute;
     // Настройки автоматических процедур.

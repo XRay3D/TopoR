@@ -16,19 +16,25 @@ struct TextStyles {
     // Описание стиля надписей.
     struct TextStyle {
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
         // Параметр стиля надписей: название шрифта.
-        Xml::Attr<QString> fontName;
+        [[=Xml::Attr]]
+QString fontName;
         // Параметр стиля надписей: высота символов в текущих единицах.
-        Xml::Attr<double> height;
+        [[=Xml::Attr]]
+double height;
         // Параметр стиля надписей: жирность шрифта.
-        Xml::Attr<Bool> bold;
+        [[=Xml::Attr]]
+Bool bold;
         // Параметр стиля надписей: курсив.
-        Xml::Attr<Bool> italic;
+        [[=Xml::Attr]]
+Bool italic;
     };
 
     // Версия раздела.
-    Xml::Attr<QString> version;
+    [[=Xml::Attr]]
+QString version;
     // Стили надписей.
     Xml::Array<TextStyle> textStyles;
 

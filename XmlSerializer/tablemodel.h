@@ -99,7 +99,8 @@ private:
                 if(optional.has_value()) return get(optional.value());
                 return {};
             },
-            [this]<typename T>(const Xml::Attr<T>& attr) -> QVariant { // перенаправление ↑↑↑
+            [this]<typename T>(const [[=Xml::Attr]]
+T& attr) -> QVariant { // перенаправление ↑↑↑
                 return get(attr.value);
             },
             []<typename... Ts>(const Xml::Variant<Ts...>& variant) -> QVariant { // перенаправление ↑↑↑
@@ -141,7 +142,8 @@ private:
                 if(set(val)) return optional = val, true;
                 return false;
             },
-            [this]<typename T>(Xml::Attr<T>& attr) -> bool { // перенаправление ↑↑↑
+            [this]<typename T>([[=Xml::Attr]]
+T& attr) -> bool { // перенаправление ↑↑↑
                 return set(attr.value);
             },
             []<typename... Ts>(Xml::Variant<Ts...>& variant) -> bool { // перенаправление ↑↑↑

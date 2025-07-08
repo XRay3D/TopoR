@@ -20,7 +20,7 @@ struct ComponentsOnBoard {
         struct Pin {
             /// \note !Если PadstackRef не указан, то стек контактных площадок берётся из посадочного места.
             // Номер контакта компонента.
-            Xml::Attr<int> padNum;
+            [[= Xml::Attr]] int padNum;
             // Ссылка на стек контактных площадок.
             PadstackRef padstackRef;
             // Точка привязки объекта.
@@ -30,9 +30,9 @@ struct ComponentsOnBoard {
         // Описание монтажного отверстия в компоненте на плате.
         struct Mnthole {
             // Ссылка на монтажное отверстие в посадочном месте.
-            Xml::Attr<QString> mntholeRef;
+            [[= Xml::Attr]] QString mntholeRef;
             // Задаёт угол в градусах c точностью до тысячных долей.
-            Xml::Attr<double> angle;
+            [[= Xml::Attr]] double angle;
             // Ссылка на стек контактных площадок.
             PadstackRef padstackRef;
             // Cсылка на цепь.
@@ -44,13 +44,13 @@ struct ComponentsOnBoard {
             // Описание ярлыка компонента на плате.
             struct Label {
                 // Задаёт угол в градусах c точностью до тысячных долей.
-                Xml::Attr<double> angle;
+                [[= Xml::Attr]] double angle;
                 // Параметр надписей и ярлыков: зеркальность отображения.
-                Xml::Attr<Bool> mirror;
+                [[= Xml::Attr]] Bool mirror;
                 // Параметр надписей (ярлыков): способ выравнивания текста.
-                Xml::Attr<align> align_;
+                [[= Xml::Attr]] align align_;
                 // Флаг видимости.
-                Xml::Attr<Bool> visible;
+                [[= Xml::Attr]] Bool visible;
                 // Ссылка на слой.
                 LayerRef layerRef;
                 // Ссылка на стиль надписей.
@@ -61,26 +61,26 @@ struct ComponentsOnBoard {
             };
 
             // Тип предопределённого атрибута компонента.
-            Xml::Optional<Xml::Attr<type, NoOpt>> type_;
+            [[= Xml::Attr(NoOpt)]] Xml::Optional<type> type_;
             // Имя объекта или ссылка на именованный объект.
-            Xml::Attr<QString> name;
+            [[= Xml::Attr]] QString name;
             // Значение атрибута.
-            Xml::Optional<Xml::Attr<QString, NoOpt>> value;
+            [[= Xml::Attr(NoOpt)]] Xml::Optional<QString> value;
             // Ярлыки.
             Xml::Array<Label> Labels;
         };
 
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[= Xml::Attr]] QString name;
         // Уникальный идентификатор компонента. Используется при синхронизации. Необязательный атрибут.
-        Xml::Attr<QString> uniqueId; /// \note Если не задан, то будет создан при импорте файла.
+        [[= Xml::Attr]] QString uniqueId; /// \note Если не задан, то будет создан при импорте файла.
         // Сторона объекта.
-        Xml::Attr<side, NoOpt> side_;
+        [[= Xml::Attr(NoOpt)]] side side_;
         /// \note !Значение Both возможно только при описании запретов размещения.
         // Задаёт угол в градусах c точностью до тысячных долей.
-        Xml::Attr<double> angle;
+        [[= Xml::Attr]] double angle;
         // Признак фиксации.
-        Xml::Attr<Bool> fixed;
+        [[= Xml::Attr]] Bool fixed;
         // Ссылка на схемный компонент.
         ComponentRef componentRef;
         // Ссылка на посадочное место.
@@ -108,13 +108,13 @@ struct ComponentsOnBoard {
     // Описание одиночного контакта..
     struct FreePad {
         // Имя объекта или ссылка на именованный объект.
-        Xml::Attr<QString> name;
+        [[= Xml::Attr]] QString name;
         // Сторона объекта.
-        Xml::Attr<side, NoOpt> side_;
+        [[= Xml::Attr(NoOpt)]] side side_;
         // Задаёт угол в градусах c точностью до тысячных долей.
-        Xml::Attr<double> angle;
+        [[= Xml::Attr]] double angle;
         // Признак фиксации.
-        Xml::Attr<Bool> fixed;
+        [[= Xml::Attr]] Bool fixed;
         // Ссылка на стек контактных площадок.
         PadstackRef padstackRef;
         // Cсылка на цепь.
@@ -125,7 +125,7 @@ struct ComponentsOnBoard {
     };
 
     // Версия раздела.
-    Xml::Attr<QString> version;
+    [[= Xml::Attr]] QString version;
     // Описание компонентов на плате (инстанции компонентов)
     Xml::ArrayElem<CompInstance> Components;
     // Описание одиночных контактов (инстанции компонентов)

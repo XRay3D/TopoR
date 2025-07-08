@@ -35,15 +35,15 @@ namespace Reference_Types {
 // базовый класс ссылок.
 struct BaseRef {
     // Имя объекта или ссылка на именованный объект.
-    Xml::Attr<QString> name;
+    [[= Xml::Attr]] QString name;
     operator QString() const { return name; }
 };
 
 #define ELEMENT_REF(NAME)                         \
     struct NAME {                                 \
-        Xml::Attr<QString> name;                  \
+        [[= Xml::Attr]] QString name;             \
         operator QString() const { return name; } \
-    };
+    }; // namespace Reference_Types
 
 // Ссылка на слой.
 ELEMENT_REF(LayerRef)
@@ -90,36 +90,36 @@ ELEMENT_REF(FootprintRef)
 // Ссылка на контакт.
 struct PinRef {
     // Имя компонента, используется для ссылки на компонент.
-    Xml::Attr<QString> compName;
+    [[= Xml::Attr]] QString compName;
     // Имя контакта компонента, используется для ссылки.
-    Xml::Attr<QString> pinName;
+    [[= Xml::Attr]] QString pinName;
 };
 
 // Ссылка на контакт источника сигнала.
 struct SourcePinRef /*: PinRef */ {
     // using PinRef::PinRef;
     // Имя компонента, используется для ссылки на компонент.
-    Xml::Attr<QString> compName;
+    [[= Xml::Attr]] QString compName;
     // Имя контакта компонента, используется для ссылки.
-    Xml::Attr<QString> pinName;
+    [[= Xml::Attr]] QString pinName;
 };
 
 // Ссылка на контакт приёмника сигнала.
 struct ReceiverPinRef /*: PinRef */ {
     // using PinRef::PinRef;
     // Имя компонента, используется для ссылки на компонент.
-    Xml::Attr<QString> compName;
+    [[= Xml::Attr]] QString compName;
     // Имя контакта компонента, используется для ссылки.
-    Xml::Attr<QString> pinName;
+    [[= Xml::Attr]] QString pinName;
 };
 
 // Ссылка на вывод посадочного места.
 struct PadRef {
     // Ссылка на имя компонента
     // Имя компонента, используется для ссылки на компонент.
-    Xml::Attr<QString> compName;
+    [[= Xml::Attr]] QString compName;
     // Номер контактной площадки (вывода) посадочного места.
-    Xml::Attr<int> padNum;
+    [[= Xml::Attr]] int padNum;
 };
 
 } // namespace Reference_Types
@@ -130,8 +130,7 @@ namespace Coordinates {
 struct BaseCoordinat {
     BaseCoordinat(double x, double y)
         : x{x}, y{y} { }
-
-    Xml::Attr<double, NoOpt> x, y;
+    [[= Xml::Attr(NoOpt)]] double x, y;
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
     template <int I> friend auto get(const BaseCoordinat&);
@@ -156,7 +155,7 @@ struct BaseCoordinat {
 
 #define ELEMENT_COORD(NAME)                         \
     struct NAME {                                   \
-        Xml::Attr<double, NoOpt> x, y;              \
+        [[= Xml::Attr(NoOpt)]] double x, y;         \
         operator QPointF() const { return {x, y}; } \
         QPointF toPoint() const { return *this; }   \
     };
@@ -223,7 +222,7 @@ struct SegmentArcByAngle /*: SegmentLine */ {
     // SegmentLine
     End end;
     // Задаёт угол в градусах c точностью до тысячных долей.
-    Xml::Attr<double> angle;
+    [[= Xml::Attr]] double angle;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -278,7 +277,7 @@ struct ArcCW /*: ArcCCW */ {
 // Дуга, заданная углом. Отрицательный угол означает обход по часовой стрелке.
 struct ArcByAngle /*: IBaseFigure */ {
     // Задаёт угол в градусах c точностью до тысячных долей.
-    Xml::Attr<double> angle;
+    [[= Xml::Attr]] double angle;
     // Начальная точка линии, дуги.
     Start start;
     // Конечная точка линии, дуги.
@@ -304,7 +303,7 @@ struct ArcByMiddle /*: IBaseFigure */ {
 // Описание окружности (незалитого круга).
 struct Circle /*: IBaseFigure */ {
     // Диаметр окружности, круга, овала.
-    Xml::Attr<double> diameter;
+    [[= Xml::Attr]] double diameter;
     // Центр круга (окружности), овала.
     Center center;
     void drawTo(QPainterPath& path) const;
@@ -366,7 +365,7 @@ struct FilledContour /*: Polyline */ {
 
 // Описание круга.// TODO: требует уточнения
 struct FilledCircle /*: Circle */ {
-    Xml::Attr<double> diameter;
+    [[= Xml::Attr]] double diameter;
     Center center;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
@@ -398,7 +397,7 @@ struct TrackArcCW /*: IBaseFigure */ {
     // Конечная точка линии, дуги.
     End end;
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
-    Xml::Attr<QString> serpRef;
+    [[= Xml::Attr]] QString serpRef;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -411,7 +410,7 @@ struct TrackArc {
     Center center;
     // TrackArcCW
     End end;
-    Xml::Attr<QString> serpRef;
+    [[= Xml::Attr]] QString serpRef;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -423,7 +422,7 @@ struct TrackLine /*: IBaseFigure */ {
     // Конечная точка линии, дуги.
     End end;
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
-    Xml::Attr<QString> serpRef;
+    [[= Xml::Attr]] QString serpRef;
     void drawTo(QPainterPath& path) const;
     QPainterPath toPPath() const;
     operator QPainterPath() const { return toPPath(); }
@@ -462,21 +461,21 @@ namespace Thermal_Detail_Text_ObjectSignal {
 struct Thermal {
     // Параметры термобарьера:
     // Число спиц.! В TopoR поддерживается только одно значение – 4.
-    Xml::Attr<int> spokeNum{4};
+    [[= Xml::Attr]] int spokeNum{4};
     // Минимальное число спиц.
-    Xml::Attr<int> minSpokeNum;
+    [[= Xml::Attr]] int minSpokeNum;
     // Задаёт угол в градусах c точностью до тысячных долей.
-    Xml::Attr<double> angle;
+    [[= Xml::Attr]] double angle;
     // Ширина спицы.
-    Xml::Attr<double> spokeWidth;
+    [[= Xml::Attr]] double spokeWidth;
     // Зазор между контактной площадкой и областью металлизации.
-    Xml::Attr<double> backoff;
+    [[= Xml::Attr]] double backoff;
 };
 
 // Описание детали.
 struct Detail {
     // Толщина линии.
-    Xml::Attr<double> lineWidth;
+    [[= Xml::Attr]] double lineWidth;
     // Ссылка на слой.
     LayerRef layerRef;
     // Описание фигуры.
@@ -499,13 +498,13 @@ struct Detail {
 // Описание надписи.
 struct Text {
     // Параметр надписи: текст надписи.
-    Xml::Attr<QString> text;
+    [[= Xml::Attr]] QString text;
     // Параметр надписей (ярлыков): способ выравнивания текста.
-    Xml::Attr<align> align_;
+    [[= Xml::Attr]] align align_;
     // Задаёт угол в градусах c точностью до тысячных долей.
-    Xml::Attr<double> angle;
+    [[= Xml::Attr]] double angle;
     // Параметр надписей и ярлыков: зеркальность отображения.
-    Xml::Attr<Bool> mirror;
+    [[= Xml::Attr]] Bool mirror;
     // Ссылка на слой.
     LayerRef layerRef;
     // Ссылка на стиль надписей.

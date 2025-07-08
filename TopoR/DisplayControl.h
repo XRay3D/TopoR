@@ -15,198 +15,279 @@ struct DisplayControl {
     // Настройка отображения: параметры текущего вида.
     struct View {
         // Параметр текущего вида: масштаб.
-        Xml::Attr<double> scale;
+        [[=Xml::Attr]]
+double scale;
         // Параметр текущего вида: прокрутка по горизонтали.
-        Xml::Attr<double> scrollHorz;
+        [[=Xml::Attr]]
+double scrollHorz;
         // Параметр текущего вида: прокрутка по вертикали.
-        Xml::Attr<double> scrollVert;
+        [[=Xml::Attr]]
+double scrollVert;
     };
     // Устанавливает активный слой.
     struct ActiveLayer {
         /* Опечатка в спецификации?
             // Тип слоя.
             [Xml::Attribute("type")]
-        Xml::Attr<LayerType> type;*/
+        [[=Xml::Attr]]
+LayerType type;*/
         // Наименование слоя.
-        Xml::Attr<QString> name;
+        [[=Xml::Attr]]
+QString name;
     };
     // Настройка отображения: единицы измерения.
     struct Units {
         // Настройка отображения: единицы измерения.
-        Xml::Attr<preference, NoOpt> preference_;
+        [[= Xml::Attr(NoOpt)]] preference preference_;
     };
     // Настройка отображения: общие цветовые настройки.
     struct Colors {
         // Настройка отображения: текущая цветовая схема.
-        Xml::Attr<QString> colorScheme;
+        [[=Xml::Attr]]
+QString colorScheme;
         // Настройка отображения: яркость выделенных объектов.
-        Xml::Attr<int> hilightRate;
+        [[=Xml::Attr]]
+int hilightRate;
         // Настройка отображения: степень затемнения невыделенных объектов.
-        Xml::Attr<int> darkRate;
+        [[=Xml::Attr]]
+int darkRate;
         // Настройка отображения: цвет фона.
-        Xml::Attr<QString> background;
+        [[=Xml::Attr]]
+QString background;
         // Настройка отображения: цвет контура платы.
-        Xml::Attr<QString> board;
+        [[=Xml::Attr]]
+QString board;
         // Настройка отображения: цвет линий связей.
-        Xml::Attr<QString> netLines;
+        [[=Xml::Attr]]
+QString netLines;
         // Настройка отображения: цвет запрета размещения на обеих сторонах платы.
-        Xml::Attr<QString> keepoutPlaceBoth;
+        [[=Xml::Attr]]
+QString keepoutPlaceBoth;
         // Настройка отображения: цвет запрета трассировки на всех слоях.
-        Xml::Attr<QString> keepoutWireAll;
+        [[=Xml::Attr]]
+QString keepoutWireAll;
         // Настройка отображения: цвет запрета размещения на верхней стороне платы.
-        Xml::Attr<QString> keepoutPlaceTop;
+        [[=Xml::Attr]]
+QString keepoutPlaceTop;
         // Настройка отображения: цвет запрета размещения на нижней стороне платы.
-        Xml::Attr<QString> keepoutPlaceBot;
+        [[=Xml::Attr]]
+QString keepoutPlaceBot;
         // Настройка отображения: цвет габаритов компонентов.
-        Xml::Attr<QString> compsBound;
+        [[=Xml::Attr]]
+QString compsBound;
         // Настройка отображения: цвет позиционных обозначений компонентов.
-        Xml::Attr<QString> compsName;
+        [[=Xml::Attr]]
+QString compsName;
         // Настройка отображения: цвет имён контактов.
-        Xml::Attr<QString> pinsName;
+        [[=Xml::Attr]]
+QString pinsName;
         // Настройка отображения: цвет имён цепей контактов.
-        Xml::Attr<QString> pinsNet;
+        [[=Xml::Attr]]
+QString pinsNet;
         // Настройка отображения: цвет сквозных контактных площадок.
-        Xml::Attr<QString> clrThroughPads;
+        [[=Xml::Attr]]
+QString clrThroughPads;
         // Настройка отображения: цвет сквозных переходных отверстий.
-        Xml::Attr<QString> clrThroughVias;
+        [[=Xml::Attr]]
+QString clrThroughVias;
         // Настройка отображения: цвет скрытых переходных отверстий.
-        Xml::Attr<QString> clrBurriedVias;
+        [[=Xml::Attr]]
+QString clrBurriedVias;
         // Настройка отображения: цвет глухих переходных отверстий.
-        Xml::Attr<QString> clrBlindVias;
+        [[=Xml::Attr]]
+QString clrBlindVias;
         // Настройка отображения: цвет зафиксированных переходных отверстий.
-        Xml::Attr<QString> clrFixedVias;
+        [[=Xml::Attr]]
+QString clrFixedVias;
         // Настройка отображения: цвет нарушений DRC.
-        Xml::Attr<QString> drcViolation;
+        [[=Xml::Attr]]
+QString drcViolation;
         // Настройка отображения: цвет индикации уменьшения номинального зазора.
-        Xml::Attr<QString> narrow;
+        [[=Xml::Attr]]
+QString narrow;
         // Настройка отображения: цвет индикации уменьшения ширины проводника.
-        Xml::Attr<QString> trimmed;
+        [[=Xml::Attr]]
+QString trimmed;
     };
     // Настройка отображения: настройки видимости объектов.
     struct Show {
         // Настройка отображения: показывать глухие переходные отверстия специальным цветом.
-        Xml::Attr<Bool> blindVia;
+        [[=Xml::Attr]]
+Bool blindVia;
         // Настройка отображения: показывать скрытые переходные отверстия специальным цветом
-        Xml::Attr<Bool> burriedVia;
+        [[=Xml::Attr]]
+Bool burriedVia;
         // Настройка отображения: показывать фиксированные переходные отверстия специальным цветом.
-        Xml::Attr<Bool> fixedVia;
+        [[=Xml::Attr]]
+Bool fixedVia;
         // Настройка отображения: показывать только активный слой.
-        Xml::Attr<Bool> showActiveLayerOnly;
+        [[=Xml::Attr]]
+Bool showActiveLayerOnly;
         // Настройка отображения: показывать контур платы.
-        Xml::Attr<Bool> showBoardOutline;
+        [[=Xml::Attr]]
+Bool showBoardOutline;
         // Настройка отображения: показывать детали на нижних металлических слоях.
-        Xml::Attr<Bool> showBotMechDetails;
+        [[=Xml::Attr]]
+Bool showBotMechDetails;
         // Настройка отображения: показывать нижние механические слои.
-        Xml::Attr<Bool> showBotMechLayers;
+        [[=Xml::Attr]]
+Bool showBotMechLayers;
         // Настройка отображения: показывать контактные площадки на нижних металлических слоях.
-        Xml::Attr<Bool> showBotMechPads;
+        [[=Xml::Attr]]
+Bool showBotMechPads;
         // Настройка отображения: показывать компоненты на нижней стороне.
-        Xml::Attr<Bool> showCompBot;
+        [[=Xml::Attr]]
+Bool showCompBot;
         // Настройка отображения: показывать компоненты на верхней стороне.
-        Xml::Attr<Bool> showCompTop;
+        [[=Xml::Attr]]
+Bool showCompTop;
         // Настройка отображения: показывать компоненты.
-        Xml::Attr<Bool> showComponents;
+        [[=Xml::Attr]]
+Bool showComponents;
         // Настройка отображения: показывать габариты компонентов.
-        Xml::Attr<Bool> showCompsBound;
+        [[=Xml::Attr]]
+Bool showCompsBound;
         // Настройка отображения: показывать позиционные обозначения компонентов.
-        Xml::Attr<Bool> showCompsDes;
+        [[=Xml::Attr]]
+Bool showCompsDes;
         // Настройка отображения: показывать области металлизации (полигоны).
-        Xml::Attr<Bool> showCoppers;
+        [[=Xml::Attr]]
+Bool showCoppers;
         // Настройка отображения: показывать нарушение DRC.
-        Xml::Attr<Bool> showDRCViolations;
+        [[=Xml::Attr]]
+Bool showDRCViolations;
         // Настройка отображения: показывать документирующие слои.
-        Xml::Attr<Bool> showDocLayers;
+        [[=Xml::Attr]]
+Bool showDocLayers;
         // Настройка отображения: показывать запреты.
-        Xml::Attr<Bool> showKeepouts;
+        [[=Xml::Attr]]
+Bool showKeepouts;
         // Настройка отображения: показывать ярлыки пользовательских атрибутов.
-        Xml::Attr<Bool> showLabelOther;
+        [[=Xml::Attr]]
+Bool showLabelOther;
         // Настройка отображения: показывать ярлыки атрибута PartName.
-        Xml::Attr<Bool> showLabelPartName;
+        [[=Xml::Attr]]
+Bool showLabelPartName;
         // Настройка отображения: показывать ярлыки атрибута RefDes.
-        Xml::Attr<Bool> showLabelRefDes;
+        [[=Xml::Attr]]
+Bool showLabelRefDes;
         // Настройка отображения: показывать контактные площадки на металлических слоях.
-        Xml::Attr<Bool> showMetalPads;
+        [[=Xml::Attr]]
+Bool showMetalPads;
         // Настройка отображения: показывать монтажные отверстия.
-        Xml::Attr<Bool> showMountingHoles;
+        [[=Xml::Attr]]
+Bool showMountingHoles;
         // Настройка отображения: показывать уменьшение номинального зазора.
-        Xml::Attr<Bool> showNarrow;
+        [[=Xml::Attr]]
+Bool showNarrow;
         // Настройка отображения: показывать связи.
-        Xml::Attr<Bool> showNetLines;
+        [[=Xml::Attr]]
+Bool showNetLines;
         // Настройка отображения: показывать имена контактов.
-        Xml::Attr<Bool> showPinsName;
+        [[=Xml::Attr]]
+Bool showPinsName;
         // Настройка отображения: показывать имена цепей контактов.
-        Xml::Attr<Bool> showPinsNet;
+        [[=Xml::Attr]]
+Bool showPinsNet;
         // Настройка отображения: показывать запреты размещения.
-        Xml::Attr<Bool> showPlaceKeepouts;
+        [[=Xml::Attr]]
+Bool showPlaceKeepouts;
         // Настройка отображения: показывать запреты трассировки.
-        Xml::Attr<Bool> showRouteKeepouts;
+        [[=Xml::Attr]]
+Bool showRouteKeepouts;
         // Настройка отображения: показывать области змеек.
-        Xml::Attr<Bool> showSerpentArea;
+        [[=Xml::Attr]]
+Bool showSerpentArea;
         // Настройка отображения: показывать металлические слои.
-        Xml::Attr<Bool> showSignalLayers;
+        [[=Xml::Attr]]
+Bool showSignalLayers;
         // Настройка отображения: показывать ярлыки (надписи).
-        Xml::Attr<Bool> showTexts;
+        [[=Xml::Attr]]
+Bool showTexts;
         // Настройка отображения: показывать проводники тонкими линиями.
-        Xml::Attr<Bool> showThinWires;
+        [[=Xml::Attr]]
+Bool showThinWires;
         // Настройка отображения: показывать детали на верхних металлических слоях.
-        Xml::Attr<Bool> showTopMechDetails;
+        [[=Xml::Attr]]
+Bool showTopMechDetails;
         // Настройка отображения: показывать верхние механические слои.
-        Xml::Attr<Bool> showTopMechLayers;
+        [[=Xml::Attr]]
+Bool showTopMechLayers;
         // Настройка отображения: показывать КП на верхних металлических слоях.
-        Xml::Attr<Bool> showTopMechPads;
+        [[=Xml::Attr]]
+Bool showTopMechPads;
         // Настройка отображения: показывать уменьшение ширины проводника.
-        Xml::Attr<Bool> showTrimmed;
+        [[=Xml::Attr]]
+Bool showTrimmed;
         // Настройка отображения: показывать переходы.
-        Xml::Attr<Bool> showVias;
+        [[=Xml::Attr]]
+Bool showVias;
         // Настройка отображения: показывать нарушения.
-        Xml::Attr<Bool> showViolations;
+        [[=Xml::Attr]]
+Bool showViolations;
         // Настройка отображения: показывать проводники.
-        Xml::Attr<Bool> showWires;
+        [[=Xml::Attr]]
+Bool showWires;
         // Настройка отображения: показывать сквозные контактные площадки специальным цветом.
-        Xml::Attr<Bool> throughPad;
+        [[=Xml::Attr]]
+Bool throughPad;
         // Настройка отображения: показывать сквозные переходные отверстия специальным цветом.
-        Xml::Attr<Bool> throughVia;
+        [[=Xml::Attr]]
+Bool throughVia;
         // Настройка отображения: текущая схема отображения.
-        Xml::Attr<QString> displayScheme;
+        [[=Xml::Attr]]
+QString displayScheme;
     };
     // Настройки сетки.
     struct Grid {
         // Настройка отображения сетки: шаг сетки.
         struct GridSpace {
             // шаг сетки по горизонтали и вертикали.
-            Xml::Attr<double> x, y;
+            [[=Xml::Attr]]
+double x, y;
         } gridSpace;
         // Настройка отображения сетки: цвет сетки.
-        Xml::Attr<QString> gridColor;
+        [[=Xml::Attr]]
+QString gridColor;
         // Настройка отображения сетки: тип сетки.
-        Xml::Attr<gridKind, NoOpt> gridKind_;
+        [[= Xml::Attr(NoOpt)]] gridKind gridKind_;
         // Настройка отображения сетки: показывать сетку.
-        Xml::Attr<Bool> gridShow;
+        [[=Xml::Attr]]
+Bool gridShow;
         // Настройка ручного редактора: выравнивание на сетку.
-        Xml::Attr<Bool> alignTogrid;
+        [[=Xml::Attr]]
+Bool alignTogrid;
         // Настройка ручного редактирования: привязка к углу кратному 45˚.
-        Xml::Attr<Bool> snapToAngle;
-        Xml::Attr<Bool> saveProportion;
+        [[=Xml::Attr]]
+Bool snapToAngle;
+        [[=Xml::Attr]]
+Bool saveProportion;
     };
     // Настройка отображения: настройки видимости слоя.
     struct LayerOptions {
         // Настройка отображения: цветовые настройки слоя.
         struct Colors {
             // Настройка отображения слоя: цвет деталей, проводников (основной цвет слоя).
-            Xml::Attr<QString> details;
+            [[=Xml::Attr]]
+QString details;
             // Настройка отображения слоя: цвет контактных площадок.
-            Xml::Attr<QString> pads;
+            [[=Xml::Attr]]
+QString pads;
             // Настройка отображения слоя: цвет зафиксированных объектов.
-            Xml::Attr<QString> fix;
+            [[=Xml::Attr]]
+QString fix;
         };
         // Настройка отображения слоя: настройки видимости.
         struct Show {
             // Флаг видимости.
-            Xml::Attr<Bool> visible;
+            [[=Xml::Attr]]
+Bool visible;
             // Настройка отображения слоя: видимость деталей.
-            Xml::Attr<Bool> details;
+            [[=Xml::Attr]]
+Bool details;
             // Настройка отображения слоя: видимость контактных площадок.
-            Xml::Attr<Bool> pads;
+            [[=Xml::Attr]]
+Bool pads;
         };
         // Ссылка на слой.
         LayerRef layerRef;
@@ -220,7 +301,8 @@ struct DisplayControl {
         // Отображение цепей особым цветом: установить цвет для цепи / сигнала / группы цепей / группы сигналов.
         struct SetColor {
             // Отображение цепей особым цветом: задание цвета.
-            Xml::Attr<QString> color;
+            [[=Xml::Attr]]
+QString color;
             // Ссылка на цепь или сигнал
             Xml::Variant<
                 NetRef,
@@ -232,24 +314,30 @@ struct DisplayControl {
                 Refs;
         };
         // Флаг применения правила.
-        Xml::Attr<Bool> enabled;
+        [[=Xml::Attr]]
+Bool enabled;
         // Отображение цепей особым цветом: применять для проводников.
-        Xml::Attr<Bool> colorizeWire;
+        [[=Xml::Attr]]
+Bool colorizeWire;
         // Отображение цепей особым цветом: применять для контактных площадок.
-        Xml::Attr<Bool> colorizePad;
+        [[=Xml::Attr]]
+Bool colorizePad;
         // Отображение цепей особым цветом: применять для областей металлизации.
-        Xml::Attr<Bool> colorizeCopper;
+        [[=Xml::Attr]]
+Bool colorizeCopper;
         // Отображение цепей особым цветом: применять для переходов.
-        Xml::Attr<Bool> colorizeVia;
+        [[=Xml::Attr]]
+Bool colorizeVia;
         // Отображение цепей особым цветом: применять для связей.
-        Xml::Attr<Bool> colorizeNetline;
+        [[=Xml::Attr]]
+Bool colorizeNetline;
         // Отображение цепей особым цветом: установить цвет для цепи / сигнала / группы цепей / группы сигналов.
         Xml::ArrayElem<SetColor> SetColors;
     };
     // Фильтр отображения связей.
     struct FilterNetlines {
         // Флаг применения правила.
-        Xml::Attr<Bool, NoOpt> enabled;
+        [[= Xml::Attr(NoOpt)]] Bool enabled;
         // Ссылки на цепь или сигнал
         Xml::ArrayElem<Xml::Variant<
             AllNets,
@@ -261,7 +349,8 @@ struct DisplayControl {
             Refs;
     };
     // Версия раздела.
-    Xml::Attr<QString> version;
+    [[=Xml::Attr]]
+QString version;
     // Настройка отображения: параметры текущего вида.
     View view;
     // Устанавливает активный слой.

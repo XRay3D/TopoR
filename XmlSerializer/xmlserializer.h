@@ -8,14 +8,12 @@
 #include <QRegularExpression>
 #include <QtXml/QDomDocument>
 
-#include <meta>
 #include <ranges>
 #include <set>
 #include <source_location>
 
 namespace Xml {
 
-namespace meta = std::meta;
 
 // };
 // using namespace TopoR; // call to function 'stringToEnum' ADL
@@ -29,6 +27,17 @@ template <typename T> concept Struct = meta::is_class_type(^^T);
 template <typename T> concept Numbers = std::is_arithmetic_v<T>;
 template <typename T> concept Enums = std::is_enum_v<T>;
 template <typename T> concept To = std::is_base_of_v<std::initializer_list<typename T::value_type>, T> == false || Struct<T>;
+
+static consteval std::pair<Attribute, bool> Is_Attribute(meta::info dm) {
+    auto notes = meta::annotations_of(dm);
+    std::erase_if(notes, [](meta::info ann) { return parent_of(type_of(ann)) != ^^Xml; });
+    std::erase_if(notes, [](meta::info ann) { return type_of(ann) != ^^Attribute; });
+    if(notes.size())
+        return {meta::extract<Attribute>(notes.front()), notes.size() == 1};
+    return {};
+}
+
+template <meta::info T> concept IsAttribute = Is_Attribute(T).second;
 
 struct Serializer {
 
@@ -210,26 +219,30 @@ private:
     }
 
     /// Attr<T>
-    template <typename T, bool Opt> bool read(Attr<T, Opt>& attr) { // перенаправление ↑↑↑
+    template <typename T> bool readAttr(T& attr, bool Opt) { // перенаправление ↑↑↑
         auto attributes = node.attributes();
         if(attributes.contains(TypeName<T>)) {
             node = attributes.namedItem(TypeName<T>);
-            bool ok = read(attr.value);
+            bool ok = read(attr);
             node = node.parentNode();
             return ok;
         } else if(attributes.contains(fieldName)) {
             node = attributes.namedItem(fieldName);
-            bool ok = read(attr.value);
+            bool ok = read(attr);
             node = node.parentNode();
             return ok;
         }
         return false;
     }
 
-    template <typename T, bool Opt> bool write(const Attr<T, Opt>& attr) const { // перенаправление ↑↑↑
-        if(!attr) return false;
+    template <typename T> bool writeAttr(const T& attr, bool Opt) const { // перенаправление ↑↑↑
+        if constexpr(requires { attr.has_value(); }) {
+            if(!Opt && *attr == T{}) return false; // fixme optional logic
+        } else {
+            if(!Opt && attr == T{}) return false; // fixme optional logic
+        }
         isAttribute.set();
-        return write(attr.value);
+        return write(attr);
     }
 
     /// Variant<Ts...>
@@ -368,7 +381,11 @@ private:
             if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
             ++fieldIndex;
             auto copy = node;
-            ok += read(str.[:field:]);
+            if constexpr(IsAttribute<field>) {
+                auto [att, fl] = Is_Attribute(field);
+                ok += readAttr(str.[:field:], att.optional);
+            } else
+                ok += read(str.[:field:]);
             node = copy;
         }
 
@@ -394,8 +411,13 @@ private:
             fieldName = meta::identifier_of(field).data();
             if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
             ++fieldIndex;
+
             auto copy = outNode;
-            ok += write(str.[:field:]);
+            if constexpr(IsAttribute<field>) {
+                auto [att, fl] = Is_Attribute(field);
+                ok += writeAttr(str.[:field:], att.optional);
+            } else
+                ok += write(str.[:field:]);
             outNode = copy;
         };
 
@@ -406,6 +428,7 @@ private:
 
 } // namespace Xml
 
-inline Xml::Serializer operator""_xml(const char* name, size_t len) {
+inline Xml::Serializer
+operator""_xml(const char* name, size_t len) {
     return Xml::Serializer{name};
 }

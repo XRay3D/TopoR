@@ -128,22 +128,22 @@ void MainWindow::drawFile() {
     ui->tvContakts->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     ui->lvStackUpLayers->setModel(new ListModel{file->layers.StackUpLayers,
-        [](std::add_const_t<decltype(file->layers.StackUpLayers.front())>& val) { return val.name.value; },
+        [](std::add_const_t<decltype(file->layers.StackUpLayers.front())>& val) { return val.name; },
         ui->lvStackUpLayers});
     ui->lvUnStackLayers->setModel(new ListModel{file->layers.UnStackLayers,
-        [](std::add_const_t<decltype(file->layers.UnStackLayers.front())>& val) { return val.name.value; },
+        [](std::add_const_t<decltype(file->layers.UnStackLayers.front())>& val) { return val.name; },
         ui->lvUnStackLayers});
     ui->lvLayerGroups->setModel(new ListModel{file->groups.LayerGroups,
-        [](std::add_const_t<decltype(file->groups.LayerGroups.front())>& val) { return val.name.value; },
+        [](std::add_const_t<decltype(file->groups.LayerGroups.front())>& val) { return val.name; },
         ui->lvLayerGroups});
     ui->lvComponentsOnBoard->setModel(new ListModel{file->componentsOnBoard.Components,
         [](std::add_const_t<decltype(file->componentsOnBoard.Components.front())>& val) { return val.name + ": " + val.uniqueId; },
         ui->lvComponentsOnBoard});
     ui->lvComponents->setModel(new ListModel{file->localLibrary.Components,
-        [](std::add_const_t<decltype(file->localLibrary.Components.front())>& val) { return val.name.value; },
+        [](std::add_const_t<decltype(file->localLibrary.Components.front())>& val) { return val.name; },
         ui->lvComponents});
     ui->lvFootprints->setModel(new ListModel{file->localLibrary.Footprints,
-        [](std::add_const_t<decltype(file->localLibrary.Footprints.front())>& val) { return val.name.value; },
+        [](std::add_const_t<decltype(file->localLibrary.Footprints.front())>& val) { return val.name; },
         ui->lvFootprints});
     ui->cbxLayer->setDuplicatesEnabled(false);
     connect(ui->lvComponentsOnBoard->selectionModel(), &QItemSelectionModel::selectionChanged, this, [this](const QItemSelection& selected, const QItemSelection& /*deselected*/) {
@@ -156,7 +156,7 @@ void MainWindow::drawFile() {
             ui->lvComponentsAttr});
 
         ui->chbxLocked->setChecked(+it->fixed);
-        auto sv = enumToString(it->side_.value);
+        auto sv = enumToString(it->side_);
         ui->cbxLayer->addItem(QByteArray{sv.data(), static_cast<int>(sv.size())});
         ui->cbxLayer->setCurrentText(QByteArray{sv.data(), static_cast<int>(sv.size())});
         ui->dsbxAngle->setValue(it->angle);
@@ -199,12 +199,12 @@ void MainWindow::drawVias() {
 void MainWindow::drawWires() {
     std::map<QString, int> layers;
     for(auto&& wire: file->connectivity.Wires)
-        if(!layers.contains(wire.layerRef.name.value))
-            layers.emplace(wire.layerRef.name.value, layers.size());
+        if(!layers.contains(wire.layerRef.name))
+            layers.emplace(wire.layerRef.name, layers.size());
 
     for(auto&& wire: file->connectivity.Wires) {
         for(auto&& subwire: wire.Subwires) {
-            int color = 240 / layers.size() * layers.at(wire.layerRef.name.value);
+            int color = 240 / layers.size() * layers.at(wire.layerRef.name);
             ui->graphicsView->addItem(subwire.graphicsItem(QColor::fromHsv(color, 255, 255, 128)));
         }
     }

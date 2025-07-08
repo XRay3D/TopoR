@@ -2,9 +2,12 @@
 
 #include <QString>
 #include <array>
+#include <meta>
 #include <optional>
 #include <variant>
 #include <vector>
+
+namespace meta = std::meta;
 
 namespace Xml {
 
@@ -47,44 +50,57 @@ Overload(Ts...) -> Overload<Ts...>;
 
 constexpr bool NoOpt{};
 
-template <typename T, bool Optional = true>
-struct Attr /*: std::integral_constant<bool, Optional>*/ { // xml attribute
-    using TypeName = T;
-    T value{};
-
-    explicit operator bool() const { return Optional ? value != T{} : true; };
-
-    auto operator+() const noexcept
-        requires std::is_enum_v<T>
-    { return std::to_underlying(value); };
-
-    // Attr() { } // disable std::is_aggregate_v<T>
-    // Attr(const T& val = {})
-    //     : value{val} { }
-    // Attr(T&& val)
-    //     : value{std::move(val)} { }
-    // Attr(const Attr&) = default;
-    // Attr(Attr&&) = default;
-
-    operator T&() noexcept { return value; }
-    operator const T&() const noexcept { return value; }
-    T& operator=(const T& val) noexcept { return value = val; }
-    T& operator=(T&& val) noexcept { return value = val; }
-
-    // auto operator<=>(const T& other) const {
-    //     return value <=> other;
+struct Attribute {
+    bool optional = true;
+    // char const* value = std::define_static_string("");
+    consteval auto operator()(bool optional) const -> Attribute {
+        return {.optional = optional};
+    }
+    // void apply_annotation(lyra::opt& opt, std::string const& id) const {
+    //     opt[std::string("--") + std::string(engaged ? value : id)];
     // }
 };
+
+static constexpr auto Attr = Attribute();
+
+// template <typename T, bool Optional = true>
+// struct Attr /*: std::integral_constant<bool, Optional>*/ { // xml attribute
+//     using TypeName = T;
+//     T value{};
+
+//     explicit operator bool() const { return Optional ? value != T{} : true; };
+
+//     auto operator+() const noexcept
+//         requires std::is_enum_v<T>
+//     { return std::to_underlying(value); };
+
+//     // Attr() { } // disable std::is_aggregate_v<T>
+//     // Attr(const T& val = {})
+//     //     : value{val} { }
+//     // Attr(T&& val)
+//     //     : value{std::move(val)} { }
+//     // Attr(const Attr&) = default;
+//     // Attr(Attr&&) = default;
+
+//     operator T&() noexcept { return value; }
+//     operator const T&() const noexcept { return value; }
+//     T& operator=(const T& val) noexcept { return value = val; }
+//     T& operator=(T&& val) noexcept { return value = val; }
+
+//     // auto operator<=>(const T& other) const {
+//     //     return value <=> other;
+//     // }
+// };
 
 template <typename T>
 struct Optional;
 
-template <typename T, bool Opt>
-struct Optional<Attr<T, Opt>> : std::optional<Attr<T, Opt>> {
-    using opt = std::optional<Attr<T, Opt>>;
-    using std::optional<Attr<T, Opt>>::optional;
-    operator T() const { return (opt::has_value()) ? opt::value().value : T{}; }
-};
+// template <typename T, bool Opt>
+// struct Optional<Attr<T, Opt>> : std::optional<Attr<T, Opt>> {
+//     using opt = std::optional<Attr<T, Opt>>;
+//     using std::optional<Attr<T, Opt>>::optional;
+//     operator T() const { return (opt::has_value()) ? opt::value().value : T{}; }
+// };
 
 template <typename T>
 struct Optional : std::optional<T> {
