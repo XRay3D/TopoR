@@ -48,11 +48,15 @@ Overload(Ts...) -> Overload<Ts...>;
 constexpr bool NoOpt{};
 
 template <typename T, bool Optional = true>
-struct Attr /*: std::integral_constant<bool, Optional>*/ {// xml attribute
+struct Attr /*: std::integral_constant<bool, Optional>*/ { // xml attribute
     using TypeName = T;
     T value{};
 
     explicit operator bool() const { return Optional ? value != T{} : true; };
+
+    auto operator+() const noexcept
+        requires std::is_enum_v<T>
+    { return std::to_underlying(value); };
 
     // Attr() { } // disable std::is_aggregate_v<T>
     // Attr(const T& val = {})
