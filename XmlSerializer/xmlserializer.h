@@ -8,23 +8,24 @@
 #include <QRegularExpression>
 #include <QtXml/QDomDocument>
 
-#include <boost/pfr.hpp>
+#include <meta>
 #include <ranges>
 #include <set>
 #include <source_location>
 
 namespace Xml {
 
+namespace meta = std::meta;
+
 // };
 // using namespace TopoR; // call to function 'stringToEnum' ADL
 
-namespace pfr = boost::pfr;
 namespace ranges = std::ranges;
 namespace views = std::ranges::views;
 using sl = std::source_location;
 
 template <typename R> concept Range = requires(R& r) { std::begin(r); std::end(r); };
-template <typename T> concept Struct = !Range<T> && pfr::is_implicitly_reflectable_v<T, T>; //&& pfr::tuple_size_v<T>;
+template <typename T> concept Struct = meta::is_class_type(^^T);
 template <typename T> concept Numbers = std::is_arithmetic_v<T>;
 template <typename T> concept Enums = std::is_enum_v<T>;
 template <typename T> concept To = std::is_base_of_v<std::initializer_list<typename T::value_type>, T> == false || Struct<T>;
@@ -360,16 +361,16 @@ private:
 
         if(dbgTree) dbgTree = dbgTree->addItem(new TreeItem{tagName, TypeName<T>, "", "", node.lineNumber()});
         int ok{};
-        if constexpr(pfr::tuple_size_v<T>)
-            pfr::for_each_field_with_name(str, [this, &ok](auto name, auto&& field, auto index) {
-                fieldName = QString::fromUtf8(name.data());
-                if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
-                fieldIndex = index;
-                auto copy = node;
-                ok += read(field);
-                node = copy;
-            });
-        else ok = 1;
+        fieldIndex = -1;
+        template for(constexpr auto field:
+            std::define_static_array(meta::nonstatic_data_members_of(^^T, meta::access_context::unchecked()))) {
+            fieldName = meta::identifier_of(field).data();
+            if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
+            ++fieldIndex;
+            auto copy = node;
+            ok += read(str.[:field:]);
+            node = copy;
+        }
 
         node = node.parentNode();
         if(dbgTree) dbgTree = dbgTree->parent();
@@ -387,14 +388,16 @@ private:
             : outNode.appendChild(outDoc.createElement(tagName));
 
         int ok{};
-        pfr::for_each_field_with_name(str, [this, &ok](auto name, auto&& field, auto index) {
-            fieldName = QString::fromUtf8(name.data());
+        fieldIndex = -1;
+        template for(constexpr auto field:
+            std::define_static_array(meta::nonstatic_data_members_of(^^T, meta::access_context::unchecked()))) {
+            fieldName = meta::identifier_of(field).data();
             if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
-            fieldIndex = index;
+            ++fieldIndex;
             auto copy = outNode;
-            ok += write(field);
+            ok += write(str.[:field:]);
             outNode = copy;
-        });
+        };
 
         outNode = outNode.parentNode();
         return ok;

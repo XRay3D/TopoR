@@ -12,8 +12,10 @@ cmake_minimum_required(VERSION 3.20)
 
 # set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CMAKE_COMMAND} -E time")
 # set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "${CMAKE_COMMAND} -E time")
-# Прошло времени: 02:04.
+# build times
+# Прошло времени: 02:04. initial
 # Прошло времени: 01:10. reflected enum
+# Прошло времени: 00:51. reflected fields of structs
 
 project(TopoR_Test LANGUAGES CXX)
 
