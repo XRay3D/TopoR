@@ -8,13 +8,12 @@
 namespace TopoR {
 
 bool Layers::LayerStackUpContains(LayerRef lref) const {
-    return std::ranges::find(StackUpLayers, lref.name, &Layer::name) != StackUpLayers.cend();
+    return std::ranges::find(StackUpLayers, lref.name, &Layer::name) != StackUpLayers.end();
 }
 
 bool Layers::LayerUnStackContain(LayerRef lref) const {
-    return std::ranges::find(UnStackLayers, lref.name, &Layer::name) != UnStackLayers.cend();
+    return std::ranges::find(UnStackLayers, lref.name, &Layer::name) != UnStackLayers.end();
 }
-
 
 } // namespace TopoR
 

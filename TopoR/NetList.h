@@ -16,14 +16,12 @@ struct NetList {
     // Раздел «Текущий список соединени
     struct Net {
         // Имя объекта или ссылка на именованный объект.
-        [[=Xml::Attr]]
-QString name;
+        [[= Xml::Attr]] QString name;
         // Ссылка на контакт или вывод посадочного места (объект класса PinRef или PadRef).
         Xml::Array<Xml::Variant<PinRef, PadRef>> refs;
     };
     // Версия раздела.
-    [[=Xml::Attr]]
-QString version;
+    [[= Xml::Attr]] QString version;
     // Описания цепей.
     Xml::Array<Net> Nets;
     /*******************************************************************

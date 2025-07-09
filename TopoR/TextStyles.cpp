@@ -11,7 +11,6 @@ const TextStyles::TextStyle* TextStyles::getTextStyle(const QString& name) const
     return {};
 }
 
-
 } // namespace TopoR
 
 #endif

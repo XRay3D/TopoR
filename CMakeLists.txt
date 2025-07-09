@@ -43,7 +43,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   include_directories(${CLANG_P2996_PATH}/include/c++/v1)
   add_compile_options(-fexpansion-statements -freflection-latest
                       -stdlib++-isystem ${CLANG_P2996_PATH}/include/c++/v1)
-  add_link_options(-fuse-ld=lld -L${CLANG_P2996_PATH}/lib/ -lc++ -lc++abi)
+  add_link_options(-fuse-ld=lld -L${CLANG_P2996_PATH}/lib/ -lc++ -lc++abi  "-Wl,-Map=${CMAKE_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.map" )
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # add_compile_options(/X /IC:/msys64/ucrt64/include)
   add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)

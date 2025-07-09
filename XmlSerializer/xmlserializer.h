@@ -14,7 +14,6 @@
 
 namespace Xml {
 
-
 // };
 // using namespace TopoR; // call to function 'stringToEnum' ADL
 
@@ -28,16 +27,15 @@ template <typename T> concept Numbers = std::is_arithmetic_v<T>;
 template <typename T> concept Enums = std::is_enum_v<T>;
 template <typename T> concept To = std::is_base_of_v<std::initializer_list<typename T::value_type>, T> == false || Struct<T>;
 
-static consteval std::pair<Attribute, bool> Is_Attribute(meta::info dm) {
-    auto notes = meta::annotations_of(dm);
-    std::erase_if(notes, [](meta::info ann) { return parent_of(type_of(ann)) != ^^Xml; });
-    std::erase_if(notes, [](meta::info ann) { return type_of(ann) != ^^Attribute; });
-    if(notes.size())
-        return {meta::extract<Attribute>(notes.front()), notes.size() == 1};
+template <typename Attr>
+static consteval std::pair<Attr, bool> get_annotation(meta::info dm) {
+    auto notes = meta::annotations_of(dm, ^^Attr); // TODO annotations_of_with_type P3394 -> R3
+    if(notes.size()) return {meta::extract<Attr>(notes.front()), notes.size() == 1};
     return {};
 }
 
-template <meta::info T> concept IsAttribute = Is_Attribute(T).second;
+template <meta::info T> concept IsAttribute = get_annotation<Attribute>(T).second;
+template <meta::info T> concept IsArrayElement = get_annotation<ArrayElement>(T).second;
 
 struct Serializer {
 
@@ -274,7 +272,7 @@ private:
     }
 
     /// ArrayElem<T>
-    template <typename T, typename CanSkip> bool read(ArrayElem<T, CanSkip>& vector) { // перенаправление ↑↑↑
+    template <typename T> bool readArrayElem(std::vector<T>& vector, bool CanSkip) { // перенаправление ↑↑↑
         QDomNode node_ = node.firstChildElement(fieldName);
         if(node_.isNull()) return false;
         auto childNodes = node_.childNodes();
@@ -296,8 +294,9 @@ private:
         return ok;
     }
 
-    template <typename T, typename CanSkip> bool write(const ArrayElem<T, CanSkip>& vector) const { // перенаправление ↑↑↑
-        if(vector.canSkip()) return false;                                                          // NOTE maybe true
+    template <typename T> bool writeArrayElem(const std::vector<T>& vector, bool CanSkip) const { // перенаправление ↑↑↑
+        // if(vector.canSkip()) return false;                                                        // NOTE maybe true
+        if(CanSkip && vector.empty()) return false; // NOTE maybe true
         bool ok{true};
         outNode = outNode.appendChild(outDoc.createElement(fieldName));
         for(auto&& var: vector)
@@ -382,8 +381,11 @@ private:
             ++fieldIndex;
             auto copy = node;
             if constexpr(IsAttribute<field>) {
-                auto [att, fl] = Is_Attribute(field);
+                auto [att, fl] = get_annotation<Attribute>(field);
                 ok += readAttr(str.[:field:], att.optional);
+            } else if constexpr(IsArrayElement<field>) {
+                auto [att, fl] = get_annotation<ArrayElement>(field);
+                ok += readArrayElem(str.[:field:], att.canSkip_);
             } else
                 ok += read(str.[:field:]);
             node = copy;
@@ -414,8 +416,11 @@ private:
 
             auto copy = outNode;
             if constexpr(IsAttribute<field>) {
-                auto [att, fl] = Is_Attribute(field);
+                auto [att, fl] = get_annotation<Attribute>(field);
                 ok += writeAttr(str.[:field:], att.optional);
+            } else if constexpr(IsArrayElement<field>) {
+                auto [att, fl] = get_annotation<ArrayElement>(field);
+                ok += writeArrayElem(str.[:field:], att.canSkip_);
             } else
                 ok += write(str.[:field:]);
             outNode = copy;

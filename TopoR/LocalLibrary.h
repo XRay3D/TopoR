@@ -27,14 +27,14 @@ struct LocalLibrary {
     struct PadCircle {
         BasePadRef Reference;
         // Диаметр окружности, круга, овала.
-        [[=Xml::Attr]] double diameter;
+        [[= Xml::Attr]] double diameter;
         operator QPainterPath() const;
     };
     // Описание овальной контактной площадки.
     struct PadOval {
         BasePadRef Reference;
         // Диаметр окружности, круга, овала.
-        [[=Xml::Attr]] double diameter;
+        [[= Xml::Attr]] double diameter;
         // Параметр овальной контактной площадки: вытягивание по осям x и y.
         Stretch stretch;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
@@ -55,23 +55,23 @@ struct LocalLibrary {
     struct PadRect {
         BasePadRef Reference;
         // Ширина прямоугольной контактной площадки.
-        [[=Xml::Attr]] double width;
+        [[= Xml::Attr]] double width;
         // Высота прямоугольной контактной площадки.
-        [[=Xml::Attr]] double height;
+        [[= Xml::Attr]] double height;
         // Тип обработки углов прямоугольной контактной площадки.
-        [[=Xml::Attr]] Handling handling;
+        [[= Xml::Attr]] Handling handling;
         // Величина обработки углов прямоугольной контактной площадки. Значение зависит от типа обработки. Для скругления это радиус. Для среза это высота среза.
-        [[=Xml::Attr]] double handlingValue;
+        [[= Xml::Attr]] double handlingValue;
         // Флаг выборочной обработки углов прямоугольной контактной площадки. Если не установлен, то все углы обрабатываются одинаковым образом.
-        [[=Xml::Attr]] Bool custom;
+        [[= Xml::Attr]] Bool custom;
         // Флаг обработки левого нижнего угла прямоугольной контактной площадки.
-        [[=Xml::Attr]] Bool cornerLB;
+        [[= Xml::Attr]] Bool cornerLB;
         // Флаг обработки правого нижнего угла прямоугольной контактной площадки.
-        [[=Xml::Attr]] Bool cornerRB;
+        [[= Xml::Attr]] Bool cornerRB;
         // Флаг обработки правого нижнего угла прямоугольной контактной площадки.
-        [[=Xml::Attr]] Bool cornerRT;
+        [[= Xml::Attr]] Bool cornerRT;
         // Флаг обработки левого верхнего угла прямоугольной контактной площадки.
-        [[=Xml::Attr]] Bool cornerLT;
+        [[= Xml::Attr]] Bool cornerLT;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
         Xml::Optional<Shift> shift;
         operator QPainterPath() const;
@@ -88,19 +88,19 @@ struct LocalLibrary {
     // Описание стека контактных площадок.
     struct Padstack {
         // Имя объекта или ссылка на именованный объект.
-        [[=Xml::Attr]] QString name;
+        [[= Xml::Attr]] QString name;
         // Тип стека контактных площадок.
-        [[=Xml::Attr]] type_padstack type;
+        [[= Xml::Attr]] type_padstack type;
         // Диаметр отверстия.
-        [[=Xml::Attr]] double holeDiameter;
+        [[= Xml::Attr]] double holeDiameter;
         // Параметр стека контактной площадки: металлизация отверстия.
-        [[=Xml::Attr]] Bool metallized;
+        [[= Xml::Attr]] Bool metallized;
         // Параметр стека контактной площадки: подключение к области металлизации (полигону).
-        [[=Xml::Attr]] ConnectToCopper connectToCopper;
+        [[= Xml::Attr]] ConnectToCopper connectToCopper;
         // Описание термобарьера.
         Thermal thermal;
         // Контактные площадки стека.
-        Xml::ArrayElem<Xml::Variant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
+        [[= Xml::ArrayElem]] std::vector<Xml::Variant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
         static QString getReference(const Xml::Variant<PadCircle, PadOval, PadRect, PadPoly>& padShape);
     };
     // Описание типа (стека) переходного отверстия.
@@ -116,16 +116,16 @@ struct LocalLibrary {
             Xml::Array<LayerRef> LayerRefs;
         };
         // Имя объекта или ссылка на именованный объект.
-        [[=Xml::Attr]] QString name;
+        [[= Xml::Attr]] QString name;
         // Диаметр отверстия.
-        [[=Xml::Attr]] double holeDiameter;
+        [[= Xml::Attr]] double holeDiameter;
         // Параметр типа переходного отверстия: возможность установить переходное отверстие на контактной площадке.
-        [[=Xml::Attr]] Bool viaOnPin;
+        [[= Xml::Attr]] Bool viaOnPin;
         // Диапазон слоев.
         // <value>AllLayers | [LayerRef]</value>
         LayerRange layerRange;
         // Описание площадок стека переходного отверстия.
-        Xml::ArrayElem<PadCircle> ViaPads;
+        [[= Xml::ArrayElem]] std::vector<PadCircle> ViaPads;
     };
     using VariantFig = Xml::Variant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour>;
     // Описание посадочного места.
@@ -133,7 +133,7 @@ struct LocalLibrary {
         // Описание области металлизации (полигона) в посадочном месте компонента.
         struct Copper /*_Footprint*/ {
             // Толщина линии.
-            [[=Xml::Attr]] double lineWidth;
+            [[= Xml::Attr]] double lineWidth;
             // Ссылка на слой.
             LayerRef layerRef;
             // Описание фигуры.
@@ -152,7 +152,7 @@ struct LocalLibrary {
         // Описание монтажного отверстия в посадочном месте.
         struct Mnthole {
             // Идентификатор неименованных объектов.
-            [[=Xml::Attr]] QString id;
+            [[= Xml::Attr]] QString id;
             // Ссылка на стек контактных площадок.
             PadstackRef padstackRef;
             // Точка привязки объекта.
@@ -161,13 +161,13 @@ struct LocalLibrary {
         // Описание ярлыка в посадочном месте.
         struct Label /*_Footprint*/ {
             // Имя объекта или ссылка на именованный объект.
-            [[=Xml::Attr]] QString name;
+            [[= Xml::Attr]] QString name;
             // Параметр надписей (ярлыков): способ выравнивания текста.
-            [[=Xml::Attr]] align align_;
+            [[= Xml::Attr]] align align_;
             // Задаёт угол в градусах c точностью до тысячных долей.
-            [[=Xml::Attr]] double angle;
+            [[= Xml::Attr]] double angle;
             // Параметр надписей и ярлыков: зеркальность отображения.
-            [[=Xml::Attr]] Bool mirror;
+            [[= Xml::Attr]] Bool mirror;
             // Ссылка на слой.
             LayerRef layerRef;
             // Ссылка на стиль надписей.
@@ -192,15 +192,15 @@ struct LocalLibrary {
         /// \note Этот флаг устанавливается в описании контакта посадочного места.
         struct Pad {
             // Номер контактной площадки (вывода) посадочного места.
-            [[=Xml::Attr]] int padNum;
+            [[= Xml::Attr]] int padNum;
             // Имя объекта или ссылка на именованный объект.
-            [[=Xml::Attr]] QString name;
+            [[= Xml::Attr]] QString name;
             // Задаёт угол в градусах c точностью до тысячных долей.
-            [[=Xml::Attr]] double angle;
+            [[= Xml::Attr]] double angle;
             // Параметр контакта (вывода) посадочного места: перевёрнутость.
             // Если флаг не установлен, площадка планарного контакта будет находиться на одной стороне с компонентом,
             // иначе площадка будет расположена на противоположной стороне.
-            [[=Xml::Attr]] Bool flipped;
+            [[= Xml::Attr]] Bool flipped;
             // Ссылка на стек контактных площадок.
             PadstackRef padstackRef;
             // Точка привязки объекта.
@@ -213,23 +213,23 @@ struct LocalLibrary {
             }
         };
         // Имя объекта или ссылка на именованный объект.
-        [[=Xml::Attr]] QString name;
+        [[= Xml::Attr]] QString name;
         // Описание контактных площадок посадочного места.
-        Xml::ArrayElem<Pad> Pads;
+        [[= Xml::ArrayElem]] std::vector<Pad> Pads;
         // Надписи.
-        Xml::ArrayElem<Text> Texts;
+        [[= Xml::ArrayElem]] std::vector<Text> Texts;
         // Детали посадочного места.
-        Xml::ArrayElem<Detail> Details;
+        [[= Xml::ArrayElem]] std::vector<Detail> Details;
         // Области металлизации (полигонов) в посадочных местах компонентов.
-        Xml::ArrayElem<Copper> Coppers;
+        [[= Xml::ArrayElem]] std::vector<Copper> Coppers;
         // Запреты размещения в посадочном месте.
-        Xml::ArrayElem<Keepout> KeepoutsPlace;
+        [[= Xml::ArrayElem]] std::vector<Keepout> KeepoutsPlace;
         // Запреты трассировки в посадочном месте.
-        Xml::ArrayElem<Keepout> KeepoutsTrace;
+        [[= Xml::ArrayElem]] std::vector<Keepout> KeepoutsTrace;
         // Монтажные отверстия.
-        Xml::ArrayElem<Mnthole> Mntholes;
+        [[= Xml::ArrayElem]] std::vector<Mnthole> Mntholes;
         // Ярлыки.
-        Xml::ArrayElem<Label> Labels;
+        [[= Xml::ArrayElem]] std::vector<Label> Labels;
 
         QGraphicsItem* graphicsItem(const TopoR_PCB_File& file) const;
     };
@@ -238,11 +238,11 @@ struct LocalLibrary {
         // Описание контакта схемного компонента.
         struct Pin /*_Component*/ {
             // Номер контакта компонента.
-            [[=Xml::Attr]] int pinNum;
+            [[= Xml::Attr]] int pinNum;
             // Имя объекта или ссылка на именованный объект.
-            [[=Xml::Attr]] QString name;
+            [[= Xml::Attr]] QString name;
             // Схемотехническое имя контакта компонента.
-            [[=Xml::Attr]] QString pinSymName;
+            [[= Xml::Attr]] QString pinSymName;
             // Параметр контакта компонента: эквивалентность.
             [[= Xml::Attr(NoOpt)]] int pinEqual;
             // Параметр контакта (вывода) компонента: номер вентиля контакта.
@@ -253,16 +253,16 @@ struct LocalLibrary {
         // Описание атрибута схемного компонента.
         struct Attribute /*_Component*/ {
             // Имя объекта или ссылка на именованный объект.
-            [[=Xml::Attr]] QString name;
+            [[= Xml::Attr]] QString name;
             // Значение атрибута.
-            [[=Xml::Attr]] QString value;
+            [[= Xml::Attr]] QString value;
         };
         // Имя объекта или ссылка на именованный объект.
-        [[=Xml::Attr]] QString name;
+        [[= Xml::Attr]] QString name;
         // Контакты схемного компонента.
-        Xml::ArrayElem<Pin> Pins;
+        [[= Xml::ArrayElem]] std::vector<Pin> Pins;
         // Атрибуты компонента.
-        Xml::ArrayElem<Attribute> Attributes;
+        [[= Xml::ArrayElem]] std::vector<Attribute> Attributes;
         QString ToString() { return name; }
     };
     // Описание упаковки (соответствие контактов компонента и выводов посадочного места).
@@ -270,14 +270,14 @@ struct LocalLibrary {
         // Соответствие контакта схемного компонента и вывода посадочного места.
         struct Pinpack {
             // Номер контакта компонента.
-            [[=Xml::Attr]] int pinNum;
+            [[= Xml::Attr]] int pinNum;
             // Номер контактной площадки (вывода) посадочного места.
-            [[=Xml::Attr]] int padNum;
+            [[= Xml::Attr]] int padNum;
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
-            [[=Xml::Attr]] valueType valueType_;
+            [[= Xml::Attr]] valueType valueType_;
 
             // Параметр контакта компонента в посадочном месте: задержка сигнала в посадочном месте.
-            [[=Xml::Attr]] double delay;
+            [[= Xml::Attr]] double delay;
         };
         // Ссылка на схемный компонент.
         ComponentRef componentRef;
@@ -287,17 +287,17 @@ struct LocalLibrary {
         Xml::Array<Pinpack> Pinpacks;
     };
     // Версия раздела.
-    [[=Xml::Attr]] QString version;
+    [[= Xml::Attr]] QString version;
     // Стеки контактных площадок.
-    Xml::ArrayElem<Padstack> Padstacks;
+    [[= Xml::ArrayElem]] std::vector<Padstack> Padstacks;
     //  Типы (стеки) переходных отверстий.
-    Xml::ArrayElem<Viastack> Viastacks;
+    [[= Xml::ArrayElem]] std::vector<Viastack> Viastacks;
     // Посадочные места.
-    Xml::ArrayElem<Footprint> Footprints;
+    [[= Xml::ArrayElem]] std::vector<Footprint> Footprints;
     // Схемные компоненты.
-    Xml::ArrayElem<Component> Components;
+    [[= Xml::ArrayElem]] std::vector<Component> Components;
     // Упаковки.
-    Xml::ArrayElem<Package> Packages;
+    [[= Xml::ArrayElem]] std::vector<Package> Packages;
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса LocalLibrary. *
      * Они не являются частью формата TopoR PCB.                            *

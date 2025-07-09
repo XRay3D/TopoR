@@ -70,15 +70,14 @@ double lineWidth;
         };
         // Описание контура платы.
         // [Xml::Array("Contour")][Xml::ArrayItem("Shape")] public List<Shape_Contour> Contours_;
-        Xml::ArrayElem<ShapeContour> Contours;
+       [[=Xml::ArrayElem]] std::vector<ShapeContour> Contours;
         // Вырезы в плате.
         // [Xml::Array("Voids")][Xml::ArrayItem("Shape")] public List<Shape_Voids> Voids_;
-        Xml::ArrayElem<ShapeVoids> Voids;
+       [[=Xml::ArrayElem]] std::vector<ShapeVoids> Voids;
 #else
         struct Shape {
             // Толщина линии.
-            [[=Xml::Attr]]
-double lineWidth;
+            [[= Xml::Attr]] double lineWidth;
             // Незалитая фигура.
             Xml::Variant<
                 ArcCCW,      // Contour
@@ -107,20 +106,18 @@ double lineWidth;
             /*************************************************************************/
         };
         // Описание контура платы.
-        Xml::ArrayElem<Shape> Contour_;
+        [[= Xml::ArrayElem]] std::vector<Shape> Contour_;
         // Вырезы в плате.
-        Xml::ArrayElem<Shape> Voids;
+        [[= Xml::ArrayElem]] std::vector<Shape> Voids;
 #endif
     };
 
     // Описание монтажного отверстия на плате.
     struct MntholeInstance {
         // Задаёт угол в градусах c точностью до тысячных долей.
-        [[=Xml::Attr]]
-double angle;
+        [[= Xml::Attr]] double angle;
         // Признак фиксации.
-        [[=Xml::Attr]]
-Bool fixed;
+        [[= Xml::Attr]] Bool fixed;
         // Ссылка на стек контактных площадок.
         PadstackRef padstackRef;
         // ссылка на цепь.
@@ -138,8 +135,7 @@ Bool fixed;
             // Тип запрета: запрет трассировки.
             struct Trace {
                 // Тип запрета трассировки.
-                [[=Xml::Attr]]
-role role_;
+                [[= Xml::Attr]] role role_;
                 // Ссылка на слои. См. также LayersRefs_
                 /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
                 Xml::Variant<
@@ -157,14 +153,12 @@ role role_;
             // Тип запрета: запрет размещения.
             struct Place {
                 // Сторона объекта.
-                [[=Xml::Attr]]
-side side_;
+                [[= Xml::Attr]] side side_;
             };
             // Тип запрета: запрет трассировки.
             Trace trace;
             // Place place;
-            [[=Xml::Attr]]
-side Place;
+            [[= Xml::Attr]] side Place;
         };
 
         //
@@ -194,18 +188,17 @@ side Place;
         /********************************************************************************/
     };
     // Версия раздела.
-    [[=Xml::Attr]]
-QString version;
+    [[= Xml::Attr]] QString version;
     // Контур платы и вырезы в плате.
     BoardOutline boardOutline;
     // Монтажные отверстия на плате.
-    Xml::ArrayElem<MntholeInstance> Mntholes;
+    [[= Xml::ArrayElem]] std::vector<MntholeInstance> Mntholes;
     // Детали на механических слоях.
-    Xml::ArrayElem<Detail> MechLayerObjects;
+    [[= Xml::ArrayElem]] std::vector<Detail> MechLayerObjects;
     // Описание надписей.
-    Xml::ArrayElem<Text> Texts;
+    [[= Xml::ArrayElem]] std::vector<Text> Texts;
     // Описание запретов.
-    Xml::ArrayElem<Keepout> Keepouts;
+    [[= Xml::ArrayElem]] std::vector<Keepout> Keepouts;
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Сonstructive. *
      * Они не являются частью формата TopoR PCB.                            *

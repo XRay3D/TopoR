@@ -52,16 +52,11 @@ constexpr bool NoOpt{};
 
 struct Attribute {
     bool optional = true;
-    // char const* value = std::define_static_string("");
-    consteval auto operator()(bool optional) const -> Attribute {
-        return {.optional = optional};
-    }
-    // void apply_annotation(lyra::opt& opt, std::string const& id) const {
-    //     opt[std::string("--") + std::string(engaged ? value : id)];
-    // }
+    consteval auto operator()(bool optional) const -> Attribute { return {.optional = optional}; }
+    // explicit operator bool() const { return optional ? value != T{} : true; };
 };
 
-static constexpr auto Attr = Attribute();
+static constexpr auto Attr = Attribute{};
 
 // template <typename T, bool Optional = true>
 // struct Attr /*: std::integral_constant<bool, Optional>*/ { // xml attribute
@@ -112,8 +107,6 @@ struct Optional : std::optional<T> {
     // auto& operator=(const T& val) { return Optional::emplace(val), Optional::value(); }
 };
 
-using DontSkip = std::false_type;
-
 template <typename T, typename CanSkip = std::true_type>
 struct Array : std::vector<T> /*, std::false_type*/ { // xml inpace array of elements of type T
     using vector = std::vector<T>;
@@ -121,12 +114,26 @@ struct Array : std::vector<T> /*, std::false_type*/ { // xml inpace array of ele
     bool canSkip() const { return CanSkip::value ? vector::empty() : false; }
 };
 
-template <typename T, typename CanSkip = std::true_type>
-struct ArrayElem : std::vector<T>, CanSkip { // xml element
-    using vector = std::vector<T>;
-    using vector::vector;
-    bool canSkip() const { return CanSkip::value ? vector::empty() : false; }
+// using DontSkip = std::false_type;
+constexpr bool DontSkip{};
+
+struct ArrayElement {
+    bool canSkip_ = true;
+    consteval auto operator()(bool canSkip) const -> ArrayElement {
+        return {.canSkip_ = canSkip};
+    }
+    template <typename T>
+    bool canSkip(const std::vector<T>& vector) const { return canSkip_ ? vector.empty() : false; }
 };
+
+static constexpr auto ArrayElem = ArrayElement{};
+
+// template <typename T, typename CanSkip = std::true_type>
+// struct ArrayElem : std::vector<T>, CanSkip { // xml element
+//     using vector = std::vector<T>;
+//     using vector::vector;
+//     bool canSkip() const { return CanSkip::value ? vector::empty() : false; }
+// };
 
 struct NullVariant { };
 

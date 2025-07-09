@@ -99,14 +99,13 @@ private:
                 if(optional.has_value()) return get(optional.value());
                 return {};
             },
-            [this]<typename T>(const [[=Xml::Attr]]
-T& attr) -> QVariant { // перенаправление ↑↑↑
+            [this]<typename T>(const[[= Xml::Attr]] T& attr) -> QVariant { // перенаправление ↑↑↑
                 return get(attr.value);
             },
             []<typename... Ts>(const Xml::Variant<Ts...>& variant) -> QVariant { // перенаправление ↑↑↑
                 return variant.visit([]<typename T>(const T&) { return Xml::TypeName<T>; });
             },
-            []<typename T>(const Xml::ArrayElem<T>& vector) -> QVariant { // перенаправление ↑↑↑
+            []<typename T>(const[[= Xml::ArrayElem]] std::vector<T>& vector) -> QVariant { // перенаправление ↑↑↑
                 return QString{"Elem: %1[%2]"}.arg(Xml::TypeName<T>).arg(vector.size());
             },
             []<typename T>(const Xml::Array<T>& vector) -> QVariant { // перенаправление ↑↑↑
@@ -142,18 +141,17 @@ T& attr) -> QVariant { // перенаправление ↑↑↑
                 if(set(val)) return optional = val, true;
                 return false;
             },
-            [this]<typename T>([[=Xml::Attr]]
-T& attr) -> bool { // перенаправление ↑↑↑
+            [this]<typename T>([[= Xml::Attr]] T& attr) -> bool { // перенаправление ↑↑↑
                 return set(attr.value);
             },
             []<typename... Ts>(Xml::Variant<Ts...>& variant) -> bool { // перенаправление ↑↑↑
-                return false;                                        // variant.visit([]<typename T>( T&) { return typeName<T>; });
+                return false;                                          // variant.visit([]<typename T>( T&) { return typeName<T>; });
             },
-            []<typename T>(Xml::ArrayElem<T>& vector) -> bool { // перенаправление ↑↑↑
-                return false;                                 // QString{"Elem: %1[%2]"}.arg(typeName<T>).arg(vector.size());
+            []<typename T>(std::vector<T>& vector) -> bool { // перенаправление ↑↑↑
+                return false;                                // QString{"Elem: %1[%2]"}.arg(typeName<T>).arg(vector.size());
             },
             []<typename T>(Xml::Array<T>& vector) -> bool { // перенаправление ↑↑↑
-                return false;                             // QString{"Field: %1[%2]"}.arg(typeName<T>).arg(vector.size());
+                return false;                               // QString{"Field: %1[%2]"}.arg(typeName<T>).arg(vector.size());
             },
             []<typename T>(T& str) -> bool // чтение полей структуры
                 requires(std::is_class_v<T> && std::is_aggregate_v<T>)

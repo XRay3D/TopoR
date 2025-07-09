@@ -18,8 +18,7 @@ struct Connectivity {
     // Переходное отверстие на плате.
     struct Via {
         // Признак фиксации.
-        [[=Xml::Attr]]
-Bool fixed;
+        [[= Xml::Attr]] Bool fixed;
         // Ссылка на тип переходного отверстия.
         ViastackRef viastackRef;
         // Ссылка на цепь.
@@ -32,37 +31,28 @@ Bool fixed;
     struct Serpent {
         /// \note !Проводники, реализующие змейку, описываются в секции Wires (см. описание раздела Connectivity)
         // Идентификатор неименованных объектов.
-        [[=Xml::Attr]]
-QString id;
+        [[= Xml::Attr]] QString id;
         // Параметр змейки: зазор между соседними изломами.
-        [[=Xml::Attr]]
-double gap;
+        [[= Xml::Attr]] double gap;
         // Параметр змейки: высота h1 (см. описание змейки Serpent).
-        [[=Xml::Attr]]
-double h1;
+        [[= Xml::Attr]] double h1;
         // Параметр змейки: высота h2 (см. описание змейки Serpent).
-        [[=Xml::Attr]]
-double h2;
+        [[= Xml::Attr]] double h2;
         // Параметр змейки: высота h3 (см. описание змейки Serpent).
-        [[=Xml::Attr]]
-double h3;
+        [[= Xml::Attr]] double h3;
         // Параметр змейки: высота h4 (см. описание змейки Serpent).
-        [[=Xml::Attr]]
-double h4;
+        [[= Xml::Attr]] double h4;
         // Параметр змейки: требуемая длина.
-        [[=Xml::Attr]]
-double length;
+        [[= Xml::Attr]] double length;
     };
 
     // Описание застёгнутой пары проводников.
     struct ZippedWire {
         /// \note !Сегменты(Track) описывают осевую линию пары.Форма проводников пары рассчитывается автоматически.
         // Идентификатор неименованных объектов.
-        [[=Xml::Attr]]
-QString id;
+        [[= Xml::Attr]] QString id;
         // Признак фиксации.
-        [[=Xml::Attr]]
-Bool fixed;
+        [[= Xml::Attr]] Bool fixed;
         // Ссылка на слой.
         LayerRef layerRef;
         // Ссылка на дифференциальный сигнал.
@@ -89,16 +79,13 @@ Bool fixed;
             };
 
             // Признак фиксации.
-            [[=Xml::Attr]]
-Bool fixed;
+            [[= Xml::Attr]] Bool fixed;
             // Ширина проводника.
-            [[=Xml::Attr]]
-double width;
+            [[= Xml::Attr]] double width;
             // Ссылка на застёгнутую пару проводников. Строка должна содержать идентификатор описанной застёгнутой пары проводников ZippedWire.
-            [[=Xml::Attr]]
-QString zipwireRef;
+            [[= Xml::Attr]] QString zipwireRef;
             // Описание «капелек» для Subwire.
-            Xml::ArrayElem<Teardrop> Teardrops;
+            [[= Xml::ArrayElem]] std::vector<Teardrop> Teardrops;
             /// \note От KilkennyCat: сделал как массив, в спецификации не так, но так удобней
             // Начальная точка линии, дуги.
             Start start;
@@ -143,55 +130,42 @@ QString zipwireRef;
             // Описание спицы термобарьера, присутствующего на плате
             struct ThermalSpoke {
                 // Толщина линии.
-                [[=Xml::Attr]]
-double lineWidth;
+                [[= Xml::Attr]] double lineWidth;
                 // Описания координат точек, вершин.
-                Xml::ArrayElem<Dot> Dots; /// \note !В случае отсутствия - весь ThermalSpoke будет проигнорирован.
+                [[= Xml::ArrayElem]] std::vector<Dot> Dots; /// \note !В случае отсутствия - весь ThermalSpoke будет проигнорирован.
             };
 
             // Описание многоугольника.
             Xml::Variant<Polygon, FilledContour> Polygon_;
             // Вырезы в островке области металлизации.
-            Xml::ArrayElem<Xml::Variant<Polygon, FilledContour>, Xml::DontSkip> Voids; /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
-            // Описание спиц термобарьеров, присутствующих на плате
-            Xml::ArrayElem<ThermalSpoke> ThermalSpokes;
+            [[= Xml::ArrayElem(Xml::DontSkip)]] std::vector<Xml::Variant<Polygon, FilledContour>> Voids; /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+                                                                                                         // Описание спиц термобарьеров, присутствующих на плате
+            [[= Xml::ArrayElem]] std::vector<ThermalSpoke> ThermalSpokes;
         };
         // Параметр области металлизации (полигона): приоритет заливки.
-        [[=Xml::Attr]]
-int priority;
+        [[= Xml::Attr]] int priority;
         // Параметр области металлизации (полигона): использовать указанный зазор.
-        [[=Xml::Attr]]
-Bool useBackoff;
+        [[= Xml::Attr]] Bool useBackoff;
         // Параметр области металлизации (полигона): зазор до области металлизации.
-        [[=Xml::Attr]]
-double backoff;
+        [[= Xml::Attr]] double backoff;
         // Параметр области металлизации (полигона) стека: подключение контактных площадок.
-        [[=Xml::Attr]]
-connectPad connectPad_;
+        [[= Xml::Attr]] connectPad connectPad_;
         // Параметр области металлизации (полигона): подключение площадок переходных отверстий.
-        [[=Xml::Attr]]
-connectVia connectVia_;
+        [[= Xml::Attr]] connectVia connectVia_;
         // Толщина линии.
-        [[=Xml::Attr]]
-double lineWidth;
+        [[= Xml::Attr]] double lineWidth;
         // Параметр области металлизации (полигона): зазор между линиями штриховки.
-        [[=Xml::Attr]]
-double lineClr;
+        [[= Xml::Attr]] double lineClr;
         // Параметр области металлизации (полигона): минимальная площадь островка.
-        [[=Xml::Attr]]
-double minSquare;
+        [[= Xml::Attr]] double minSquare;
         // Параметр области металлизации (полигона): точность аппроксимации контура.
-        [[=Xml::Attr]]
-precision precision_;
+        [[= Xml::Attr]] precision precision_;
         // Параметр области металлизации (полигона): удалять неподключенные островки.
-        [[=Xml::Attr]]
-Bool deleteUnconnected;
+        [[= Xml::Attr]] Bool deleteUnconnected;
         // Параметр области металлизации (полигона): состояние.
-        [[=Xml::Attr]]
-state state_;
+        [[= Xml::Attr]] state state_;
         // Параметр области металлизации (полигона): тип заливки.
-        [[=Xml::Attr]]
-fillType fillType_;
+        [[= Xml::Attr]] fillType fillType_;
         // Ссылка на слой.
         LayerRef layerRef;
         // Ссылка на цепь.
@@ -206,18 +180,16 @@ fillType fillType_;
         Shape shape; /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
 
         // Вырезы в областях металлизации (полигонах) заданные пользователем.
-        Xml::ArrayElem<Xml::Variant<FilledCircle, /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
-
-                           FilledContour,
-                           FilledRect,
-                           Polygon>,
-            Xml::DontSkip>
+        [[= Xml::ArrayElem(Xml::DontSkip)]] std::vector<Xml::Variant<FilledCircle, /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+            FilledContour,
+            FilledRect,
+            Polygon>>
             Voids;
         // Островки области металлизации.
-        Xml::ArrayElem<Island> Islands; /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
+        [[= Xml::ArrayElem]] std::vector<Island> Islands; /// \note !В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
 
         // Заливка областей металлизации (полигонов) линиями.
-        Xml::ArrayElem<Line> Fill;
+        [[= Xml::ArrayElem]] std::vector<Line> Fill;
         /// \note !TopoR при импорте игнорирует эту информацию и строит заливку заново.
     };
 
@@ -242,8 +214,7 @@ fillType fillType_;
         };
 
         // Толщина линии.
-        [[=Xml::Attr]]
-double lineWidth;
+        [[= Xml::Attr]] double lineWidth;
         // Ссылка на слой.
         LayerRef layerRef;
         // Ссылка на цепь.
@@ -253,20 +224,19 @@ double lineWidth;
     };
 
     // Версия раздела.
-    [[=Xml::Attr]]
-QString version;
+    [[= Xml::Attr]] QString version;
     // Переходные отверстия на плате.
-    Xml::ArrayElem<Via> Vias;
+    [[= Xml::ArrayElem]] std::vector<Via> Vias;
     // Змейки
-    Xml::ArrayElem<Serpent> Serpents;
+    [[= Xml::ArrayElem]] std::vector<Serpent> Serpents;
     // Застёгнутые пары проводников.
-    Xml::ArrayElem<ZippedWire> ZippedWires;
+    [[= Xml::ArrayElem]] std::vector<ZippedWire> ZippedWires;
     // Проводники.
-    Xml::ArrayElem<Wire> Wires;
+    [[= Xml::ArrayElem]] std::vector<Wire> Wires;
     // Oбласти металлизации (полигонов).
-    Xml::ArrayElem<Copper> Coppers;
+    [[= Xml::ArrayElem]] std::vector<Copper> Coppers;
     // Незаливаемые области металлизации.
-    Xml::ArrayElem<NonfilledCopper> NonfilledCoppers;
+    [[= Xml::ArrayElem]] std::vector<NonfilledCopper> NonfilledCoppers;
 
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Connectivity. *

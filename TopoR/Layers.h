@@ -45,9 +45,9 @@ struct Layers {
     // Версия раздела.
     [[= Xml::Attr]] QString version;
     // Описание слоёв в стеке. Порядок описания должен соответствовать порядку слоёв в стеке.
-    Xml::ArrayElem<Layer> StackUpLayers;
+    [[= Xml::ArrayElem]] std::vector<Layer> StackUpLayers;
     // Описание слоёв вне стека.
-    Xml::ArrayElem<Layer> UnStackLayers;
+    [[= Xml::ArrayElem]] std::vector<Layer> UnStackLayers;
     /******************************************************************
      * Здесь находятся функции для работы с элементами класса Layers. *
      * Они не являются частью формата TopoR PCB.                      *

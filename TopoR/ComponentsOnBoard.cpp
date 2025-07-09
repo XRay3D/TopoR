@@ -89,7 +89,6 @@ QTransform ComponentsOnBoard::CompInstance::transform() const {
     return transform;
 }
 
-
 } // namespace TopoR
 
 #endif

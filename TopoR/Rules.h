@@ -18,34 +18,28 @@ struct Rules {
     // Описание правила ширины проводников.
     struct WidthOfWires {
         // Флаг применения правила.
-        [[=Xml::Attr]]
-Bool enabled;
+        [[= Xml::Attr]] Bool enabled;
         // Параметр правила ширины проводников: минимальная ширина проводника.
-        [[=Xml::Attr]]
-double widthMin;
+        [[= Xml::Attr]] double widthMin;
         // Параметр правила ширины проводников: номинальная ширина проводника.
-        [[=Xml::Attr]]
-double widthNom;
+        [[= Xml::Attr]] double widthNom;
         // Ссылка на слои. См. также LayersRefs
         /// \note !При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
         // Ссылка на слои. См. также LayersRef
         /// \note !При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
-        Xml::ArrayElem<LayerRef> LayersRefs;
+        [[= Xml::ArrayElem]] std::vector<LayerRef> LayersRefs;
         // Объекты воздействия правила.
-        Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
+        [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
     };
     // Описание правила зазоров между цепями.
     struct ClearanceNetToNet {
         // Флаг применения правила.
-        [[=Xml::Attr]]
-Bool enabled;
+        [[= Xml::Attr]] Bool enabled;
         // Параметр правила зазоров между цепями: минимальный зазор.
-        [[=Xml::Attr]]
-double clrnMin;
+        [[= Xml::Attr]] double clrnMin;
         // Параметр правила зазоров между цепями: номинальный зазор.
-        [[=Xml::Attr]]
-double clrnNom;
+        [[= Xml::Attr]] double clrnNom;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
@@ -53,43 +47,37 @@ double clrnNom;
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
         Xml::Array<LayerRef> LayersRefs;
         // Объекты воздействия правила.
-        Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
     };
     // Описание правила зазоров между компонентами.
     struct ClearanceCompToComp {
         // Флаг применения правила.
-        [[=Xml::Attr]]
-Bool enabled;
+        [[= Xml::Attr]] Bool enabled;
         // Параметр правила зазоров между цепями: минимальный зазор.
-        [[=Xml::Attr]]
-double clrn;
+        [[= Xml::Attr]] double clrn;
         // Объекты воздействия правила.
-        Xml::ArrayElem<Xml::Variant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
+        [[= Xml::ArrayElem]] std::vector<Xml::Variant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
     };
     // Описание зазоров до края платы.
     struct RulesClearancesToBoard {
         // Устанавливает зазор от проводников до края платы.
-        [[=Xml::Attr]]
-double wires;
+        [[= Xml::Attr]] double wires;
         // Устанавливает зазор от компонентов до края платы.
-        [[=Xml::Attr]]
-double comps;
+        [[= Xml::Attr]] double comps;
     };
     // Описание правила назначения цепям стеков переходных отверстий.
     struct ViastacksOfNets {
         // Флаг применения правила.
-        [[=Xml::Attr]]
-Bool enabled;
+        [[= Xml::Attr]] Bool enabled;
         // Объекты воздействия правила.
-        Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         // Назначенные типы переходных отверстий.
-        Xml::ArrayElem<Xml::Variant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
+        [[= Xml::ArrayElem]] std::vector<Xml::Variant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
     };
     // Описание правила назначения цепям опорных слоёв.
     struct PlaneLayerNets {
         // Флаг применения правила.
-        [[=Xml::Attr]]
-Bool enabled;
+        [[= Xml::Attr]] Bool enabled;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayerRef_;
@@ -97,13 +85,12 @@ Bool enabled;
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
         Xml::Array<LayerRef> LayersRefs;
         // Объекты воздействия правила.
-        Xml::ArrayElem<NetRef> ObjectsAffected;
+        [[= Xml::ArrayElem]] std::vector<NetRef> ObjectsAffected;
     };
     // Описание правила назначения цепям сигнальных слоёв.
     struct SignalLayerNets {
         // Флаг применения правила.
-        [[=Xml::Attr]]
-Bool enabled;
+        [[= Xml::Attr]] Bool enabled;
         // Ссылка на слои. См. также LayersRefs_
         /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
@@ -111,15 +98,14 @@ Bool enabled;
         /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
         Xml::Array<LayerRef> LayersRefs;
         // Объекты воздействия правила.
-        Xml::ArrayElem<Xml::Variant<NetRef, NetGroupRef>> ObjectsAffected;
+        [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef>> ObjectsAffected;
     };
     // Свойства цепи.
     struct NetProperty {
         // Свойство цепи: гибкая фиксация.
         [[= Xml::Attr(NoOpt)]] Bool flexfix;
         // Свойство цепи: флаг трассировки для автоматического трассировщика.
-        [[=Xml::Attr]]
-Bool route;
+        [[= Xml::Attr]] Bool route;
         // Ссылка на цепь.
         Xml::Array<NetRef> NetRefs;
     };
@@ -130,29 +116,28 @@ Bool route;
         // Ссылки на стеки контактных площадок.
         Xml::Array<PadstackRef> PadstackRefs;
         // Ссылки на контакты.
-        Xml::ArrayElem<PinRef> PinRefs; // NOTE ???  Xml::Array
-        // Ссылки на выводы посадочных мест.
-        Xml::ArrayElem<PadRef> PadRefs; // NOTE ???  Xml::Array
+        [[= Xml::ArrayElem]] std::vector<PinRef> PinRefs; // NOTE ???  Xml::Array
+                                                          // Ссылки на выводы посадочных мест.
+        [[= Xml::ArrayElem]] std::vector<PadRef> PadRefs; // NOTE ???  Xml::Array
     };
     // Версия раздела.
-    [[=Xml::Attr]]
-QString version;
+    [[= Xml::Attr]] QString version;
     // Правила ширин проводников.
-    Xml::ArrayElem<WidthOfWires> RulesWidthOfWires;
+    [[= Xml::ArrayElem]] std::vector<WidthOfWires> RulesWidthOfWires;
     // Правила зазоров между цепями.
-    Xml::ArrayElem<ClearanceNetToNet> RulesClearancesNetToNet;
+    [[= Xml::ArrayElem]] std::vector<ClearanceNetToNet> RulesClearancesNetToNet;
     // Правила зазоров между компонентами.
-    Xml::ArrayElem<ClearanceCompToComp> RulesClearancesCompToComp;
+    [[= Xml::ArrayElem]] std::vector<ClearanceCompToComp> RulesClearancesCompToComp;
     // Правило зазоров до края платы.
     RulesClearancesToBoard rulesClearancesToBoard;
     // Правила назначения цепям стеков переходных отверстий.
-    Xml::ArrayElem<ViastacksOfNets> RulesViastacksOfNets;
+    [[= Xml::ArrayElem]] std::vector<ViastacksOfNets> RulesViastacksOfNets;
     // Правила назначения цепям опорных слоёв.
-    Xml::ArrayElem<PlaneLayerNets> RulesPlaneLayersNets;
+    [[= Xml::ArrayElem]] std::vector<PlaneLayerNets> RulesPlaneLayersNets;
     // Правила назначения цепям сигнальных слоёв.
-    Xml::ArrayElem<SignalLayerNets> RulesSignalLayersNets;
+    [[= Xml::ArrayElem]] std::vector<SignalLayerNets> RulesSignalLayersNets;
     // Свойства цепей
-    Xml::ArrayElem<NetProperty> NetProperties;
+    [[= Xml::ArrayElem]] std::vector<NetProperty> NetProperties;
     // Настройки подключения к углам прямоугольных контактных площадок.
     PadConnectSettings padConnectSettings;
 

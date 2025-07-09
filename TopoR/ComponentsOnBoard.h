@@ -88,11 +88,11 @@ struct ComponentsOnBoard {
         // Точка привязки объекта.
         Org org;
         // Контакты компонента на плате.
-        Xml::ArrayElem<Pin> Pins;
+        [[= Xml::ArrayElem]] std::vector<Pin> Pins;
         // Монтажные отверстия.
-        Xml::ArrayElem<Mnthole> Mntholes;
+        [[= Xml::ArrayElem]] std::vector<Mnthole> Mntholes;
         // Атрибуты компонента.
-        Xml::ArrayElem<Attribute> Attributes;
+        [[= Xml::ArrayElem]] std::vector<Attribute> Attributes;
 
         /************************************************************************
          * Здесь находятся функции для работы с элементами класса CompInstance. *
@@ -127,9 +127,9 @@ struct ComponentsOnBoard {
     // Версия раздела.
     [[= Xml::Attr]] QString version;
     // Описание компонентов на плате (инстанции компонентов)
-    Xml::ArrayElem<CompInstance> Components;
+    [[= Xml::ArrayElem]] std::vector<CompInstance> Components;
     // Описание одиночных контактов (инстанции компонентов)
-    Xml::ArrayElem<FreePad> FreePads;
+    [[= Xml::ArrayElem]] std::vector<FreePad> FreePads;
 
     /*****************************************************************************
      * Здесь находятся функции для работы с элементами класса ComponentsOnBoard. *
