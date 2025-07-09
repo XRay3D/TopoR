@@ -65,7 +65,12 @@ struct Serializer {
     /// \brief operator >>
     template <Struct T>
     decltype(auto) operator>>(T& val) {
+        auto time = std::chrono::high_resolution_clock::now();
         if(load()) read(val);
+        qCritical() << std::format("{}",
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::high_resolution_clock::now() - time))
+                           .data();
         return *this;
     }
 
