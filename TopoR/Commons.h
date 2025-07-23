@@ -14,20 +14,20 @@ class QPainterPath;
  * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
 
-#define COMPONENTSONBOARD 1
-#define CONNECTIVITY      1
-#define CONSTRUCTIVE      1
-#define DIALOGSETTINGS    1
-#define DISPLAYCONTROL    1
-#define GROUPS            1
 #define HEADER            1
-#define HISPEEDRULES      1
 #define LAYERS            1
-#define LOCALLIBRARY      1
-#define NETLIST           1
-#define RULES             1
-#define SETTINGS          1
 #define TEXTSTYLES        1
+#define LOCALLIBRARY      1
+#define CONSTRUCTIVE      1
+#define COMPONENTSONBOARD 1
+#define NETLIST           1
+#define GROUPS            1
+#define HISPEEDRULES      1
+#define RULES             1
+#define CONNECTIVITY      1
+#define SETTINGS          1
+#define DISPLAYCONTROL    1
+#define DIALOGSETTINGS    1
 
 namespace TopoR {
 
@@ -39,53 +39,53 @@ struct BaseRef {
     operator QString() const { return name; }
 };
 
-#define ELEMENT_REF(NAME)                         \
-    struct NAME {                                 \
-        [[= Xml::Attr]] QString name;             \
-        operator QString() const { return name; } \
+#define ELEMENT_REF(NAME, ATT_NAME)                      \
+    struct NAME {                                        \
+        [[= Xml::Attr(Xml::DontSkip)]] QString ATT_NAME; \
+        operator QString() const { return ATT_NAME; }    \
     }; // namespace Reference_Types
 
 // Ссылка на слой.
-ELEMENT_REF(LayerRef)
-/// \note !Если в дизайне определён только один слой с заданным именем, то тип слоя не указывается.
+ELEMENT_REF(LayerRef, name)
+// NOTE !Если в дизайне определён только один слой с заданным именем, то тип слоя не указывается.
 // struct LayerRef : BaseRef { };
 // Тип слоя или ссылка на именованный cлой
-/// \note В документации сказано ещё и про возможность установки типа, если имя слоя неуникально, в данный момент это отключено
+// NOTE В документации сказано ещё и про возможность установки типа, если имя слоя неуникально, в данный момент это отключено
 // TODO:
 // Xml::Attribute("type", typeof(type_layer)),
 
 // Ссылка на атрибут.
-ELEMENT_REF(AttributeRef)
+ELEMENT_REF(AttributeRef, name)
 // Ссылка на тип слоя.
-ELEMENT_REF(LayerTypeRef)
+ELEMENT_REF(LayerTypeRef, type)
 // Ссылка на группу слоёв.
-ELEMENT_REF(LayerGroupRef)
+ELEMENT_REF(LayerGroupRef, name)
 // Ссылка на тип переходного отверстия.
-ELEMENT_REF(ViastackRef)
+ELEMENT_REF(ViastackRef, name)
 // Ссылка на стек контактных площадок.
-ELEMENT_REF(NetRef)
+ELEMENT_REF(NetRef, name)
 // Ссылка на группу компонентов.
-ELEMENT_REF(CompGroupRef)
+ELEMENT_REF(CompGroupRef, name)
 // Ссылка на компонент на плате.
-ELEMENT_REF(CompInstanceRef)
+ELEMENT_REF(CompInstanceRef, name)
 // Ссылка на группу цепей.
-ELEMENT_REF(NetGroupRef)
+ELEMENT_REF(NetGroupRef, name)
 // Ссылка на волновое сопротивление.
-ELEMENT_REF(ImpedanceRef)
+ELEMENT_REF(ImpedanceRef, name)
 // Ссылка на сигнал.
-ELEMENT_REF(SignalRef)
+ELEMENT_REF(SignalRef, name)
 // Ссылка на группу сигналов..
-ELEMENT_REF(SignalGroupRef)
+ELEMENT_REF(SignalGroupRef, name)
 // Ссылка на дифференциальный сигнал.
-ELEMENT_REF(DiffSignalRef)
+ELEMENT_REF(DiffSignalRef, name)
 // Ссылка на стек контактных площадок.
-ELEMENT_REF(PadstackRef)
+ELEMENT_REF(PadstackRef, name)
 // Ссылка на стиль надписей.
-ELEMENT_REF(TextStyleRef)
+ELEMENT_REF(TextStyleRef, name)
 // Ссылка на схемный компонент.
-ELEMENT_REF(ComponentRef)
+ELEMENT_REF(ComponentRef, name)
 // Ссылка на посадочное место.
-ELEMENT_REF(FootprintRef)
+ELEMENT_REF(FootprintRef, name)
 
 // Ссылка на контакт.
 struct PinRef {
@@ -128,12 +128,12 @@ using namespace Reference_Types;
 namespace Coordinates {
 
 struct BaseCoordinat {
-    BaseCoordinat(double x, double y)
-        : x{x}, y{y} { }
-    [[= Xml::Attr(NoOpt)]] double x, y;
+    // BaseCoordinat(double x, double y)
+    // : x{x}, y{y} { }
+    [[= Xml::Attr(NoOpt)]] double x{}, y{};
     operator QPointF() const { return {x, y}; }
     QPointF toPoint() const { return *this; }
-    template <int I> friend auto get(const BaseCoordinat&);
+    // template <int I> friend auto get(const BaseCoordinat&);
 };
 
 // координаты точки, вершины.
@@ -155,7 +155,8 @@ struct BaseCoordinat {
 
 #define ELEMENT_COORD(NAME)                         \
     struct NAME {                                   \
-        [[= Xml::Attr(NoOpt)]] double x, y;         \
+        [[= Xml::Attr(NoOpt)]] double x{};          \
+        [[= Xml::Attr(NoOpt)]] double y{};          \
         operator QPointF() const { return {x, y}; } \
         QPointF toPoint() const { return *this; }   \
     };
@@ -391,7 +392,7 @@ struct Polygon /*: Line */ {
 
 // Описание дугообразного сегмента проводника (дуга по часовой стрелке).
 struct TrackArcCW /*: IBaseFigure */ {
-    /// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
+    // NOTE Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
     // Центр круга (окружности), овала.
     Center center;
     // Конечная точка линии, дуги.
@@ -405,7 +406,7 @@ struct TrackArcCW /*: IBaseFigure */ {
 
 // Описание дугообразного сегмента проводника (дуга против часовой стрелки).
 struct TrackArc {
-    /// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
+    // NOTE Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
     // TrackArcCW
     Center center;
     // TrackArcCW
@@ -418,7 +419,7 @@ struct TrackArc {
 
 // Описание прямолинейного сегмента проводника.
 struct TrackLine /*: IBaseFigure */ {
-    /// \note Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
+    // NOTE Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
     // Конечная точка линии, дуги.
     End end;
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.

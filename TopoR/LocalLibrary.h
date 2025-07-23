@@ -21,7 +21,7 @@ class TopoR_PCB_File;
 // Раздел «Библиотечные элементы». (Обязательный раздел)
 struct LocalLibrary {
     // Ссылка на слой или тип слоя.
-    using BasePadRef = Xml::Variant<LayerTypeRef, LayerRef>;
+    using BasePadRef = Xml::Variant<LayerRef,LayerTypeRef >;
 
     // Описание круглой контактной площадки.
     struct PadCircle {
@@ -80,7 +80,7 @@ struct LocalLibrary {
     struct PadPoly {
         BasePadRef Reference;
         // Массив координат точек, вершин.
-        /// \note !Минимум 3 элемента
+        // NOTE !Минимум 3 элемента
         Xml::Array<Dot> Dots;
         operator QPolygonF() const;
         operator QPainterPath() const;
@@ -109,10 +109,10 @@ struct LocalLibrary {
         // <value>AllLayers | [LayerRef]</value>
         struct LayerRange {
             // AllLayers - yстанавливает область действия правила: все слои. См. также LayerRefs_
-            /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
+            // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
             AllLayers allLayers;
             // Диапазон слоёв. См. также allLayers
-            /// \note !При null необходимо смотреть наличие AllLayers.
+            // NOTE !При null необходимо смотреть наличие AllLayers.
             Xml::Array<LayerRef> LayerRefs;
         };
         // Имя объекта или ссылка на именованный объект.
@@ -184,12 +184,12 @@ struct LocalLibrary {
             }
         };
         // Описание контактной площадки (вывода) посадочного места.
-        /// \note !В системе TopoR поддерживаются планарные контакты на внешних металлических слоях и не поддерживаются на внутренних.
-        /// \note Т.е.у планарного контакта может быть только одна площадка или на верхней стороне, или на нижней.
-        /// \note В описании планарного контакта используется только слой Top.
-        /// \note Это означает, что контактная площадка будет находиться на одной стороне с компонентом.
-        /// \note Если же площадка находится на противоположной стороне, то должен быть установлен флаг flipped.
-        /// \note Этот флаг устанавливается в описании контакта посадочного места.
+        // NOTE !В системе TopoR поддерживаются планарные контакты на внешних металлических слоях и не поддерживаются на внутренних.
+        // NOTE Т.е.у планарного контакта может быть только одна площадка или на верхней стороне, или на нижней.
+        // NOTE В описании планарного контакта используется только слой Top.
+        // NOTE Это означает, что контактная площадка будет находиться на одной стороне с компонентом.
+        // NOTE Если же площадка находится на противоположной стороне, то должен быть установлен флаг flipped.
+        // NOTE Этот флаг устанавливается в описании контакта посадочного места.
         struct Pad {
             // Номер контактной площадки (вывода) посадочного места.
             [[= Xml::Attr]] int padNum;
@@ -302,7 +302,7 @@ struct LocalLibrary {
      * Здесь находятся функции для работы с элементами класса LocalLibrary. *
      * Они не являются частью формата TopoR PCB.                            *
      * **********************************************************************/
-    mutable Xml::Skip<std::map<QString, QGraphicsItemGroup*>> footprints;
+    mutable[[= Xml::Skip]] std::map<QString, QGraphicsItemGroup*> footprints;
     const Padstack* getPadstack(const QString& name) const;
     const Footprint* getFootprint(const QString& name) const;
     const Component* getComponent(const QString& name) const;

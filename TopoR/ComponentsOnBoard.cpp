@@ -24,7 +24,7 @@ QString ComponentsOnBoard::AddComponent(QString name, units units, const QString
     CompInstance c{
         .name{name},
         .uniqueId{UniqueId()},
-        .side_{side::Top},
+        .side_=side::Top,
         .angle{},
         .fixed{/*Bool::off*/},
         .componentRef{componentRef},

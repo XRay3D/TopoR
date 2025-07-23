@@ -13,7 +13,9 @@ public:
         const QVariant& Value,
         const QString& Attr,
         int Line)
-        : itemData{QString{Name % "(" % Type % ")"}, Value, Attr, Line} { }
+        : itemData{QString{Name % "(" % Type % ")"}, Value, Attr, Line} {
+        if(Name == Type) itemData[0] = Name;
+    }
 
     enum {
         NameType,

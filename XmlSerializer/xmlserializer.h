@@ -36,6 +36,7 @@ static consteval std::pair<Attr, bool> get_annotation(meta::info dm) {
 
 template <meta::info T> concept IsAttribute = get_annotation<Attribute>(T).second;
 template <meta::info T> concept IsArrayElement = get_annotation<ArrayElement>(T).second;
+template <meta::info T> concept IsSkip = get_annotation<SkipField>(T).second;
 
 struct Serializer {
 
@@ -165,7 +166,10 @@ private:
     }
 
     template <Numbers T> bool write(const T& value) const { // float`ы int`ы
-        const auto numStr = QVariant{value}.toString();
+        std::array<char, 32> buf{};
+        std::to_chars(buf.begin(), buf.end(), value);
+        QString numStr{buf.data()};
+        // const auto numStr = QVariant{value}.toString();
         if(isAttribute) {
             outNode.toElement().setAttribute(fieldName, numStr);
         } else {
@@ -240,9 +244,9 @@ private:
 
     template <typename T> bool writeAttr(const T& attr, bool Opt) const { // перенаправление ↑↑↑
         if constexpr(requires { attr.has_value(); }) {
-            if(!Opt && *attr == T{}) return false; // fixme optional logic
+            if(Opt && *attr == T{}) return false; // fixme optional logic
         } else {
-            if(!Opt && attr == T{}) return false; // fixme optional logic
+            if(Opt && attr == T{}) return false; // fixme optional logic
         }
         isAttribute.set();
         return write(attr);
@@ -255,16 +259,16 @@ private:
         int ctr{};
         auto reader = [&]<typename T>() {
             if(ctr) return;
+            auto copy = node;
             if(T val{}; node.toElement().tagName() == TypeName<T> && read(val)) {
                 ++ctr, variant = std::move(val);
             } else {
-                auto copy = node;
                 node = node.firstChildElement(TypeName<T>);
                 if(isVariant = true; !node.isNull() && read(val))
                     ++ctr, variant = std::move(val);
                 isVariant = false;
-                node = copy;
             }
+            node = copy;
         };
         (reader.template operator()<Ts>(), ...);
         assert(ctr < 2);
@@ -273,7 +277,7 @@ private:
 
     template <typename... Ts> bool write(const Variant<Ts...>& variant) const { // перенаправление ↑↑↑
         if(!variant.has_value()) return false;
-        return variant.visit([this](auto&& val) { return write(val); });
+        return variant.visit([this](const auto& val) { return write(val); });
     }
 
     /// ArrayElem<T>
@@ -356,8 +360,8 @@ private:
     }
 
     /// Skip<T> пропуск поля
-    template <typename T> bool read(Skip<T>&) { return true; }
-    template <typename T> bool write(const Skip<T>&) const { return true; }
+    // template <typename T> bool read(Skip<T>&) { return true; }
+    // template <typename T> bool write(const Skip<T>&) const { return true; }
 
     /// Named<T>
     template <typename T, Name NAME> bool read(NamedTag<T, NAME>& named) { // чтение именованного поля
@@ -368,6 +372,43 @@ private:
         return write(*named, NAME);
     }
 
+    template <meta::info FIELD, typename T>
+        requires IsAttribute<FIELD>
+    bool read(T& arg) {
+        auto [att, fl] = get_annotation<Attribute>(FIELD);
+        return readAttr(arg, att.optional);
+    }
+    template <meta::info FIELD, typename T>
+        requires IsArrayElement<FIELD>
+    bool read(T& arg) {
+        auto [att, fl] = get_annotation<ArrayElement>(FIELD);
+        return readArrayElem(arg, att.canSkip_);
+    }
+
+    template <meta::info FIELD, typename T>
+        requires IsSkip<FIELD>
+    bool read(T& arg) { return true; }
+
+    template <meta::info FIELD, typename T>
+        requires IsAttribute<FIELD>
+    bool write(const T& arg) const {
+        auto [att, fl] = get_annotation<Attribute>(FIELD);
+        return writeAttr(arg, att.optional);
+    }
+    template <meta::info FIELD, typename T>
+        requires IsArrayElement<FIELD>
+    bool write(const T& arg) const {
+        auto [att, fl] = get_annotation<ArrayElement>(FIELD);
+        return writeArrayElem(arg, att.canSkip_);
+    }
+
+    template <meta::info FIELD, typename T>
+        requires IsSkip<FIELD>
+    bool write(const T& arg) const { return true; }
+
+    template <meta::info FIELD, typename T> bool read(T& arg) { return read(arg); }
+    template <meta::info FIELD, typename T> bool write(const T& arg) const { return write(arg); }
+
     // public:
     template <Struct T> bool read(T& str, const QString& name = {}) { // чтение полей структуры
         const QString tagName = name.size() ? name : TypeName<T>;
@@ -377,6 +418,8 @@ private:
         isVariant = false;
 
         if(dbgTree) dbgTree = dbgTree->addItem(new TreeItem{tagName, TypeName<T>, "", "", node.lineNumber()});
+        if(tagName == "LayerTypeRef")
+            qWarning();
         int ok{};
         fieldIndex = -1;
         template for(constexpr auto field:
@@ -385,14 +428,7 @@ private:
             if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
             ++fieldIndex;
             auto copy = node;
-            if constexpr(IsAttribute<field>) {
-                auto [att, fl] = get_annotation<Attribute>(field);
-                ok += readAttr(str.[:field:], att.optional);
-            } else if constexpr(IsArrayElement<field>) {
-                auto [att, fl] = get_annotation<ArrayElement>(field);
-                ok += readArrayElem(str.[:field:], att.canSkip_);
-            } else
-                ok += read(str.[:field:]);
+            ok += read<field>(str.[:field:]);
             node = copy;
         }
 
@@ -418,16 +454,8 @@ private:
             fieldName = meta::identifier_of(field).data();
             if(fieldName.endsWith('_')) fieldName.resize(fieldName.size() - 1);
             ++fieldIndex;
-
             auto copy = outNode;
-            if constexpr(IsAttribute<field>) {
-                auto [att, fl] = get_annotation<Attribute>(field);
-                ok += writeAttr(str.[:field:], att.optional);
-            } else if constexpr(IsArrayElement<field>) {
-                auto [att, fl] = get_annotation<ArrayElement>(field);
-                ok += writeArrayElem(str.[:field:], att.canSkip_);
-            } else
-                ok += write(str.[:field:]);
+            ok += write<field>(str.[:field:]);
             outNode = copy;
         };
 

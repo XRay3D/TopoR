@@ -96,7 +96,7 @@ double lineWidth;
                 FilledRect,    // Voids
                 Polygon,       // Voids
                 FilledContour> // Voids
-                FilledFigure;
+                FilledFigure;// FIXME skip write
             /*************************************************************************
              * Здесь находятся функции для работы с элементами класса Shape_Contour. *
              * Они не являются частью формата TopoR PCB.                             *
@@ -137,7 +137,7 @@ double lineWidth;
                 // Тип запрета трассировки.
                 [[= Xml::Attr]] role role_;
                 // Ссылка на слои. См. также LayersRefs_
-                /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
+                // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
                 Xml::Variant<
                     AllLayers,
                     AllLayersInner,
@@ -147,7 +147,7 @@ double lineWidth;
                     LayerGroupRef>
                     LayersRef;
                 // Ссылка на слои. См. также LayersRef_
-                /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
+                // NOTE !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
                 Xml::Array<LayerRef> LayersRefs;
             };
             // Тип запрета: запрет размещения.

@@ -1,13 +1,3 @@
-#[[#############################################################################
-# Author    :  Damir Bakiev                                                    #
-# Version   :  na                                                              #
-# Date      :  06.02.2025                                                      #
-# Website   :  na                                                              #
-# Copyright :  Damir Bakiev 2016-2025                                          #
-# License   :                                                                  #
-# Use, modification & distribution is subject to Boost Software License Ver 1. #                                                                               #
-# http://www.boost.org/LICENSE_1_0.txt                                         #
-##############################################################################]]
 cmake_minimum_required(VERSION 3.20)
 
 #[[
@@ -43,15 +33,13 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   include_directories(${CLANG_P2996_PATH}/include/c++/v1)
   add_compile_options(-ftime-trace -fexpansion-statements -freflection-latest
                       -stdlib++-isystem ${CLANG_P2996_PATH}/include/c++/v1)
-  add_link_options(-fuse-ld=lld -L${CLANG_P2996_PATH}/lib/ -lc++ -lc++abi  "-Wl,-Map=${CMAKE_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.map" )
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  # add_compile_options(/X /IC:/msys64/ucrt64/include)
-  add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
+  add_link_options(-fuse-ld=lld -L${CLANG_P2996_PATH}/lib -lc++ -lc++abi
+                   "-Wl,-Map=${CMAKE_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.map")
 endif()
 
-find_package(QT NAMES Qt6 Qt5 Core)
+find_package(QT NAMES Qt5 Core)
 find_package(
-  Qt${QT_VERSION_MAJOR}
+  Qt5
   COMPONENTS Core Gui Widgets Xml
   REQUIRED)
 
@@ -72,16 +60,12 @@ add_compile_options(
 # JSONS ${CMAKE_CURRENT_SOURCE_DIR}/*.json) file(GLOB_RECURSE SOURCES
 # ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp) file(GLOB_RECURSE UIS
 # ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../pfr/include)
-find_package(Boost)
-if(Boost_FOUND) # workaround for msys2 used in msvc #
-  include_directories(${Boost_INCLUDE_DIR})
-  message(==> ${Boost_INCLUDE_DIR})
-else()
-  message(FATAL_ERROR "Boost not found!!!")
-endif()
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../pfr/include)
+# find_package(Boost) if(Boost_FOUND) # workaround for msys2 used in msvc #
+# include_directories(${Boost_INCLUDE_DIR}) message(==> ${Boost_INCLUDE_DIR})
+# else() message(FATAL_ERROR "Boost not found!!!") endif()
 
-include_directories(pfr_non_boost/include
+include_directories(# pfr_non_boost/include
                     compile-time-regular-expressions/single-header)
 
 file(GLOB_RECURSE FST *.fst)
@@ -100,20 +84,23 @@ link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 add_subdirectory(XmlSerializer)
 add_subdirectory(TopoR)
 
-target_link_libraries(TopoR PRIVATE XmlSerializer)
+target_link_libraries(TopoR PRIVATE XmlSerializer Qt5::Core)
 
 target_link_libraries(
   ${PROJECT_NAME}
-  PRIVATE TopoR XmlSerializer Qt${QT_VERSION_MAJOR}::Core
-          Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets
-          Qt${QT_VERSION_MAJOR}::Xml)
+  PRIVATE TopoR
+          XmlSerializer
+          unwind
+          Qt5::Core
+          Qt5::Gui
+          Qt5::Widgets
+          Qt5::Xml)
 
 if(WIN32_)
   target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
   # windeployqt
   set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
-  get_target_property(_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake
-                      IMPORTED_LOCATION)
+  get_target_property(_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
   get_filename_component(_QT_BIN_DIR "${_QMAKE_EXECUTABLE}" DIRECTORY)
   find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
   add_custom_command(
@@ -127,16 +114,4 @@ if(WIN32_)
 elseif(UNIX) # LINUX
   # cqtdeployer -bin myApp -qmake path/to/Qt/5.x.x/build/bin/qmake -qmlDir
   # path/to/my/qml/files/dir qif
-endif()
-
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC_")
-  # target_link_libraries(${PROJECT_NAME} PRIVATE setupapi) windeployqt
-  # set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE) get_target_property(EXECUTABLE
-  # "C:/Program Files/Git/usr/bin/touch.exe" IMPORTED_LOCATION)
-  # get_filename_component(_QT_BIN_DIR "${EXECUTABLE}" DIRECTORY)
-  # find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
-
-  # add_custom_command( TARGET ${PROJECT_NAME} PRE_BUILD COMMAND "C:/Program
-  # Files/Git/usr/bin/touch.exe" "${CMAKE_CURRENT_SOURCE_DIR}/mainwindow.cpp"
-  # COMMENT "TOUCH Cruth...")
 endif()

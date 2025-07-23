@@ -77,15 +77,13 @@ using namespace TopoR;
 
 void MainWindow::loadFile() {
     Xml::Serializer xml{dir};
-
-    // for(auto&& tk: TopoR::Enumerations::Impl::Tokens<TopoR::Enumerations::Handling>.tokens) {
-    //     qInfo() << tk.name.data() << +tk.value;
-    // }
-
     try {
         xml >> *file;
-        xml << *file;
-        xml.save("out.fst");
+        {
+            Xml::Serializer xml{dir % "out.fst"};
+            xml << *file;
+            // xml.save();
+        }
         edit();
     } catch(const std::set<QString>& names) {
         qCritical() << names;

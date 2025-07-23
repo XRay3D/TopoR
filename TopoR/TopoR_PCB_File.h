@@ -26,36 +26,64 @@ namespace TopoR {
 
 // Корневой тег TopoR_PCB_File. Включает все разделы файла.
 struct TopoR_PCB_File {
+#if HEADER
     // Раздел «Заголовок файла».
     Header header;
+#endif
+#if LAYERS
     // Раздел «Слои». (Обязательный раздел)
     Layers layers;
+#endif
+#if TEXTSTYLES
     // Раздел «Стили надписей».
     TextStyles textStyles;
+#endif
+#if LOCALLIBRARY
     // Раздел «Библиотечные элементы». (Обязательный раздел)
     LocalLibrary localLibrary;
+#endif
+#if CONSTRUCTIVE
     // Раздел «Конструктив платы».
     Constructive constructive;
+#endif
+#if COMPONENTSONBOARD
     // Раздел «Компоненты на плате». (Обязательный раздел).
     ComponentsOnBoard componentsOnBoard;
+#endif
+#if NETLIST
     // Раздел «Текущий список соединений».
     NetList netList;
+#endif
+#if GROUPS
     // Раздел «Группировка объектов».
     Groups groups;
+#endif
+#if HISPEEDRULES
     // Раздел «Правила для высокоскоростных устройств».
     HiSpeedRules hiSpeedRules;
+#endif
+#if RULES
     // Раздел «ПРАВИЛА»
-    /// \note !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
+    // NOTE !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
     Rules rules;
+#endif
+#if CONNECTIVITY
     // Раздел «Соединения на плате».
-    /// \note В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
+    // NOTE В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
     Connectivity connectivity;
+#endif
+#if SETTINGS
     // Раздел «Настройки дизайна».
     Settings settings;
+#endif
+#if DISPLAYCONTROL
     // Раздел «Настройки отображения».
     DisplayControl displayControl;
+#endif
+#if DIALOGSETTINGS
     // Раздел «Настройки диалогов».
     DialogSettings dialogSettings;
+#endif
 };
 
 } // namespace TopoR

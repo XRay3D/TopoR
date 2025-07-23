@@ -60,6 +60,7 @@ QString Serializer::toString() const {
     text.replace("]]>", "");
     text.replace("&#xd;", "\x0D");
     text.replace("&#xa;", "\x0A");
+    text.replace("    ", "\t");// NOTE может менять только началострок
     return text;
 }
 
@@ -85,6 +86,7 @@ void Serializer::debugNode() const {
     text.replace("]]>", "");
     text.replace("&#xd;", "\x0D");
     text.replace("&#xa;", "\x0A");
+    // text.replace("    ", "\t");
     qInfo() << node.lineNumber() << '\n'
             << text.toUtf8().data();
 }

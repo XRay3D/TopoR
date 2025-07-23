@@ -1,24 +1,13 @@
-#[[#############################################################################
-# Author    :  Damir Bakiev                                                    #
-# Version   :  na                                                              #
-# Date      :  06.02.2025                                                      #
-# Website   :  na                                                              #
-# Copyright :  Damir Bakiev 2016-2025                                          #
-# License   :                                                                  #
-# Use, modification & distribution is subject to Boost Software License Ver 1. #                                                                               #
-# http://www.boost.org/LICENSE_1_0.txt                                         #
-##############################################################################]]
-
 cmake_minimum_required(VERSION 3.20)
 
 project(TopoR LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(QT NAMES Qt6 Qt5 Widgets)
+find_package(QT NAMES Qt5 Core Widgets)
 find_package(
-  Qt${QT_VERSION_MAJOR}
-  COMPONENTS Widgets
+  Qt5
+  COMPONENTS Core Widgets
   REQUIRED)
 
 add_library(${PROJECT_NAME} STATIC)
@@ -30,4 +19,4 @@ target_sources(${PROJECT_NAME} PRIVATE ${SRC} #[[PUBLIC]] ${HEADER})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets Qt5::Core)

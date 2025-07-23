@@ -115,7 +115,7 @@ struct Array : std::vector<T> /*, std::false_type*/ { // xml inpace array of ele
 };
 
 // using DontSkip = std::false_type;
-constexpr bool DontSkip{};
+static constexpr auto DontSkip = false;
 
 struct ArrayElement {
     bool canSkip_ = true;
@@ -135,35 +135,36 @@ static constexpr auto ArrayElem = ArrayElement{};
 //     bool canSkip() const { return CanSkip::value ? vector::empty() : false; }
 // };
 
-struct NullVariant { };
+// struct NullVariant { };
 
 template <typename... Ts>
-struct Variant : std::variant<NullVariant, Ts...> {
-    using variant = std::variant<NullVariant, Ts...>;
+struct Variant : std::variant</*NullVariant,*/ Ts...> {
+    using variant = std::variant</*NullVariant,*/ Ts...>;
     using variant::variant;
     using variant::operator=;
-
-    using FirstType = std::tuple_element_t<0, std::tuple<Ts...>>;
-
+    // using FirstType = std::tuple_element_t<0, std::tuple<Ts...>>;
     // template <typename Func>
     // auto visit(Func&& func) {
     //     return std::visit(std::forward<Func>(func), *this);
     // }
     template <typename Func>
-    auto visit(Func&& func) const {
-        using Ret = decltype(func(FirstType{}));
-        return std::visit(Overload{[](NullVariant) -> Ret { if constexpr( !std::is_same_v<void ,Ret>) return {}; }, std::forward<Func>(func)}, *this);
+    decltype(auto) visit(Func&& func) const {
+        // using Ret = decltype(func(FirstType{}));
+        // return std::visit(Overload{[](NullVariant) -> Ret { if constexpr( !std::is_same_v<void ,Ret>) return {}; }, std::forward<Func>(func)}, *this);
+        return std::visit(std::forward<Func>(func), *this);
     }
     // template <typename... Funcs>
     // auto visit(Funcs&&... funcs) {
     //     return std::visit(Overload{std::forward<Funcs>(funcs)...}, *this);
     // }
     template <typename... Funcs>
-    auto visit(Funcs&&... funcs) const {
-        using Ret = std::tuple_element_t<0, std::tuple<decltype(funcs({}))...>>;
-        return std::visit(Overload{[](NullVariant) -> Ret {if constexpr( !std::is_same_v<void ,Ret>)  return {}; }, std::forward<Funcs>(funcs)...}, *this);
+    decltype(auto) visit(Funcs&&... funcs) const {
+        // using Ret = std::tuple_element_t<0, std::tuple<decltype(funcs({}))...>>;
+        // return std::visit(Overload{[](NullVariant) -> Ret {if constexpr( !std::is_same_v<void ,Ret>)  return {}; }, std::forward<Funcs>(funcs)...}, *this);
+        return std::visit(Overload{std::forward<Funcs>(funcs)...}, *this);
     }
-    bool has_value() const { return Variant::index() > 0 && Variant::index() != std::variant_npos; }
+    // bool has_value() const { return Variant::index() > 0 && Variant::index() != std::variant_npos; }
+    bool has_value() const { return Variant::index() != std::variant_npos; }
     operator bool() const { return has_value(); }
 };
 
@@ -171,25 +172,8 @@ struct Variant : std::variant<NullVariant, Ts...> {
 template <typename T> concept Heritable = !std::is_fundamental_v<T> && !std::is_pointer_v<T>;
 template <typename T> concept NotHeritable = !Heritable<T>;
 
-template <typename T>
-struct Skip;
-
-template <Heritable T>
-struct Skip<T> : T {
-    using T::T;
-};
-
-template <NotHeritable T>
-struct Skip<T> {
-    T val;
-    Skip(T arg)
-        : val{arg} { }
-    auto& operator=(T arg) { return val = arg; }
-    operator T&() & { return val; }
-    operator const T&() const& { return val; }
-    operator T() { return val; }
-    operator const T() const { return val; }
-};
+struct SkipField {
+} constexpr Skip; // пропуск поля
 
 template <std::size_t N>
 struct Name {

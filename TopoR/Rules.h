@@ -13,7 +13,7 @@ namespace TopoR {
 
 // Раздел «Правила».
 struct Rules {
-    /// \note !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
+    // NOTE !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
     using VariantAllLayers = Xml::Variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef>;
     // Описание правила ширины проводников.
     struct WidthOfWires {
@@ -24,10 +24,10 @@ struct Rules {
         // Параметр правила ширины проводников: номинальная ширина проводника.
         [[= Xml::Attr]] double widthNom;
         // Ссылка на слои. См. также LayersRefs
-        /// \note !При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
+        // NOTE !При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
         // Ссылка на слои. См. также LayersRef
-        /// \note !При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
+        // NOTE !При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         [[= Xml::ArrayElem]] std::vector<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
@@ -41,10 +41,10 @@ struct Rules {
         // Параметр правила зазоров между цепями: номинальный зазор.
         [[= Xml::Attr]] double clrnNom;
         // Ссылка на слои. См. также LayersRefs_
-        /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
+        // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
         // Ссылка на слои. См. также LayersRef_
-        /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
+        // NOTE !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
         Xml::Array<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
@@ -79,10 +79,10 @@ struct Rules {
         // Флаг применения правила.
         [[= Xml::Attr]] Bool enabled;
         // Ссылка на слои. См. также LayersRefs_
-        /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
+        // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayerRef_;
         // Ссылка на слои. См. также LayersRef_
-        /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
+        // NOTE !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
         Xml::Array<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         [[= Xml::ArrayElem]] std::vector<NetRef> ObjectsAffected;
@@ -92,10 +92,10 @@ struct Rules {
         // Флаг применения правила.
         [[= Xml::Attr]] Bool enabled;
         // Ссылка на слои. См. также LayersRefs_
-        /// \note !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
+        // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
         VariantAllLayers LayersRef;
         // Ссылка на слои. См. также LayersRef_
-        /// \note !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
+        // NOTE !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
         Xml::Array<LayerRef> LayersRefs;
         // Объекты воздействия правила.
         [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef>> ObjectsAffected;

@@ -102,10 +102,10 @@ struct DialogSettings {
                 [[= Xml::Attr]] Bool details;
                 // Настройка вывода файлов Gerber, DXF: выводить реперные знаки.
                 [[= Xml::Attr]] Bool fiducials;
-                /// \note !В TopoR реперные знаки не поддерживаются.</ remarks>
+                // NOTE !В TopoR реперные знаки не поддерживаются.</ remarks>
             };
             // Имя экспортируемого файла Gerber, Drill.
-            /// \note !Имя не должно содержать путь к файлу.</ remarks>
+            // NOTE !Имя не должно содержать путь к файлу.</ remarks>
             [[= Xml::Attr]] QString fileName;
             // Настройка вывода файла Gerber: выводить файл.
             [[= Xml::Attr]] Bool output;
@@ -154,7 +154,7 @@ struct DialogSettings {
                 // Настройка вывода слоя в файл DXF: выводить очертания компонентов.
                 [[= Xml::Attr]] Bool compsOutline;
                 // Настройка вывода файлов Gerber, DXF: выводить реперные знаки.
-                /// \note !В TopoR реперные знаки не поддерживаются.</ remarks>
+                // NOTE !В TopoR реперные знаки не поддерживаются.</ remarks>
                 [[= Xml::Attr]] Bool fiducials;
             };
             // Настройка вывода слоя в файл DXF: выводить слой.
@@ -183,7 +183,7 @@ struct DialogSettings {
         // Настройки вывода файла Gerber.
         struct ExportFile {
             // Имя экспортируемого файла Gerber, Drill.
-            /// \note !Имя не должно содержать путь к файлу.</ remarks>
+            // NOTE !Имя не должно содержать путь к файлу.</ remarks>
             [[= Xml::Attr]] QString fileName;
         };
         // Каталог для выходных файлов (Gerber, Drill).

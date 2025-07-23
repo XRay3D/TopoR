@@ -100,7 +100,7 @@ struct HiSpeedRules {
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
             [[= Xml::Attr]] valueType valueType_;
             // Параметр правила выравнивания задержек внутри группы цепей: допуск.
-            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // NOTE !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
             [[= Xml::Attr]] double tolerance;
             // Объекты воздействия правила.
             [[= Xml::ArrayElem]] std::vector<SignalGroupRef> ObjectsAffected;
@@ -113,32 +113,32 @@ struct HiSpeedRules {
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
             [[= Xml::Attr]] valueType valueType_;
             // Значение константы в правилах выравнивания задержек.
-            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // NOTE !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
             [[= Xml::Attr]] double constant;
             // Параметр правила выравнивания задержек: нижний допуск.
-            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // NOTE !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
             [[= Xml::Attr]] double toleranceUnder;
             // Параметр правила выравнивания задержек: верхний допуск.
-            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // NOTE !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
             [[= Xml::Attr]] double toleranceOver;
             // Объекты воздействия правила.
             [[= Xml::ArrayElem]] std::vector<Xml::Variant<SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         };
         // Описание правила взаимного выравнивания задержек.
-        /// \note !Правило несимметрично относительно ObjectLeft и ObjectRight
+        // NOTE !Правило несимметрично относительно ObjectLeft и ObjectRight
         struct DelayRelation {
             // Флаг применения правила.
             [[= Xml::Attr]] Bool enabled;
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
             [[= Xml::Attr]] valueType valueType_;
             // Значение константы в правилах выравнивания задержек.
-            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // NOTE !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
             [[= Xml::Attr]] double constant;
             // Параметр правила выравнивания задержек: нижний допуск.
-            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // NOTE !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
             [[= Xml::Attr]] double toleranceUnder;
             // Параметр правила выравнивания задержек: верхний допуск.
-            /// \note !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
+            // NOTE !Единицы измерения значения зависят от параметра valueType и единиц заданных для всего файла(см.Units).
             [[= Xml::Attr]] double toleranceOver;
             // Первый объект воздействия правила взаимного выравнивания задержек.
             Xml::NamedTag<ObjectSignal, "ObjectLeft"> objectLeft;
@@ -149,7 +149,7 @@ struct HiSpeedRules {
         // Правила задания абсолютного значения задержки.
         Xml::Array<DelayConstant> delayConstants;
         // Правила взаимного выравнивания задержек.
-        /// \note !Правила несимметричны относительно ObjectLeft и ObjectRight
+        // NOTE !Правила несимметричны относительно ObjectLeft и ObjectRight
         Xml::Array<DelayRelation> delayRelations;
 
         bool isEmpty() const { return delayEquals.empty() && delayConstants.empty() && delayRelations.empty(); } // to skip serialization
@@ -178,7 +178,7 @@ struct HiSpeedRules {
         // Автоматически задавать связи.
         [[= Xml::Attr]] Bool createPinPairs;
         // Правила именования цепей дифференциальных сигналов.
-        /// \note !Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.
+        // NOTE !Порядок следования правил в этой секции определяет приоритет правил. Правила следуют в порядке убывания приоритета.
         [[= Xml::ArrayElem]] std::vector<RuleDiffSignalNetsNames> RulesDiffSignalNetsNames;
         // Список цепей, исключённых из поиска сигналов.
         ExcludedNets excludedNets;
