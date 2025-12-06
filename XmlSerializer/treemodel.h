@@ -4,9 +4,9 @@
 #include <QModelIndex>
 #include <QVariant>
 
-class TreeItem;
+struct TreeItem;
 
-class TreeModel : public QAbstractItemModel {
+struct TreeModel : public QAbstractItemModel {
     Q_OBJECT
 
 public:

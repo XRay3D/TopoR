@@ -1,154 +1,208 @@
-#pragma once
-
+﻿#pragma once
 #include "Commons.h"
-
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
- * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
-
 namespace TopoR {
-
 // Раздел «Правила».
+// ! Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
 struct Rules {
-    // NOTE !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
-    using VariantAllLayers = Xml::Variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef>;
     // Описание правила ширины проводников.
     struct WidthOfWires {
         // Флаг применения правила.
-        [[= Xml::Attr]] Bool enabled;
+        [[= XML::Attr]] Bool enabled{};
+        // public bool enabledSpecified
+        bool getEnabledSpecified() const;
         // Параметр правила ширины проводников: минимальная ширина проводника.
-        [[= Xml::Attr]] double widthMin;
+        [[= XML::Attr]] float widthMin{};
         // Параметр правила ширины проводников: номинальная ширина проводника.
-        [[= Xml::Attr]] double widthNom;
+        [[= XML::Attr]] float widthNom{};
         // Ссылка на слои. См. также LayersRefs
-        // NOTE !При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
-        VariantAllLayers LayersRef;
+        // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
+        // public Object LayersRef;
+        [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
-        // NOTE !При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
-        [[= Xml::ArrayElem]] std::vector<LayerRef> LayersRefs;
+        // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
+        //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
+        [[= XML::Elem("LayerRef")]] std::vector<LayerRef> LayersRefs;
+        bool ShouldSerialize_LayersRefs();
         // Объекты воздействия правила.
-        [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
+        //[XmlArrayItem("NetRef", typeof()), XmlArrayItem("NetGroupRef", typeof()), XmlArrayItem("AllNets", typeof())] public List<Object> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
+        bool ShouldSerialize_ObjectsAffected();
     };
     // Описание правила зазоров между цепями.
     struct ClearanceNetToNet {
         // Флаг применения правила.
-        [[= Xml::Attr]] Bool enabled;
+        [[= XML::Attr]] Bool enabled{};
+        // public bool enabledSpecified
+        bool getEnabledSpecified() const;
         // Параметр правила зазоров между цепями: минимальный зазор.
-        [[= Xml::Attr]] double clrnMin;
+        [[= XML::Attr]] float clrnMin{};
         // Параметр правила зазоров между цепями: номинальный зазор.
-        [[= Xml::Attr]] double clrnNom;
-        // Ссылка на слои. См. также LayersRefs_
-        // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-        VariantAllLayers LayersRef;
-        // Ссылка на слои. См. также LayersRef_
-        // NOTE !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-        Xml::Array<LayerRef> LayersRefs;
+        [[= XML::Attr]] float clrnNom{};
+        // Ссылка на слои. См. также LayersRefs
+        // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
+        // public Object LayersRef;
+        [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        // Ссылка на слои. См. также LayersRef
+        // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
+        //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
+        [[= XML::Elem("LayerRef")]] std::vector<LayerRef> LayersRefs;
+        bool ShouldSerialize_LayersRefs();
         // Объекты воздействия правила.
-        [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        //[XmlArrayItem("NetRef", typeof()), XmlArrayItem("NetGroupRef", typeof()), XmlArrayItem("AllNets", typeof()), XmlArrayItem("SignalRef", typeof()), XmlArrayItem("DiffSignalRef", typeof()), XmlArrayItem("SignalGroupRef", typeof())] public List<Object> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        bool ShouldSerialize_ObjectsAffected();
     };
     // Описание правила зазоров между компонентами.
     struct ClearanceCompToComp {
         // Флаг применения правила.
-        [[= Xml::Attr]] Bool enabled;
+        [[= XML::Attr]] Bool enabled{};
+        // public bool enabledSpecified
+        bool getEnabledSpecified() const;
         // Параметр правила зазоров между цепями: минимальный зазор.
-        [[= Xml::Attr]] double clrn;
+        [[= XML::Attr]] float clrn{};
         // Объекты воздействия правила.
-        [[= Xml::ArrayElem]] std::vector<Xml::Variant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
+        //[XmlArrayItem("ComponentRef", typeof()), XmlArrayItem("CompGroupRef", typeof()), XmlArrayItem("AllComps", typeof())] public List<Object> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
+        bool ShouldSerialize_ObjectsAffected();
     };
     // Описание зазоров до края платы.
     struct RulesClearancesToBoard {
         // Устанавливает зазор от проводников до края платы.
-        [[= Xml::Attr]] double wires;
+        [[= XML::Attr]] float clrn{};
         // Устанавливает зазор от компонентов до края платы.
-        [[= Xml::Attr]] double comps;
+        [[= XML::Attr]] float comps{};
     };
     // Описание правила назначения цепям стеков переходных отверстий.
     struct ViastacksOfNets {
         // Флаг применения правила.
-        [[= Xml::Attr]] Bool enabled;
+        [[= XML::Attr]] Bool enabled{};
+        // public bool enabledSpecified
+        bool getEnabledSpecified() const;
         // Объекты воздействия правила.
-        [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        //[XmlArrayItem("NetRef", typeof()), XmlArrayItem("NetGroupRef", typeof()), XmlArrayItem("AllNets", typeof()), XmlArrayItem("SignalRef", typeof()), XmlArrayItem("DiffSignalRef", typeof()), XmlArrayItem("SignalGroupRef", typeof())] public List<Object> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        bool ShouldSerialize_ObjectsAffected();
         // Назначенные типы переходных отверстий.
-        [[= Xml::ArrayElem]] std::vector<Xml::Variant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
+        //[XmlArrayItem("AllViastacks", typeof()), XmlArrayItem("AllViastacksThrough", typeof()), XmlArrayItem("AllViastacksNotThrough", typeof()), XmlArrayItem("ViastackRef", typeof())] public List<Object> Viastacks;
+        [[= XML::Array]] std::vector<std::variant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
+        bool ShouldSerialize_Viastacks();
     };
     // Описание правила назначения цепям опорных слоёв.
     struct PlaneLayerNets {
         // Флаг применения правила.
-        [[= Xml::Attr]] Bool enabled;
-        // Ссылка на слои. См. также LayersRefs_
-        // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-        VariantAllLayers LayerRef_;
-        // Ссылка на слои. См. также LayersRef_
-        // NOTE !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-        Xml::Array<LayerRef> LayersRefs;
+        [[= XML::Attr]] Bool enabled{};
+        // public bool enabledSpecified
+        bool getEnabledSpecified() const;
+        // Ссылка на слои. См. также LayersRefs
+        // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
+        // public Object LayersRef;
+        [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        // Ссылка на слои. См. также LayersRef
+        // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
+        //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
+        [[= XML::Elem("LayerRef")]] std::vector<LayerRef> LayersRefs;
+        bool ShouldSerialize_LayersRefs();
         // Объекты воздействия правила.
-        [[= Xml::ArrayElem]] std::vector<NetRef> ObjectsAffected;
+        //[XmlArrayItem("NetRef")] public List<NetRef> ObjectsAffected;
+        [[= XML::Array]] std::vector<NetRef> ObjectsAffected;
+        bool ShouldSerialize_ObjectsAffected();
     };
     // Описание правила назначения цепям сигнальных слоёв.
     struct SignalLayerNets {
         // Флаг применения правила.
-        [[= Xml::Attr]] Bool enabled;
-        // Ссылка на слои. См. также LayersRefs_
-        // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-        VariantAllLayers LayersRef;
-        // Ссылка на слои. См. также LayersRef_
-        // NOTE !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-        Xml::Array<LayerRef> LayersRefs;
+        [[= XML::Attr]] Bool enabled{};
+        // public bool enabledSpecified
+        bool getEnabledSpecified() const;
+        // Ссылка на слои. См. также LayersRefs
+        // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
+        // public Object LayersRef;
+        [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        // Ссылка на слои. См. также LayersRef
+        // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
+        //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
+        [[= XML::Elem("LayerRef")]] std::vector<LayerRef> LayersRefs;
+        bool ShouldSerialize_LayersRefs();
         // Объекты воздействия правила.
-        [[= Xml::ArrayElem]] std::vector<Xml::Variant<NetRef, NetGroupRef>> ObjectsAffected;
+        //[XmlArrayItem("NetRef", typeof()), XmlArrayItem("NetGroupRef", typeof())] public List<Object> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<NetRef, NetGroupRef>> ObjectsAffected;
+        bool ShouldSerialize_ObjectsAffected();
     };
     // Свойства цепи.
     struct NetProperty {
         // Свойство цепи: гибкая фиксация.
-        [[= Xml::Attr(NoOpt)]] Bool flexfix;
+        [[= XML::Attr]] Bool flexfix{};
+        // public bool flexfixSpecified
+        bool getFlexfixSpecified() const;
         // Свойство цепи: флаг трассировки для автоматического трассировщика.
-        [[= Xml::Attr]] Bool route;
+        [[= XML::Attr]] Bool route{};
+        // public bool routeSpecified
+        bool getRouteSpecified() const;
         // Ссылка на цепь.
-        Xml::Array<NetRef> NetRefs;
+        //[[= XML::Elem("NetRef")]] // public List<NetRef> NetRefs;
+        [[= XML::Elem("NetRef")]] std::vector<NetRef> NetRefs;
+        bool ShouldSerialize_NetRefs();
     };
     // Настройки подключения к углам прямоугольных контактных площадок.
     struct PadConnectSettings {
         // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
-        [[= Xml::Attr(NoOpt)]] mode_PadConnectSettings mode;
+        [[= XML::Attr("mode")]] mode_PadConnectSettings mode{};
         // Ссылки на стеки контактных площадок.
-        Xml::Array<PadstackRef> PadstackRefs;
+        //[[= XML::Elem("PadstackRef")]] // public List<PadstackRef> PadstackRefs;
+        [[= XML::Elem("PadstackRef")]] std::vector<PadstackRef> PadstackRefs;
+        bool ShouldSerializePadstackRefs();
         // Ссылки на контакты.
-        [[= Xml::ArrayElem]] std::vector<PinRef> PinRefs; // NOTE ???  Xml::Array
-                                                          // Ссылки на выводы посадочных мест.
-        [[= Xml::ArrayElem]] std::vector<PadRef> PadRefs; // NOTE ???  Xml::Array
+        //[[= XML::Elem("PinRef")]] // public List<PinRef> PinRefs;
+        [[= XML::Elem("PinRef")]] std::vector<PinRef> PinRefs;
+        bool ShouldSerialize_PinRefs();
+        // Ссылки на выводы посадочных мест.
+        //[[= XML::Elem("PadRef")]] // public List<PadRef> PadRefs;
+        [[= XML::Elem("PadRef")]] std::vector<PadRef> PadRefs;
+        bool ShouldSerialize_PadRefs();
     };
     // Версия раздела.
-    [[= Xml::Attr]] QString version;
+    [[= XML::Attr]] std::string version;
     // Правила ширин проводников.
-    [[= Xml::ArrayElem]] std::vector<WidthOfWires> RulesWidthOfWires;
+    //[XmlArrayItem("WidthOfWires")] public List<WidthOfWires> RulesWidthOfWires;
+    [[= XML::Array]] std::vector<WidthOfWires> RulesWidthOfWires;
+    bool ShouldSerialize_RulesWidthOfWires();
     // Правила зазоров между цепями.
-    [[= Xml::ArrayElem]] std::vector<ClearanceNetToNet> RulesClearancesNetToNet;
+    //[XmlArrayItem("ClearanceNetToNet")] public List<ClearanceNetToNet> RulesClearancesNetToNet;
+    [[= XML::Array]] std::vector<ClearanceNetToNet> RulesClearancesNetToNet;
+    bool ShouldSerialize_RulesClearancesNetToNet();
     // Правила зазоров между компонентами.
-    [[= Xml::ArrayElem]] std::vector<ClearanceCompToComp> RulesClearancesCompToComp;
+    //[XmlArrayItem("ClearanceCompToComp")] public List<ClearanceCompToComp> RulesClearancesCompToComp;
+    [[= XML::Array]] std::vector<ClearanceCompToComp> RulesClearancesCompToComp;
+    bool ShouldSerialize_RulesClearancesCompToComp();
     // Правило зазоров до края платы.
-    RulesClearancesToBoard rulesClearancesToBoard;
+    [[= XML::Elem("RulesClearancesToBoard")]] RulesClearancesToBoard RulesClearancesToBoard;
     // Правила назначения цепям стеков переходных отверстий.
-    [[= Xml::ArrayElem]] std::vector<ViastacksOfNets> RulesViastacksOfNets;
+    //[XmlArrayItem("ViastacksOfNets")] public List<ViastacksOfNets> RulesViastacksOfNets;
+    [[= XML::Array]] std::vector<ViastacksOfNets> RulesViastacksOfNets;
+    bool ShouldSerialize_RulesViastacksOfNets();
     // Правила назначения цепям опорных слоёв.
-    [[= Xml::ArrayElem]] std::vector<PlaneLayerNets> RulesPlaneLayersNets;
+    //[XmlArrayItem("PlaneLayerNets")] public List<PlaneLayerNets> RulesPlaneLayersNets;
+    [[= XML::Array]] std::vector<PlaneLayerNets> RulesPlaneLayersNets;
+    bool ShouldSerialize_RulesPlaneLayersNets();
     // Правила назначения цепям сигнальных слоёв.
-    [[= Xml::ArrayElem]] std::vector<SignalLayerNets> RulesSignalLayersNets;
+    //[XmlArrayItem("SignalLayerNets")] public List<SignalLayerNets> RulesSignalLayersNets;
+    [[= XML::Array]] std::vector<SignalLayerNets> RulesSignalLayersNets;
+    bool ShouldSerialize_RulesSignalLayersNets();
     // Свойства цепей
-    [[= Xml::ArrayElem]] std::vector<NetProperty> NetProperties;
+    //[XmlArrayItem("NetProperty")] public List<NetProperty> NetProperties;
+    [[= XML::Array]] std::vector<NetProperty> NetProperties;
+    bool ShouldSerialize_NetProperties();
     // Настройки подключения к углам прямоугольных контактных площадок.
-    PadConnectSettings padConnectSettings;
-
+    [[= XML::Elem("PadConnectSettings")]] PadConnectSettings PadConnectSettings;
     /*****************************************************************
      * Здесь находятся функции для работы с элементами класса Rules. *
      * Они не являются частью формата TopoR PCB.                     *
      * ***************************************************************/
     // Переименование ссылок на компонент, если его имя изменилось
-    /// \param '1 \brief старое имя компонента
-    /// \param '1 \brief новое имя компонента
-    void Rename_compName(const QString& oldname, const QString& newname);
+    void Rename_compName(const std::string& oldname, const std::string& newname);
 };
-
 } // namespace TopoR

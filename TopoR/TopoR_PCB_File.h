@@ -1,12 +1,4 @@
 #pragma once
-
-/* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
- * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
- * k@kilkennycat.pro
- * http://kilkennycat.ru  http://kilkennycat.pro
- * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
- */
-
 #include "ComponentsOnBoard.h"
 #include "Connectivity.h"
 #include "Constructive.h"
@@ -21,69 +13,47 @@
 #include "Rules.h"
 #include "Settings.h"
 #include "TextStyles.h"
-
+/* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
+ * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
+ * k@kilkennycat.pro
+ * http://kilkennycat.ru  http://kilkennycat.pro
+ */
 namespace TopoR {
-
-// Корневой тег TopoR_PCB_File. Включает все разделы файла.
-struct TopoR_PCB_File {
-#if HEADER
+// Корневой тег. Включает все разделы файла.
+struct[[= XML::Root("TopoR_PCB_File")]] TopoR_PCB_File {
+    /*
     // Раздел «Заголовок файла».
-    Header header;
-#endif
-#if LAYERS
+    [[= XML::Elem("Header")]] Header header;
     // Раздел «Слои». (Обязательный раздел)
-    Layers layers;
-#endif
-#if TEXTSTYLES
+    [[= XML::Elem("Layers")]] Layers layers;
     // Раздел «Стили надписей».
-    TextStyles textStyles;
-#endif
-#if LOCALLIBRARY
+    [[= XML::Elem("TextStyles")]] TextStyles textStyles;
     // Раздел «Библиотечные элементы». (Обязательный раздел)
-    LocalLibrary localLibrary;
-#endif
-#if CONSTRUCTIVE
+    [[= XML::Elem("LocalLibrary")]] LocalLibrary localLibrary;
     // Раздел «Конструктив платы».
-    Constructive constructive;
-#endif
-#if COMPONENTSONBOARD
+    [[= XML::Elem("Constructive")]] Constructive constructive;
     // Раздел «Компоненты на плате». (Обязательный раздел).
-    ComponentsOnBoard componentsOnBoard;
-#endif
-#if NETLIST
+    [[= XML::Elem("ComponentsOnBoard")]] ComponentsOnBoard componentsOnBoard;
     // Раздел «Текущий список соединений».
-    NetList netList;
-#endif
-#if GROUPS
+    [[= XML::Elem("NetList")]] NetList netList;
     // Раздел «Группировка объектов».
-    Groups groups;
-#endif
-#if HISPEEDRULES
+    [[= XML::Elem("Groups")]] Groups groups;
     // Раздел «Правила для высокоскоростных устройств».
-    HiSpeedRules hiSpeedRules;
-#endif
-#if RULES
-    // Раздел «ПРАВИЛА»
-    // NOTE !Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
-    Rules rules;
-#endif
-#if CONNECTIVITY
+    [[= XML::Elem("HiSpeedRules")]] HiSpeedRules hiSpeedRules;
+    // Раздел «Правила».
+    // ! Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
+    [[= XML::Elem("Rules")]] Rules rules;
     // Раздел «Соединения на плате».
-    // NOTE В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
-    Connectivity connectivity;
-#endif
-#if SETTINGS
+    // В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
+    */
+    [[= XML::Elem("Connectivity")]] Connectivity connectivity;
     // Раздел «Настройки дизайна».
-    Settings settings;
-#endif
-#if DISPLAYCONTROL
+    /*
+    [[= XML::Elem("Settings")]] Settings settings;
     // Раздел «Настройки отображения».
-    DisplayControl displayControl;
-#endif
-#if DIALOGSETTINGS
+    [[= XML::Elem("DisplayControl")]] DisplayControl displayControl;
     // Раздел «Настройки диалогов».
-    DialogSettings dialogSettings;
-#endif
+    [[= XML::Elem("DialogSettings")]] DialogSettings dialogSettings;
+    */
 };
-
 } // namespace TopoR

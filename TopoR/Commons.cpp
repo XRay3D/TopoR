@@ -1,250 +1,150 @@
 #include "Commons.h"
-
-#include <QPoint>
-#include <QTransform>
-
 namespace TopoR {
-
-void arc(ArcDir dir, QPainterPath& path, const std::optional<QPointF>& startOpt, const QPointF& center, const QPointF& stop) {
-    QPointF start;
-    if(startOpt.has_value()) {
-        start = startOpt.value();
-        path.moveTo(start);
-    } else
-        start = path.currentPosition();
-
-    const auto a1 = QLineF{center, start}.angle();
-    const auto a2 = QLineF{center, stop}.angle();
-    const auto radius = QLineF{center, start}.length();
-
-    auto aSpan = a2 - a1;
-
-    if(dir == CCW) {
-        if(aSpan > 0.0) aSpan -= 360.0;
-    } else {
-        if(aSpan < 0.0) aSpan += 360.0;
+void Coord::Shift(float x_, float y_) {
+    x += x_;
+    y += y_;
+}
+void Coord::UnitsConvert(dist in_units, dist out_units) {
+    x = Ut::UnitsConvert(x, in_units, out_units);
+    y = Ut::UnitsConvert(y, in_units, out_units);
+}
+void SegmentLine::Shift(float x, float y) {
+    End.Shift(x, y);
+}
+void SegmentLine::UnitsConvert(dist in_units, dist out_units) {
+    End.UnitsConvert(in_units, out_units);
+}
+void SegmentArcCCW::Shift(float x, float y) {
+    Center.Shift(x, y);
+    End.Shift(x, y);
+}
+void SegmentArcCCW::UnitsConvert(dist in_units, dist out_units) {
+    Center.UnitsConvert(in_units, out_units);
+    End.UnitsConvert(in_units, out_units);
+}
+void SegmentArcByMiddle::Shift(float x, float y) {
+    Middle.Shift(x, y);
+    End.Shift(x, y);
+}
+void SegmentArcByMiddle::UnitsConvert(dist in_units, dist out_units) {
+    Middle.UnitsConvert(in_units, out_units);
+    End.UnitsConvert(in_units, out_units);
+}
+void ArcCCW::Shift(float x, float y) {
+    Start.Shift(x, y);
+    Center.Shift(x, y);
+    End.Shift(x, y);
+}
+void ArcCCW::UnitsConvert(dist in_units, dist out_units) {
+    Start.UnitsConvert(in_units, out_units);
+    Center.UnitsConvert(in_units, out_units);
+    End.UnitsConvert(in_units, out_units);
+}
+void ArcByAngle::Shift(float x, float y) {
+    Start.Shift(x, y);
+    End.Shift(x, y);
+}
+void ArcByAngle::UnitsConvert(dist in_units, dist out_units) {
+    Start.UnitsConvert(in_units, out_units);
+    End.UnitsConvert(in_units, out_units);
+}
+void ArcByMiddle::Shift(float x, float y) {
+    Start.Shift(x, y);
+    Middle.Shift(x, y);
+    End.Shift(x, y);
+}
+void ArcByMiddle::UnitsConvert(dist in_units, dist out_units) {
+    Start.UnitsConvert(in_units, out_units);
+    Middle.UnitsConvert(in_units, out_units);
+    End.UnitsConvert(in_units, out_units);
+}
+void Circle::Shift(float x, float y) {
+    Center.Shift(x, y);
+}
+void Circle::UnitsConvert(dist in_units, dist out_units) {
+    diameter = Ut::UnitsConvert(diameter, in_units, out_units);
+    Center.UnitsConvert(in_units, out_units);
+}
+bool Line::ShouldSerialize_Dots() {
+    return Dots.size();
+}
+void Line::Shift(float x, float y) {
+    for(int i{}; i < Dots.size(); i++)
+        Dots[i].Shift(x, y);
+}
+void Line::UnitsConvert(dist in_units, dist out_units) {
+    for(int i{}; i < Dots.size(); i++)
+        Dots[i].UnitsConvert(in_units, out_units);
+}
+bool Polyline::ShouldSerialize_Segments() {
+    return Segments.size();
+}
+void Polyline::Shift(float x, float y) {
+    Start.Shift(x, y);
+    // for(int i{}; i < Segments.size(); i++)
+    //     (std::dynamic_pointer_cast<IBaseSegment>(Segments[])).Shift(x, y);
+}
+void Polyline::UnitsConvert(dist in_units, dist out_units) {
+    Start.UnitsConvert(in_units, out_units);
+    // for(int i{}; i < Segments.size(); i++)
+    //     (std::dynamic_pointer_cast<IBaseSegment>(Segments[])).UnitsConvert(in_units, out_units);
+}
+void TrackArcCW::Shift(float x, float y) {
+    Center.Shift(x, y);
+    End.Shift(x, y);
+}
+void TrackArcCW::UnitsConvert(dist in_units, dist out_units) {
+    Center.UnitsConvert(in_units, out_units);
+    End.UnitsConvert(in_units, out_units);
+}
+void TrackLine::Shift(float x, float y) {
+    End.Shift(x, y);
+}
+void TrackLine::UnitsConvert(dist in_units, dist out_units) {
+    End.UnitsConvert(in_units, out_units);
+}
+void Thermal::UnitsConvert(dist in_units, dist out_units) {
+    spokeWidth = Ut::UnitsConvert(spokeWidth, in_units, out_units);
+}
+void Detail::Shift(float x, float y) {
+    // if((std::dynamic_pointer_cast<IBaseFigure>(Figure)) != nullptr)
+    //     (std::dynamic_pointer_cast<IBaseFigure>(Figur)).Shift(x, y);
+}
+void Detail::UnitsConvert(dist in_units, dist out_units) {
+    lineWidth = Ut::UnitsConvert(lineWidth, in_units, out_units);
+    // if((std::dynamic_pointer_cast<IBaseFigure>(Figure)) != nullptr)
+    //     (std::dynamic_pointer_cast<IBaseFigure>(Figur)).UnitsConvert(in_units, out_units);
+}
+bool Text::getMirrorSpecified() const {
+    return mirror != Bool::off;
+}
+void Text::Shift(float x, float y) {
+    Org.Shift(x, y);
+}
+void Text::UnitsConvert(dist in_units, dist out_units) {
+    Org.UnitsConvert(in_units, out_units);
+}
+float Ut::UnitsConvert(float value, dist in_units, dist out_units) {
+    double k;
+    switch(in_units) {
+    case dist::mkm: k = 0.001; break;
+    case dist::cm: k = 10; break;
+    case dist::dm: k = 100; break;
+    case dist::m: k = 1000; break;
+    case dist::mil: k = 0.0254000000000000002032; break;
+    case dist::inch: k = 25.4000000000000002032; break;
+    case dist::mm:
+    default: k = 1; break;
     }
-
-    path.arcTo(
-        -radius + center.x(),
-        -radius + center.y(),
-        radius * 2,
-        radius * 2,
-        a1, aSpan);
-}
-
-QPainterPath SegmentLine::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void SegmentLine::drawTo(QPainterPath& path) const {
-    path.lineTo(end);
-}
-
-QPainterPath SegmentArcCCW::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void SegmentArcCCW::drawTo(QPainterPath& path) const {
-    arc(CCW, path, {}, center, end);
-}
-
-QPainterPath SegmentArcCW::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void SegmentArcCW::drawTo(QPainterPath& path) const {
-    arc(CW, path, {}, center, end);
-}
-
-QPainterPath SegmentArcByAngle::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void SegmentArcByAngle::drawTo(QPainterPath& path) const {
-    // FIXME path.lineTo(end);
-}
-
-QPainterPath SegmentArcByMiddle::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void SegmentArcByMiddle::drawTo(QPainterPath& path) const {
-    // FIXME path.lineTo(end);
-}
-
-QPainterPath ArcCCW::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void ArcCCW::drawTo(QPainterPath& path) const {
-    arc(CCW, path, start, center, end);
-}
-
-QPainterPath ArcCW::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void ArcCW::drawTo(QPainterPath& path) const {
-    arc(CW, path, start, center, end);
-}
-
-QPainterPath ArcByAngle::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void ArcByAngle::drawTo(QPainterPath& path) const {
-    // FIXME path.lineTo(end);
-}
-
-QPainterPath ArcByMiddle::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void ArcByMiddle::drawTo(QPainterPath& path) const {
-    // FIXME path.lineTo(end);
-}
-
-QPainterPath Circle::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void Circle::drawTo(QPainterPath& path) const {
-    path.addEllipse(center, diameter * 0.5, diameter * 0.5);
-}
-
-QPainterPath Line::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void Line::drawTo(QPainterPath& path) const {
-    for(int fl{}; auto&& pt: Dots)
-        if(!fl++) path.moveTo(pt);
-        else [[likely]] path.lineTo(pt);
-}
-
-QPainterPath Polyline::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void Polyline::drawTo(QPainterPath& path) const {
-    path.moveTo(start);
-    for(auto&& segment: segments)
-        segment.visit([&path](auto&& segment) { segment.drawTo(path); });
-}
-
-QPainterPath Contour::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void Contour::drawTo(QPainterPath& path) const {
-    path.moveTo(start);
-    for(auto&& segment: segments)
-        segment.visit([&path](auto&& segment) { segment.drawTo(path); });
-    if(path.currentPosition() != start)
-        path.lineTo(start);
-}
-
-QPainterPath Rect::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void Rect::drawTo(QPainterPath& path) const {
-    QRectF rect;
-    rect.setTopLeft(Dots.front());
-    rect.setBottomRight(Dots.back());
-    path.addRect(rect);
-}
-
-QPainterPath FilledContour::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void FilledContour::drawTo(QPainterPath& path) const {
-    path.moveTo(start);
-    for(auto&& segment: segments)
-        segment.visit([&path](auto&& segment) { segment.drawTo(path); });
-    if(path.currentPosition() != start)
-        path.lineTo(start);
-}
-
-QPainterPath FilledCircle::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void FilledCircle::drawTo(QPainterPath& path) const {
-    path.addEllipse(center, diameter * 0.5, diameter * 0.5);
-}
-
-QPainterPath FilledRect::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void FilledRect::drawTo(QPainterPath& path) const {
-    QRectF rect;
-    rect.setTopLeft(Dots.front());
-    rect.setBottomRight(Dots.back());
-    path.addRect(rect);
-}
-
-QPainterPath Polygon::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void Polygon::drawTo(QPainterPath& path) const {
-    for(auto&& pt: Dots)
-        path.lineTo(pt);
-}
-
-QPainterPath TrackArcCW::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void TrackArcCW::drawTo(QPainterPath& path) const {
-    arc(CW, path, {}, center, end);
-}
-
-QPainterPath TrackArc::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void TrackArc::drawTo(QPainterPath& path) const {
-    arc(CCW, path, {}, center, end);
-}
-
-QPainterPath TrackLine::toPPath() const {
-    QPainterPath path;
-    return drawTo(path), path;
-}
-void TrackLine::drawTo(QPainterPath& path) const {
-    path.lineTo(end);
-}
-
-double Ut::UnitsConvert(dist inUnits, dist outUnits) {
-    // clang-format off
-    auto k = [](dist in_units) {
-        switch (in_units) {
-        case dist::mkm:  return 0.001;
-        case dist::cm:   return 10.0;
-        case dist::dm:   return 100.0;
-        case dist::m:    return 1000.0;
-        case dist::mil:  return 0.0254;
-        case dist::inch: return 25.4;
-        case dist::mm:
-        default:         return 1.0;
-        }
-    };
-    switch (outUnits) {
-    case dist::mkm:  return k(inUnits) * 1000;
-    case dist::cm:   return k(inUnits) * 0.1;
-    case dist::dm:   return k(inUnits) * 0.01;
-    case dist::m:    return k(inUnits) * 0.001;
-    case dist::mil:  return k(inUnits) * 39.37007874015748;
-    case dist::inch: return k(inUnits) * 0.03937007874015748;
-    case dist::mm:   return k(inUnits);
-    default:         return 1.0;
+    switch(out_units) {
+    case dist::mkm: return static_cast<float>(value * k * 1000);
+    case dist::cm: return static_cast<float>(value * k * 0.1);
+    case dist::dm: return static_cast<float>(value * k * 0.01);
+    case dist::m: return static_cast<float>(value * k * 0.001);
+    case dist::mil: return static_cast<float>(value * k * 39.37007874015748);
+    case dist::inch: return static_cast<float>(value * k * 0.03937007874015748);
+    case dist::mm: return static_cast<float>(value * k);
+    default: return value;
     }
-    // clang-format on
 }
-
 } // namespace TopoR

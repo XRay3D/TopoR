@@ -1,168 +1,165 @@
 #include "Constructive.h"
 namespace TopoR {
-// void Constructive::BoardOutline::Shape_Contour::Shift(double x, double y) {
-//     /*   if(_NonfilledFigure)
-//            (std::dynamic_pointer_cast<IBaseFigure>(_NonfilledFigure)).value().Shift(x, y);*/
-// }
-// void Constructive::BoardOutline::Shape_Contour::UnitsConvert(dist in_units, dist out_units) {
-//     /*   lineWidth_ = Ut::UnitsConvert(_lineWidth, in_units, out_units);
-//        if(_NonfilledFigure)
-//            (std::dynamic_pointer_cast<IBaseFigure>(_NonfilledFigure)).value().UnitsConvert(in_units, out_units);*/
-// }
-// void Constructive::BoardOutline::Shape_Voids::Shift(double x, double y) {
-//     /*    if(_FilledFigure)
-//             (std::dynamic_pointer_cast<IBaseFigure>(_FilledFigure)).value().Shift(x, y);*/
-// }
-// void Constructive::BoardOutline::Shape_Voids::UnitsConvert(dist in_units, dist out_units) {
-//     /*   lineWidth_ = Ut::UnitsConvert(_lineWidth, in_units, out_units);
-//        if(_FilledFigure)
-//            (std::dynamic_pointer_cast<IBaseFigure>(_FilledFigure)).value().UnitsConvert(in_units, out_units);*/
-// }
-// void Constructive::MntholeInstance::Shift(double x, double y) {
-//     /**  if(_Org)
-//           Org.value().Shift(x, y);*/
-// }
-// void Constructive::MntholeInstance::UnitsConvert(dist in_units, dist out_units) {
-//     /*  if(_Org)
-//           Org.value().UnitsConvert(in_units, out_units);*/
-// }
-// void Constructive::Keepout_Сonstructive::Shift(double x, double y) {
-//     /* if(_FigureContPolyline)
-//          (std::dynamic_pointer_cast<IBaseFigure>(_FigureContPolyline)).value().Shift(x, y);*/
-// }
-// void Constructive::Keepout_Сonstructive::UnitsConvert(dist in_units, dist out_units) {
-//     /*  if(_FigureContPolyline)
-//           (std::dynamic_pointer_cast<IBaseFigure>(_FigureContPolyline)).value().UnitsConvert(in_units, out_units);*/
-// }
-// void Constructive::Shift(double x, double y) {
-//     /*  if(_BoardOutline) {
-//            if(_BoardOutline.size())
-//                for(int i = 0; i < BoardOutline.value()._Contours.size(); i++)
-//                    BoardOutline_->_Contours[i].value().Shift(x, y);
-//            if(_BoardOutline.size())
-//                for(int i = 0; i < BoardOutline.value()._Voids.size(); i++)
-//                    BoardOutline_->_Voids[i].value().Shift(x, y);
-//        }
-//        if(_Mntholes.size())
-//            for(int i = 0; i < Mntholes.size(); i++)
-//                Mntholes_[i].value().Shift(x, y);
-//        if(_MechLayerObjects.size())
-//            for(int i = 0; i < MechLayerObjects.size(); i++)
-//                MechLayerObjects_[i].value().Shift(x, y);
-//        if(_Texts.size())
-//            for(int i = 0; i < Texts.size(); i++)
-//                Texts_[i].value().Shift(x, y);
-//        if(_Keepouts.size())
-//            for(int i = 0; i < Keepouts.size(); i++)
-//                Keepouts_[i].value().Shift(x, y);*/
-// }
-// void Constructive::UnitsConvert(dist in_units, dist out_units) {
-//     /*   if(_BoardOutline.size())
-//            for(int i = 0; i < BoardOutline.value()._Contours.size(); i++)
-//                BoardOutline_->_Contours[i].value().UnitsConvert(in_units, out_units);
-//        if(_BoardOutline.size())
-//            for(int i = 0; i < BoardOutline.value()._Voids.size(); i++)
-//                BoardOutline_->_Voids[i].value().UnitsConvert(in_units, out_units);
-//        if(_Mntholes.size())
-//            for(int i = 0; i < Mntholes.size(); i++)
-//                Mntholes_[i].value().UnitsConvert(in_units, out_units);
-//        if(_MechLayerObjects.size())
-//            for(int i = 0; i < MechLayerObjects.size(); i++)
-//                MechLayerObjects_[i].value().UnitsConvert(in_units, out_units);
-//        if(_Texts.size())
-//            for(int i = 0; i < Texts.size(); i++)
-//                Texts_[i].value().UnitsConvert(in_units, out_units);
-//        if(_Keepouts.size())
-//            for(int i = 0; i < Keepouts.size(); i++)
-//                Keepouts_[i].value().UnitsConvert(in_units, out_units);*/
-// }
-// void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts) {
-//     /* int l;
-//      if (boardOutline)
-//      {
-//          if a.size())
-//          {
-//              if (_BoardOutline == null)
-//                  BoardOutline_ = new BoardOutline();
-//              if (_BoardOutline._Contours == null)
-//                  BoardOutline._Contours = (BoardOutline.Shape_Contour[])a._BoardOutline._Contours.Clone();
-//              else
-//              {
-//                  l = BoardOutline._Contours.Count;
-//                  Array.Resize(ref BoardOutline._Contours, l + a._BoardOutline._Contours.Count);
-//                  a._BoardOutline._Contours.CopyTo(_BoardOutline._Contours, l);
-//              }
-//          }
-//          if a.size())
-//          {
-//              if (_BoardOutline == null)
-//                  BoardOutline_ = new BoardOutline();
-//              if (_BoardOutline._Voids == null)
-//                  BoardOutline._Voids = (BoardOutline.Shape_Voids[])a._BoardOutline._Voids.Clone();
-//              else
-//              {
-//                  l = BoardOutline._Voids.Count;
-//                  Array.Resize(ref BoardOutline._Voids, l + a._BoardOutline._Voids.Count);
-//                  a._BoardOutline._Voids.CopyTo(_BoardOutline._Voids, l);
-//              }
-//          }
-//      }
-//      if (mntholeInstances)
-//      {
-//          if a.size())
-//          {
-//              if (_Mntholes == null)
-//                  Mntholes_ = (MntholeInstance[])a._Mntholes.Clone();
-//              else
-//              {
-//                  l = Mntholes.Count;
-//                  Array.Resize(ref Mntholes_, l + a._Mntholes.Count);
-//                  a._Mntholes.CopyTo(_Mntholes, l);
-//              }
-//          }
-//      }
-//      if (details)
-//      {
-//          if a.size())
-//          {
-//              if (_MechLayerObjects == null)
-//                  MechLayerObjects_ = (Detail[])a._MechLayerObjects.Clone();
-//              else
-//              {
-//                  l = MechLayerObjects.Count;
-//                  Array.Resize(ref MechLayerObjects_, l + a._MechLayerObjects.Count);
-//                  a._MechLayerObjects.CopyTo(_MechLayerObjects, l);
-//              }
-//          }
-//      }
-//      if (texts)
-//      {
-//          if a.size())
-//          {
-//              if (_Texts == null)
-//                  Texts_ = (Text[])a._Texts.Clone();
-//              else
-//              {
-//                  l = Texts.Count;
-//                  Array.Resize(ref Texts_, l + a._Texts.Count);
-//                  a._Texts.CopyTo(_Texts, l);
-//              }
-//          }
-//      }
-//      if (keepouts)
-//      {
-//          if a.size())
-//          {
-//              if (_Keepouts == null)
-//                  Keepouts_ = (Keepout_Сonstructive[])a._Keepouts.Clone();
-//              else
-//              {
-//                  l = Keepouts.Count;
-//                  Array.Resize(ref Keepouts_, l + a._Keepouts.Count);
-//                  a._Keepouts.CopyTo(_Keepouts, l);
-//              }
-//          }
-//      }*/
-// }
-
+void Constructive::BoardOutline::Shape::Shift(float x, float y) {
+    //    if((std::dynamic_pointer_cast<IBaseFigure>(NonfilledFigure)) != nullptr)
+    //        (std::dynamic_pointer_cast<IBaseFigure>(NonfilledFigure)).Shift(x, y);
+}
+void Constructive::BoardOutline::Shape::UnitsConvert(dist in_units, dist out_units) {
+    //    lineWidth = Ut::UnitsConvert(lineWidth, in_units, out_units);
+    //    if((std::dynamic_pointer_cast<IBaseFigure>(NonfilledFigure)) != nullptr)
+    //        (std::dynamic_pointer_cast<IBaseFigure>(NonfilledFigure)).UnitsConvert(in_units, out_units);
+}
+void Constructive::BoardOutline::Shape_Voids::Shift(float x, float y) {
+    //    if((std::dynamic_pointer_cast<IBaseFigure>(FilledFigure)) != nullptr)
+    //        (std::dynamic_pointer_cast<IBaseFigure>(FilledFigure)).Shift(x, y);
+}
+void Constructive::BoardOutline::Shape_Voids::UnitsConvert(dist in_units, dist out_units) {
+    //    lineWidth = Ut::UnitsConvert(lineWidth, in_units, out_units);
+    //    if((std::dynamic_pointer_cast<IBaseFigure>(FilledFigure)) != nullptr)
+    //        (std::dynamic_pointer_cast<IBaseFigure>(FilledFigure)).UnitsConvert(in_units, out_units);
+}
+bool Constructive::BoardOutline::ShouldSerialize_Contours() { return Contour.size(); }
+bool Constructive::BoardOutline::ShouldSerialize_Voids() { return Voids.size(); }
+bool Constructive::MntholeInstance::getFixedSpecified() const { return std::to_underlying(fixed); }
+void Constructive::MntholeInstance::Shift(float x, float y) {
+    //    Org.Shift(x, y);
+}
+void Constructive::MntholeInstance::UnitsConvert(dist in_units, dist out_units) {
+    //    Org.UnitsConvert(in_units, out_units);
+}
+bool Constructive::Keepout_Сonstructive::Role::Trace::ShouldSerialize_LayersRefs() { return LayersRefs.size(); }
+void Constructive::Keepout_Сonstructive::Shift(float x, float y) {
+    //    if((std::dynamic_pointer_cast<IBaseFigure>(FigureContPolyline)) != nullptr)
+    //        (std::dynamic_pointer_cast<IBaseFigure>(FigureContPolyline)).Shift(x, y);
+}
+void Constructive::Keepout_Сonstructive::UnitsConvert(dist in_units, dist out_units) {
+    //    if((std::dynamic_pointer_cast<IBaseFigure>(FigureContPolyline)) != nullptr)
+    //        (std::dynamic_pointer_cast<IBaseFigure>(FigureContPolyline)).UnitsConvert(in_units, out_units);
+}
+bool Constructive::ShouldSerialize_Mntholes() { return Mntholes.size(); }
+bool Constructive::ShouldSerialize_MechLayerObjects() { return MechLayerObjects.size(); }
+bool Constructive::ShouldSerialize_Texts() { return Texts.size(); }
+bool Constructive::ShouldSerialize_Keepouts() { return Keepouts.size(); }
+void Constructive::Shift(float x, float y) {
+    //    {
+    //        if((BoardOutline == nullptr ? nullptr : BoardOutline->Contours.size()) > 0)
+    //            for(int i{}; i < BoardOutline->Contours.size(); i++)
+    //                BoardOutline->Contours[i].Shift(x, y);
+    //        if((BoardOutline == nullptr ? nullptr : BoardOutline->Voids.size()) > 0)
+    //            for(int i{}; i < BoardOutline->Voids.size(); i++)
+    //                BoardOutline->Voids[i].Shift(x, y);
+    //    }
+    //        for(int i{}; i < Mntholes.size(); i++)
+    //            Mntholes[i].Shift(x, y);
+    //        for(int i{}; i < MechLayerObjects.size(); i++)
+    //            MechLayerObjects[i].Shift(x, y);
+    //        for(int i{}; i < Texts.size(); i++)
+    //            Texts[i].Shift(x, y);
+    //        for(int i{}; i < Keepouts.size(); i++)
+    //            Keepouts[i].Shift(x, y);
+}
+void Constructive::UnitsConvert(dist in_units, dist out_units) {
+    //    if((BoardOutline == nullptr ? nullptr : ((BoardOutline->Contours.empty() ? nullptr : BoardOutline->Contours.size()))) > 0)
+    //        for(int i{}; i < BoardOutline->Contours.size(); i++)
+    //            BoardOutline->Contours[i].UnitsConvert(in_units, out_units);
+    //    if((BoardOutline == nullptr ? nullptr : ((BoardOutline->Voids.empty() ? nullptr : BoardOutline->Voids.size()))) > 0)
+    //        for(int i{}; i < BoardOutline->Voids.size(); i++)
+    //            BoardOutline->Voids[i].UnitsConvert(in_units, out_units);
+    //        for(int i{}; i < Mntholes.size(); i++)
+    //            Mntholes[i].UnitsConvert(in_units, out_units);
+    //        for(int i{}; i < MechLayerObjects.size(); i++)
+    //            MechLayerObjects[i].UnitsConvert(in_units, out_units);
+    //        for(int i{}; i < Texts.size(); i++)
+    //            Texts[i].UnitsConvert(in_units, out_units);
+    //        for(int i{}; i < Keepouts.size(); i++)
+    //            Keepouts[i].UnitsConvert(in_units, out_units);
+}
+void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts) {
+    //    /* int l;
+    //     if (boardOutline)
+    //     {
+    //         if (a?.BoardOutline?.Contours?.Count > 0)
+    //         {
+    //             if (BoardOutline == null)
+    //                 BoardOutline = new BoardOutline();
+    //             if (BoardOutline.Contours == null)
+    //                 BoardOutline.Contours = (BoardOutline.Shape[])a.BoardOutline.Contours.Clone();
+    //             else
+    //             {
+    //                 l = BoardOutline.Contours.Count;
+    //                 Array.Resize(ref BoardOutline.Contours, l + a.BoardOutline.Contours.Count);
+    //                 a.BoardOutline.Contours.CopyTo(BoardOutline.Contours, l);
+    //             }
+    //         }
+    //         if (a?.BoardOutline?.Voids?.Count > 0)
+    //         {
+    //             if (BoardOutline == null)
+    //                 BoardOutline = new BoardOutline();
+    //             if (BoardOutline.Voids == null)
+    //                 BoardOutline.Voids = (BoardOutline.Shape_Voids[])a.BoardOutline.Voids.Clone();
+    //             else
+    //             {
+    //                 l = BoardOutline.Voids.Count;
+    //                 Array.Resize(ref BoardOutline.Voids, l + a.BoardOutline.Voids.Count);
+    //                 a.BoardOutline.Voids.CopyTo(BoardOutline.Voids, l);
+    //             }
+    //         }
+    //     }
+    //     if (mntholeInstances)
+    //     {
+    //         if (a?.Mntholes?.Count > 0)
+    //         {
+    //             if (Mntholes == null)
+    //                 Mntholes = (MntholeInstance[])a.Mntholes.Clone();
+    //             else
+    //             {
+    //                 l = Mntholes.Count;
+    //                 Array.Resize(ref Mntholes, l + a.Mntholes.Count);
+    //                 a.Mntholes.CopyTo(Mntholes, l);
+    //             }
+    //         }
+    //     }
+    //     if (details)
+    //     {
+    //         if (a?.MechLayerObjects?.Count > 0)
+    //         {
+    //             if (MechLayerObjects == null)
+    //                 MechLayerObjects = (Detail[])a.MechLayerObjects.Clone();
+    //             else
+    //             {
+    //                 l = MechLayerObjects.Count;
+    //                 Array.Resize(ref MechLayerObjects, l + a.MechLayerObjects.Count);
+    //                 a.MechLayerObjects.CopyTo(MechLayerObjects, l);
+    //             }
+    //         }
+    //     }
+    //     if (texts)
+    //     {
+    //         if (a?.Texts?.Count > 0)
+    //         {
+    //             if (Texts == null)
+    //                 Texts = (Text[])a.Texts.Clone();
+    //             else
+    //             {
+    //                 l = Texts.Count;
+    //                 Array.Resize(ref Texts, l + a.Texts.Count);
+    //                 a.Texts.CopyTo(Texts, l);
+    //             }
+    //         }
+    //     }
+    //     if (keepouts)
+    //     {
+    //         if (a?.Keepouts?.Count > 0)
+    //         {
+    //             if (Keepouts == null)
+    //                 Keepouts = (Keepout_Сonstructive[])a.Keepouts.Clone();
+    //             else
+    //             {
+    //                 l = Keepouts.Count;
+    //                 Array.Resize(ref Keepouts, l + a.Keepouts.Count);
+    //                 a.Keepouts.CopyTo(Keepouts, l);
+    //             }
+    //         }
+    //     }*/
+}
 } // namespace TopoR

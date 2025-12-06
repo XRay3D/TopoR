@@ -107,7 +107,7 @@ inline constexpr E stringToEnum(Impl::sv str) {
     auto it = std::ranges::find(Impl::Tokens<E>, str, &std::pair<Impl::sv, E>::first);
     return it == Impl::Tokens<E>.end()
         ? static_cast<E>(
-            std::numeric_limits<std::underlying_type_t<E>>::min())
+              std::numeric_limits<std::underlying_type_t<E>>::min())
         : it->second;
 }
 

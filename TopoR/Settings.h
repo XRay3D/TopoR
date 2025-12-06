@@ -1,84 +1,102 @@
-#pragma once
-
+﻿#pragma once
 #include "Commons.h"
-
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
- * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
-
 namespace TopoR {
-
 // Раздел «Настройки дизайна».
 struct Settings {
     // Настройки автоматической трассировки.
     struct Autoroute {
         // Настройка автоматической трассировки: режим трассировки.
-        [[= Xml::Attr]] mode_Autoroute mode;
+        [[= XML::Attr("mode")]] mode_Autoroute mode{};
         // Параметр автоматической трассировки: использование функциональной эквивалентности.
-        [[= Xml::Attr]] autoEqu autoEqu_;
+        [[= XML::Attr("autoEqu")]] autoEqu autoEqu{};
         // Параметр автоматической трассировки: форма проводников.
-        [[= Xml::Attr]] wireShape wireShape_;
+        [[= XML::Attr("wireShape")]] wireShape wireShape{};
         // Параметр автоматической трассировки: создавать «капельки».
-        [[= Xml::Attr]] Bool teardrops;
+        [[= XML::Attr]] Bool teardrops{};
+        // public bool teardropsSpecified
+        bool getTeardropsSpecified() const;
         // Параметр автоматической трассировки: ослабленный контроль зазоров.
-        [[= Xml::Attr]] Bool weakCheck;
+        [[= XML::Attr]] Bool weakCheck{};
+        // public bool weakCheckSpecified
+        bool getWeakCheckSpecified() const;
         // Параметр автоматической трассировки: использовать имеющуюся разводку в качестве начального варианта.
-        [[= Xml::Attr]] Bool takeCurLayout;
+        [[= XML::Attr]] Bool takeCurLayout{};
+        // public bool takeCurLayoutSpecified
+        bool getTakeCurLayoutSpecified() const;
         // Настройка автоматической трассировки: соединять планарные контакты напрямую.
-        [[= Xml::Attr]] Bool directConnectSMD;
+        [[= XML::Attr]] Bool directConnectSMD{};
+        // public bool directConnectSMDSpecified
+        bool getDirectConnectSMDSpecified() const;
         // Настройка автоматической трассировки: не дотягивать проводник до точки привязки полигонального контакта.
-        [[= Xml::Attr]] Bool dontStretchWireToPolypin;
+        [[= XML::Attr]] Bool dontStretchWireToPolypin{};
+        // public bool dontStretchWireToPolypinSpecified
+        bool getDontStretchWireToPolypinSpecified() const;
     };
-
     // Настройки автоматических процедур.
     struct Autoproc {
         // Настройка автоматической перекладки проводников.
-        [[= Xml::Attr]] refine refine_;
+        [[= XML::Attr("refine")]] refine refine{};
         // Настройка автоматической подвижки.
-        [[= Xml::Attr]] automove automove_;
+        [[= XML::Attr("automove")]] automove automove{};
     };
     // Настройки автоматического размещения компонентов.
     struct Placement {
         // Настройки автоматического размещения компонентов: область размещения. Область прямоугольная, задаётся двумя вершинами(верхняя левая и правая нижняя).
-        // Координаты точек, вершин
-        [[= Xml::ArrayElem]] std::vector<Dot> PlacementArea;
+        struct PlacementArea {
+            // Координаты точек, вершин
+            //[[= XML::Elem("Dot")]] // public List<Dot> Dots;
+            [[= XML::Elem("Dot")]] std::vector<Dot> Dots;
+            bool ShouldSerialize_Dots();
+        };
+        // Настройки автоматического размещения компонентов: область размещения. Область прямоугольная, задаётся двумя вершинами(верхняя левая и правая нижняя).
+        [[= XML::Elem("PlacementArea")]] PlacementArea PlacementArea;
     };
-
     // Настройки ориентации ярлыков.
-    struct Labels {
+    struct Labels_Settings {
         // Настройка ориентации ярлыков: вращать ярлык при вращении компонента.
-        [[= Xml::Attr]] Bool rotateWithComp;
+        [[= XML::Attr]] Bool rotateWithComp{};
+        // public bool rotateWithCompSpecified
+        bool getRotateWithCompSpecified() const;
         // Настройка редактирования ярлыков: использовать правила ориентации.
-        [[= Xml::Attr]] Bool useOrientRules;
+        [[= XML::Attr]] Bool useOrientRules{};
+        // public bool useOrientRulesSpecified
+        bool getUseOrientRulesSpecified() const;
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на верхней стороне.
-        [[= Xml::Attr]] Bool topHorzRotate;
+        [[= XML::Attr]] Bool topHorzRotate{};
+        // public bool topHorzRotateSpecified
+        bool getTopHorzRotateSpecified() const;
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на верхней стороне.
-        [[= Xml::Attr]] Bool topVertRotate;
+        [[= XML::Attr]] Bool topVertRotate{};
+        // public bool topVertRotateSpecified
+        bool getTopVertRotateSpecified() const;
         // Настройка ориентации ярлыков: поворот для ярлыков горизонтальной ориентации на нижней стороне.
-        [[= Xml::Attr]] Bool bottomHorzRotate;
+        [[= XML::Attr]] Bool bottomHorzRotate{};
+        // public bool bottomHorzRotateSpecified
+        bool getBottomHorzRotateSpecified() const;
         // Настройка ориентации ярлыков: поворот для ярлыков вертикальной ориентации на нижней стороне.
-        [[= Xml::Attr]] Bool bottomVertRotate;
+        [[= XML::Attr]] Bool bottomVertRotate{};
+        // public bool bottomVertRotateSpecified
+        bool getBottomVertRotateSpecified() const;
     };
-
     // Версия раздела.
-    [[= Xml::Attr]] QString version;
+    [[= XML::Attr]] std::string version;
     // Настройки автоматической трассировки.
-    Autoroute autoroute;
+    [[= XML::Elem("Autoroute")]] Autoroute Autoroute;
     // Настройки автоматических процедур.
-    Autoproc autoproc;
+    [[= XML::Elem("Autoproc")]] Autoproc Autoproc;
     // Настройки автоматического размещения компонентов.
-    Placement placement;
+    [[= XML::Elem("Placement")]] Placement Placement;
     // Настройки ориентации ярлыков.
-    Labels labels;
-
+    [[= XML::Elem("Labels")]] Labels_Settings Labels;
     /********************************************************************
      * Здесь находятся функции для работы с элементами класса Settings. *
      * Они не являются частью формата TopoR PCB.                        *
      * ******************************************************************/
     /********************************************************************/
 };
-
 } // namespace TopoR

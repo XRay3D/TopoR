@@ -1,169 +1,187 @@
 #pragma once
-
 #include "Commons.h"
-
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
- * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
-
 namespace TopoR {
-// Комоненты на плате (обязательный раздел).
+// Компоненты на плате (обязательный раздел).
 struct ComponentsOnBoard {
     // Описание компонента на плате.
+    // ! Если компонент расположен на нижней стороне платы, его посадочное место отображается зеркально относительно вертикальной оси посадочного места, описанного в библиотеке(т.е.без угла поворота). Стеки контактных площадок переворачиваются.
     struct CompInstance {
-        // NOTE !Если компонент расположен на нижней стороне платы, его посадочное место отображается зеркально относительно вертикальной оси посадочного места, описанного в библиотеке(т.е.без угла поворота). Стеки контактных площадок переворачиваются.
-
         // Описание контакта компонента на плате.
+        // ! Если PadstackRef не указан, то стек контактных площадок берётся из посадочного места.
         struct Pin {
-            // NOTE !Если PadstackRef не указан, то стек контактных площадок берётся из посадочного места.
             // Номер контакта компонента.
-            [[= Xml::Attr]] int padNum;
+            [[= XML::Attr]] int padNum{};
             // Ссылка на стек контактных площадок.
-            PadstackRef padstackRef;
+            // public PadstackRef PadstackRef;
+            [[= XML::Elem /*("PadstackRef")*/]] PadstackRef PadstackRef;
+            bool ShouldSerializePadstackRef();
             // Точка привязки объекта.
-            Org org;
+            // public Org Org;
+            [[= XML::Elem /*("Org")*/]] Org Org;
         };
-
         // Описание монтажного отверстия в компоненте на плате.
         struct Mnthole {
             // Ссылка на монтажное отверстие в посадочном месте.
-            [[= Xml::Attr]] QString mntholeRef;
+            // public string mntholeRef;
+            [[= XML::Attr]] std::string mntholeRef;
             // Задаёт угол в градусах c точностью до тысячных долей.
-            [[= Xml::Attr]] double angle;
+            [[= XML::Attr]] float angle{};
             // Ссылка на стек контактных площадок.
-            PadstackRef padstackRef;
+            // public PadstackRef PadstackRef;
+            [[= XML::Elem /*("PadstackRef")*/]] PadstackRef PadstackRef;
             // Cсылка на цепь.
-            NetRef netRef;
+            // public NetRef NetRef;
+            [[= XML::Elem /*("NetRef")*/]] NetRef NetRef;
         };
-
         // Описание атрибута компонента на плате.
         struct Attribute {
             // Описание ярлыка компонента на плате.
             struct Label {
                 // Задаёт угол в градусах c точностью до тысячных долей.
-                [[= Xml::Attr]] double angle;
+                [[= XML::Attr]] float angle{};
                 // Параметр надписей и ярлыков: зеркальность отображения.
-                [[= Xml::Attr]] Bool mirror;
+                // public Bool mirror;
+                [[= XML::Attr]] Bool mirror{};
+                // public bool mirrorSpecified
+                bool getMirrorSpecified() const;
                 // Параметр надписей (ярлыков): способ выравнивания текста.
-                [[= Xml::Attr]] align align_;
+                // public align align;
+                [[= XML::Attr /*("align")*/]] align align{};
                 // Флаг видимости.
-                [[= Xml::Attr]] Bool visible;
+                // public Bool visible;
+                [[= XML::Attr]] Bool visible{};
+                // public bool visibleSpecified
+                bool getVisibleSpecified() const;
                 // Ссылка на слой.
-                LayerRef layerRef;
+                // public LayerRef LayerRef;
+                [[= XML::Elem /*("LayerRef")*/]] LayerRef LayerRef;
                 // Ссылка на стиль надписей.
-                TextStyleRef textStyleRef;
+                // public TextStyleRef TextStyleRef;
+                [[= XML::Elem /*("TextStyleRef")*/]] TextStyleRef TextStyleRef;
                 // Точка привязки объекта.
-                Org org;
-                QTransform transform() const;
+                // public Org Org;
+                [[= XML::Elem /*("Org")*/]] Org Org;
             };
-
             // Тип предопределённого атрибута компонента.
-            [[= Xml::Attr(NoOpt)]] Xml::Optional<type> type_;
+            // public type type;
+            [[= XML::Attr]] type type{};
             // Имя объекта или ссылка на именованный объект.
-            [[= Xml::Attr]] QString name;
+            // public string name;
+            [[= XML::Attr]] std::string name;
             // Значение атрибута.
-            [[= Xml::Attr(NoOpt)]] Xml::Optional<QString> value;
+            // public string value;
+            [[= XML::Attr]] std::string value;
             // Ярлыки.
-            Xml::Array<Label> Labels;
+            // public List<Label> Labels;
+            [[= XML::Elem /*("Label")*/]] std::vector<Label> Labels;
+            bool ShouldSerialize_Labels();
         };
-
         // Имя объекта или ссылка на именованный объект.
-        [[= Xml::Attr]] QString name;
+        // public string name;
+        [[= XML::Attr]] std::string name;
         // Уникальный идентификатор компонента. Используется при синхронизации. Необязательный атрибут.
-        [[= Xml::Attr]] QString uniqueId; // NOTE Если не задан, то будет создан при импорте файла.
+        // Если не задан, то будет создан при импорте файла.
+        // public string uniqueId;
+        [[= XML::Attr]] std::string uniqueId;
         // Сторона объекта.
-        [[= Xml::Attr(NoOpt)]] side side_;
-        // NOTE !Значение Both возможно только при описании запретов размещения.
+        // !Значение Both возможно только при описании запретов размещения.
+        // public side side;
+        [[= XML::Attr /*("side")*/]] side side{};
         // Задаёт угол в градусах c точностью до тысячных долей.
-        [[= Xml::Attr]] double angle;
+        // angle
+        [[= XML::Attr]] float angle{};
         // Признак фиксации.
-        [[= Xml::Attr]] Bool fixed;
+        // public Bool fixed;
+        [[= XML::Attr]] Bool fixed{};
+        // public bool fixedSpecified
+        bool getFixedSpecified() const;
         // Ссылка на схемный компонент.
-        ComponentRef componentRef;
+        // public ComponentRef ComponentRef;
+        [[= XML::Elem /*("ComponentRef")*/]] ComponentRef ComponentRef;
         // Ссылка на посадочное место.
-        FootprintRef footprintRef;
+        // public FootprintRef FootprintRef;
+        [[= XML::Elem /*("FootprintRef")*/]] FootprintRef FootprintRef;
         // Точка привязки объекта.
-        Org org;
+        // public Org Org;
+        [[= XML::Elem /*("Org")*/]] Org Org;
         // Контакты компонента на плате.
-        [[= Xml::ArrayElem]] std::vector<Pin> Pins;
+        //[XmlArrayItem/*("Pin")*/] public List<Pin> Pins;
+        [[= XML::Array]] std::vector<Pin> Pins;
+        bool ShouldSerialize_Pins();
         // Монтажные отверстия.
-        [[= Xml::ArrayElem]] std::vector<Mnthole> Mntholes;
+        //[XmlArrayItem/*("Mnthole")*/] public List<Mnthole> Mntholes;
+        [[= XML::Array]] std::vector<Mnthole> Mntholes;
+        bool ShouldSerialize_Mntholes();
         // Атрибуты компонента.
-        [[= Xml::ArrayElem]] std::vector<Attribute> Attributes;
-
+        //[XmlArrayItem/*("Attribute")*/] public List<Attribute> Attributes;
+        [[= XML::Array]] std::vector<Attribute> Attributes;
+        bool ShouldSerialize_Attributes();
         /************************************************************************
          * Здесь находятся функции для работы с элементами класса CompInstance. *
          * Они не являются частью формата TopoR PCB.                            *
          * **********************************************************************/
-
         // Для отображения имени компонента
-        operator QString() const { return name; }
-        QTransform transform() const;
+        //
+        std::string ToString();
         /***********************************************************************/
     };
-
     // Описание одиночного контакта..
     struct FreePad {
-        // Имя объекта или ссылка на именованный объект.
-        [[= Xml::Attr]] QString name;
         // Сторона объекта.
-        [[= Xml::Attr(NoOpt)]] side side_;
+        // public side side;
+        [[= XML::Attr /*("side")*/]] side side{};
         // Задаёт угол в градусах c точностью до тысячных долей.
-        [[= Xml::Attr]] double angle;
+        // angle
+        [[= XML::Attr]] float angle{};
         // Признак фиксации.
-        [[= Xml::Attr]] Bool fixed;
+        // public Bool fixed;
+        [[= XML::Attr]] Bool fixed{};
+        bool getFixedSpecified() const;
         // Ссылка на стек контактных площадок.
-        PadstackRef padstackRef;
+        // public PadstackRef PadstackRef;
+        [[= XML::Elem /*("PadstackRef")*/]] PadstackRef PadstackRef;
         // Cсылка на цепь.
-        Xml::Optional<NetRef> netRef;
+        // public NetRef NetRef;
+        [[= XML::Elem /*("NetRef")*/]] NetRef NetRef;
         // Точка привязки объекта.
-        Org org;
-        QTransform transform() const;
+        // public Org Org;
+        [[= XML::Elem /*("Org")*/]] Org Org;
     };
-
     // Версия раздела.
-    [[= Xml::Attr]] QString version;
+    // public string version;
+    [[= XML::Attr]] std::string version;
     // Описание компонентов на плате (инстанции компонентов)
-    [[= Xml::ArrayElem]] std::vector<CompInstance> Components;
-    // Описание одиночных контактов (инстанции компонентов)
-    [[= Xml::ArrayElem]] std::vector<FreePad> FreePads;
-
+    //[XmlArrayItem/*("CompInstance")*/] public List<CompInstance> Components;
+    [[= XML::Array]] std::vector<CompInstance> Components;
+    bool ShouldSerialize_Components();
+    // Описание одиночных контактов.(инстанции компонентов)
+    //[XmlArrayItem/*("FreePad")*/] public List<FreePad> FreePads;
+    [[= XML::Array]] std::vector<FreePad> FreePads;
+    bool ShouldSerialize_FreePads();
     /*****************************************************************************
      * Здесь находятся функции для работы с элементами класса ComponentsOnBoard. *
      * Они не являются частью формата TopoR PCB.                                 *
      * ***************************************************************************/
-
     // Добавление компонента
-    /// \param name \brief Имя нового компонента. Если имя неуникально, будет добавлен префикс _
-    /// \param units \brief текущие единицы измерения
-    /// \param componentRef \brief ссылка на библиотеку компонентов
-    /// \param footprintRef \brief ссылка на библиотеку посадочных мест
-    /// \return  Имя нового компонента
-    QString AddComponent(QString name, units units, const QString& componentRef, const QString& footprintRef);
-
+    // <param name="name">Имя нового компонента. Если имя неуникально, будет добавлен префикс </param>   // <param name="units">текущие единицы измерения</param>   // <param name="componentRef">ссылка на библиотеку компонентов</param>   // <param name="footprintRef">ссылка на библиотеку посадочных мест</param>   // Имя нового компонента
+    std::string AddComponent(const std::string& name, units units, const std::string& componentRef, const std::string& footprintRef);
     // Удаление компонента по имени
-    /// \param name \brief уникальный имя компонента
-    /// \return  true - если было произведено удаление, иначе (компонент не найден) - false
-    bool RemoveComponent(const QString& name);
-
+    // <param name="name">уникальный имя компонента</param>   // true - если было произведено удаление, иначе (компонент не найден) - false
+    bool RemoveComponent(const std::string& name);
     // Индекс компонента
-    /// \param name \brief уникальное имя компонента
-    /// \return  индекс компонента или -1, если компонент отсутствует
-    int ComponentIndexOf(const QString& name);
-
+    // <param name="name">уникальное имя компонента</param>   // индекс компонента или -1, если компонент отсутствует
+    int ComponentIndexOf(const std::string& name);
     // Переименование компонента
-    /// \param oldname \brief старое имя компонента
-    /// \param newname \brief новое имя компонента
-    /// \return  индекс компонента, если было произведено переименование, -1, если компонент не найден
-    int RenameComponent(const QString& oldname, const QString& newname);
-
+    // <param name="oldname">старое имя компонента</param>   // <param name="newname">новое имя компонента</param>   // индекс компонента, если было произведено переименование, -1, если компонент не найден
+    int RenameComponent(const std::string& oldname, const std::string& newname);
     // Генерация уникального идентификатора
-    /// \return  string like "ABCDEFGH"
-    QString UniqueId();
+    // string like "ABCDEFGH"
+    std::string UniqueId();
     /*************************************************************************************/
 };
-
 } // namespace TopoR

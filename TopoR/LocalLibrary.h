@@ -1,313 +1,337 @@
 #pragma once
-
 #include "Commons.h"
-
-#include <QPainterPath>
-#include <QPolygonF>
-
-/* Мною, Константином aka KilkennyCat,05 июля 2020 года создано сиё
+/* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
- * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
-
-class QGraphicsItemGroup;
-
 namespace TopoR {
-
-class TopoR_PCB_File;
-
 // Раздел «Библиотечные элементы». (Обязательный раздел)
 struct LocalLibrary {
-    // Ссылка на слой или тип слоя.
-    using BasePadRef = Xml::Variant<LayerRef,LayerTypeRef >;
-
+    struct BasePad {
+        // Ссылка на слой или тип слоя.
+        // public Object Reference;
+        [[= XML::Elem]] std::variant<LayerTypeRef, LayerRef> Reference;
+    };
     // Описание круглой контактной площадки.
-    struct PadCircle {
-        BasePadRef Reference;
+    struct PadCircle : public BasePad {
         // Диаметр окружности, круга, овала.
-        [[= Xml::Attr]] double diameter;
-        operator QPainterPath() const;
+        [[= XML::Attr]] float diameter{};
     };
     // Описание овальной контактной площадки.
-    struct PadOval {
-        BasePadRef Reference;
+    struct PadOval : public BasePad {
         // Диаметр окружности, круга, овала.
-        [[= Xml::Attr]] double diameter;
+        [[= XML::Attr]] float diameter{};
         // Параметр овальной контактной площадки: вытягивание по осям x и y.
-        Stretch stretch;
+        [[= XML::Elem("Stretch")]] Stretch Stretch;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
-        Xml::Optional<Shift> shift;
-        operator QPainterPath() const;
+        [[= XML::Elem("Shift")]] Shift Shift;
     };
     // Описание прямоугольной контактной площадки.
     // Дополнительные атрибуты(handling и handlingValue) позволяют задавать тип и величину обработки углов.
     // В качестве типа обработки допускается скругление или срез.
     // Тип для всех углов должен быть одинаковым: нельзя скруглять один угол и срезать другой.
     // Если флаг custom не установлен, обрабатываются все углы, иначе будут обработаны только углы,
-    // соответствующие установленным флагам - cornerLB,cornerRB,cornerRT,cornerLT.
+    // соответствующие установленным флагам - cornerLB, cornerRB, cornerRT, cornerLT.
     // Основные формы КП, которые данный формат позволяет описать:
     // прямоугольные КП;
     // прямоугольные КП со скруглёнными углами;
     // прямоугольные КП со срезанными углами;
     // Finger pads.
-    struct PadRect {
-        BasePadRef Reference;
+    struct PadRect : public BasePad {
         // Ширина прямоугольной контактной площадки.
-        [[= Xml::Attr]] double width;
+        [[= XML::Attr]] float width{};
         // Высота прямоугольной контактной площадки.
-        [[= Xml::Attr]] double height;
+        [[= XML::Attr]] float height{};
         // Тип обработки углов прямоугольной контактной площадки.
-        [[= Xml::Attr]] Handling handling;
+        [[= XML::Attr]] Handling handling{};
+        // public bool handlingSpecified
+        bool getHandlingSpecified() const;
         // Величина обработки углов прямоугольной контактной площадки. Значение зависит от типа обработки. Для скругления это радиус. Для среза это высота среза.
-        [[= Xml::Attr]] double handlingValue;
+        [[= XML::Attr]] float handlingValue{};
+        // public bool handlingValueSpecified
+        bool getHandlingValueSpecified() const;
         // Флаг выборочной обработки углов прямоугольной контактной площадки. Если не установлен, то все углы обрабатываются одинаковым образом.
-        [[= Xml::Attr]] Bool custom;
+        [[= XML::Attr]] Bool custom{};
+        // public bool customSpecified
+        bool getCustomSpecified() const;
         // Флаг обработки левого нижнего угла прямоугольной контактной площадки.
-        [[= Xml::Attr]] Bool cornerLB;
+        [[= XML::Attr]] Bool cornerLB{};
+        // public bool cornerLBSpecified
+        bool getCornerLBSpecified() const;
         // Флаг обработки правого нижнего угла прямоугольной контактной площадки.
-        [[= Xml::Attr]] Bool cornerRB;
+        [[= XML::Attr]] Bool cornerRB{};
+        // public bool cornerRBSpecified
+        bool getCornerRBSpecified() const;
         // Флаг обработки правого нижнего угла прямоугольной контактной площадки.
-        [[= Xml::Attr]] Bool cornerRT;
+        [[= XML::Attr]] Bool cornerRT{};
+        // public bool cornerRTSpecified
+        bool getCornerRTSpecified() const;
         // Флаг обработки левого верхнего угла прямоугольной контактной площадки.
-        [[= Xml::Attr]] Bool cornerLT;
+        [[= XML::Attr]] Bool cornerLT{};
+        // public bool cornerLTSpecified
+        bool getCornerLTSpecified() const;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
-        Xml::Optional<Shift> shift;
-        operator QPainterPath() const;
+        [[= XML::Elem("Shift")]] Shift Shift;
     };
     // Описание полигональной контактной площадки.
-    struct PadPoly {
-        BasePadRef Reference;
+    struct PadPoly : public BasePad {
         // Массив координат точек, вершин.
-        // NOTE !Минимум 3 элемента
-        Xml::Array<Dot> Dots;
-        operator QPolygonF() const;
-        operator QPainterPath() const;
+        // ! Минимум 3 элемента
+        //[[= XML::Elem("Dot")]] // public List<Dot> Dots;
+        [[= XML::Elem("Dot")]] std::vector<Dot> Dots;
+        bool ShouldSerialize_Dots();
     };
     // Описание стека контактных площадок.
     struct Padstack {
         // Имя объекта или ссылка на именованный объект.
-        [[= Xml::Attr]] QString name;
+        [[= XML::Attr]] std::string name;
         // Тип стека контактных площадок.
-        [[= Xml::Attr]] type_padstack type;
+        [[= XML::Attr]] TypePadstack type{};
         // Диаметр отверстия.
-        [[= Xml::Attr]] double holeDiameter;
+        [[= XML::Attr]] float holeDiameter{};
         // Параметр стека контактной площадки: металлизация отверстия.
-        [[= Xml::Attr]] Bool metallized;
+        [[= XML::Attr]] Bool metallized{};
+        // public bool metallizedSpecified
+        bool getMetallizedSpecified() const;
         // Параметр стека контактной площадки: подключение к области металлизации (полигону).
-        [[= Xml::Attr]] ConnectToCopper connectToCopper;
+        [[= XML::Attr]] ConnectToCopper connectToCopper{};
         // Описание термобарьера.
-        Thermal thermal;
+        [[= XML::Elem("Thermal")]] Thermal Thermal;
         // Контактные площадки стека.
-        [[= Xml::ArrayElem]] std::vector<Xml::Variant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
-        static QString getReference(const Xml::Variant<PadCircle, PadOval, PadRect, PadPoly>& padShape);
+        // <value>PadCircle, PadOval, PadRect, PadPoly</value>
+        //[XmlArrayItem("PadCircle", typeof(PadCircle)), XmlArrayItem("PadOval", typeof(PadOval)), XmlArrayItem("PadRect", typeof(PadRect)), XmlArrayItem("PadPoly", typeof(PadPoly))] public List<Object> Pads;
+        [[= XML::Array]] std::vector<std::variant<PadCircle, PadOval, PadRect, PadPoly>> Pads;
+        bool ShouldSerialize_Pads();
     };
     // Описание типа (стека) переходного отверстия.
     struct Viastack {
         // Диапазон слоев.
         // <value>AllLayers | [LayerRef]</value>
         struct LayerRange {
-            // AllLayers - yстанавливает область действия правила: все слои. См. также LayerRefs_
-            // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-            AllLayers allLayers;
-            // Диапазон слоёв. См. также allLayers
-            // NOTE !При null необходимо смотреть наличие AllLayers.
-            Xml::Array<LayerRef> LayerRefs;
+            // AllLayers - yстанавливает область действия правила: все слои. См. также LayerRefs
+            // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
+            // ORIGINAL LINE XmlElement: [AllLayers] public AllLayers AllLayers;
+            AllLayers AllLayers;
+            // Диапазон слоёв. См. также AllLayers
+            // ! При null необходимо смотреть наличие AllLayers.
+            // ORIGINAL LINE XmlElement: [LayerRef] public List<LayerRef> LayerRefs;
+            std::vector<LayerRef> LayerRefs;
+            bool ShouldSerializeLayerRefs();
         };
         // Имя объекта или ссылка на именованный объект.
-        [[= Xml::Attr]] QString name;
+        [[= XML::Attr]] std::string name;
         // Диаметр отверстия.
-        [[= Xml::Attr]] double holeDiameter;
+        [[= XML::Attr]] float holeDiameter{};
         // Параметр типа переходного отверстия: возможность установить переходное отверстие на контактной площадке.
-        [[= Xml::Attr]] Bool viaOnPin;
+        [[= XML::Attr]] Bool viaOnPin{};
+        // public bool viaOnPinSpecified
+        bool getViaOnPinSpecified() const;
         // Диапазон слоев.
         // <value>AllLayers | [LayerRef]</value>
-        LayerRange layerRange;
+        // ORIGINAL LINE XmlElement: [LayerRange] public LayerRange LayerRange;
+        LayerRange LayerRange;
         // Описание площадок стека переходного отверстия.
-        [[= Xml::ArrayElem]] std::vector<PadCircle> ViaPads;
+        //[XmlArrayItem("PadCircle", typeof(PadCircle))] public List<PadCircle> ViaPads;
+        [[= XML::Array]] std::vector<PadCircle> ViaPads;
+        bool ShouldSerialize_ViaPads();
     };
-    using VariantFig = Xml::Variant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour>;
     // Описание посадочного места.
     struct Footprint {
         // Описание области металлизации (полигона) в посадочном месте компонента.
-        struct Copper /*_Footprint*/ {
+        struct Copper {
             // Толщина линии.
-            [[= Xml::Attr]] double lineWidth;
+            [[= XML::Attr]] float lineWidth{};
             // Ссылка на слой.
-            LayerRef layerRef;
+            [[= XML::Elem("LayerRef")]] LayerRef LayerRef;
             // Описание фигуры.
-            // <value>ArcCCW,ArcCW,ArcByAngle,ArcByMiddle,Line,Circle,Rect,FilledCircle,FilledRect,Polygon</value>
-            VariantFig Figure;
+            // <value>ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon</value>
+            // public Object Figure;
+            [[= XML::Elem]] std::variant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour> Figure;
         };
         // Описание запрета в посадочном месте Footprint. Для запрета размещения должен быть указан слой с типом Assy.
-        struct Keepout /*_Place_Trace*/ {
+        struct Keepout {
             // Ссылка на слой.
-            LayerRef layerRef;
+            [[= XML::Elem("LayerRef")]] LayerRef LayerRef;
             // Описание фигуры.
-            // <value>ArcCCW,ArcCW,ArcByAngle,ArcByMiddle,Line,Circle,Rect,FilledCircle,FilledRect,Polygon</value>
-
-            VariantFig Figure;
+            // <value>ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon</value>
+            // public Object Figure;
+            [[= XML::Elem]] std::variant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour> Figure;
         };
         // Описание монтажного отверстия в посадочном месте.
         struct Mnthole {
             // Идентификатор неименованных объектов.
-            [[= Xml::Attr]] QString id;
+            [[= XML::Attr]] std::string id;
             // Ссылка на стек контактных площадок.
-            PadstackRef padstackRef;
+            [[= XML::Elem("PadstackRef")]] PadstackRef PadstackRef;
             // Точка привязки объекта.
-            Org org;
+            [[= XML::Elem("Org")]] Org Org;
         };
         // Описание ярлыка в посадочном месте.
-        struct Label /*_Footprint*/ {
+        struct Label {
             // Имя объекта или ссылка на именованный объект.
-            [[= Xml::Attr]] QString name;
+            [[= XML::Attr]] std::string name;
             // Параметр надписей (ярлыков): способ выравнивания текста.
-            [[= Xml::Attr]] align align_;
+            [[= XML::Attr("align")]] align align{};
             // Задаёт угол в градусах c точностью до тысячных долей.
-            [[= Xml::Attr]] double angle;
+            [[= XML::Attr]] float angle{};
             // Параметр надписей и ярлыков: зеркальность отображения.
-            [[= Xml::Attr]] Bool mirror;
+            [[= XML::Attr]] Bool mirror{};
+            // public bool mirrorSpecified
+            bool getMirrorSpecified() const;
             // Ссылка на слой.
-            LayerRef layerRef;
+            [[= XML::Elem("LayerRef")]] LayerRef LayerRef;
             // Ссылка на стиль надписей.
-            TextStyleRef textStyleRef;
+            [[= XML::Elem("TextStyleRef")]] TextStyleRef TextStyleRef;
             // Точка привязки объекта.
-            Xml::Optional<Org> org;
-            QTransform transform() const {
-                QTransform transform;
-                if(org)
-                    transform.translate(org.value().x, org.value().y);
-                if(angle)
-                    transform.rotate(angle);
-                return transform;
-            }
+            [[= XML::Elem("Org")]] Org Org;
         };
         // Описание контактной площадки (вывода) посадочного места.
-        // NOTE !В системе TopoR поддерживаются планарные контакты на внешних металлических слоях и не поддерживаются на внутренних.
-        // NOTE Т.е.у планарного контакта может быть только одна площадка или на верхней стороне, или на нижней.
-        // NOTE В описании планарного контакта используется только слой Top.
-        // NOTE Это означает, что контактная площадка будет находиться на одной стороне с компонентом.
-        // NOTE Если же площадка находится на противоположной стороне, то должен быть установлен флаг flipped.
-        // NOTE Этот флаг устанавливается в описании контакта посадочного места.
+        // ! В системе TopoR поддерживаются планарные контакты на внешних металлических слоях и не поддерживаются на внутренних.
+        // Т.е.у планарного контакта может быть только одна площадка или на верхней стороне, или на нижней.
+        // В описании планарного контакта используется только слой Top.
+        // Это означает, что контактная площадка будет находиться на одной стороне с компонентом.
+        // Если же площадка находится на противоположной стороне, то должен быть установлен флаг flipped.
+        // Этот флаг устанавливается в описании контакта посадочного места.
+        //
         struct Pad {
             // Номер контактной площадки (вывода) посадочного места.
-            [[= Xml::Attr]] int padNum;
+            [[= XML::Attr]] int padNum{};
             // Имя объекта или ссылка на именованный объект.
-            [[= Xml::Attr]] QString name;
+            [[= XML::Attr]] std::string name;
             // Задаёт угол в градусах c точностью до тысячных долей.
-            [[= Xml::Attr]] double angle;
+            [[= XML::Attr]] float angle{};
             // Параметр контакта (вывода) посадочного места: перевёрнутость.
             // Если флаг не установлен, площадка планарного контакта будет находиться на одной стороне с компонентом,
             // иначе площадка будет расположена на противоположной стороне.
-            [[= Xml::Attr]] Bool flipped;
+            [[= XML::Attr]] Bool flipped{};
+            // public bool flippedSpecified
+            bool getFlippedSpecified() const;
             // Ссылка на стек контактных площадок.
-            PadstackRef padstackRef;
+            [[= XML::Elem("PadstackRef")]] PadstackRef PadstackRef;
             // Точка привязки объекта.
-            Org org;
-            QTransform transform() const {
-                QTransform transform;
-                transform.translate(org.x, org.y);
-                if(angle) transform.rotate(angle);
-                return transform;
-            }
+            [[= XML::Elem("Org")]] Org Org;
         };
         // Имя объекта или ссылка на именованный объект.
-        [[= Xml::Attr]] QString name;
+        [[= XML::Attr]] std::string name;
         // Описание контактных площадок посадочного места.
-        [[= Xml::ArrayElem]] std::vector<Pad> Pads;
+        //[XmlArrayItem("Pad")] public List<Pad> Pads;
+        [[= XML::Array]] std::vector<Pad> Pads;
+        bool ShouldSerialize_Pads();
         // Надписи.
-        [[= Xml::ArrayElem]] std::vector<Text> Texts;
+        //[XmlArrayItem("Text")] public List<Text> Texts;
+        [[= XML::Array]] std::vector<Text> Texts;
+        bool ShouldSerialize_Texts();
         // Детали посадочного места.
-        [[= Xml::ArrayElem]] std::vector<Detail> Details;
+        //[XmlArrayItem("Detail")] public List<Detail> Details;
+        [[= XML::Array]] std::vector<Detail> Details;
+        bool ShouldSerialize_Details();
         // Области металлизации (полигонов) в посадочных местах компонентов.
-        [[= Xml::ArrayElem]] std::vector<Copper> Coppers;
+        //[XmlArrayItem("Copper")] public List<Copper> Coppers;
+        [[= XML::Array]] std::vector<Copper> Coppers;
+        bool ShouldSerialize_Coppers();
         // Запреты размещения в посадочном месте.
-        [[= Xml::ArrayElem]] std::vector<Keepout> KeepoutsPlace;
+        //[XmlArrayItem("Keepout")] public List<Keepout> KeepoutsPlace;
+        [[= XML::Array]] std::vector<Keepout> KeepoutsPlace;
+        bool ShouldSerialize_KeepoutsPlace();
         // Запреты трассировки в посадочном месте.
-        [[= Xml::ArrayElem]] std::vector<Keepout> KeepoutsTrace;
+        //[XmlArrayItem("Keepout")] public List<Keepout> KeepoutsTrace;
+        [[= XML::Array]] std::vector<Keepout> KeepoutsTrace;
+        bool ShouldSerialize_KeepoutsTrace();
         // Монтажные отверстия.
-        [[= Xml::ArrayElem]] std::vector<Mnthole> Mntholes;
+        //[XmlArrayItem("Mnthole")] public List<Mnthole> Mntholes;
+        [[= XML::Array]] std::vector<Mnthole> Mntholes;
+        bool ShouldSerialize_Mntholes();
         // Ярлыки.
-        [[= Xml::ArrayElem]] std::vector<Label> Labels;
-
-        QGraphicsItem* graphicsItem(const TopoR_PCB_File& file) const;
+        //[XmlArrayItem("Label")] public List<Label> Labels;
+        [[= XML::Array]] std::vector<Label> Labels;
+        bool ShouldSerialize_Labels();
+        std::string ToString();
     };
     // Описание схемного компонента.
     struct Component {
         // Описание контакта схемного компонента.
-        struct Pin /*_Component*/ {
+        struct Pin {
             // Номер контакта компонента.
-            [[= Xml::Attr]] int pinNum;
+            [[= XML::Attr]] int pinNum{};
             // Имя объекта или ссылка на именованный объект.
-            [[= Xml::Attr]] QString name;
+            [[= XML::Attr]] std::string name;
             // Схемотехническое имя контакта компонента.
-            [[= Xml::Attr]] QString pinSymName;
+            [[= XML::Attr]] std::string pinSymName;
             // Параметр контакта компонента: эквивалентность.
-            [[= Xml::Attr(NoOpt)]] int pinEqual;
+            [[= XML::Attr]] int pinEqual{};
             // Параметр контакта (вывода) компонента: номер вентиля контакта.
-            [[= Xml::Attr(NoOpt)]] int gate;
+            [[= XML::Attr]] int gate{};
             // Параметр контакта (вывода) компонента: эквивалентность вентиля контакта.
-            [[= Xml::Attr(NoOpt)]] int gateEqual;
+            [[= XML::Attr]] int gateEqual{};
         };
         // Описание атрибута схемного компонента.
-        struct Attribute /*_Component*/ {
+        struct Attribute {
             // Имя объекта или ссылка на именованный объект.
-            [[= Xml::Attr]] QString name;
+            [[= XML::Attr]] std::string name;
             // Значение атрибута.
-            [[= Xml::Attr]] QString value;
+            [[= XML::Attr]] std::string value;
         };
         // Имя объекта или ссылка на именованный объект.
-        [[= Xml::Attr]] QString name;
+        [[= XML::Attr]] std::string name;
         // Контакты схемного компонента.
-        [[= Xml::ArrayElem]] std::vector<Pin> Pins;
+        //[XmlArrayItem("Pin")] public List<Pin> Pins;
+        [[= XML::Array]] std::vector<Pin> Pins;
+        bool ShouldSerialize_Pins();
         // Атрибуты компонента.
-        [[= Xml::ArrayElem]] std::vector<Attribute> Attributes;
-        QString ToString() { return name; }
+        //[XmlArrayItem("Attribute")] public List<Attribute> Attributes;
+        [[= XML::Array]] std::vector<Attribute> Attributes;
+        bool ShouldSerialize_Attributes();
+        std::string ToString();
     };
     // Описание упаковки (соответствие контактов компонента и выводов посадочного места).
     struct Package {
         // Соответствие контакта схемного компонента и вывода посадочного места.
         struct Pinpack {
             // Номер контакта компонента.
-            [[= Xml::Attr]] int pinNum;
+            [[= XML::Attr]] int pinNum{};
             // Номер контактной площадки (вывода) посадочного места.
-            [[= Xml::Attr]] int padNum;
+            [[= XML::Attr]] int padNum{};
             // Параметр правил выравнивания задержек: тип значений констант и допусков.
-            [[= Xml::Attr]] valueType valueType_;
-
+            [[= XML::Attr]] ValueType valueType{};
             // Параметр контакта компонента в посадочном месте: задержка сигнала в посадочном месте.
-            [[= Xml::Attr]] double delay;
+            [[= XML::Attr]] float delay{};
         };
         // Ссылка на схемный компонент.
-        ComponentRef componentRef;
+        [[= XML::Elem("ComponentRef")]] ComponentRef ComponentRef;
         // Ссылка на посадочное место.
-        FootprintRef footprintRef;
+        [[= XML::Elem("FootprintRef")]] FootprintRef FootprintRef;
         // Соответствие контакта схемного компонента и вывода посадочного места.
-        Xml::Array<Pinpack> Pinpacks;
+        //[[= XML::Elem("Pinpack")]] // public List<Pinpack> Pinpacks;
+        [[= XML::Elem("Pinpack")]] std::vector<Pinpack> Pinpacks;
+        bool ShouldSerialize_Pinpacks();
     };
     // Версия раздела.
-    [[= Xml::Attr]] QString version;
+    [[= XML::Attr]] std::string version;
     // Стеки контактных площадок.
-    [[= Xml::ArrayElem]] std::vector<Padstack> Padstacks;
-    //  Типы (стеки) переходных отверстий.
-    [[= Xml::ArrayElem]] std::vector<Viastack> Viastacks;
+    //[XmlArrayItem("Padstack")] public List<Padstack> Padstacks;
+    [[= XML::Array]] std::vector<Padstack> Padstacks;
+    bool ShouldSerialize_Padstacks();
+    // Типы (стеки) переходных отверстий.
+    //[XmlArrayItem("Viastack")] public List<Viastack> Viastacks;
+    [[= XML::Array]] std::vector<Viastack> Viastacks;
+    bool ShouldSerialize_Viastacks();
     // Посадочные места.
-    [[= Xml::ArrayElem]] std::vector<Footprint> Footprints;
+    //[XmlArrayItem("Footprint")] public List<Footprint> Footprints;
+    [[= XML::Array]] std::vector<Footprint> Footprints;
+    bool ShouldSerialize_Footprints();
     // Схемные компоненты.
-    [[= Xml::ArrayElem]] std::vector<Component> Components;
+    //[XmlArrayItem("Component")] public List<Component> Components;
+    [[= XML::Array]] std::vector<Component> Components;
+    bool ShouldSerialize_Components();
     // Упаковки.
-    [[= Xml::ArrayElem]] std::vector<Package> Packages;
+    //[XmlArrayItem("Package")] public List<Package> Packages;
+    [[= XML::Array]] std::vector<Package> Packages;
+    bool ShouldSerialize_Packages();
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса LocalLibrary. *
      * Они не являются частью формата TopoR PCB.                            *
      * **********************************************************************/
-    mutable[[= Xml::Skip]] std::map<QString, QGraphicsItemGroup*> footprints;
-    const Padstack* getPadstack(const QString& name) const;
-    const Footprint* getFootprint(const QString& name) const;
-    const Component* getComponent(const QString& name) const;
-    const Viastack* getViastack(const QString& name) const;
     /************************************************************************/
 };
-
 } // namespace TopoR

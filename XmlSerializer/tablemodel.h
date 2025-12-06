@@ -10,7 +10,7 @@
 namespace pfr = boost::pfr;
 
 template <typename Data>
-class TableModel : public QAbstractTableModel {
+struct TableModel : public QAbstractTableModel {
     // Q_OBJECT
     Data& data_;
     using DataType = std::decay_t<decltype(data_.front())>;
@@ -34,7 +34,7 @@ public:
         return Size;
     }
     QVariant data(const QModelIndex& index, int role) const override {
-        if(role == Qt::DisplayRole || role == Qt::EditRole) {
+        if(role == Qt::DisplayRole || role == Qt::EditRole)
             return [column = index.column(), this]<size_t... Is>(const auto& val, std::index_sequence<Is...>) {
                 QVariant ret;
                 auto readField = [column, &ret, this]<size_t I>(const auto& val, std::integral_constant<size_t, I>) {
@@ -43,7 +43,6 @@ public:
                 (readField(val, std::integral_constant<size_t, Is>{}), ...);
                 return ret;
             }(data_[index.row()], std::make_index_sequence<Size>{});
-        }
         return {};
     }
     bool setData(const QModelIndex& index, const QVariant& value, int role) override {
@@ -62,7 +61,7 @@ public:
     }
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override {
-        if(orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+        if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
             return [section, this]<size_t... Is>(std::index_sequence<Is...>) {
                 QString ret;
                 (((section == Is)
@@ -71,7 +70,6 @@ public:
                     ...);
                 return ret;
             }(std::make_index_sequence<Size>{});
-        }
         return QAbstractTableModel::headerData(section, orientation, role);
     }
 

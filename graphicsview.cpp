@@ -442,7 +442,7 @@ void GraphicsView::drawRuller(QPainter* painter, const QRectF& rect_) const {
     // painter->drawText(QRect{{}, size}, Qt::AlignLeft, text);
 }
 
-class GiGuide : public QGraphicsItem {
+struct GiGuide : public QGraphicsItem {
 
     Qt::Orientation orientation;
     double scaleFactor() const {
@@ -474,7 +474,6 @@ public:
         painter->fillRect(boundingRect(), Qt::magenta);
     }
 
-protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override {
         QGraphicsItem::mouseReleaseEvent(event);
         orientation == Qt::Horizontal ? setPos(0, y()) : setPos(x(), 0);
@@ -528,10 +527,10 @@ void GraphicsView::mousePressEvent(QMouseEvent* event) {
         //        QMouseEvent fakeEvent(event->type(), event->localPos(), event->screenPos(), event->windowPos(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
         //        QGraphicsView::mousePressEvent(&fakeEvent);
         // #else
-        QMouseEvent releaseEvent(QEvent::MouseButtonRelease, event->pos(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
+        QMouseEvent releaseEvent(QEvent::MouseButtonRelease, event->pos(), event->globalPosition(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
         QGraphicsView::mouseReleaseEvent(&releaseEvent);
         setDragMode(ScrollHandDrag);
-        QMouseEvent fakeEvent(event->type(), event->pos(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
+        QMouseEvent fakeEvent(event->type(), event->pos(), event->globalPosition(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
         QGraphicsView::mousePressEvent(&fakeEvent);
         // #endif
     } else if(event->button() == Qt::RightButton) {
@@ -584,7 +583,7 @@ void GraphicsView::mouseReleaseEvent(QMouseEvent* event) {
         // #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         //        QMouseEvent fakeEvent(event->type(), event->localPos(), event->screenPos(), event->windowPos(), Qt::LeftButton, event->buttons() & ~Qt::LeftButton, event->modifiers());
         // #else
-        QMouseEvent fakeEvent(event->type(), event->pos(), Qt::LeftButton, event->buttons() & ~Qt::LeftButton, event->modifiers());
+        QMouseEvent fakeEvent(event->type(), event->pos(), event->globalPosition(), Qt::LeftButton, event->buttons() & ~Qt::LeftButton, event->modifiers());
         // #endif
         QGraphicsView::mouseReleaseEvent(&fakeEvent);
         setDragMode(NoDrag);

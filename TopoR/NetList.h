@@ -1,38 +1,34 @@
-#pragma once
-
+﻿#pragma once
 #include "Commons.h"
-
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
- * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
-
 namespace TopoR {
-
 // Раздел «Текущий список соединений».
 struct NetList {
     // Раздел «Текущий список соединени
     struct Net {
         // Имя объекта или ссылка на именованный объект.
-        [[= Xml::Attr]] QString name;
+        [[= XML::Attr]] std::string name;
         // Ссылка на контакт или вывод посадочного места (объект класса PinRef или PadRef).
-        Xml::Array<Xml::Variant<PinRef, PadRef>> refs;
+        // public List<Object> refs;
+        [[= XML::Elem]] std::vector<std::variant<PinRef, PadRef>> refs;
+        bool ShouldSerialize_refs();
     };
     // Версия раздела.
-    [[= Xml::Attr]] QString version;
+    [[= XML::Attr]] std::string version;
     // Описания цепей.
-    Xml::Array<Net> Nets;
+    [[= XML::Elem("Net")]] std::vector<Net> Nets;
+    bool ShouldSerialize_Nets();
     /*******************************************************************
-     * Здесь находятся функции для работы с элементами класса Nets. *
+     * Здесь находятся функции для работы с элементами класса NetList. *
      * Они не являются частью формата TopoR PCB.                       *
      * *****************************************************************/
     // Переименование ссылок на компонент, если его имя изменилось
-    /// \param oldname \brief старое имя компонента
-    /// \param newname \brief новое имя компонента
-    void Rename_compName(const QString& oldname, const QString& newname);
+    // <param name="oldname">старое имя компонента</param>   // <param name="newname">новое имя компонента</param>
+    void Rename_compName(const std::string& oldname, const std::string& newname);
     /*******************************************************************/
 };
-
 } // namespace TopoR

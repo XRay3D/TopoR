@@ -3,9 +3,9 @@
 #include <QMainWindow>
 #include <QMap>
 
-class QGraphicsItemGroup;
+struct QGraphicsItemGroup;
 namespace Ui {
-class MainWindow;
+struct MainWindow;
 }
 
 namespace TopoR {
@@ -15,7 +15,7 @@ struct TopoR_PCB_File;
 
 struct QGraphicsItem;
 
-class MainWindow : public QMainWindow {
+struct MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:

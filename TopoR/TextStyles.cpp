@@ -1,16 +1,4 @@
-#include "TextStyles.h"
-
-#if TEXTSTYLES
-
+﻿#include "TextStyles.h"
 namespace TopoR {
-
-const TextStyles::TextStyle* TextStyles::getTextStyle(const QString& name) const {
-    for(auto&& textStyle: textStyles)
-        if(name == textStyle.name)
-            return &textStyle;
-    return {};
-}
-
+bool TextStyles::ShouldSerialize_TextStyles() { return TextStyles.size(); }
 } // namespace TopoR
-
-#endif

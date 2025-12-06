@@ -41,7 +41,8 @@ bool Serializer::load() {
         QString errorMsg{};
         int errorLine{};
         int errorColumn{};
-        if(!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn)) {
+        if(auto [errorMsg, errorLine, errorColumn] = doc.setContent(&file)) {
+        } else {
             qWarning() << errorMsg << errorLine << errorColumn;
             break;
         }
@@ -60,7 +61,7 @@ QString Serializer::toString() const {
     text.replace("]]>", "");
     text.replace("&#xd;", "\x0D");
     text.replace("&#xa;", "\x0A");
-    text.replace("    ", "\t");// NOTE может менять только началострок
+    text.replace("    ", "\t"); // NOTE может менять только началострок
     return text;
 }
 

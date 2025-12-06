@@ -1,212 +1,138 @@
 #pragma once
-
 #include "Commons.h"
-
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
- * Мною, Дамиром aka x-ray, 08.02.2025 года сие перекидано на кресты.
  */
-
 namespace TopoR {
 // Описание конструктива платы.
 struct Constructive {
     // Описание контура платы и вырезов в плате.
     struct BoardOutline {
-#if 0
-        struct ShapeContour {
+        struct Shape {
             // Толщина линии.
-            // [Xml::Attribute("lineWidth", DataType = "double")] public double lineWidth_;
-            [[=Xml::Attr]]
-double lineWidth;
+            [[= XML::Attr]] float lineWidth{};
             // Незалитая фигура.
-            // [Xml::Element(ArcCCW),
-            //  Xml::Element(ArcCW),
-            //  Xml::Element(ArcByAngle),
-            //  Xml::Element(ArcByMiddle),
-            //  Xml::Element(Circle),
-            //  Xml::Element(Line),
-            //  Xml::Element(Polyline),
-            //  Xml::Element(Rect),
-            //  Xml::Element(Contour)] public Object NonfilledFigure_;
-            Xml::Variant<
-                ArcCCW,
-                ArcCW,
-                ArcByAngle,
-                ArcByMiddle,
-                Circle,
-                Line,
-                Polyline,
-                Rect,
-                Contour>
-                NonfilledFigure_;
+            // public Object NonfilledFigure;
+            [[= XML::Elem]] std::variant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Circle, Line, Polyline, Rect, Contour> NonfilledFigure;
             /*************************************************************************
-             * Здесь находятся функции для работы с элементами класса Shape_Contour. *
+             * Здесь находятся функции для работы с элементами класса Shape. *
              * Они не являются частью формата TopoR PCB.                             *
              * ***********************************************************************/
-
-            //    void UnitsConvert(dist in_units, dist out_units);
+            void Shift(float x, float y);
+            void UnitsConvert(dist in_units, dist out_units);
             /*************************************************************************/
         };
-        struct ShapeVoids {
+        struct Shape_Voids {
             // Толщина линии.
-            // [Xml::Attribute("lineWidth", DataType = "double")] public double lineWidth_;
-            [[=Xml::Attr]]
-double lineWidth;
+            [[= XML::Attr]] float lineWidth{};
             // Описание залитой фигуры.
-            // [Xml::Element(FilledCircle),
-            //  Xml::Element(FilledRect),
-            //  Xml::Element(Polygon),
-            //  Xml::Element(FilledContour)] public Object FilledFigure_;
-            Xml::Variant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure_;
+            // public Object FilledFigure;
+            [[= XML::Elem]] std::variant<FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure;
             /**********************************************************************
              * Здесь находятся функции для работы с элементами класса Shape_Voids. *
              * Они не являются частью формата TopoR PCB.                           *
              * *********************************************************************/
-
-            //    void UnitsConvert(dist in_units, dist out_units);
+            void Shift(float x, float y);
+            void UnitsConvert(dist in_units, dist out_units);
             /***********************************************************************/
         };
         // Описание контура платы.
-        // [Xml::Array("Contour")][Xml::ArrayItem("Shape")] public List<Shape_Contour> Contours_;
-       [[=Xml::ArrayElem]] std::vector<ShapeContour> Contours;
+        //[XmlArrayItem("Shape")] public List<Shape> Contours;
+        [[= XML::Array]] std::vector<Shape> Contour;
+        bool ShouldSerialize_Contours();
         // Вырезы в плате.
-        // [Xml::Array("Voids")][Xml::ArrayItem("Shape")] public List<Shape_Voids> Voids_;
-       [[=Xml::ArrayElem]] std::vector<ShapeVoids> Voids;
-#else
-        struct Shape {
-            // Толщина линии.
-            [[= Xml::Attr]] double lineWidth;
-            // Незалитая фигура.
-            Xml::Variant<
-                ArcCCW,      // Contour
-                ArcCW,       // Contour
-                ArcByAngle,  // Contour
-                ArcByMiddle, // Contour
-                Circle,      // Contour
-                Line,        // Contour
-                Polyline,    // Contour
-                Rect,        // Contour
-                Contour>     // Contour
-                NonfilledFigure;
-            // Описание залитой фигуры.
-            Xml::Variant<
-                FilledCircle,  // Voids
-                FilledRect,    // Voids
-                Polygon,       // Voids
-                FilledContour> // Voids
-                FilledFigure;// FIXME skip write
-            /*************************************************************************
-             * Здесь находятся функции для работы с элементами класса Shape_Contour. *
-             * Они не являются частью формата TopoR PCB.                             *
-             * ***********************************************************************/
-
-            //    void UnitsConvert(dist in_units, dist out_units);
-            /*************************************************************************/
-        };
-        // Описание контура платы.
-        [[= Xml::ArrayElem]] std::vector<Shape> Contour_;
-        // Вырезы в плате.
-        [[= Xml::ArrayElem]] std::vector<Shape> Voids;
-#endif
+        //[XmlArrayItem("Shape")] public List<Shape_Voids> Voids;
+        [[= XML::Array]] std::vector<Shape_Voids> Voids;
+        bool ShouldSerialize_Voids();
     };
-
     // Описание монтажного отверстия на плате.
     struct MntholeInstance {
         // Задаёт угол в градусах c точностью до тысячных долей.
-        [[= Xml::Attr]] double angle;
+        [[= XML::Attr]] float angle{};
         // Признак фиксации.
-        [[= Xml::Attr]] Bool fixed;
+        [[= XML::Attr]] Bool fixed{};
+        // public bool fixedSpecified
+        bool getFixedSpecified() const;
         // Ссылка на стек контактных площадок.
-        PadstackRef padstackRef;
+        [[= XML::Elem("PadstackRef")]] PadstackRef PadstackRef;
         // ссылка на цепь.
-        NetRef netRef;
+        [[= XML::Elem("NetRef")]] NetRef NetRef;
         // Точка привязки объекта.
-        Org org;
-
-        //    void UnitsConvert(dist in_units, dist out_units);
+        [[= XML::Elem("Org")]] Org Org;
+        void Shift(float x, float y);
+        void UnitsConvert(dist in_units, dist out_units);
     };
-
     // Описание запрета.
-    struct Keepout {
+    struct Keepout_Сonstructive {
         // Тип запрета.
         struct Role {
-            // Тип запрета: запрет трассировки.
+            // <summary>           // Тип запрета: запрет трассировки.
             struct Trace {
                 // Тип запрета трассировки.
-                [[= Xml::Attr]] role role_;
-                // Ссылка на слои. См. также LayersRefs_
-                // NOTE !При null необходимо смотреть LayersRefs_ - там описан список ссылок типа LayerRef.
-                Xml::Variant<
-                    AllLayers,
-                    AllLayersInner,
-                    AllLayersInnerSignal,
-                    AllLayersSignal,
-                    AllLayersOuter,
-                    LayerGroupRef>
-                    LayersRef;
-                // Ссылка на слои. См. также LayersRef_
-                // NOTE !При null необходимо смотреть LayersRef_ - там описаны ссылки остальных типов.
-                Xml::Array<LayerRef> LayersRefs;
+                [[= XML::Attr("role")]] role role{};
+                // Ссылка на слои. См. также LayersRefs
+                // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
+                // public Object LayersRef;
+                [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+                // Ссылка на слои. См. также LayersRef
+                // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
+                //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
+                [[= XML::Elem("LayerRef")]] std::vector<LayerRef> LayersRefs;
+                bool ShouldSerialize_LayersRefs();
             };
             // Тип запрета: запрет размещения.
             struct Place {
                 // Сторона объекта.
-                [[= Xml::Attr]] side side_;
+                [[= XML::Attr("side")]] side side{};
             };
             // Тип запрета: запрет трассировки.
-            Trace trace;
-            // Place place;
-            [[= Xml::Attr]] side Place;
+            // ORIGINAL LINE XmlElement: [Trace] public Trace Trace;
+            Trace Trace;
+            // ORIGINAL LINE XmlElement: [Place] public Place Place;
+            Place Place;
         };
-
-        //
-        Role role_;
+        // ORIGINAL LINE XmlElement: [Role] public Role Role;
+        Role Role;
         // Описание фигуры.
-        Xml::Variant<
-            ArcCCW,
-            ArcCW,
-            ArcByAngle,
-            ArcByMiddle,
-            Line,
-            Circle,
-            Rect,
-            FilledCircle,
-            FilledRect,
-            Polygon,
-            Contour,
-            FilledContour,
-            Polyline>
-            FigureContPolyline;
+        // public Object FigureContPolyline;
+        [[= XML::Elem]] std::variant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Contour, FilledContour, Polyline> FigureContPolyline;
         /********************************************************************************
          * Здесь находятся функции для работы с элементами класса Keepout_Сonstructive. *
          * Они не являются частью формата TopoR PCB.                                    *
          * ******************************************************************************/
-
-        //    void UnitsConvert(dist in_units, dist out_units);
+        void Shift(float x, float y);
+        void UnitsConvert(dist in_units, dist out_units);
         /********************************************************************************/
     };
     // Версия раздела.
-    [[= Xml::Attr]] QString version;
+    [[= XML::Attr]] std::string version;
     // Контур платы и вырезы в плате.
-    BoardOutline boardOutline;
+    [[= XML::Elem("BoardOutline")]] BoardOutline BoardOutline;
     // Монтажные отверстия на плате.
-    [[= Xml::ArrayElem]] std::vector<MntholeInstance> Mntholes;
+    // ORIGINAL LINE: ("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> Mntholes;
+    [[= XML::Array]] std::vector<MntholeInstance> Mntholes;
+    bool ShouldSerialize_Mntholes();
     // Детали на механических слоях.
-    [[= Xml::ArrayElem]] std::vector<Detail> MechLayerObjects;
+    // ORIGINAL LINE: ("MechLayerObjects"), DefaultValue(null)][XmlArrayItem("Detail")] public List<Detail> MechLayerObjects;
+    [[= XML::Array]] std::vector<Detail> MechLayerObjects;
+    bool ShouldSerialize_MechLayerObjects();
     // Описание надписей.
-    [[= Xml::ArrayElem]] std::vector<Text> Texts;
+    // ORIGINAL LINE: ("Texts"), DefaultValue(null)][XmlArrayItem("Text")] public List<Text> Texts;
+    [[= XML::Array]] std::vector<Text> Texts;
+    bool ShouldSerialize_Texts();
     // Описание запретов.
-    [[= Xml::ArrayElem]] std::vector<Keepout> Keepouts;
+    // ORIGINAL LINE: ("Keepouts"), DefaultValue(null)][XmlArrayItem("Keepout")] public List<Keepout_Сonstructive> Keepouts;
+    [[= XML::Array]] std::vector<Keepout_Сonstructive> Keepouts;
+    bool ShouldSerialize_Keepouts();
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Сonstructive. *
      * Они не являются частью формата TopoR PCB.                            *
      * **********************************************************************/
-
-    //    void UnitsConvert(dist in_units, dist out_units);
-    //    void Add(Constructive a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts);
+    void Shift(float x, float y);
+    void UnitsConvert(dist in_units, dist out_units);
+    void Add(Constructive a, bool boardOutline, bool mntholeInstances, bool details, bool texts, bool keepouts);
     /************************************************************************/
 };
-
 } // namespace TopoR

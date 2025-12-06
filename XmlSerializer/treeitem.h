@@ -5,7 +5,7 @@
 #include <QVector>
 #include <array>
 
-class TreeItem {
+struct TreeItem {
 public:
     explicit TreeItem(
         const QString& Name,

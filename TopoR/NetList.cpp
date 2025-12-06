@@ -1,19 +1,24 @@
-#include "NetList.h"
+﻿#include "NetList.h"
 #include "Commons.h"
-
-#if NetList
-
 namespace TopoR {
-
-void NetList::Rename_compName(const QString& oldname, const QString& newname) {
-    auto filter = [&oldname](auto&& b) {
-        return std::visit([&oldname](auto& ref) { return ref.compName == oldname; }, b);
-    };
-    for(Net& a: Nets)
-        for(auto&& b: a.refs | std::ranges::views::filter(filter))
-            std::visit([&](auto& ref) { ref.compName = newname; }, b);
+bool NetList::Net::ShouldSerialize_refs() {
+    return {}; //    return refs.size();
 }
-
+bool NetList::ShouldSerialize_Nets() {
+    return {}; //    return Nets.size();
+}
+void NetList::Rename_compName(const std::string& oldname, const std::string& newname) {
+    // for(auto a: Nets.Where([&](std::variant<> aa) {
+    //         return aa::refs != nullptr;
+    //     })) {
+    //     for(auto b: a::refs::OfType<PinRef>().Where([&](std::variant<> bb) {
+    //             return bb->compName == oldname;
+    //         }))
+    //         b->compName = newname;
+    //     for(auto b: a::refs::OfType<PadRef>().Where([&](std::variant<> bb) {
+    //             return bb->compName == oldname;
+    //         }))
+    //         b->compName = newname;
+    // }
+}
 } // namespace TopoR
-
-#endif

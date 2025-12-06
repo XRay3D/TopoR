@@ -1,20 +1,39 @@
-#include "Layers.h"
-
-#if LAYERS
-/*****************************************************************
- * Здесь находятся функции для работы с элементами класса Layer. *
- * Они не являются частью формата TopoR PCB.                     *
- * ***************************************************************/
+﻿#include "Layers.h"
 namespace TopoR {
-
-bool Layers::LayerStackUpContains(LayerRef lref) const {
-    return std::ranges::find(StackUpLayers, lref.name, &Layer::name) != StackUpLayers.end();
+bool Layers::Layer::getCompsOutlineSpecified() const {
+    return {}; //    return type == layertype::Assy;
 }
-
-bool Layers::LayerUnStackContain(LayerRef lref) const {
-    return std::ranges::find(UnStackLayers, lref.name, &Layer::name) != UnStackLayers.end();
+bool Layers::Layer::getThicknessSpecified() const {
+    return {}; //    return type != layertype::Assy;
 }
-
+Layers::Layer::Layer() { }
+Layers::Layer::Layer(const std::string& name, layertype type, Bool compsOutline, float thickness) {
+    //    name = name;
+    //    type = type;
+    //    compsOutline = compsOutline;
+    //    thickness = thickness;
+}
+std::string Layers::Layer::ToString() {
+    return {}; //    return name;
+}
+bool Layers::ShouldSerialize_StackUpLayers() {
+    return {}; //    return StackUpLayers.size();
+}
+bool Layers::ShouldSerialize_UnStackLayers() {
+    return {}; //    return UnStackLayers.size();
+}
+bool Layers::LayerStackUpContains(LayerRef lref) {
+    return {}; //    return (StackUpLayers.empty() ? nullptr : StackUpLayers.Where([&](std::variant<> r) {
+    //                                                                 return r->name == lref->ReferenceName;
+    //                                                             })
+    //                                                   ->Count())
+    //        > 0;
+}
+bool Layers::LayerUnStackContain(LayerRef lref) {
+    return {}; //    return (UnStackLayers.empty() ? nullptr : UnStackLayers.Where([&](std::variant<> r) {
+    //                                                                 return r->name == lref->ReferenceName;
+    //                                                             })
+    //                                                   ->Count())
+    //        > 0;
+}
 } // namespace TopoR
-
-#endif

@@ -1,22 +1,34 @@
-#include "Groups.h"
+﻿#include "Groups.h"
 #include "Commons.h"
-
-#if GROUPS
-
 namespace TopoR {
-QString Groups::LayerGroup::ToString() {
-    return name;
+bool Groups::LayerGroup::ShouldSerializeLayerRefs() {
+    return {}; //    return LayerRefs.size();
 }
-void Groups::Rename_compName(const QString& oldname, const QString& newname) {
-    /*  for(auto a: (_CompGroups.empty() ? nullptr : CompGroups.Where([&](std::any aa) {
-              return aa::_CompRefs != nullptr;
-          })))
-          for(auto b: a::_CompRefs::OfType<CompInstanceRef>().Where([&](std::any bb) {
-                  return bb.value()._ReferenceName == oldname;
-              }))
-              b->_ReferenceName = newname;*/
+std::string Groups::LayerGroup::ToString() {
+    return {}; //    return name;
 }
-
+bool Groups::NetGroup::ShouldSerialize_NetRefs() {
+    return {}; //    return NetRefs.size();
+}
+bool Groups::CompGroup::ShouldSerialize_CompRefs() {
+    return {}; //    return CompRefs.size();
+}
+bool Groups::ShouldSerialize_LayerGroups() {
+    return {}; //    return LayerGroups.size();
+}
+bool Groups::ShouldSerialize_NetGroups() {
+    return {}; //    return NetGroups.size();
+}
+bool Groups::ShouldSerialize_CompGroups() {
+    return {}; //    return CompGroups.size();
+}
+void Groups::Rename_compName(const std::string& oldname, const std::string& newname) {
+    //    for(auto a: (CompGroups.empty() ? nullptr : CompGroups.Where([&](std::variant<> aa) {
+    //            return aa::CompRefs != nullptr;
+    //        })))
+    //        for(auto b: a::CompRefs::OfType<CompInstanceRef>().Where([&](std::variant<> bb) {
+    //                return bb->ReferenceName == oldname;
+    //            }))
+    //            b->ReferenceName = newname;
+}
 } // namespace TopoR
-
-#endif

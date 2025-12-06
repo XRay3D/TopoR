@@ -18,11 +18,11 @@
 namespace ranges = std::ranges;
 namespace rviews = std::ranges::views;
 
-class Ruler;
-class QGridLayout;
+struct Ruler;
+struct QGridLayout;
 // class Scene;
 
-class GraphicsView : public QGraphicsView {
+struct GraphicsView : public QGraphicsView {
     Q_OBJECT
 
     Q_PROPERTY(double scale READ getScale WRITE setScale)
@@ -153,7 +153,7 @@ private:
 
     int timerId{};
     // QWidget interface
-protected:
+
     void dragEnterEvent(QDragEnterEvent* event) override;
     void dragMoveEvent(QDragMoveEvent* event) override;
     void dropEvent(QDropEvent* event) override;
@@ -168,7 +168,7 @@ protected:
     void drawBackground(QPainter* painter, const QRectF& rect) override;
 
     // QObject interface
-protected:
+
     void timerEvent(QTimerEvent* event) override;
 };
 

@@ -2,7 +2,7 @@
 
 #include <QAbstractListModel>
 template <typename T, typename Proj>
-class ListModel : public QAbstractListModel {
+struct ListModel : public QAbstractListModel {
     // Q_OBJECT
     T& data_;
     Proj proj;
