@@ -20,40 +20,36 @@
  */
 namespace TopoR {
 // Корневой тег. Включает все разделы файла.
-struct[[= XML::Root("TopoR_PCB_File")]] TopoR_PCB_File {
-    /*
+struct[[= XML::Root]] TopoR_PCB_File {
     // Раздел «Заголовок файла».
-    [[= XML::Elem("Header")]] Header header;
+    [[= XML::Elem]] Header Header;
     // Раздел «Слои». (Обязательный раздел)
-    [[= XML::Elem("Layers")]] Layers layers;
+    [[= XML::Elem]] Layers Layers;
     // Раздел «Стили надписей».
-    [[= XML::Elem("TextStyles")]] TextStyles textStyles;
+    [[= XML::Elem]] TextStyles TextStyles;
     // Раздел «Библиотечные элементы». (Обязательный раздел)
-    [[= XML::Elem("LocalLibrary")]] LocalLibrary localLibrary;
+    [[= XML::Elem]] LocalLibrary LocalLibrary;
     // Раздел «Конструктив платы».
-    [[= XML::Elem("Constructive")]] Constructive constructive;
+    [[= XML::Elem]] Constructive Constructive;
     // Раздел «Компоненты на плате». (Обязательный раздел).
-    [[= XML::Elem("ComponentsOnBoard")]] ComponentsOnBoard componentsOnBoard;
+    [[= XML::Elem]] ComponentsOnBoard ComponentsOnBoard;
     // Раздел «Текущий список соединений».
-    [[= XML::Elem("NetList")]] NetList netList;
+    [[= XML::Elem]] NetList NetList;
     // Раздел «Группировка объектов».
-    [[= XML::Elem("Groups")]] Groups groups;
+    [[= XML::Elem]] Groups Groups;
     // Раздел «Правила для высокоскоростных устройств».
-    [[= XML::Elem("HiSpeedRules")]] HiSpeedRules hiSpeedRules;
+    [[= XML::Elem]] HiSpeedRules HiSpeedRules;
     // Раздел «Правила».
     // ! Порядок следования правил в каждой секции определяет приоритет правил. Чем выше приоритет у правила, тем ниже оно описано.
-    [[= XML::Elem("Rules")]] Rules rules;
+    [[= XML::Elem]] Rules Rules;
     // Раздел «Соединения на плате».
     // В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
-    */
-    [[= XML::Elem("Connectivity")]] Connectivity connectivity;
+    [[= XML::Elem]] Connectivity Connectivity;
     // Раздел «Настройки дизайна».
-    /*
-    [[= XML::Elem("Settings")]] Settings settings;
+    [[= XML::Elem]] Settings Settings;
     // Раздел «Настройки отображения».
-    [[= XML::Elem("DisplayControl")]] DisplayControl displayControl;
+    [[= XML::Elem]] DisplayControl DisplayControl;
     // Раздел «Настройки диалогов».
-    [[= XML::Elem("DialogSettings")]] DialogSettings dialogSettings;
-    */
+    [[= XML::Elem]] DialogSettings DialogSettings;
 };
 } // namespace TopoR

@@ -167,23 +167,31 @@ int main() {
     std::string_view file = "/home/x-ray/Nextcloud/HARTMASTER/HARTMASTER.fst";
     // std::string_view file = "C:/Users/bakiev/Nextcloud/HARTMASTER/HARTMASTER.fst";
 
-#if 1
     XML::Document doc;
+#if 0
     if(doc.load(file)) {
-
         doc.write("out.xml", 4);
+        file = "out.xml";
+        if(doc.load(file)) {
+        }
     }
     //--palette='ad=1;3;38;5;154:de=1;3;38;5;9'
     // system("diff --color -b -B -u /home/x-ray/Nextcloud/HARTMASTER/B0505XT-1WR2.fst out.xml");
-    system(std::format("diff --color -b -B -u {} out.xml", file).c_str());
+    // system(std::format("diff --color -b -B -u {} out.xml", file).c_str());
     // system(std::format("kdiff3 {} out.xml", file).c_str());
 #else
+
+    if(!doc.load(file)) return 1;
+
+    doc.write(file = "out.xml", 4);
 
     TopoR::TopoR_PCB_File topor;
 
     XML::Serialiser{file} >> topor;
+    XML::Serialiser{file = "out2.xml"} << topor;
 
-    print(topor);
+    // print(topor);
+    system(std::format("diff --color -b -B -u out.xml out2.xml", file).c_str());
 
     std::this_thread::sleep_for(0.5s);
 

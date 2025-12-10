@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cassert>
 #include <charconv>
+#include <cstdlib>
 #include <memory>
 #include <meta>
 #include <optional>
@@ -89,26 +90,23 @@ consteval std::optional<T> annotation_of_type(meta::info r) {
 template <meta::info INFO> concept HasXmlAnnotation
     = meta::annotations_of(INFO, ^^Type).size() == 1;
 
-template <meta::info INFO> concept IsRoot
-    = HasXmlAnnotation<INFO>
+template <meta::info INFO> concept IsRoot = HasXmlAnnotation<INFO>
     && annotation_of_type<Type>(INFO)->type == Type::Root;
 
-template <meta::info INFO> concept IsElem
-    = HasXmlAnnotation<INFO>
+template <meta::info INFO> concept IsElem = HasXmlAnnotation<INFO>
     && annotation_of_type<Type>(INFO)->type == Type::Element;
 
-template <meta::info INFO> concept IsAttr
-    = HasXmlAnnotation<INFO>
+template <meta::info INFO> concept IsAttr = HasXmlAnnotation<INFO>
     && annotation_of_type<Type>(INFO)->type == Type::Attr;
 
-template <meta::info INFO> concept IsArr
-    = HasXmlAnnotation<INFO>
+template <meta::info INFO> concept IsArr = HasXmlAnnotation<INFO>
     && annotation_of_type<Type>(INFO)->type == Type::Array;
 
-template <typename R> concept IsRange
-    = requires(R r) { r::begin(r); r::end(r); };
-
-template <typename T> concept IsEnum = std::is_enum_v<T>;
+template <typename A> concept IsArithmetic = std ::is_arithmetic_v<A>;
+template <typename C> concept IsClass = std ::is_class_v<C>;
+template <typename E> concept IsEnum = std ::is_enum_v<E>;
+template <typename R> concept IsRange = requires(R r) { r::begin(r); r::end(r); };
+template <typename T1, typename T2> concept IsSame = std ::is_same_v<T1, T2>;
 
 inline constexpr const char Black[]{"\033[30m"};
 inline constexpr const char Blue[]{"\033[34m"};
@@ -173,7 +171,7 @@ inline constexpr auto toString(Enum e) -> string_view {
 
 template <typename T>
 static consteval auto members() {
-    static constexpr auto CTX = meta::access_context::unchecked();
+    static constexpr auto CTX = meta::access_context::unprivileged();
     return std::define_static_array([] consteval {
         auto members = nonstatic_data_members_of(^^T, CTX);
         [&members](this auto self, auto&& bases) -> void {
@@ -188,18 +186,27 @@ static consteval auto members() {
 
 struct Serialiser {
     Serialiser(string_view path)
-        : path{path}, loaded{document.load(path)}, node{&document.root} { }
+        : path{path}, node{&document.root} { }
 
     template <typename T>
-    void operator>>(T& data) {
-        constexpr string_view NAME_OF{nameOf<^^T>()};
-        if(loaded) load<^^T>(data, node);
+    void operator>>(T& data) try {
+        if(document.load(path))
+            load<^^T>(data, node);
+    } catch(std::exception& ex) {
+        println(stderr, "{} {}", __FUNCTION__, ex.what());
+    }
+
+    template <typename T>
+    void operator<<(const T& data) try {
+        save<^^T>(data, node);
+        document.write(path, 4);
+    } catch(std::exception& ex) {
+        println(stderr, "{} {}", __FUNCTION__, ex.what());
     }
 
 private:
     string_view path;
     Document document;
-    bool loaded;
 
     static constexpr auto CTX = meta::access_context::unchecked();
 
@@ -253,11 +260,11 @@ private:
         //     data = {};
         //     return;
         // }
-        if constexpr(std::is_same_v<T, std::string>) {
+        if constexpr(IsSame<T, std::string>) {
             data = node.get<T>(NAME_OF, {});
-        } else if constexpr(std::is_enum_v<T>) {
+        } else if constexpr(IsEnum<T>) {
             data = toEnum<string_view>(node.get<T>(NAME_OF, {}));
-        } else if constexpr(std::is_arithmetic_v<T>) {
+        } else if constexpr(IsArithmetic<T>) {
             data = node.get<T>(NAME_OF, {});
         } else {
             auto tree = node.get_child_optional(NAME_OF);
@@ -275,6 +282,54 @@ private:
     // ======================================================================
 
     template <typename T>
+    static void save(const T& data, NodeTag* node) { save<^^T>(data, node); }
+
+    template <meta::info INFO, typename... Ts>
+    static void save(const std::variant<Ts...>& data, NodeTag* node) {
+        data.visit([node](auto&& arg) { save(arg, node); });
+    }
+
+    template <meta::info INFO, typename T>
+    static void save(const T& data, NodeTag* node) {
+        constexpr string_view NAME_OF{nameOf<INFO>()};
+        if constexpr(IsAttr<INFO>) {
+            if constexpr(IsSame<T, std::string>) {
+                node->attributes.emplace_back(NAME_OF, data);
+            } else if constexpr(IsArithmetic<T>) {
+                std::array<char, 32> buf{};
+                node->attributes.emplace_back(NAME_OF,
+                    std::string{buf.begin(),
+                        std::to_chars(buf.begin(), buf.end(), data).ptr});
+            } else if constexpr(IsEnum<T>) {
+                node->attributes.emplace_back(NAME_OF, toString(data));
+            }
+        } else if constexpr(IsSame<T, std::string>) {
+            new NodeTag{node, NAME_OF, data};
+        } else if constexpr(IsArithmetic<T>) {
+            std::array<char, 32> buf{};
+            new NodeTag{
+                node, NAME_OF,
+                std::string{buf.begin(), std::to_chars(buf.begin(), buf.end(), data).ptr}
+            };
+        } else if constexpr(IsEnum<T>) {
+            new NodeTag{node, NAME_OF, toString(data)};
+        } else if constexpr(IsArr<INFO>) {
+            node = new NodeTag{node, NAME_OF};
+            for(auto&& var: data) save(var, node);
+        } else if constexpr(IsRange<T>) {
+            for(auto&& var: data) save(var, node);
+        } else if constexpr(IsClass<T>) {
+            node = new NodeTag{node, NAME_OF};
+            static_assert(members<T>().size(), display_string_of(^^T));
+            template for(constexpr meta::info MEMBER: members<T>())
+                save<MEMBER>(data.[:MEMBER:], node);
+        } else
+            logRed("data {} {}", NAME_OF, display_string_of(^^T));
+    }
+
+    // ======================================================================
+
+    template <typename T>
     static void load(T& data, NodeTag* node) { load<^^T>(data, node); }
 
     template <meta::info INFO, typename T>
@@ -287,18 +342,13 @@ private:
             data = {};
             return;
         }
-        if constexpr(std::is_same_v<T, std::string>) {
-            data = val->value;
-            // logGreen("{} {}", display_string_of(^^T), data);
-        } else if constexpr(std::is_enum_v<T>) {
-            data = toEnum<T>(val->value);
-            // logGreen("{} {}", display_string_of(^^T), val->value);
-        } else if constexpr(std::is_arithmetic_v<T>) {
-            std::from_chars(
-                val->value.data(),
-                val->value.data() + val->value.size(),
-                data);
-            // logGreen("{} {}", display_string_of(^^T), data);
+        if constexpr(IsSame<T, std::string>) {
+            data = val->value();
+        } else if constexpr(IsEnum<T>) {
+            data = toEnum<T>(val->value());
+        } else if constexpr(IsArithmetic<T>) {
+            string_view sv = val->value();
+            std::from_chars(sv.data(), sv.data() + sv.size(), data);
         } else {
             logRed("data {} {}", NAME_OF, display_string_of(^^T));
             // static_assert(false, display_string_of(^^T)); // TODO
@@ -325,7 +375,7 @@ private:
         }
         logRed("variant {} {} {} {}", node->tag(), NAMES | v::transform(&Pair::name), node->size(), *node | v::transform(&Data::key));
         return;
-        // auto begin = r::find_first_of(*node, NAMES, {}, &NodeTag::key, &Pair::name);
+        // auto begin = r::find_first_of(*node, NAMES, {}, &Data::key, &Pair::name);
         // if(begin == node->end()) {
         //     logRed("variant {} {} {} {}", node->tag(), NAMES | v::transform(&Pair::name), node->size(), *node | v::transform(&Data::key));
         //     return;
@@ -337,61 +387,43 @@ private:
     }
 
     template <meta::info INFO, typename... Ts>
-    // requires IsElem<INFO>
     static void load(std::vector<std::variant<Ts...>>& data, NodeTag* node) {
 
-        static const std::unordered_map<string_view, std::variant<Ts...> (*)(NodeTag* node)> loaders{
-            {nameOf<^^Ts>(), +[](NodeTag* node) -> std::variant<Ts...> {
-                 std::variant<Ts...> tmp{};
-                 // load<^^Ts>(tmp, node);
-                 load<^^Ts>(tmp.template emplace<Ts>(), node);
-                 return tmp;
-             }}
+        static const std::unordered_map loaders{
+            std::pair{
+                      nameOf<^^Ts>(),
+                      +[](std::variant<Ts...>& var, NodeTag* node) {
+                    load<^^Ts>(var.template emplace<Ts>(), node);
+                }}
             ...
         };
 
         static constexpr std::array NAMES{nameOf<^^Ts>()...};
 
-        // struct Pair {
-        //     string_view name;
-        //     std::variant<Ts...> (*func)(NodeTag* node);
-        // };
-        // static constexpr std::array LOADERS{
-        //     Pair{nameOf<^^Ts>(), +[](NodeTag* node) -> std::variant<Ts...> {
-        //              Ts tmp;
-        //              load<^^Ts>(tmp, node);
-        //              return tmp;
-        //          }}
-        //     ...
-        // };
         decltype(std::span{*node}) span;
 
         if constexpr(IsArr<INFO>) {
             constexpr string_view NAME_OF{nameOf<INFO>()};
             if(node = node->firstChild(NAME_OF); !node) {
-                logRed("vec var {} {} {} {}", node->tag(), NAMES, node->size(), *node | v::transform(&Data::key));
+                // logRed("vec var {} {} {} {}", node->tag(), NAMES, node->size(), *node | v::transform(&Data::key));
                 return;
             }
             span = *node;
         } else {
-            auto begin = r::find_first_of(*node, NAMES, {}, &NodeTag::key);
+            auto begin = r::find_first_of(*node, NAMES, {}, &Data::key);
             if(begin == node->end()) {
-                logRed("vec var {} {} {} {}", node->tag(), NAMES, node->size(), *node | v::transform(&Data::key));
+                // logRed("vec var {} {} {} {}", node->tag(), NAMES, node->size(), *node | v::transform(&Data::key));
                 return;
             }
             span = {begin, node->end()};
         }
-        if constexpr(requires { data.clear(); }) data.clear();
-        if constexpr(requires { data.reserve(0u); }) data.reserve(span.size());
-        for(auto&& node: span) {
-            data.emplace_back(loaders.at(node->tag())(node.get()));
-            // for(auto [name, load]: LOADERS) {
-            //     if(node->tag() == name) {
-            //         data.emplace_back(load(node.get()));
-            //         break;
-            //     }
-            // }
+
+        if(span.empty()) return;
+        if constexpr(requires { data.resize(0u); }) data.resize(span.size());
+        for(auto&& [var, node]: v::zip(data, span)) {
+            loaders.at(node->tag())(var, node.get());
         }
+
         // logGreen("vec var {} {}", data.size(), std::distance(begin, node->end()));
     }
 
@@ -399,15 +431,14 @@ private:
         requires IsElem<INFO>
     static void load(std::vector<T>& data, NodeTag* node) {
         constexpr string_view NAME_OF{nameOf<^^T>()};
-        auto begin = r::find(*node, NAME_OF, &NodeTag::key);
+        auto begin = r::find(*node, NAME_OF, &Data::key);
         if(begin == node->end()) return;
         auto end = r::find_last(*node, NAME_OF, &Data::key);
         assert(end.begin() != node->end());
-        // logGreen("vector {} {}", NAME_OF, display_string_of(^^T));
         if constexpr(requires { data.resize(0u); }) {
             data.resize(node->size());
-            for(auto&& [dst, src]: v::zip(data, std::span{begin, end.begin()}))
-                load(dst, src.get());
+            std::span span{begin, ++end.begin()};
+            for(auto&& [dst, src]: v::zip(data, span)) load(dst, src.get());
         } else
             static_assert(false, display_string_of(^^T)); // TODO
     }
@@ -417,17 +448,17 @@ private:
     static void load(T& data, NodeTag* node) {
         constexpr string_view NAME_OF{nameOf<INFO>()};
         if(node = node->firstChild(NAME_OF); !node) return;
-        // logCyan("array {}", NAME_OF);
         if constexpr(requires { data.resize(0u); }) {
             data.resize(node->size());
-            for(auto&& [dst, src]: v::zip(data, *node))
-                load(dst, src.get());
+            for(auto&& [dst, src]: v::zip(data, *node)) load(dst, src.get());
+            // for(auto&& var: v::zip(data, *node))
+            // std::apply(load<typename T::value_type, NodeTag*>, var);
         } else
             static_assert(false, display_string_of(^^T)); // TODO
     }
 
     template <meta::info INFO, typename T>
-        requires IsRoot<INFO> || ((std::is_class_v<T> || IsElem<INFO>) && !IsRange<T>)
+        requires IsRoot<INFO> || ((IsClass<T> || IsElem<INFO>) && !IsRange<T>)
     static void load(T& data, NodeTag* node) {
         constexpr string_view NAME_OF{nameOf<INFO>()};
         if(node->tag() != NAME_OF)

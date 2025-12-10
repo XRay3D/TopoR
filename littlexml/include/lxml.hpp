@@ -108,7 +108,10 @@ struct Document {
 // =============== Definitions ===============
 struct Data {
     string_view key;
-    string_view value;
+    std::variant<string_view, std::string> value_;
+    string_view value() const {
+        return value_.visit([](auto&& arg) -> string_view { return arg; });
+    }
 };
 
 using Attribute = Data;
@@ -120,7 +123,18 @@ struct NodeTag : Data, std::vector<std::unique_ptr<NodeTag>> {
     struct NodeTag* parent{};
     AttributeList attributes{};
 
-    NodeTag(NodeTag* parent = nullptr);
+    explicit NodeTag(NodeTag* parent = nullptr);
+
+    explicit NodeTag(NodeTag* parent, string_view key, string_view val = {})
+        : Data{key, val}, parent{parent} {
+        if(parent) parent->emplace_back(this);
+    }
+
+    explicit NodeTag(NodeTag* parent, string_view key, std::string val)
+        : Data{key, val}, parent{parent} {
+        if(parent) parent->emplace_back(this);
+    }
+
     ~NodeTag() = default;
     NodeList children(string_view tag);
     string_view attrVal(string_view key);
@@ -132,10 +146,10 @@ struct NodeTag : Data, std::vector<std::unique_ptr<NodeTag>> {
     }
 
     string_view tag() const noexcept { return key; }
-    string_view text() const noexcept { return value; }
+    string_view text() const noexcept { return value(); }
 
     void setTag(string_view newTag) noexcept;
-    void setText(string_view newText) noexcept { value = newText; }
+    void setText(string_view newText) noexcept { value_ = newText; }
 };
 
 struct Document {
@@ -176,7 +190,7 @@ inline string_view NodeTag::attrVal(string_view key) {
     for(int i = 0; i < attributes.size(); i++) {
         Attribute attr = attributes /*.data*/[i];
         if(attr.key == key)
-            return attr.value;
+            return attr.value();
     }
     return {};
 }
@@ -199,6 +213,7 @@ inline bool Document::load(string_view path) {
     int size = ftell(file.get());
     fseek(file.get(), 0, SEEK_SET);
 
+    root.clear();
     buf.resize(size);
     fread(buf.data(), 1, size, file.get());
 
@@ -208,6 +223,7 @@ inline bool Document::load(string_view path) {
 inline constexpr bool Document::parse(string_view buf) {
     string_view lex;
     size_t i;
+
     NodeTag* currNode = &root;
     // Remove bom
     if(buf.starts_with("\xEF\xBB\xBF"sv))
@@ -237,11 +253,11 @@ inline constexpr bool Document::parse(string_view buf) {
                     return TagType::START;
                 }
                 i = buf.find_first_of("'\"");
-                attr.value = buf.substr(0, i);
+                attr.value_ = buf.substr(0, i);
                 buf = buf.substr(++i);
                 node.attributes.emplace_back(attr);
                 attr.key = {};
-                attr.value = {};
+                attr.value_ = {};
                 continue;
             } break;
             case '=': {
@@ -316,8 +332,6 @@ inline constexpr bool Document::parse(string_view buf) {
             parseAttrs(buf, desc);
             version = desc.attrVal("version"sv);
             encoding = desc.attrVal("encoding"sv);
-            if(version.empty()) version = "1.0";
-            if(encoding.empty()) encoding = "UTF-8";
             continue;
         }
         default: // New node
@@ -346,6 +360,9 @@ inline bool Document::write(string_view path, int indent) {
         return false;
     }
 
+    if(version.empty()) version = "1.0";
+    if(encoding.empty()) encoding = "UTF-8";
+
     println(file.get(), R"(<?xml version="{}" encoding="{}"?>)", version, encoding);
     auto nodeOut = [file = file.get(), indent](this auto&& nodeOut, const NodeTag* node, int times = 0) -> void {
         const auto indentTag = v::repeat(' ', indent * times);
@@ -359,11 +376,12 @@ inline bool Document::write(string_view path, int indent) {
             }
 
             print(file, "<{}", child->tag());
+            r::sort(child->attributes, {}, &Data::key);
             for(Attribute attr: child->attributes) {
-                // if(attr.value.empty()) continue;
+                if(attr.value().empty()) continue;
                 if(child->attributes.size() > 8)
                     print(file, "\n{:s}", indentAttr);
-                print(file, R"( {}="{}")", attr.key, attr.value);
+                print(file, R"( {}="{}")", attr.key, attr.value());
             }
             if(child->size() == 0 && child->text().empty())
                 println(file, "/>");
