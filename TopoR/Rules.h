@@ -150,7 +150,7 @@ struct Rules {
     // Настройки подключения к углам прямоугольных контактных площадок.
     struct PadConnectSettings {
         // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
-        [[= XML::Attr("mode")]] mode_PadConnectSettings mode{};
+        [[= XML::Attr("mode")]] PadConnectSettingsMode mode{};
         // Ссылки на стеки контактных площадок.
         //[[= XML::Elem("PadstackRef")]] // public List<PadstackRef> PadstackRefs;
         [[= XML::Elem("PadstackRef")]] std::vector<PadstackRef> PadstackRefs;

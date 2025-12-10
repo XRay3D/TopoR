@@ -75,7 +75,7 @@ struct Connectivity {
                 bool ShouldSerialize_Dots();
             };
             // Признак фиксации.
-            [[= XML::Attr]] Bool fixed{};
+            [[= XML::Attr(XML::DontSkip)]] Bool fixed{};
             // public bool fixedSpecified
             bool getFixedSpecified() const;
             // Ширина проводника.

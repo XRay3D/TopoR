@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Commons.h"
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
@@ -11,7 +11,7 @@ struct Settings {
     // Настройки автоматической трассировки.
     struct Autoroute {
         // Настройка автоматической трассировки: режим трассировки.
-        [[= XML::Attr("mode")]] mode_Autoroute mode{};
+        [[= XML::Attr("mode")]] AutorouteMode mode{};
         // Параметр автоматической трассировки: использование функциональной эквивалентности.
         [[= XML::Attr("autoEqu")]] autoEqu autoEqu{};
         // Параметр автоматической трассировки: форма проводников.
@@ -57,7 +57,7 @@ struct Settings {
         [[= XML::Elem("PlacementArea")]] PlacementArea PlacementArea;
     };
     // Настройки ориентации ярлыков.
-    struct Labels_Settings {
+    struct Labels {
         // Настройка ориентации ярлыков: вращать ярлык при вращении компонента.
         [[= XML::Attr]] Bool rotateWithComp{};
         // public bool rotateWithCompSpecified
@@ -92,7 +92,7 @@ struct Settings {
     // Настройки автоматического размещения компонентов.
     [[= XML::Elem("Placement")]] Placement Placement;
     // Настройки ориентации ярлыков.
-    [[= XML::Elem("Labels")]] Labels_Settings Labels;
+    [[= XML::Elem("Labels")]] Labels Labels;
     /********************************************************************
      * Здесь находятся функции для работы с элементами класса Settings. *
      * Они не являются частью формата TopoR PCB.                        *

@@ -8,10 +8,10 @@ bool Settings::Autoroute::getDontStretchWireToPolypinSpecified() const { return 
 bool Settings::Placement::PlacementArea::ShouldSerialize_Dots() {
     return {}; //    return Dots.size();
 }
-bool Settings::Labels_Settings::getRotateWithCompSpecified() const { return std::to_underlying(rotateWithComp); }
-bool Settings::Labels_Settings::getUseOrientRulesSpecified() const { return std::to_underlying(useOrientRules); }
-bool Settings::Labels_Settings::getTopHorzRotateSpecified() const { return std::to_underlying(topHorzRotate); }
-bool Settings::Labels_Settings::getTopVertRotateSpecified() const { return std::to_underlying(topVertRotate); }
-bool Settings::Labels_Settings::getBottomHorzRotateSpecified() const { return std::to_underlying(bottomHorzRotate); }
-bool Settings::Labels_Settings::getBottomVertRotateSpecified() const { return std::to_underlying(bottomVertRotate); }
+bool Settings::Labels::getRotateWithCompSpecified() const { return std::to_underlying(rotateWithComp); }
+bool Settings::Labels::getUseOrientRulesSpecified() const { return std::to_underlying(useOrientRules); }
+bool Settings::Labels::getTopHorzRotateSpecified() const { return std::to_underlying(topHorzRotate); }
+bool Settings::Labels::getTopVertRotateSpecified() const { return std::to_underlying(topVertRotate); }
+bool Settings::Labels::getBottomHorzRotateSpecified() const { return std::to_underlying(bottomHorzRotate); }
+bool Settings::Labels::getBottomVertRotateSpecified() const { return std::to_underlying(bottomVertRotate); }
 } // namespace TopoR

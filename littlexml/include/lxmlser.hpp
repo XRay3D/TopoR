@@ -27,6 +27,9 @@ using std ::string_view;
 struct Ignore_ {
 } inline constexpr Ignore;
 
+enum class DontSkip_ : bool {
+} inline constexpr DontSkip{true};
+
 struct Type {
     enum eType {
         Null,
@@ -35,20 +38,39 @@ struct Type {
         Root,
         Array,
     } type{};
+    bool canSkip = true;
     const char* name = nullptr;
-    consteval auto operator()(string_view name) const noexcept -> Type {
-#if CR
-        return {.type = type, .name = std::define_static_string(name)};
-#else
-        return {.type = type, .name = name.data()};
-#endif
+    consteval auto operator()(string_view name) const -> Type {
+        return {
+            .type = type,
+            .canSkip = canSkip,
+            .name = std::define_static_string(name),
+        };
+    }
+    consteval auto operator()(string_view name, DontSkip_ ds) const -> Type {
+        return {
+            .type = type,
+            .canSkip = !std::to_underlying(ds),
+            .name = std::define_static_string(name),
+        };
+    }
+    consteval auto operator()(DontSkip_ ds) const -> Type {
+        return {
+            .type = type,
+            .canSkip = !std::to_underlying(ds),
+            .name = name,
+        };
     }
     constexpr auto operator<=>(const Type&) const noexcept = default;
     constexpr operator string_view() const noexcept { return name ? name : string_view{}; };
-} inline constexpr Elem{Type::Element},
-    Attr{Type::Attr},
-    Root{Type::Root},
-    Array{Type::Array};
+} inline constexpr               //
+    ArrayF{Type::Array, false},  // DontSkip
+    Array{Type::Array},          //
+    AttrF{Type::Attr, false},    // DontSkip
+    Attr{Type::Attr},            //
+    ElemF{Type::Element, false}, // DontSkip
+    Elem{Type::Element},         //
+    Root{Type::Root, false};     // DontSkip
 
 namespace meta = std ::meta;
 
@@ -89,6 +111,9 @@ consteval std::optional<T> annotation_of_type(meta::info r) {
 
 template <meta::info INFO> concept HasXmlAnnotation
     = meta::annotations_of(INFO, ^^Type).size() == 1;
+
+template <meta::info INFO> concept CanSkip = HasXmlAnnotation<INFO>
+    && annotation_of_type<Type>(INFO)->canSkip;
 
 template <meta::info INFO> concept IsRoot = HasXmlAnnotation<INFO>
     && annotation_of_type<Type>(INFO)->type == Type::Root;
@@ -183,6 +208,11 @@ static consteval auto members() {
         return members;
     }());
 }
+
+template <typename... Functors>
+struct Overload final : Functors... {
+    using Functors::operator()...;
+};
 
 struct Serialiser {
     Serialiser(string_view path)
@@ -291,16 +321,72 @@ private:
 
     template <meta::info INFO, typename T>
     static void save(const T& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf<INFO>()};
+        static constexpr string_view NAME_OF{nameOf<INFO>()};
+        // clang-format off
+        Overload{
+            [](const std::string& data, NodeTag* node) requires IsAttr<INFO> {
+                if(data.empty() && CanSkip<INFO>) return;
+                node->attributes.emplace_back(NAME_OF, data);
+            },
+            []<IsArithmetic A>(const A& data, NodeTag* node) requires IsAttr<INFO> {
+                if(data == A{} && CanSkip<INFO>) return;
+                std::array<char, 32> buf{};
+                node->attributes.emplace_back(NAME_OF,
+                    std::string{buf.begin(),
+                        std::to_chars(buf.begin(), buf.end(), data).ptr});
+            },
+            []<IsEnum E>(const E& data, NodeTag* node) requires IsAttr<INFO> {
+                if(data == E{} && CanSkip<INFO>) return;
+                node->attributes.emplace_back(NAME_OF, toString(data));
+            },
+
+            [](const std::string& data, NodeTag* node) {
+                if(data.empty() && CanSkip<INFO>) return;
+                new NodeTag{node, NAME_OF, data};
+            },
+            []<IsArithmetic A>(const A& data, NodeTag* node) {
+                std::array<char, 32> buf{};
+                new NodeTag{
+                    node, NAME_OF,
+                    std::string{buf.begin(), std::to_chars(buf.begin(), buf.end(), data).ptr}
+                };
+            },
+            []<IsEnum E>(const E& data, NodeTag* node) {
+                if(data == E{} && CanSkip<INFO>) return;
+                new NodeTag{node, NAME_OF, toString(data)};
+            },
+            []<IsRange R>(const R& data, NodeTag* node) requires IsArr<INFO> {
+                if(data.size() == 0u && CanSkip<INFO>) return;
+                node = new NodeTag{node, NAME_OF};
+                for(auto&& var: data) save(var, node);
+            },
+            []<IsRange R>(const R& data, NodeTag* node) requires (!IsArr<INFO>) {
+                for(auto&& var: data) save(var, node);
+            },
+            []<IsClass C>(const C& data, NodeTag* node) {
+                node = new NodeTag{node, NAME_OF};
+                static_assert(members<C>().size(), display_string_of(^^C));
+                template for(constexpr meta::info MEMBER: members<C>())
+                    save<MEMBER>(data.[:MEMBER:], node);
+            },
+            [](const T& data, NodeTag* node) {
+                logRed("data {} {}", NAME_OF, display_string_of(^^T));
+            },
+        }/*(data, node)*/;
+        // clang-format on
+#if 1
         if constexpr(IsAttr<INFO>) {
             if constexpr(IsSame<T, std::string>) {
+                if(data == T{} && CanSkip<INFO>) return;
                 node->attributes.emplace_back(NAME_OF, data);
             } else if constexpr(IsArithmetic<T>) {
+                if(data == T{} && CanSkip<INFO>) return;
                 std::array<char, 32> buf{};
                 node->attributes.emplace_back(NAME_OF,
                     std::string{buf.begin(),
                         std::to_chars(buf.begin(), buf.end(), data).ptr});
             } else if constexpr(IsEnum<T>) {
+                if(data == T{} && CanSkip<INFO>) return;
                 node->attributes.emplace_back(NAME_OF, toString(data));
             }
         } else if constexpr(IsSame<T, std::string>) {
@@ -314,6 +400,7 @@ private:
         } else if constexpr(IsEnum<T>) {
             new NodeTag{node, NAME_OF, toString(data)};
         } else if constexpr(IsArr<INFO>) {
+            if(data.empty() && CanSkip<INFO>) return;
             node = new NodeTag{node, NAME_OF};
             for(auto&& var: data) save(var, node);
         } else if constexpr(IsRange<T>) {
@@ -325,12 +412,15 @@ private:
                 save<MEMBER>(data.[:MEMBER:], node);
         } else
             logRed("data {} {}", NAME_OF, display_string_of(^^T));
+#endif
     }
 
     // ======================================================================
 
     template <typename T>
-    static void load(T& data, NodeTag* node) { load<^^T>(data, node); }
+    static void load(T& data, NodeTag* node) {
+        load<^^T>(data, node);
+    }
 
     template <meta::info INFO, typename T>
     static void load(T& data, NodeTag* node) {

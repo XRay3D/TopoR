@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Commons.h"
 /* Мною, Константином aka KilkennyCat, 05 июля 2020 года создано сиё
  * на основе "Описание формата TopoR PCB версия 1.2.0 Апрель 2017 г.".
@@ -132,9 +132,9 @@ struct DialogSettings {
     // Настройки вывода файлов Gerber.
     struct GerberSettings {
         // Настройки вывода файла Gerber.
-        struct ExportFile_GerberSettings {
+        struct ExportFile {
             // Настройка экспорта Gerber файлов: список экспортируемых объектов для слоя.
-            struct ExportObjects_ExportFile {
+            struct ExportObjects {
                 // Настройка вывода файла Gerber: выводить контур платы.
                 [[= XML::Attr]] Bool board{};
                 // Настройка вывода файлов Geber, DXF: выводить проводники.
@@ -164,25 +164,25 @@ struct DialogSettings {
             [[= XML::Attr]] Bool negative{};
             // Ссылка на слой.
             // public LayerRef LayerRef;
-            [[= XML::Elem("LayerRef")]] LayerRef LayerRef;
+            [[= XML::Elem /*("LayerRef")*/]] LayerRef LayerRef;
             // Настройка экспорта Gerber файлов: список экспортируемых объектов для слоя.
             // public ExportObjects_ExportFile ExportObjects;
-            [[= XML::Elem("ExportObjects")]] ExportObjects_ExportFile ExportObjects;
+            [[= XML::Elem /*("ExportObjects")*/]] ExportObjects ExportObjects;
             // Настройка вывода файла Gerber: смещение объектов по осям x и y.
             // public Shift Shift;
-            [[= XML::Elem("Shift")]] Shift Shift;
+            [[= XML::Elem /*("Shift")*/]] Shift Shift;
         };
         // Каталог для выходных файлов (Gerber, Drill).
         [[= XML::Attr]] std::string outPath;
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
-        [[= XML::Attr("units")]] units units{};
+        [[= XML::Attr /*("units")*/]] units units{};
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр перед запятой.
         [[= XML::Attr]] int intNums{};
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр после запятой.
         [[= XML::Attr]] int fractNums{};
         // Настройки вывода файлов Gerber.
         // public List<ExportFile_GerberSettings> ExportFiles;
-        [[= XML::Elem("ExportFile")]] std::vector<ExportFile_GerberSettings> ExportFiles;
+        [[= XML::Elem /*("ExportFile")*/]] std::vector<ExportFile> ExportFiles;
         bool ShouldSerialize_ExportFiles();
     };
     // Настройки вывода файла DXF.
@@ -214,15 +214,15 @@ struct DialogSettings {
             [[= XML::Attr]] Bool output{};
             // Ссылка на слой.
             // public LayerRef LayerRef;
-            [[= XML::Elem("LayerRef")]] LayerRef LayerRef;
+            [[= XML::Elem /*("LayerRef")*/]] LayerRef LayerRef;
             // Настройка экспорта слоя в файл DXF: список экспортируемых объектов для слоя.
             // public ExportObjects_ExportLayer ExportObjects;
-            [[= XML::Elem("ExportObjects")]] ExportObjects_ExportLayer ExportObjects;
+            [[= XML::Elem /*("ExportObjects")*/]] ExportObjects_ExportLayer ExportObjects;
         };
         // Имя выходного файла (ВОМ, DXF).
         [[= XML::Attr]] std::string outFile;
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
-        [[= XML::Attr("units")]] units units{};
+        [[= XML::Attr /*("units")*/]] units units{};
         // Настройка вывода файла DXF: выводить слой с контуром платы.
         [[= XML::Attr]] Bool outputBoardLayer{};
         // public bool outputBoardLayerSpecified
@@ -233,7 +233,7 @@ struct DialogSettings {
         bool getOutputDrillLayerSpecified() const;
         // Настройки вывода слоя в файл DXF.
         // public List<ExportLayer> ExportLayers;
-        [[= XML::Elem("ExportLayer")]] std::vector<ExportLayer> ExportLayers;
+        [[= XML::Elem /*("ExportLayer")*/]] std::vector<ExportLayer> ExportLayers;
         bool ShouldSerialize_ExportLayers();
     };
     // Настройки вывода файлов Drill.
@@ -246,14 +246,14 @@ struct DialogSettings {
         // Каталог для выходных файлов (Gerber, Drill).
         [[= XML::Attr]] std::string outPath;
         // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения.
-        [[= XML::Attr("units")]] units units{};
+        [[= XML::Attr /*("units")*/]] units units{};
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр перед запятой.
         [[= XML::Attr]] int intNums{};
         // Настройка вывода чисел в файлы Gerber, Drill: количество цифр после запятой.
         [[= XML::Attr]] int fractNums{};
         // Настройки вывода файлов Gerber.
         // public List<ExportFile_DrillSettings> ExportFiles;
-        [[= XML::Elem("ExportFile")]] std::vector<ExportFile_DrillSettings> ExportFiles;
+        [[= XML::Elem /*("ExportFile")*/]] std::vector<ExportFile_DrillSettings> ExportFiles;
         bool ShouldSerialize_ExportFiles();
     };
     // Настройки вывода BOM файла.
@@ -278,67 +278,67 @@ struct DialogSettings {
         bool getRefDesSpecified() const;
         // Ссылка на атрибут.
         // public List<AttributeRef> AttributeRefs;
-        [[= XML::Elem("AttributeRef")]] std::vector<AttributeRef> AttributeRefs;
+        [[= XML::Elem /*("AttributeRef")*/]] std::vector<AttributeRef> AttributeRefs;
         bool ShouldSerialize_AttributeRefs();
     };
     // Настройка фильтра сообщений.
     struct MessagesFilter {
         // Настройка фильтра сообщений: режим показа предупреждений.
-        [[= XML::Attr("showWarnings")]] showWarnings showWarnings{};
+        [[= XML::Attr /*("showWarnings")*/]] showWarnings showWarnings{};
         // Настройка фильтра сообщений: выводить сообщение 5003.
-        [[= XML::Attr]] Bool W5003{};
+        [[= XML::AttrF]] Bool W5003{};
         // public bool W5003Specified
         bool getW5003Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5012.
-        [[= XML::Attr]] Bool W5012{};
+        [[= XML::AttrF]] Bool W5012{};
         // public bool W5012Specified
         bool getW5012Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5013.
-        [[= XML::Attr]] Bool W5013{};
+        [[= XML::AttrF]] Bool W5013{};
         // public bool W5013Specified
         bool getW5013Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5014.
-        [[= XML::Attr]] Bool W5014{};
+        [[= XML::AttrF]] Bool W5014{};
         // public bool W5014Specified
         bool getW5014Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5015.
-        [[= XML::Attr]] Bool W5015{};
+        [[= XML::AttrF]] Bool W5015{};
         // public bool W5015Specified
         bool getW5015Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5016.
-        [[= XML::Attr]] Bool W5016{};
+        [[= XML::AttrF]] Bool W5016{};
         // public bool W5016Specified
         bool getW5016Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5017.
-        [[= XML::Attr]] Bool W5017{};
+        [[= XML::AttrF]] Bool W5017{};
         // public bool W5017Specified
         bool getW5017Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5018.
-        [[= XML::Attr]] Bool W5018{};
+        [[= XML::AttrF]] Bool W5018{};
         // public bool W5018Specified
         bool getW5018Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5023.
-        [[= XML::Attr]] Bool W5023{};
+        [[= XML::AttrF]] Bool W5023{};
         // public bool W5023Specified
         bool getW5023Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5024.
-        [[= XML::Attr]] Bool W5024{};
+        [[= XML::AttrF]] Bool W5024{};
         // public bool W5024Specified
         bool getW5024Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5026.
-        [[= XML::Attr]] Bool W5026{};
+        [[= XML::AttrF]] Bool W5026{};
         // public bool W5026Specified
         bool getW5026Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5034.
-        [[= XML::Attr]] Bool W5034{};
+        [[= XML::AttrF]] Bool W5034{};
         // public bool W5034Specified
         bool getW5034Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5036.
-        [[= XML::Attr]] Bool W5036{};
+        [[= XML::AttrF]] Bool W5036{};
         // public bool W5036Specified
         bool getW5036Specified() const;
         // Настройка фильтра сообщений: выводить сообщение 5037.
-        [[= XML::Attr]] Bool W5037{};
+        [[= XML::AttrF]] Bool W5037{};
         // public bool W5037Specified
         bool getW5037Specified() const;
         // Настройка фильтра сообщений: быстрая проверка зазоров между компонентами.
@@ -354,22 +354,22 @@ struct DialogSettings {
     [[= XML::Attr]] std::string version;
     // Настройки DRC.
     // public DRCSettings DRCSettings;
-    [[= XML::Elem("DRCSettings")]] DRCSettings DRCSettings;
+    [[= XML::Elem /*("DRCSettings")*/]] DRCSettings DRCSettings;
     // Настройки вывода файлов Gerber.
     // public GerberSettings GerberSettings;
-    [[= XML::Elem("GerberSettings")]] GerberSettings GerberSettings;
+    [[= XML::Elem /*("GerberSettings")*/]] GerberSettings GerberSettings;
     // Настройки вывода файла DXF.
     // public DXFSettings DXFSettings;
-    [[= XML::Elem("DXFSettings")]] DXFSettings DXFSettings;
+    [[= XML::Elem /*("DXFSettings")*/]] DXFSettings DXFSettings;
     // Настройки вывода файлов Drill.
     // public DrillSettings DrillSettings;
-    [[= XML::Elem("DrillSettings")]] DrillSettings DrillSettings;
+    [[= XML::Elem /*("DrillSettings")*/]] DrillSettings DrillSettings;
     // Настройки вывода BOM файла.
     // public BOMSettings BOMSettings;
-    [[= XML::Elem("BOMSettings")]] BOMSettings BOMSettings;
+    [[= XML::Elem /*("BOMSettings")*/]] BOMSettings BOMSettings;
     // Настройка фильтра сообщений.
     // public MessagesFilter MessagesFilter;
-    [[= XML::Elem("MessagesFilter")]] MessagesFilter MessagesFilter;
+    [[= XML::Elem /*("MessagesFilter")*/]] MessagesFilter MessagesFilter;
     /**************************************************************************
      * Здесь находятся функции для работы с элементами класса DialogSettings. *
      * Они не являются частью формата TopoR PCB.                              *

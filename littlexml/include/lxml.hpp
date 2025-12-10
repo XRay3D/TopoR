@@ -378,7 +378,7 @@ inline bool Document::write(string_view path, int indent) {
             print(file, "<{}", child->tag());
             r::sort(child->attributes, {}, &Data::key);
             for(Attribute attr: child->attributes) {
-                if(attr.value().empty()) continue;
+                // if(attr.value().empty()) continue;
                 if(child->attributes.size() > 8)
                     print(file, "\n{:s}", indentAttr);
                 print(file, R"( {}="{}")", attr.key, attr.value());

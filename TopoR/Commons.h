@@ -85,13 +85,13 @@ enum class layertype {
     Dielectric  // диэлектрический слой
 };
 // Настройка автоматической трассировки: режим трассировки. Значение по умолчанию – Multilayer.
-enum class mode_Autoroute {
+enum class AutorouteMode {
     Multilayer,       // многослойная трассировка
     SinglelayerTop,   // однослойная трассировка на верхнем слое
     SinglelayerBottom // однослойная трассировка на нижнем слое
 };
 // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
-enum class mode_PadConnectSettings {
+enum class PadConnectSettingsMode {
     AutoConnect, // возможность подключения к углам КП определяется автоматически.
     AllPads      // разрешено подключаться к углам всех КП
 };
