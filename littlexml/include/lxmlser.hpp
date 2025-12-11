@@ -132,6 +132,7 @@ template <typename C> concept IsClass = std ::is_class_v<C>;
 template <typename E> concept IsEnum = std ::is_enum_v<E>;
 template <typename R> concept IsRange = requires(R r) { r::begin(r); r::end(r); };
 template <typename T1, typename T2> concept IsSame = std ::is_same_v<T1, T2>;
+template <typename T> concept IsOptional = IsSame<T, std::optional<typename T::value_type>>;
 
 inline constexpr const char Black[]{"\033[30m"};
 inline constexpr const char Blue[]{"\033[34m"};
@@ -153,6 +154,8 @@ struct Str {
 };
 // template <size_t N>
 // Str(const char (&)[N]) -> Str<N>;
+
+struct Null { };
 
 template <Str Color>
 struct Log {
@@ -314,6 +317,8 @@ private:
     template <typename T>
     static void save(const T& data, NodeTag* node) { save<^^T>(data, node); }
 
+    static void save(Null, NodeTag*) { } // NOTE do nothing
+
     template <meta::info INFO, typename... Ts>
     static void save(const std::variant<Ts...>& data, NodeTag* node) {
         data.visit([node](auto&& arg) { save(arg, node); });
@@ -322,26 +327,27 @@ private:
     template <meta::info INFO, typename T>
     static void save(const T& data, NodeTag* node) {
         static constexpr string_view NAME_OF{nameOf<INFO>()};
+#if 0
         // clang-format off
         Overload{
             [](const std::string& data, NodeTag* node) requires IsAttr<INFO> {
-                if(data.empty() && CanSkip<INFO>) return;
+                if(CanSkip<INFO> && data.empty()) return;
                 node->attributes.emplace_back(NAME_OF, data);
             },
             []<IsArithmetic A>(const A& data, NodeTag* node) requires IsAttr<INFO> {
-                if(data == A{} && CanSkip<INFO>) return;
+                if(CanSkip<INFO> && data == A{}) return;
                 std::array<char, 32> buf{};
                 node->attributes.emplace_back(NAME_OF,
                     std::string{buf.begin(),
                         std::to_chars(buf.begin(), buf.end(), data).ptr});
             },
             []<IsEnum E>(const E& data, NodeTag* node) requires IsAttr<INFO> {
-                if(data == E{} && CanSkip<INFO>) return;
+                if(CanSkip<INFO> && data == E{}) return;
                 node->attributes.emplace_back(NAME_OF, toString(data));
             },
 
             [](const std::string& data, NodeTag* node) {
-                if(data.empty() && CanSkip<INFO>) return;
+                if(CanSkip<INFO> && data.empty()) return;
                 new NodeTag{node, NAME_OF, data};
             },
             []<IsArithmetic A>(const A& data, NodeTag* node) {
@@ -352,11 +358,11 @@ private:
                 };
             },
             []<IsEnum E>(const E& data, NodeTag* node) {
-                if(data == E{} && CanSkip<INFO>) return;
+                if(CanSkip<INFO> && data == E{}) return;
                 new NodeTag{node, NAME_OF, toString(data)};
             },
             []<IsRange R>(const R& data, NodeTag* node) requires IsArr<INFO> {
-                if(data.size() == 0u && CanSkip<INFO>) return;
+                if(CanSkip<INFO> && data.size() == 0u) return;
                 node = new NodeTag{node, NAME_OF};
                 for(auto&& var: data) save(var, node);
             },
@@ -374,21 +380,64 @@ private:
             },
         }/*(data, node)*/;
         // clang-format on
-#if 1
+#else
+
         if constexpr(IsAttr<INFO>) {
-            if constexpr(IsSame<T, std::string>) {
-                if(data == T{} && CanSkip<INFO>) return;
-                node->attributes.emplace_back(NAME_OF, data);
-            } else if constexpr(IsArithmetic<T>) {
-                if(data == T{} && CanSkip<INFO>) return;
-                std::array<char, 32> buf{};
-                node->attributes.emplace_back(NAME_OF,
-                    std::string{buf.begin(),
-                        std::to_chars(buf.begin(), buf.end(), data).ptr});
-            } else if constexpr(IsEnum<T>) {
-                if(data == T{} && CanSkip<INFO>) return;
-                node->attributes.emplace_back(NAME_OF, toString(data));
-            }
+
+            Overload save{
+                [](const std::string& data, NodeTag* node) {
+                    if(CanSkip<INFO> && data.empty()) return;
+                    node->attributes.emplace_back(NAME_OF, data);
+                },
+                []<IsArithmetic A>(const A& data, NodeTag* node) {
+                    if(CanSkip<INFO> && data == A{}) return;
+                    std::array<char, 32> buf{};
+                    node->attributes.emplace_back(NAME_OF,
+                        std::string{buf.begin(),
+                            std::to_chars(buf.begin(), buf.end(), data).ptr});
+                },
+                []<IsEnum E>(const E& data, NodeTag* node) {
+                    if(CanSkip<INFO> && data == T{}) return;
+                    node->attributes.emplace_back(NAME_OF, toString(data));
+                },
+                []<class Any>(const Any& data, NodeTag* node) {
+                    logRed("data {} {}", NAME_OF, display_string_of(^^Any));
+                },
+            };
+            // constexpr auto save = [](const T& data, NodeTag* node) {
+            //     if constexpr(IsSame<T, std::string>) {
+            //         if(CanSkip<INFO> && data == T{}) return;
+            //         node->attributes.emplace_back(NAME_OF, data);
+            //     } else if constexpr(IsArithmetic<T>) {
+            //         if(CanSkip<INFO> && data == T{}) return;
+            //         std::array<char, 32> buf{};
+            //         node->attributes.emplace_back(NAME_OF,
+            //             std::string{buf.begin(),
+            //                 std::to_chars(buf.begin(), buf.end(), data).ptr});
+            //     } else if constexpr(IsEnum<T>) {
+            //         if(CanSkip<INFO> && data == T{}) return;
+            //         node->attributes.emplace_back(NAME_OF, toString(data));
+            //     } else
+            //         logRed("data {} {}", NAME_OF, display_string_of(^^T));
+            // };
+
+            // if constexpr(IsSame<T, std::string>) {
+            //     if(CanSkip<INFO> && data == T{}) return;
+            //     node->attributes.emplace_back(NAME_OF, data);
+            // } else if constexpr(IsArithmetic<T>) {
+            //     if(CanSkip<INFO> && data == T{}) return;
+            //     std::array<char, 32> buf{};
+            //     node->attributes.emplace_back(NAME_OF,
+            //         std::string{buf.begin(),
+            //             std::to_chars(buf.begin(), buf.end(), data).ptr});
+            // } else if constexpr(IsEnum<T>) {
+            //     if(CanSkip<INFO> && data == T{}) return;
+            //     node->attributes.emplace_back(NAME_OF, toString(data));
+            // }
+            if constexpr(IsOptional<T>) {
+                if(data) save(*data, node);
+            } else
+                save(data, node);
         } else if constexpr(IsSame<T, std::string>) {
             new NodeTag{node, NAME_OF, data};
         } else if constexpr(IsArithmetic<T>) {
@@ -400,22 +449,30 @@ private:
         } else if constexpr(IsEnum<T>) {
             new NodeTag{node, NAME_OF, toString(data)};
         } else if constexpr(IsArr<INFO>) {
-            if(data.empty() && CanSkip<INFO>) return;
+            // if(NAME_OF == "Voids") logYellow("data {} {}", NAME_OF, display_string_of(^^T));
+            if(CanSkip<INFO> && data.empty()) return;
             node = new NodeTag{node, NAME_OF};
             for(auto&& var: data) save(var, node);
         } else if constexpr(IsRange<T>) {
             for(auto&& var: data) save(var, node);
         } else if constexpr(IsClass<T>) {
             node = new NodeTag{node, NAME_OF};
-            static_assert(members<T>().size(), display_string_of(^^T));
+            // static_assert(members<T>().size(), display_string_of(^^T));
             template for(constexpr meta::info MEMBER: members<T>())
                 save<MEMBER>(data.[:MEMBER:], node);
+            if(CanSkip<INFO>
+                && node->text().empty()
+                && node->attributes.empty()
+                && node->empty()) // remove if is all data is empty
+                node->parent->pop_back();
         } else
             logRed("data {} {}", NAME_OF, display_string_of(^^T));
 #endif
     }
 
     // ======================================================================
+
+    static void load(Null, NodeTag*) { } // NOTE do nothing
 
     template <typename T>
     static void load(T& data, NodeTag* node) {
@@ -424,25 +481,37 @@ private:
 
     template <meta::info INFO, typename T>
     static void load(T& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf<INFO>()};
+        static constexpr string_view NAME_OF{nameOf<INFO>()};
         Data* val = IsAttr<INFO> ? node->attr(NAME_OF)
                                  : node->firstChild(NAME_OF);
-        if(!val) {
-            // logRed("data {} {}", NAME_OF, display_string_of(^^T));
-            data = {};
-            return;
-        }
-        if constexpr(IsSame<T, std::string>) {
-            data = val->value();
-        } else if constexpr(IsEnum<T>) {
-            data = toEnum<T>(val->value());
-        } else if constexpr(IsArithmetic<T>) {
-            string_view sv = val->value();
-            std::from_chars(sv.data(), sv.data() + sv.size(), data);
-        } else {
-            logRed("data {} {}", NAME_OF, display_string_of(^^T));
-            // static_assert(false, display_string_of(^^T)); // TODO
-        }
+        if(!val) return;
+
+        Overload{
+            [](std::string& data, string_view val) {
+                data = val;
+            },
+            []<IsArithmetic A>(A& data, string_view val) {
+                std::from_chars(val.data(), val.data() + val.size(), data);
+            },
+            []<IsEnum E>(E& data, string_view val) {
+                data = toEnum<E>(val);
+            },
+            []<class Any>(Any& data, string_view val) {
+                logRed("data {} {}", NAME_OF, display_string_of(^^Any));
+            },
+        }(data, val->value());
+
+        // if constexpr(IsSame<T, std::string>) {
+        //     data = val->value();
+        // } else if constexpr(IsEnum<T>) {
+        //     data = toEnum<T>(val->value());
+        // } else if constexpr(IsArithmetic<T>) {
+        //     string_view sv = val->value();
+        //     std::from_chars(sv.data(), sv.data() + sv.size(), data);
+        // } else {
+        //     logRed("data {} {}", NAME_OF, display_string_of(^^T));
+        //     // static_assert(false, display_string_of(^^T)); // TODO
+        // }
     }
 
     template <meta::info INFO, typename... Ts>
@@ -463,7 +532,7 @@ private:
                     return load(data, node.get());
             }
         }
-        logRed("variant {} {} {} {}", node->tag(), NAMES | v::transform(&Pair::name), node->size(), *node | v::transform(&Data::key));
+        // logRed("variant {} {} {} {}", node->tag(), NAMES | v::transform(&Pair::name), node->size(), *node | v::transform(&Data::key));
         return;
         // auto begin = r::find_first_of(*node, NAMES, {}, &Data::key, &Pair::name);
         // if(begin == node->end()) {
@@ -518,6 +587,16 @@ private:
     }
 
     template <meta::info INFO, typename T>
+    static void load(std::optional<T>& data, NodeTag* node) {
+        constexpr string_view NAME_OF{nameOf<^^T>()};
+
+        Data* val = IsAttr<INFO> ? node->attr(NAME_OF)
+                                 : node->firstChild(NAME_OF);
+        if(!val) return;
+        load<INFO>(*(data = T{}), node);
+    }
+
+    template <meta::info INFO, typename T>
         requires IsElem<INFO>
     static void load(std::vector<T>& data, NodeTag* node) {
         constexpr string_view NAME_OF{nameOf<^^T>()};
@@ -526,8 +605,8 @@ private:
         auto end = r::find_last(*node, NAME_OF, &Data::key);
         assert(end.begin() != node->end());
         if constexpr(requires { data.resize(0u); }) {
-            data.resize(node->size());
             std::span span{begin, ++end.begin()};
+            data.resize(span.size());
             for(auto&& [dst, src]: v::zip(data, span)) load(dst, src.get());
         } else
             static_assert(false, display_string_of(^^T)); // TODO
@@ -554,7 +633,7 @@ private:
         if(node->tag() != NAME_OF)
             if(node = node->firstChild(NAME_OF); !node)
                 return;
-        static_assert(members<T>().size(), display_string_of(^^T));
+        // static_assert(members<T>().size(), display_string_of(^^T));
         template for(constexpr meta::info MEMBER: members<T>())
             load<MEMBER>(data.[:MEMBER:], node);
     }

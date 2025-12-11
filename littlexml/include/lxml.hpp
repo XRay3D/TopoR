@@ -376,7 +376,7 @@ inline bool Document::write(string_view path, int indent) {
             }
 
             print(file, "<{}", child->tag());
-            r::sort(child->attributes, {}, &Data::key);
+            r::sort(child->attributes, {}, &Data::key); // NOTE remove noise in diff
             for(Attribute attr: child->attributes) {
                 // if(attr.value().empty()) continue;
                 if(child->attributes.size() > 8)
