@@ -46,20 +46,20 @@ bool DialogSettings::BOMSettings::getRefDesSpecified() const { return std::to_un
 bool DialogSettings::BOMSettings::ShouldSerialize_AttributeRefs() {
     return {}; //    return AttributeRefs.size();
 }
-bool DialogSettings::MessagesFilter::getW5003Specified() const { return std::to_underlying(W5003); }
-bool DialogSettings::MessagesFilter::getW5012Specified() const { return std::to_underlying(W5012); }
-bool DialogSettings::MessagesFilter::getW5013Specified() const { return std::to_underlying(W5013); }
-bool DialogSettings::MessagesFilter::getW5014Specified() const { return std::to_underlying(W5014); }
-bool DialogSettings::MessagesFilter::getW5015Specified() const { return std::to_underlying(W5015); }
-bool DialogSettings::MessagesFilter::getW5016Specified() const { return std::to_underlying(W5016); }
-bool DialogSettings::MessagesFilter::getW5017Specified() const { return std::to_underlying(W5017); }
-bool DialogSettings::MessagesFilter::getW5018Specified() const { return std::to_underlying(W5018); }
-bool DialogSettings::MessagesFilter::getW5023Specified() const { return std::to_underlying(W5023); }
-bool DialogSettings::MessagesFilter::getW5024Specified() const { return std::to_underlying(W5024); }
-bool DialogSettings::MessagesFilter::getW5026Specified() const { return std::to_underlying(W5026); }
-bool DialogSettings::MessagesFilter::getW5034Specified() const { return std::to_underlying(W5034); }
-bool DialogSettings::MessagesFilter::getW5036Specified() const { return std::to_underlying(W5036); }
-bool DialogSettings::MessagesFilter::getW5037Specified() const { return std::to_underlying(W5037); }
-bool DialogSettings::MessagesFilter::getWClrnBtwCompsSpecified() const { return std::to_underlying(WClrnBtwComps); }
-bool DialogSettings::MessagesFilter::getWClrnBtwObjSameNetSpecified() const { return std::to_underlying(WClrnBtwObjSameNet); }
+bool DialogSettings::MessageFilter::getW5003Specified() const { return std::to_underlying(W5003); }
+bool DialogSettings::MessageFilter::getW5012Specified() const { return std::to_underlying(W5012); }
+bool DialogSettings::MessageFilter::getW5013Specified() const { return std::to_underlying(W5013); }
+bool DialogSettings::MessageFilter::getW5014Specified() const { return std::to_underlying(W5014); }
+bool DialogSettings::MessageFilter::getW5015Specified() const { return std::to_underlying(W5015); }
+bool DialogSettings::MessageFilter::getW5016Specified() const { return std::to_underlying(W5016); }
+bool DialogSettings::MessageFilter::getW5017Specified() const { return std::to_underlying(W5017); }
+bool DialogSettings::MessageFilter::getW5018Specified() const { return std::to_underlying(W5018); }
+bool DialogSettings::MessageFilter::getW5023Specified() const { return std::to_underlying(W5023); }
+bool DialogSettings::MessageFilter::getW5024Specified() const { return std::to_underlying(W5024); }
+bool DialogSettings::MessageFilter::getW5026Specified() const { return std::to_underlying(W5026); }
+bool DialogSettings::MessageFilter::getW5034Specified() const { return std::to_underlying(W5034); }
+bool DialogSettings::MessageFilter::getW5036Specified() const { return std::to_underlying(W5036); }
+bool DialogSettings::MessageFilter::getW5037Specified() const { return std::to_underlying(W5037); }
+bool DialogSettings::MessageFilter::getWClrnBtwCompsSpecified() const { return std::to_underlying(WClrnBtwComps); }
+bool DialogSettings::MessageFilter::getWClrnBtwObjSameNetSpecified() const { return std::to_underlying(WClrnBtwObjSameNet); }
 } // namespace TopoR

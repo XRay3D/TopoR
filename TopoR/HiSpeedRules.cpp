@@ -60,13 +60,13 @@ void HiSpeedRules::Rename_compName(const std::string& oldname, const std::string
     //        for(auto b: a->Signals) {
     //            if(b->ReceiverPinRef->compName == oldname)
     //                b->ReceiverPinRef->compName = newname;
-    //            for(auto c: (b->Components == nullptr ? nullptr : b->Components.Where([&](std::variant<> r) {
+    //            for(auto c: (b->Components == nullptr ? nullptr : b->Components.Where([&](std::variant<XML::Null, > r) {
     //                    return r->ReferenceName == oldname;
     //                })))
     //                c->ReferenceName = newname;
     //        }
     //        for(auto b: a->PinPairs)
-    //            for(auto c: (b->PinRefs == nullptr ? nullptr : b->PinRefs.Where([&](std::variant<> r) {
+    //            for(auto c: (b->PinRefs == nullptr ? nullptr : b->PinRefs.Where([&](std::variant<XML::Null, > r) {
     //                    return r->compName == oldname;
     //                })))
     //                c->compName = newname;

@@ -1,6 +1,6 @@
 #include "Constructive.h"
 namespace TopoR {
-void Constructive::BoardOutline::Shape::Shift(float x, float y) {
+void Constructive::BoardOutline::Shape::Shift(double x, double y) {
     //    if((std::dynamic_pointer_cast<IBaseFigure>(NonfilledFigure)) != nullptr)
     //        (std::dynamic_pointer_cast<IBaseFigure>(NonfilledFigure)).Shift(x, y);
 }
@@ -9,11 +9,11 @@ void Constructive::BoardOutline::Shape::UnitsConvert(dist in_units, dist out_uni
     //    if((std::dynamic_pointer_cast<IBaseFigure>(NonfilledFigure)) != nullptr)
     //        (std::dynamic_pointer_cast<IBaseFigure>(NonfilledFigure)).UnitsConvert(in_units, out_units);
 }
-void Constructive::BoardOutline::Shape_Voids::Shift(float x, float y) {
+void Constructive::BoardOutline::Voids::Shift(double x, double y) {
     //    if((std::dynamic_pointer_cast<IBaseFigure>(FilledFigure)) != nullptr)
     //        (std::dynamic_pointer_cast<IBaseFigure>(FilledFigure)).Shift(x, y);
 }
-void Constructive::BoardOutline::Shape_Voids::UnitsConvert(dist in_units, dist out_units) {
+void Constructive::BoardOutline::Voids::UnitsConvert(dist in_units, dist out_units) {
     //    lineWidth = Ut::UnitsConvert(lineWidth, in_units, out_units);
     //    if((std::dynamic_pointer_cast<IBaseFigure>(FilledFigure)) != nullptr)
     //        (std::dynamic_pointer_cast<IBaseFigure>(FilledFigure)).UnitsConvert(in_units, out_units);
@@ -21,18 +21,18 @@ void Constructive::BoardOutline::Shape_Voids::UnitsConvert(dist in_units, dist o
 bool Constructive::BoardOutline::ShouldSerialize_Contours() { return Contour.size(); }
 bool Constructive::BoardOutline::ShouldSerialize_Voids() { return Voids.size(); }
 bool Constructive::MntholeInstance::getFixedSpecified() const { return std::to_underlying(fixed); }
-void Constructive::MntholeInstance::Shift(float x, float y) {
+void Constructive::MntholeInstance::Shift(double x, double y) {
     //    Org.Shift(x, y);
 }
 void Constructive::MntholeInstance::UnitsConvert(dist in_units, dist out_units) {
     //    Org.UnitsConvert(in_units, out_units);
 }
-bool Constructive::Keepout_Сonstructive::Role::Trace::ShouldSerialize_LayersRefs() { return LayersRefs.size(); }
-void Constructive::Keepout_Сonstructive::Shift(float x, float y) {
+bool Constructive::Keepout::Role::Trace::ShouldSerialize_LayersRefs() { return LayersRefs.size(); }
+void Constructive::Keepout::Shift(double x, double y) {
     //    if((std::dynamic_pointer_cast<IBaseFigure>(FigureContPolyline)) != nullptr)
     //        (std::dynamic_pointer_cast<IBaseFigure>(FigureContPolyline)).Shift(x, y);
 }
-void Constructive::Keepout_Сonstructive::UnitsConvert(dist in_units, dist out_units) {
+void Constructive::Keepout::UnitsConvert(dist in_units, dist out_units) {
     //    if((std::dynamic_pointer_cast<IBaseFigure>(FigureContPolyline)) != nullptr)
     //        (std::dynamic_pointer_cast<IBaseFigure>(FigureContPolyline)).UnitsConvert(in_units, out_units);
 }
@@ -40,7 +40,7 @@ bool Constructive::ShouldSerialize_Mntholes() { return Mntholes.size(); }
 bool Constructive::ShouldSerialize_MechLayerObjects() { return MechLayerObjects.size(); }
 bool Constructive::ShouldSerialize_Texts() { return Texts.size(); }
 bool Constructive::ShouldSerialize_Keepouts() { return Keepouts.size(); }
-void Constructive::Shift(float x, float y) {
+void Constructive::Shift(double x, double y) {
     //    {
     //        if((BoardOutline == nullptr ? nullptr : BoardOutline->Contours.size()) > 0)
     //            for(int i{}; i < BoardOutline->Contours.size(); i++)
@@ -152,7 +152,7 @@ void Constructive::Add(Constructive a, bool boardOutline, bool mntholeInstances,
     //         if (a?.Keepouts?.Count > 0)
     //         {
     //             if (Keepouts == null)
-    //                 Keepouts = (Keepout_Сonstructive[])a.Keepouts.Clone();
+    //                 Keepouts = (Keepout[])a.Keepouts.Clone();
     //             else
     //             {
     //                 l = Keepouts.Count;

@@ -14,7 +14,7 @@ struct NetList {
         [[= XML::Attr]] std::string name;
         // Ссылка на контакт или вывод посадочного места (объект класса PinRef или PadRef).
         // public List<Object> refs;
-        [[= XML::Elem]] std::vector<std::variant<PinRef, PadRef>> refs;
+        [[= XML::Elem]] std::vector<std::variant<XML::Null, PinRef, PadRef>> refs;
         bool ShouldSerialize_refs();
     };
     // Версия раздела.

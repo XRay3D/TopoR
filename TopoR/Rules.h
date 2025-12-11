@@ -16,13 +16,13 @@ struct Rules {
         // public bool enabledSpecified
         bool getEnabledSpecified() const;
         // Параметр правила ширины проводников: минимальная ширина проводника.
-        [[= XML::Attr]] float widthMin{};
+        [[= XML::Attr]] double widthMin{};
         // Параметр правила ширины проводников: номинальная ширина проводника.
-        [[= XML::Attr]] float widthNom{};
+        [[= XML::Attr]] double widthNom{};
         // Ссылка на слои. См. также LayersRefs
         // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         // public Object LayersRef;
-        [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
         // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
@@ -30,7 +30,7 @@ struct Rules {
         bool ShouldSerialize_LayersRefs();
         // Объекты воздействия правила.
         //[XmlArrayItem("NetRef", typeof()), XmlArrayItem("NetGroupRef", typeof()), XmlArrayItem("AllNets", typeof())] public List<Object> ObjectsAffected;
-        [[= XML::Array]] std::vector<std::variant<NetRef, NetGroupRef, AllNets>> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<XML::Null, NetRef, NetGroupRef, AllNets>> ObjectsAffected;
         bool ShouldSerialize_ObjectsAffected();
     };
     // Описание правила зазоров между цепями.
@@ -40,21 +40,21 @@ struct Rules {
         // public bool enabledSpecified
         bool getEnabledSpecified() const;
         // Параметр правила зазоров между цепями: минимальный зазор.
-        [[= XML::Attr]] float clrnMin{};
+        [[= XML::Attr]] double clrnMin{};
         // Параметр правила зазоров между цепями: номинальный зазор.
-        [[= XML::Attr]] float clrnNom{};
+        [[= XML::Attr]] double clrnNom{};
         // Ссылка на слои. См. также LayersRefs
         // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         // public Object LayersRef;
-        [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
         // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
-        [[= XML::Elem("LayerRef")]] std::vector<LayerRef> LayersRefs;
+        [[= XML::Elem]] std::vector<LayerRef> LayersRefs;
         bool ShouldSerialize_LayersRefs();
         // Объекты воздействия правила.
         //[XmlArrayItem("NetRef", typeof()), XmlArrayItem("NetGroupRef", typeof()), XmlArrayItem("AllNets", typeof()), XmlArrayItem("SignalRef", typeof()), XmlArrayItem("DiffSignalRef", typeof()), XmlArrayItem("SignalGroupRef", typeof())] public List<Object> ObjectsAffected;
-        [[= XML::Array]] std::vector<std::variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<XML::Null, NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         bool ShouldSerialize_ObjectsAffected();
     };
     // Описание правила зазоров между компонентами.
@@ -64,18 +64,19 @@ struct Rules {
         // public bool enabledSpecified
         bool getEnabledSpecified() const;
         // Параметр правила зазоров между цепями: минимальный зазор.
-        [[= XML::Attr]] float clrn{};
+        [[= XML::Attr]] double clrn{};
         // Объекты воздействия правила.
         //[XmlArrayItem("ComponentRef", typeof()), XmlArrayItem("CompGroupRef", typeof()), XmlArrayItem("AllComps", typeof())] public List<Object> ObjectsAffected;
-        [[= XML::Array]] std::vector<std::variant<ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<XML::Null, ComponentRef, CompGroupRef, AllComps>> ObjectsAffected;
         bool ShouldSerialize_ObjectsAffected();
     };
     // Описание зазоров до края платы.
     struct RulesClearancesToBoard {
         // Устанавливает зазор от проводников до края платы.
-        [[= XML::Attr]] float clrn{};
+        [[= XML::Attr]] double clrn{};
         // Устанавливает зазор от компонентов до края платы.
-        [[= XML::Attr]] float comps{};
+        [[= XML::Attr]] double comps{};
+        [[= XML::Attr]] double wires{};
     };
     // Описание правила назначения цепям стеков переходных отверстий.
     struct ViastacksOfNets {
@@ -85,11 +86,11 @@ struct Rules {
         bool getEnabledSpecified() const;
         // Объекты воздействия правила.
         //[XmlArrayItem("NetRef", typeof()), XmlArrayItem("NetGroupRef", typeof()), XmlArrayItem("AllNets", typeof()), XmlArrayItem("SignalRef", typeof()), XmlArrayItem("DiffSignalRef", typeof()), XmlArrayItem("SignalGroupRef", typeof())] public List<Object> ObjectsAffected;
-        [[= XML::Array]] std::vector<std::variant<NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<XML::Null, NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
         bool ShouldSerialize_ObjectsAffected();
         // Назначенные типы переходных отверстий.
         //[XmlArrayItem("AllViastacks", typeof()), XmlArrayItem("AllViastacksThrough", typeof()), XmlArrayItem("AllViastacksNotThrough", typeof()), XmlArrayItem("ViastackRef", typeof())] public List<Object> Viastacks;
-        [[= XML::Array]] std::vector<std::variant<AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
+        [[= XML::Array]] std::vector<std::variant<XML::Null, AllViastacks, AllViastacksThrough, AllViastacksNotThrough, ViastackRef>> Viastacks;
         bool ShouldSerialize_Viastacks();
     };
     // Описание правила назначения цепям опорных слоёв.
@@ -101,7 +102,7 @@ struct Rules {
         // Ссылка на слои. См. также LayersRefs
         // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         // public Object LayersRef;
-        [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
         // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
@@ -121,7 +122,7 @@ struct Rules {
         // Ссылка на слои. См. также LayersRefs
         // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         // public Object LayersRef;
-        [[= XML::Elem]] std::variant<AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
         // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
@@ -129,7 +130,7 @@ struct Rules {
         bool ShouldSerialize_LayersRefs();
         // Объекты воздействия правила.
         //[XmlArrayItem("NetRef", typeof()), XmlArrayItem("NetGroupRef", typeof())] public List<Object> ObjectsAffected;
-        [[= XML::Array]] std::vector<std::variant<NetRef, NetGroupRef>> ObjectsAffected;
+        [[= XML::Array]] std::vector<std::variant<XML::Null, NetRef, NetGroupRef>> ObjectsAffected;
         bool ShouldSerialize_ObjectsAffected();
     };
     // Свойства цепи.

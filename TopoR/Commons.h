@@ -86,9 +86,9 @@ enum class layertype {
 };
 // Настройка автоматической трассировки: режим трассировки. Значение по умолчанию – Multilayer.
 enum class AutorouteMode {
-    Multilayer,       // многослойная трассировка
-    SinglelayerTop,   // однослойная трассировка на верхнем слое
-    SinglelayerBottom // однослойная трассировка на нижнем слое
+    MultiLayer,       // многослойная трассировка
+    SingleLayerTop,   // однослойная трассировка на верхнем слое
+    SingleLayerBottom // однослойная трассировка на нижнем слое
 };
 // Настройка подключения к углам прямоугольных контактных площадок: режим подключения.
 enum class PadConnectSettingsMode {
@@ -171,7 +171,7 @@ enum class Handling {
 enum class TypePadstack {
     Through,  // сквозной
     SMD,      // планарный
-    MountHole // монтажное отверстие
+    MountingHole // монтажное отверстие
 };
 // Настройка вывода файлов Gerber, DXF, Drill: единицы измерения. Значение по умолчанию – mm.
 enum class units {
@@ -193,7 +193,7 @@ inline namespace ReferenceTypes {
 // базовый класс ссылок.
 struct BaseRef {
     // Имя объекта или ссылка на именованный объект.
-    [[= XML::Attr("name")]] std::string name /*ReferenceName*/;
+    [[= XML::AttrF]] std::string name /*ReferenceName*/;
     constexpr auto operator<=>(const BaseRef&) const noexcept = default;
 };
 // Ссылка на атрибут.
@@ -213,6 +213,7 @@ struct LayerRef : public BaseRef {
     // TODO:
     //   XmlAttribute("type", typeof(type_layer)),
 };
+
 // Ссылка на тип переходного отверстия.
 struct ViastackRef : public BaseRef { };
 // Ссылка на стек контактных площадок.
@@ -260,9 +261,9 @@ struct PadRef {
 } // namespace ReferenceTypes
 inline namespace Coordinates {
 struct Coord {
-    [[= XML::Attr]] float x{};
-    [[= XML::Attr]] float y{};
-    void Shift(float x, float y);
+    [[= XML::Attr]] double x{};
+    [[= XML::Attr]] double y{};
+    void Shift(double x, double y);
     void UnitsConvert(dist in_units, dist out_units);
 };
 // координаты точки, вершины.
@@ -284,22 +285,22 @@ struct Stretch : public Coord { };
 } // namespace Coordinates
 inline namespace Segments {
 struct IBaseSegment {
-    virtual void Shift(float x, float y) { };
+    virtual void Shift(double x, double y) { };
     virtual void UnitsConvert(dist in_units, dist out_units) { };
 };
 // Описание прямолинейного сегмента контура.
 struct SegmentLine : public IBaseSegment {
     // Конечная точка линии, дуги.
-    [[= XML::Elem /*("End")*/]] End End;
-    void Shift(float x, float y) override;
+    [[= XML::Elem]] End End; /*("End")*/
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся центром. Обход против часовой стрелки.
 struct SegmentArcCCW : public SegmentLine {
     // Центр круга (окружности), овала.
-    [[= XML::Elem /*("Center")*/]] Center Center;
-    void Shift(float x, float y);
+    [[= XML::ElemF]] Center Center; /*("Center")*/
+    void Shift(double x, double y);
     void UnitsConvert(dist in_units, dist out_units);
 };
 // Описание дугообразного сегмента контура.
@@ -309,14 +310,14 @@ struct SegmentArcCW : public SegmentArcCCW { };
 // Дуга, задаётся углом. Отрицательный угол означает обход по часовой стрелке.
 struct SegmentArcByAngle : public SegmentLine {
     // Задаёт угол в градусах c точностью до тысячных долей.
-    [[= XML::Attr]] float angle{};
+    [[= XML::Attr]] double angle{};
 };
 // Описание дугообразного сегмента контура.
 // Дуга, задаётся тремя точками: начало, середина и конец.
 struct SegmentArcByMiddle : public SegmentLine {
     // Конечная точка линии, дуги.
-    [[= XML::Elem /*("Middle")*/]] Middle Middle;
-    void Shift(float x, float y);
+    [[= XML::Elem]] Middle Middle; /*("Middle")*/
+    void Shift(double x, double y);
     void UnitsConvert(dist in_units, dist out_units);
 };
 } // namespace Segments
@@ -324,17 +325,17 @@ inline namespace Figures {
 // Интерфейс BaseFigure создан для реализации удобного доступа к одинаковым методам разных объектов
 struct IBaseFigure {
     virtual void UnitsConvert(dist in_units, dist out_units) { };
-    virtual void Shift(float x, float y) { };
+    virtual void Shift(double x, double y) { };
 };
 // Дуга, заданная центром. Обход против часовой стрелки.
 struct ArcCCW : public IBaseFigure {
     // Центр круга (окружности), овала.
-    [[= XML::Elem /*("Center")*/]] Center Center;
+    [[= XML::ElemF]] Center Center; /*("Center")*/
     // Начальная точка линии, дуги.
-    [[= XML::Elem /*("Start")*/]] Start Start;
+    [[= XML::Elem]] Start Start; /*("Start")*/
     // Конечная точка линии, дуги.
-    [[= XML::Elem /*("End")*/]] End End;
-    void Shift(float x, float y) override;
+    [[= XML::Elem]] End End; /*("End")*/
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 // Дуга, заданная центром. Обход по часовой стрелке.
@@ -342,51 +343,51 @@ struct ArcCW : public ArcCCW { };
 // Дуга, заданная углом. Отрицательный угол означает обход по часовой стрелке.
 struct ArcByAngle : public IBaseFigure {
     // Задаёт угол в градусах c точностью до тысячных долей.
-    [[= XML::Attr]] float angle{};
+    [[= XML::Attr]] double angle{};
     // Начальная точка линии, дуги.
-    [[= XML::Elem /*("Start")*/]] Start Start;
+    [[= XML::Elem]] Start Start; /*("Start")*/
     // Конечная точка линии, дуги.
-    [[= XML::Elem /*("End")*/]] End End;
-    void Shift(float x, float y) override;
+    [[= XML::Elem]] End End; /*("End")*/
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 // Дуга, заданная тремя точками: начало, середина и конец.
 struct ArcByMiddle : public IBaseFigure {
     // Начальная точка линии, дуги.
-    [[= XML::Elem /*("Start")*/]] Start Start;
+    [[= XML::Elem]] Start Start; /*("Start")*/
     // Конечная точка линии, дуги.
-    [[= XML::Elem /*("Middle")*/]] Middle Middle;
+    [[= XML::Elem]] Middle Middle; /*("Middle")*/
     // Конечная точка линии, дуги.
-    [[= XML::Elem /*("End")*/]] End End;
-    void Shift(float x, float y) override;
+    [[= XML::Elem]] End End; /*("End")*/
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 // Описание окружности (незалитого круга).
 struct Circle : public IBaseFigure {
     // Диаметр окружности, круга, овала.
-    [[= XML::Attr]] float diameter{};
+    [[= XML::Attr]] double diameter{};
     // Центр круга (окружности), овала.
-    [[= XML::Elem /*("Center")*/]] Center Center;
-    void Shift(float x, float y) override;
+    [[= XML::ElemF]] Center Center; /*("Center")*/
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 // Описание линии.
 struct Line : public IBaseFigure {
     // Массив координат точек, вершин.
-    [[= XML::Elem /*("Dot")*/]] std::vector<Dot> Dots;
+    [[= XML::Elem]] std::vector<Dot> Dots; /*("Dot")*/
     bool ShouldSerialize_Dots();
-    void Shift(float x, float y) override;
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 // Описание полилинии.
 struct Polyline : public IBaseFigure {
     // Начальная точка линии, дуги.
-    [[= XML::Elem /*("Start")*/]] Start Start;
+    [[= XML::Elem]] Start Start; /*("Start")*/
     // Сегменты.
     // public List<Object> Segments;
-    [[= XML::Elem]] std::vector<std::variant<SegmentLine, SegmentArcByAngle, SegmentArcCCW, SegmentArcCW, SegmentArcByMiddle>> Segments;
+    [[= XML::Elem]] std::vector<std::variant<XML::Null, SegmentLine, SegmentArcByAngle, SegmentArcCCW, SegmentArcCW, SegmentArcByMiddle>> Segments;
     bool ShouldSerialize_Segments();
-    void Shift(float x, float y) override;
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 // Описание незалитого контура.
@@ -408,12 +409,12 @@ struct Polygon : public Line { };
 // Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
 struct TrackArcCW : public IBaseFigure {
     // Центр круга (окружности), овала.
-    [[= XML::Elem /*("Center")*/]] Center Center;
+    [[= XML::ElemF]] Center Center; /*("Center")*/
     // Конечная точка линии, дуги.
-    [[= XML::Elem /*("End")*/]] End End;
+    [[= XML::Elem]] End End; /*("End")*/
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
-    [[= XML::Attr]] std::string serpRef;
-    void Shift(float x, float y) override;
+    [[= XML::AttrF]] std::string serpRef;
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 // Описание дугообразного сегмента проводника (дуга против часовой стрелки).
@@ -423,112 +424,112 @@ struct TrackArc : public TrackArcCW { };
 // Начальная точка сегмента определяется по предыдущему сегменту или по тегу Start, заданному в SubWire. ! Если сегмент принадлежит змейке, указывается ссылка на змейку serpRef.
 struct TrackLine : public IBaseFigure {
     // Конечная точка линии, дуги.
-    [[= XML::Elem /*("End")*/]] End End;
+    [[= XML::Elem]] End End; /*("End")*/
     // Ссылка на змейку. Строка должна содержать идентификатор описанной змейки Serpent.
-    [[= XML::Attr]] std::string serpRef;
-    void Shift(float x, float y) override;
+    [[= XML::AttrF]] std::string serpRef;
+    void Shift(double x, double y) override;
     void UnitsConvert(dist in_units, dist out_units) override;
 };
 } // namespace Figures
 inline namespace RulesArea {
 // Устанавливает область действия правила: все слои.
 struct AllLayers {
-    [[= XML::Elem /*("AllLayers")*/]] std::string allLayers;
+    //    [[= XML::]] std::string allLayers;Elem /*("AllLayers")*/
 };
 // Устанавливает область действия правила: все компоненты.
 struct AllComps {
-    [[= XML::Elem /*("AllComps")*/]] std::string allComps;
+    //    [[= XML::]] std::string allComps;Elem /*("AllComps")*/
 };
 // Устанавливает область действия правила: все цепи.
 struct AllNets {
-    [[= XML::Elem /*("AllNets")*/]] std::string allNets;
+    //    [[= XML::]] std::string allNets;Elem /*("AllNets")*/
 };
 // Устанавливает область действия правила: все внутренние слои.
 struct AllLayersInner {
-    [[= XML::Elem /*("AllLayersInner")*/]] std::string allLayersInner;
+    //    [[= XML::]] std::string allLayersInner;Elem /*("AllLayersInner")*/
 };
 // Устанавливает область действия правила: все внутренние сигнальные слои.
 struct AllLayersInnerSignal {
-    [[= XML::Elem /*("AllLayersInnerSignal")*/]] std::string allLayersInnerSignal;
+    //    [[= XML::]] std::string allLayersInnerSignal;Elem /*("AllLayersInnerSignal")*/
 };
 // Устанавливает область действия правила: все сигнальные слои.
 struct AllLayersSignal {
-    [[= XML::Elem /*("AllLayersSignal")*/]] std::string allLayersSignal;
+    //    [[= XML::]] std::string allLayersSignal;Elem /*("AllLayersSignal")*/
 };
 // Устанавливает область действия правила: все внешние слои.
 struct AllLayersOuter {
-    [[= XML::Elem /*("AllLayersOuter")*/]] std::string allLayersOuter;
+    //    [[= XML::]] std::string allLayersOuter;Elem /*("AllLayersOuter")*/
 };
 // Устанавливает доступные типы переходных отверстий для правила: все типы.
 struct AllViastacks {
-    [[= XML::Elem /*("AllViastacks")*/]] std::string allViastacks;
+    //    [[= XML::]] std::string allViastacks;Elem /*("AllViastacks")*/
 };
 // Устанавливает доступные типы переходных отверстий для правила: все сквозные типы.
 struct AllViastacksThrough {
-    [[= XML::Elem /*("AllViastacksThrough")*/]] std::string allViastacksThrough;
+    //    [[= XML::]] std::string allViastacksThrough;Elem /*("AllViastacksThrough")*/
 };
 // Устанавливает доступные типы переходных отверстий для правила: все несквозные типы.
 struct AllViastacksNotThrough {
-    [[= XML::Elem /*("AllViastacksNotThrough")*/]] std::string allViastacksNotThrough;
+    //    [[= XML::]] std::string allViastacksNotThrough;Elem /*("AllViastacksNotThrough")*/
 };
 } // namespace RulesArea
 inline namespace ThermalDetailTextObjectSignal {
 // Описание термобарьера.
 struct Thermal {
     // Параметр термобарьера: число спиц.! В TopoR поддерживается только одно значение – 4.
-    [[= XML::Attr]] int spokeNum{};
+    [[= XML::AttrF]] int spokeNum{4};
     // Параметр термобарьера: минимальное число спиц.
-    [[= XML::Attr]] int minSpokeNum{};
+    [[= XML::AttrF]] int minSpokeNum{};
     // Задаёт угол в градусах c точностью до тысячных долей.
-    [[= XML::Attr]] float angle{};
+    [[= XML::AttrF]] double angle{};
     // Параметр термобарьера: ширина спицы.
-    [[= XML::Attr]] float spokeWidth{};
+    [[= XML::AttrF]] double spokeWidth{};
     // Параметр термобарьера: зазор между контактной площадкой и областью металлизации.
-    [[= XML::Attr]] float backoff{};
+    [[= XML::AttrF]] double backoff{};
     void UnitsConvert(dist in_units, dist out_units);
 };
 // Описание детали.
 struct Detail {
     // Толщина линии.
-    [[= XML::Attr]] float lineWidth{};
+    [[= XML::Attr]] double lineWidth{};
     // Ссылка на слой.
-    [[= XML::Elem /*("LayerRef")*/]] LayerRef layerRef;
+    [[= XML::Elem]] LayerRef LayerRef; /*("LayerRef")*/
     // Описание фигуры.
     // public Object figure;
-    [[= XML::Elem]] std::variant<ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Polyline, FilledContour> Figure;
-    void Shift(float x, float y);
+    [[= XML::Elem]] std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Polyline, FilledContour> Figure;
+    void Shift(double x, double y);
     void UnitsConvert(dist in_units, dist out_units);
 };
 // Описание надписи.
 struct Text {
     // Параметр надписи: текст надписи.
-    [[= XML::Attr]] std::string text;
+    [[= XML::AttrF]] std::string text;
     // Параметр надписей (ярлыков): способ выравнивания текста.
-    [[= XML::Attr("align")]] align align{};
+    [[= XML::AttrF]] align align{};
     // Задаёт угол в градусах c точностью до тысячных долей.
-    [[= XML::Attr]] float angle{};
+    [[= XML::AttrF]] double angle{};
     // Параметр надписей и ярлыков: зеркальность отображения.
-    [[= XML::Attr]] Bool mirror{};
+    [[= XML::AttrF]] Bool mirror{};
     bool getMirrorSpecified() const;
     // Ссылка на слой.
-    [[= XML::Elem /*("LayerRef")*/]] LayerRef layerRef;
+    [[= XML::Elem]] LayerRef LayerRef; /*("LayerRef")*/
     // Ссылка на стиль надписей.
-    [[= XML::Elem /*("TextStyleRef")*/]] TextStyleRef textStyleRef;
+    [[= XML::Elem]] TextStyleRef TextStyleRef; /*("TextStyleRef")*/
     // Точка привязки объекта.
-    [[= XML::Elem /*("Org")*/]] Org Org;
-    void Shift(float x, float y);
+    [[= XML::Elem]] Org Org; /*("Org")*/
+    void Shift(double x, double y);
     // TODO: конвертировать текстовые стили по ссылке
     void UnitsConvert(dist in_units, dist out_units);
 };
 // Сигналы воздействия правила
 struct ObjectSignal {
     // public Object refs;
-    [[= XML::Elem]] std::variant<SignalRef, DiffSignalRef, SignalGroupRef> Refs;
+    [[= XML::Elem]] std::variant<XML::Null, SignalRef, DiffSignalRef, SignalGroupRef> Refs;
 };
 } // namespace ThermalDetailTextObjectSignal
 // Различные сервисные функции
 struct Ut final {
     // Конвертация единиц измерения
-    static float UnitsConvert(float value, dist in_units, dist out_units);
+    static double UnitsConvert(double value, dist in_units, dist out_units);
 };
 } // namespace TopoR

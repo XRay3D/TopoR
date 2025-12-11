@@ -13,7 +13,7 @@ bool ComponentsOnBoard::FreePad::getFixedSpecified() const { return std::to_unde
 bool ComponentsOnBoard::ShouldSerialize_Components() { return Components.size(); }
 bool ComponentsOnBoard::ShouldSerialize_FreePads() { return FreePads.size(); }
 std::string ComponentsOnBoard::AddComponent(const std::string& name, units units, const std::string& componentRef, const std::string& footprintRef) {
-    //    float x = 0, y{}; // координаты нового компонента
+    //    double x = 0, y{}; // координаты нового компонента
     //    if(Components.empty())
     //        return L"";
     //    while(ComponentIndexOf(name) >= 0) // проверка на уникальность имени и добавление префикса
@@ -23,7 +23,7 @@ std::string ComponentsOnBoard::AddComponent(const std::string& name, units units
     //        x = std::max(x, Components[i - 1]->Org.x);
     //        y = std::max(y, Components[i - 1]->Org.y);
     //    }
-    //    float offset = units == units::mm ? 3 : Ut::UnitsConvert(3, dist::mm, dist::mil);
+    //    double offset = units == units::mm ? 3 : Ut::UnitsConvert(3, dist::mm, dist::mil);
     //    x += offset; // добавление небольшого смещения
     //    y += offset;
     //    Org tempVar = std::make_shared<Org>();

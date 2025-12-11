@@ -11,17 +11,17 @@ struct Layers {
     // Описание слоя.
     struct Layer {
         // Имя объекта или ссылка на именованный объект.
-        [[= XML::Attr]] std::string name;
+        [[= XML::AttrF]] std::string name;
         // Тип слоя. Значение по умолчанию – Signal.
         [[= XML::Attr]] layertype type{};
         // Параметр слоя: слой содержит очертания компонентов.
         // ! Для сигнальных, опорных, диэлектрических и документирующих слоёв параметр compsOutline отсутствует.
-        [[= XML::Attr]] Bool compsOutline{};
+        [[= XML::AttrF]] Bool compsOutline{};
         // public bool compsOutlineSpecified
         bool getCompsOutlineSpecified() const;
         // Параметр слоя: толщина.
         // ! Для документирующих слоёв и слоёв с типом Assy параметр thickness отсутствует.
-        [[= XML::Attr]] float thickness{};
+        [[= XML::AttrF]] double thickness{};
         // public bool thicknessSpecified
         bool getThicknessSpecified() const;
         /*****************************************************************
@@ -29,7 +29,7 @@ struct Layers {
          * Они не являются частью формата TopoR PCB.                     *
          * ***************************************************************/
         Layer();
-        Layer(const std::string& name, layertype type, Bool compsOutline, float thickness);
+        Layer(const std::string& name, layertype type, Bool compsOutline, double thickness);
         std::string ToString();
         /*****************************************************************/
     };
