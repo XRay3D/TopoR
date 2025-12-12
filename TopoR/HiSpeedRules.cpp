@@ -15,15 +15,15 @@ bool HiSpeedRules::DiffSignal::ShouldSerialize_SignalRefs() {
 bool HiSpeedRules::SignalGroup::ShouldSerialize_References() {
     return {}; //    return References.size();
 }
-bool HiSpeedRules::RulesDelay::DelayEqual::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool HiSpeedRules::RulesDelay::DelayEqual::ShouldSerialize_ObjectsAffected() {
     return {}; //    return ObjectsAffected.size();
 }
-bool HiSpeedRules::RulesDelay::DelayConstant::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool HiSpeedRules::RulesDelay::DelayConstant::ShouldSerialize_ObjectsAffected() {
     return {}; //    return ObjectsAffected.size();
 }
-bool HiSpeedRules::RulesDelay::DelayRelation::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool HiSpeedRules::RulesDelay::ShouldSerialize_DelayEquals() {
     return {}; //    return DelayEquals.size();
 }
@@ -33,11 +33,11 @@ bool HiSpeedRules::RulesDelay::ShouldSerialize_DelayConstants() {
 bool HiSpeedRules::RulesDelay::ShouldSerialize_DelayRelations() {
     return {}; //    return DelayRelations.size();
 }
-bool HiSpeedRules::SignalSearchSettings::RuleDiffSignalNetsNames::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool HiSpeedRules::SignalSearchSettings::ExcludedNets::ShouldSerialize_NetRefs() {
     return {}; //    return NetRefs.size();
 }
-bool HiSpeedRules::SignalSearchSettings::getCreatePinPairsSpecified() const { return std::to_underlying(createPinPairs); }
+
 bool HiSpeedRules::SignalSearchSettings::ShouldSerialize_RulesDiffSignalNetsNames() {
     return {}; //    return RulesDiffSignalNetsNames.size();
 }

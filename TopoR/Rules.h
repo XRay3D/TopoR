@@ -22,7 +22,7 @@ struct Rules {
         // Ссылка на слои. См. также LayersRefs
         // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         // public Object LayersRef;
-        [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        /*[[= XML::Elem]]*/ std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
         // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
@@ -46,7 +46,7 @@ struct Rules {
         // Ссылка на слои. См. также LayersRefs
         // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         // public Object LayersRef;
-        [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        /*[[= XML::Elem]]*/ std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
         // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
@@ -102,7 +102,7 @@ struct Rules {
         // Ссылка на слои. См. также LayersRefs
         // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         // public Object LayersRef;
-        [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        /*[[= XML::Elem]]*/ std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
         // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;
@@ -122,7 +122,7 @@ struct Rules {
         // Ссылка на слои. См. также LayersRefs
         // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
         // public Object LayersRef;
-        [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+        /*[[= XML::Elem]]*/ std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
         // Ссылка на слои. См. также LayersRef
         // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
         //[[= XML::Elem("LayerRef")]] // public List<LayerRef> LayersRefs;

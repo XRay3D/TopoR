@@ -11,15 +11,15 @@ struct TextStyles {
     // Описание стиля надписей.
     struct TextStyle {
         // Имя объекта или ссылка на именованный объект.
-        [[= XML::AttrF]] std::string name;
+        [[= XML::Attr]] std::string name;
         // Параметр стиля надписей: название шрифта.
-        [[= XML::AttrF]] std::string fontName;
+        [[= XML::Attr]] std::string fontName;
         // Параметр стиля надписей: высота символов в текущих единицах.
-        [[= XML::AttrF]] double height{};
+        [[= XML::Attr]] double height{};
         // Параметр стиля надписей: жирность шрифта.
-        [[= XML::AttrF]] Bool bold{};
+        [[= XML::Attr]] Bool bold{};
         // Параметр стиля надписей: курсив.
-        [[= XML::AttrF]] Bool italic{};
+        [[= XML::Attr]] Bool italic{};
     };
     // Версия раздела.
     [[= XML::Attr]] std::string version;

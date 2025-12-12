@@ -20,7 +20,7 @@ void Constructive::BoardOutline::Voids::UnitsConvert(dist in_units, dist out_uni
 }
 bool Constructive::BoardOutline::ShouldSerialize_Contours() { return Contour.size(); }
 bool Constructive::BoardOutline::ShouldSerialize_Voids() { return Voids.size(); }
-bool Constructive::MntholeInstance::getFixedSpecified() const { return std::to_underlying(fixed); }
+
 void Constructive::MntholeInstance::Shift(double x, double y) {
     //    Org.Shift(x, y);
 }

@@ -15,7 +15,7 @@ struct Constructive {
             [[= XML::Attr]] double lineWidth{};
             // Незалитая фигура.
             // public Object NonfilledFigure;
-            [[= XML::Elem]] std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Circle, Line, Polyline, Rect, Contour> NonfilledFigure;
+            /*[[= XML::Elem]]*/ std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Circle, Line, Polyline, Rect, Contour> NonfilledFigure;
             /*************************************************************************
              * Здесь находятся функции для работы с элементами класса Shape. *
              * Они не являются частью формата TopoR PCB.                             *
@@ -29,7 +29,7 @@ struct Constructive {
             [[= XML::Attr]] double lineWidth{};
             // Описание залитой фигуры.
             // public Object FilledFigure;
-            [[= XML::Elem]] std::variant<XML::Null, FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure;
+            /*[[= XML::Elem]]*/ std::variant<XML::Null, FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure;
             /**********************************************************************
              * Здесь находятся функции для работы с элементами класса Voids. *
              * Они не являются частью формата TopoR PCB.                           *
@@ -52,15 +52,15 @@ struct Constructive {
         // Задаёт угол в градусах c точностью до тысячных долей.
         [[= XML::Attr]] double angle{};
         // Признак фиксации.
-        [[= XML::AttrF]] Bool fixed{};
+        [[= XML::Attr]] Bool fixed{};
         // public bool fixedSpecified
         bool getFixedSpecified() const;
         // Ссылка на стек контактных площадок.
-        [[= XML::Elem]] PadstackRef PadstackRef; //("PadstackRef")
-        // ссылка на цепь.
-        [[= XML::Elem]] NetRef NetRef; //("NetRef")
-        // Точка привязки объекта.
-        [[= XML::Elem]] Org Org; //("Org")
+        /*[[= XML::Elem]]*/ PadstackRef PadstackRef; //("PadstackRef")
+                                                     // ссылка на цепь.
+        /*[[= XML::Elem]]*/ NetRef NetRef;           //("NetRef")
+                                                     // Точка привязки объекта.
+        /*[[= XML::Elem]]*/ Org Org;                 //("Org")
         void Shift(double x, double y);
         void UnitsConvert(dist in_units, dist out_units);
     };
@@ -71,14 +71,14 @@ struct Constructive {
             // <summary>           // Тип запрета: запрет трассировки.
             struct Trace {
                 // Тип запрета трассировки.
-                [[= XML::AttrF]] role role{}; //("role")
-                // Ссылка на слои. См. также LayersRefs
-                // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
-                // public Object LayersRef;
-                [[= XML::Elem]] std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+                [[= XML::Attr]] role role{}; //("role")
+                                             // Ссылка на слои. См. также LayersRefs
+                                             // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
+                                             // public Object LayersRef;
+                /*[[= XML::Elem]]*/ std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
                 // Ссылка на слои. См. также LayersRef
                 // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
-                //[[= XML::Elem]] // public List<LayerRef> LayersRefs;//("LayerRef")
+                ///*[[= XML::Elem]]*/ // public List<LayerRef> LayersRefs;//("LayerRef")
                 [[= XML::Elem]] std::vector<LayerRef> LayersRefs; //("LayerRef")
                 bool ShouldSerialize_LayersRefs();
             };
@@ -89,16 +89,16 @@ struct Constructive {
             };
             // Тип запрета: запрет трассировки.
             // ORIGINAL LINE XmlElement: [Trace] public Trace Trace;
-            [[= XML::Elem]] Trace Trace;
+            /*[[= XML::Elem]]*/ Trace Trace;
             // ORIGINAL LINE XmlElement: [Place] public Place Place;
             // Place Place;
-            [[= XML::AttrF]] side Place;
+            [[= XML::Attr]] side Place;
         };
         // ORIGINAL LINE XmlElement: [Role] public Role Role;
         Role Role;
         // Описание фигуры.
         // public Object FigureContPolyline;
-        [[= XML::Elem]] std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Contour, FilledContour, Polyline> FigureContPolyline;
+        /*[[= XML::Elem]]*/ std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Contour, FilledContour, Polyline> FigureContPolyline;
         /********************************************************************************
          * Здесь находятся функции для работы с элементами класса Keepout. *
          * Они не являются частью формата TopoR PCB.                                    *
@@ -110,7 +110,7 @@ struct Constructive {
     // Версия раздела.
     [[= XML::Attr]] std::string version;
     // Контур платы и вырезы в плате.
-    [[= XML::Elem]] BoardOutline BoardOutline; //("BoardOutline")
+    /*[[= XML::Elem]]*/ BoardOutline BoardOutline; //("BoardOutline")
     // Монтажные отверстия на плате.
     // ORIGINAL LINE: ("Mntholes"), DefaultValue(null)][XmlArrayItem("MntholeInstance")] public List<MntholeInstance> Mntholes;
     [[= XML::Array]] std::vector<MntholeInstance> Mntholes;

@@ -2,19 +2,14 @@
 namespace TopoR {
 bool LocalLibrary::PadRect::getHandlingSpecified() const { return handling != Handling::None; }
 bool LocalLibrary::PadRect::getHandlingValueSpecified() const { return handlingValue != 0; }
-bool LocalLibrary::PadRect::getCustomSpecified() const { return std::to_underlying(custom); }
-bool LocalLibrary::PadRect::getCornerLBSpecified() const { return std::to_underlying(cornerLB); }
-bool LocalLibrary::PadRect::getCornerRBSpecified() const { return std::to_underlying(cornerRB); }
-bool LocalLibrary::PadRect::getCornerRTSpecified() const { return std::to_underlying(cornerRT); }
-bool LocalLibrary::PadRect::getCornerLTSpecified() const { return std::to_underlying(cornerLT); }
+
 bool LocalLibrary::PadPoly::ShouldSerialize_Dots() { return Dots.size(); }
-bool LocalLibrary::Padstack::getMetallizedSpecified() const { return std::to_underlying(metallized); }
+
 bool LocalLibrary::Padstack::ShouldSerialize_Pads() { return Pads.size(); }
 bool LocalLibrary::Viastack::LayerRange::ShouldSerializeLayerRefs() { return LayerRefs.size(); }
-bool LocalLibrary::Viastack::getViaOnPinSpecified() const { return std::to_underlying(viaOnPin); }
+
 bool LocalLibrary::Viastack::ShouldSerialize_ViaPads() { return ViaPads.size(); }
-bool LocalLibrary::Footprint::Label::getMirrorSpecified() const { return std::to_underlying(mirror); }
-bool LocalLibrary::Footprint::Pad::getFlippedSpecified() const { return std::to_underlying(flipped); }
+
 bool LocalLibrary::Footprint::ShouldSerialize_Pads() { return Pads.size(); }
 bool LocalLibrary::Footprint::ShouldSerialize_Texts() { return Texts.size(); }
 bool LocalLibrary::Footprint::ShouldSerialize_Details() { return Details.size(); }

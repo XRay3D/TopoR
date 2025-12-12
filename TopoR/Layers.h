@@ -11,17 +11,17 @@ struct Layers {
     // Описание слоя.
     struct Layer {
         // Имя объекта или ссылка на именованный объект.
-        [[= XML::AttrF]] std::string name;
+        [[= XML::Attr]] std::string name;
         // Тип слоя. Значение по умолчанию – Signal.
         [[= XML::Attr]] layertype type{};
         // Параметр слоя: слой содержит очертания компонентов.
         // ! Для сигнальных, опорных, диэлектрических и документирующих слоёв параметр compsOutline отсутствует.
-        [[= XML::AttrF]] Bool compsOutline{};
+        [[= XML::Attr]] Bool compsOutline{};
         // public bool compsOutlineSpecified
         bool getCompsOutlineSpecified() const;
         // Параметр слоя: толщина.
         // ! Для документирующих слоёв и слоёв с типом Assy параметр thickness отсутствует.
-        [[= XML::AttrF]] double thickness{};
+        [[= XML::Attr]] double thickness{};
         // public bool thicknessSpecified
         bool getThicknessSpecified() const;
         /*****************************************************************

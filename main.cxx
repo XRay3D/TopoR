@@ -144,7 +144,7 @@ void print(const T& str, size_t times, bool field) {
     } else if constexpr(is_class_type(^^T)) {
         if(!field) std::print("{:s}", indent);
         std::println("{}{}{} {{", XML::Green, display_string_of(^^T), XML::Cancel);
-        template for(int i{}; constexpr auto MEMBER: XML::members<T>()) {
+        template for(int i{}; constexpr auto MEMBER: XML::members(^^T)) {
             std::print("{:s}{}{}{} ", indent2, XML::Cyan, display_string_of(MEMBER), XML::Cancel);
             print(str.[:MEMBER:], times, true);
         }
@@ -163,8 +163,8 @@ int main() {
     // std::string_view file = "/home/x-ray/Документы/TopoR/Examples/Example_04/Arcs_standard_routing.fst";
     // std::string_view file = "/home/x-ray/Документы/TopoR/Examples/Example_05/MinVia.fst";
     // std::string_view file = "/home/x-ray/Документы/TopoR/Examples/Example_05/MinVia_standard_routing.fst";
-    // std::string_view file = "/home/x-ray/Документы/TopoR/Examples/Example_04/Arcs.fst";
-    std::string_view file = "/home/x-ray/Nextcloud/HARTMASTER/HARTMASTER.fst";
+    std::string_view file = "/home/x-ray/Документы/TopoR/Examples/Example_04/Arcs.fst";
+    // std::string_view file = "/home/x-ray/Nextcloud/HARTMASTER/HARTMASTER.fst";
     // std::string_view file = "C:/Users/bakiev/Nextcloud/HARTMASTER/HARTMASTER.fst";
 
     XML::Document doc;
@@ -183,15 +183,15 @@ int main() {
 
     if(!doc.load(file)) return 1;
 
-    doc.write(file = "out.xml", 4);
+    doc.write(file = "out.fst", 4);
 
     TopoR::TopoR_PCB_File topor;
 
     XML::Serialiser{file} >> topor;
-    XML::Serialiser{file = "out2.xml"} << topor;
+    XML::Serialiser{file = "out2.fst"} << topor;
 
     // print(topor);
-    system(std::format("diff --color -b -B -u out.xml out2.xml", file).c_str());
+    system(std::format("diff --color -b -B -u out.fst out2.fst", file).c_str());
 
     std::this_thread::sleep_for(0.5s);
 

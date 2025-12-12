@@ -1,15 +1,14 @@
 #include "ComponentsOnBoard.h"
 namespace TopoR {
 bool ComponentsOnBoard::CompInstance::Pin::ShouldSerializePadstackRef() { return PadstackRef != TopoR::PadstackRef{}; }
-bool ComponentsOnBoard::CompInstance::Attribute::Label::getMirrorSpecified() const { return std::to_underlying(mirror); }
-bool ComponentsOnBoard::CompInstance::Attribute::Label::getVisibleSpecified() const { return std::to_underlying(visible); }
+
 bool ComponentsOnBoard::CompInstance::Attribute::ShouldSerialize_Labels() { return Labels.size(); }
-bool ComponentsOnBoard::CompInstance::getFixedSpecified() const { return std::to_underlying(fixed); }
+
 bool ComponentsOnBoard::CompInstance::ShouldSerialize_Pins() { return Pins.size(); }
 bool ComponentsOnBoard::CompInstance::ShouldSerialize_Mntholes() { return Mntholes.size(); }
 bool ComponentsOnBoard::CompInstance::ShouldSerialize_Attributes() { return Attributes.size(); }
 std::string ComponentsOnBoard::CompInstance::ToString() { return name; }
-bool ComponentsOnBoard::FreePad::getFixedSpecified() const { return std::to_underlying(fixed); }
+
 bool ComponentsOnBoard::ShouldSerialize_Components() { return Components.size(); }
 bool ComponentsOnBoard::ShouldSerialize_FreePads() { return FreePads.size(); }
 std::string ComponentsOnBoard::AddComponent(const std::string& name, units units, const std::string& componentRef, const std::string& footprintRef) {

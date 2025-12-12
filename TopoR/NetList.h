@@ -20,7 +20,7 @@ struct NetList {
     // Версия раздела.
     [[= XML::Attr]] std::string version;
     // Описания цепей.
-    [[= XML::Elem("Net")]] std::vector<Net> Nets;
+    [[= XML::Elem]] std::vector<Net> Nets;
     bool ShouldSerialize_Nets();
     /*******************************************************************
      * Здесь находятся функции для работы с элементами класса NetList. *

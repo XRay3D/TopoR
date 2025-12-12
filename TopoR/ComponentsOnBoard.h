@@ -18,11 +18,11 @@ struct ComponentsOnBoard {
             [[= XML::Attr]] int padNum{};
             // Ссылка на стек контактных площадок.
             // public PadstackRef PadstackRef;
-            [[= XML::Elem]] PadstackRef PadstackRef; /*("PadstackRef")*/
+            /*[[= XML::Elem]]*/ PadstackRef PadstackRef; /*("PadstackRef")*/
             bool ShouldSerializePadstackRef();
             // Точка привязки объекта.
             // public Org Org;
-            [[= XML::Elem]] Org Org; /*("Org")*/
+            /*[[= XML::Elem]]*/ Org Org; /*("Org")*/
         };
         // Описание монтажного отверстия в компоненте на плате.
         struct Mnthole {
@@ -33,46 +33,46 @@ struct ComponentsOnBoard {
             [[= XML::Attr]] double angle{};
             // Ссылка на стек контактных площадок.
             // public PadstackRef PadstackRef;
-            [[= XML::Elem]] PadstackRef PadstackRef; /*("PadstackRef")*/
-            // Cсылка на цепь.
-            // public NetRef NetRef;
-            [[= XML::Elem]] NetRef NetRef; /*("NetRef")*/
+            /*[[= XML::Elem]]*/ PadstackRef PadstackRef; /*("PadstackRef")*/
+                                                         // Cсылка на цепь.
+                                                         // public NetRef NetRef;
+            /*[[= XML::Elem]]*/ NetRef NetRef;           /*("NetRef")*/
         };
         // Описание атрибута компонента на плате.
         struct Attribute {
             // Описание ярлыка компонента на плате.
             struct Label {
                 // Задаёт угол в градусах c точностью до тысячных долей.
-                [[= XML::AttrF]] double angle{};
+                [[= XML::Attr]] double angle{};
                 // Параметр надписей и ярлыков: зеркальность отображения.
                 // public Bool mirror;
-                [[= XML::AttrF]] Bool mirror{};
+                [[= XML::Attr]] Bool mirror{};
                 // public bool mirrorSpecified
                 bool getMirrorSpecified() const;
                 // Параметр надписей (ярлыков): способ выравнивания текста.
                 // public align align;
-                [[= XML::AttrF]] align align{}; /*("align")*/
+                [[= XML::Attr]] align align{}; /*("align")*/
                 // Флаг видимости.
                 // public Bool visible;
-                [[= XML::AttrF]] Bool visible{};
+                [[= XML::Attr]] Bool visible{};
                 // public bool visibleSpecified
                 bool getVisibleSpecified() const;
                 // Ссылка на слой.
                 // public LayerRef LayerRef;
-                [[= XML::Elem]] LayerRef LayerRef; /*("LayerRef")*/
-                // Ссылка на стиль надписей.
-                // public TextStyleRef TextStyleRef;
-                [[= XML::Elem]] TextStyleRef TextStyleRef; /*("TextStyleRef")*/
-                // Точка привязки объекта.
-                // public Org Org;
-                [[= XML::Elem]] Org Org; /*("Org")*/
+                /*[[= XML::Elem]]*/ LayerRef LayerRef;         /*("LayerRef")*/
+                                                               // Ссылка на стиль надписей.
+                                                               // public TextStyleRef TextStyleRef;
+                /*[[= XML::Elem]]*/ TextStyleRef TextStyleRef; /*("TextStyleRef")*/
+                                                               // Точка привязки объекта.
+                                                               // public Org Org;
+                /*[[= XML::Elem]]*/ Org Org;                   /*("Org")*/
             };
             // Тип предопределённого атрибута компонента.
             // public type type;
-            [[= XML::AttrF]] std::optional<type> type{}; // FIXME maybe optional
+            [[= XML::Attr]] std::optional<type> type{}; // FIXME maybe optional
             // Имя объекта или ссылка на именованный объект.
             // public string name;
-            [[= XML::AttrF]] std::string name;
+            [[= XML::Attr]] std::string name;
             // Значение атрибута.
             // public string value;
             [[= XML::Attr]] std::string value;
@@ -94,21 +94,21 @@ struct ComponentsOnBoard {
         [[= XML::Attr]] side side{}; /*("side")*/
         // Задаёт угол в градусах c точностью до тысячных долей.
         // angle
-        [[= XML::AttrF]] double angle{};
+        [[= XML::Attr]] double angle{};
         // Признак фиксации.
         // public Bool fixed;
-        [[= XML::AttrF]] Bool fixed{};
+        [[= XML::Attr]] Bool fixed{};
         // public bool fixedSpecified
         bool getFixedSpecified() const;
         // Ссылка на схемный компонент.
         // public ComponentRef ComponentRef;
-        [[= XML::Elem]] ComponentRef ComponentRef; /*("ComponentRef")*/
-        // Ссылка на посадочное место.
-        // public FootprintRef FootprintRef;
-        [[= XML::Elem]] FootprintRef FootprintRef; /*("FootprintRef")*/
-        // Точка привязки объекта.
-        // public Org Org;
-        [[= XML::Elem]] Org Org; /*("Org")*/
+        /*[[= XML::Elem]]*/ ComponentRef ComponentRef; /*("ComponentRef")*/
+                                                       // Ссылка на посадочное место.
+                                                       // public FootprintRef FootprintRef;
+        /*[[= XML::Elem]]*/ FootprintRef FootprintRef; /*("FootprintRef")*/
+                                                       // Точка привязки объекта.
+                                                       // public Org Org;
+        /*[[= XML::Elem]]*/ Org Org;                   /*("Org")*/
         // Контакты компонента на плате.
         //[XmlArrayItem/*("Pin")*/] public List<Pin> Pins;
         [[= XML::Array]] std::vector<Pin> Pins;
@@ -134,21 +134,21 @@ struct ComponentsOnBoard {
     struct FreePad {
         // Сторона объекта.
         // public side side;
-        [[= XML::AttrF]] std::string name{}; /*("side")*/
-        [[= XML::Attr]] side side{};         /*("side")*/
+        [[= XML::Attr]] std::string name{}; /*("side")*/
+        [[= XML::Attr]] side side{};        /*("side")*/
         // Задаёт угол в градусах c точностью до тысячных долей.
         // angle
-        [[= XML::AttrF]] double angle{};
+        [[= XML::Attr]] double angle{};
         // Признак фиксации.
         // public Bool fixed;
-        [[= XML::AttrF]] Bool fixed{};
+        [[= XML::Attr]] Bool fixed{};
         bool getFixedSpecified() const;
         // Ссылка на стек контактных площадок.
         // public PadstackRef PadstackRef;
-        [[= XML::Elem]] PadstackRef PadstackRef; /*("PadstackRef")*/
-        // Cсылка на цепь.
-        // public NetRef NetRef;
-        [[= XML::Elem]] std::optional<NetRef> NetRef; /*("NetRef")*/
+        /*[[= XML::Elem]]*/ PadstackRef PadstackRef;      /*("PadstackRef")*/
+                                                          // Cсылка на цепь.
+                                                          // public NetRef NetRef;
+        /*[[= XML::Elem]]*/ std::optional<NetRef> NetRef; /*("NetRef")*/
         // Точка привязки объекта.
         // public Org Org;
         [[= XML::ElemF]] Org Org; /*("Org")*/

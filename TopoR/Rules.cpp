@@ -1,46 +1,45 @@
 ﻿#include "Rules.h"
 namespace TopoR {
-bool Rules::WidthOfWires::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool Rules::WidthOfWires::ShouldSerialize_LayersRefs() {
     return {}; //    return LayersRefs.size();
 }
 bool Rules::WidthOfWires::ShouldSerialize_ObjectsAffected() {
     return {}; //    return ObjectsAffected.size();
 }
-bool Rules::ClearanceNetToNet::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool Rules::ClearanceNetToNet::ShouldSerialize_LayersRefs() {
     return {}; //    return LayersRefs.size();
 }
 bool Rules::ClearanceNetToNet::ShouldSerialize_ObjectsAffected() {
     return {}; //    return ObjectsAffected.size();
 }
-bool Rules::ClearanceCompToComp::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool Rules::ClearanceCompToComp::ShouldSerialize_ObjectsAffected() {
     return {}; //    return ObjectsAffected.size();
 }
-bool Rules::ViastacksOfNets::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool Rules::ViastacksOfNets::ShouldSerialize_ObjectsAffected() {
     return {}; //    return ObjectsAffected.size();
 }
 bool Rules::ViastacksOfNets::ShouldSerialize_Viastacks() {
     return {}; //    return Viastacks.size();
 }
-bool Rules::PlaneLayerNets::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool Rules::PlaneLayerNets::ShouldSerialize_LayersRefs() {
     return {}; //    return LayersRefs.size();
 }
 bool Rules::PlaneLayerNets::ShouldSerialize_ObjectsAffected() {
     return {}; //    return ObjectsAffected.size();
 }
-bool Rules::SignalLayerNets::getEnabledSpecified() const { return std::to_underlying(enabled); }
+
 bool Rules::SignalLayerNets::ShouldSerialize_LayersRefs() {
     return {}; //    return LayersRefs.size();
 }
 bool Rules::SignalLayerNets::ShouldSerialize_ObjectsAffected() {
     return {}; //    return ObjectsAffected.size();
 }
-bool Rules::NetProperty::getFlexfixSpecified() const { return std::to_underlying(flexfix); }
-bool Rules::NetProperty::getRouteSpecified() const { return std::to_underlying(route); }
+
 bool Rules::NetProperty::ShouldSerialize_NetRefs() {
     return {}; //    return NetRefs.size();
 }

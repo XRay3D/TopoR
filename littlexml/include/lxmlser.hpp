@@ -197,17 +197,16 @@ inline constexpr auto toString(Enum e) -> string_view {
     // clang-format on
 }
 
-template <typename T>
-static consteval auto members() {
+static consteval auto members(meta::info info) {
     static constexpr auto CTX = meta::access_context::unprivileged();
-    return std::define_static_array([] consteval {
-        auto members = nonstatic_data_members_of(^^T, CTX);
+    return std::define_static_array([info] consteval {
+        auto members = nonstatic_data_members_of(info, CTX);
         [&members](this auto self, auto&& bases) -> void {
             for(meta::info base: bases | v::transform(meta::type_of)) {
                 self(bases_of(base, CTX));
                 members.append_range(meta::nonstatic_data_members_of(base, CTX));
             }
-        }(bases_of(^^T, CTX));
+        }(bases_of(info, CTX));
         return members;
     }());
 }
@@ -243,25 +242,24 @@ private:
 
     static constexpr auto CTX = meta::access_context::unchecked();
 
-    template <meta::info INFO>
-    static consteval auto nameOf() -> string_view {
-        constexpr string_view A_NAME{[] consteval -> string_view {
-            if constexpr(HasXmlAnnotation<INFO>)
-                return *annotation_of_type<Type>(INFO);
+    static consteval auto nameOf(meta::info info) -> string_view {
+        string_view A_NAME{[info] consteval -> string_view {
+            if(auto annotation = annotation_of_type<Type>(info))
+                return *annotation;
             return string_view{};
         }()};
-        constexpr string_view T_NAME{is_type(INFO)
-                ? display_string_of(INFO)
-                : display_string_of(type_of(INFO))};
-        constexpr string_view F_NAME{is_type(INFO)
+        string_view T_NAME{is_type(info)
+                ? display_string_of(info)
+                : display_string_of(type_of(info))};
+        string_view F_NAME{is_type(info)
                 ? ""
-                : display_string_of(INFO)};
+                : display_string_of(info)};
         // logYellow("nameOf -> A: {}, T: {}, F: {}", A_NAME, T_NAME, F_NAME);
         return A_NAME.size() ? A_NAME : (F_NAME.size() ? F_NAME : T_NAME);
     }
 
     template <typename T>
-    static consteval auto nameOf() -> string_view { return nameOf<^^T>(); }
+    static consteval auto nameOf() -> string_view { return nameOf(^^T); }
 
     template <meta::info INFO>
     static consteval auto typeOf() -> Type::eType {
@@ -281,7 +279,7 @@ private:
 
     template <meta::info INFO, typename T>
     static void load(T& data, ptree& node) {
-        constexpr string_view NAME_OF{nameOf<INFO>()};
+        constexpr string_view NAME_OF{nameOf(INFO)};
         logRed("name {}", NAME_OF);
 
         node.get_optional(NAME_OF);
@@ -326,7 +324,7 @@ private:
 
     template <meta::info INFO, typename T>
     static void save(const T& data, NodeTag* node) {
-        static constexpr string_view NAME_OF{nameOf<INFO>()};
+        static constexpr string_view NAME_OF{nameOf(INFO)};
 #if 0
         // clang-format off
         Overload{
@@ -420,7 +418,6 @@ private:
             //     } else
             //         logRed("data {} {}", NAME_OF, display_string_of(^^T));
             // };
-
             // if constexpr(IsSame<T, std::string>) {
             //     if(CanSkip<INFO> && data == T{}) return;
             //     node->attributes.emplace_back(NAME_OF, data);
@@ -458,10 +455,10 @@ private:
         } else if constexpr(IsClass<T>) {
             node = new NodeTag{node, NAME_OF};
             // static_assert(members<T>().size(), display_string_of(^^T));
-            template for(constexpr meta::info MEMBER: members<T>())
+            template for(constexpr meta::info MEMBER: members(^^T))
                 save<MEMBER>(data.[:MEMBER:], node);
-            if(CanSkip<INFO>
-                && node->text().empty()
+            if(/*CanSkip<INFO>
+                &&*/ node->text().empty()
                 && node->attributes.empty()
                 && node->empty()) // remove if is all data is empty
                 node->parent->pop_back();
@@ -475,43 +472,25 @@ private:
     static void load(Null, NodeTag*) { } // NOTE do nothing
 
     template <typename T>
-    static void load(T& data, NodeTag* node) {
-        load<^^T>(data, node);
-    }
+    static void load(T& data, NodeTag* node) { load<^^T>(data, node); }
 
     template <meta::info INFO, typename T>
     static void load(T& data, NodeTag* node) {
-        static constexpr string_view NAME_OF{nameOf<INFO>()};
+        constexpr string_view NAME_OF{nameOf(INFO)};
         Data* val = IsAttr<INFO> ? node->attr(NAME_OF)
                                  : node->firstChild(NAME_OF);
         if(!val) return;
 
-        Overload{
-            [](std::string& data, string_view val) {
-                data = val;
-            },
-            []<IsArithmetic A>(A& data, string_view val) {
-                std::from_chars(val.data(), val.data() + val.size(), data);
-            },
-            []<IsEnum E>(E& data, string_view val) {
-                data = toEnum<E>(val);
-            },
-            []<class Any>(Any& data, string_view val) {
-                logRed("data {} {}", NAME_OF, display_string_of(^^Any));
-            },
-        }(data, val->value());
-
-        // if constexpr(IsSame<T, std::string>) {
-        //     data = val->value();
-        // } else if constexpr(IsEnum<T>) {
-        //     data = toEnum<T>(val->value());
-        // } else if constexpr(IsArithmetic<T>) {
-        //     string_view sv = val->value();
-        //     std::from_chars(sv.data(), sv.data() + sv.size(), data);
-        // } else {
-        //     logRed("data {} {}", NAME_OF, display_string_of(^^T));
-        //     // static_assert(false, display_string_of(^^T)); // TODO
-        // }
+        if constexpr(IsSame<T, std::string>) {
+            data = val->value();
+        } else if constexpr(IsEnum<T>) {
+            data = toEnum<T>(val->value());
+        } else if constexpr(IsArithmetic<T>) {
+            string_view sv = val->value();
+            std::from_chars(sv.data(), sv.data() + sv.size(), data);
+        } else {
+            logRed("data {} {}", NAME_OF, display_string_of(^^T));
+        }
     }
 
     template <meta::info INFO, typename... Ts>
@@ -521,28 +500,19 @@ private:
             void (*func)(std::variant<Ts...>& data, NodeTag* node);
         };
         static constexpr std::array NAMES{
-            Pair{nameOf<^^Ts>(), +[](std::variant<Ts...>& data, NodeTag* node) {
+            Pair{nameOf(^^Ts), +[](std::variant<Ts...>& data, NodeTag* node) {
                      load<^^Ts>(data.template emplace<Ts>(), node);
                  }}
             ...
         };
+
         for(auto&& node: *node) {
             for(auto [name, load]: NAMES) {
                 if(node->tag() == name)
                     return load(data, node.get());
             }
         }
-        // logRed("variant {} {} {} {}", node->tag(), NAMES | v::transform(&Pair::name), node->size(), *node | v::transform(&Data::key));
         return;
-        // auto begin = r::find_first_of(*node, NAMES, {}, &Data::key, &Pair::name);
-        // if(begin == node->end()) {
-        //     logRed("variant {} {} {} {}", node->tag(), NAMES | v::transform(&Pair::name), node->size(), *node | v::transform(&Data::key));
-        //     return;
-        // }
-        // if(!node) return;
-        // logMagenta("var type {}", NAMES | v::transform(&Pair::name));
-        // logYellow("var node {}", *node | v::transform(&Data::key));
-        // load(data, node);
     }
 
     template <meta::info INFO, typename... Ts>
@@ -550,45 +520,37 @@ private:
 
         static const std::unordered_map loaders{
             std::pair{
-                      nameOf<^^Ts>(),
+                      nameOf(^^Ts),
                       +[](std::variant<Ts...>& var, NodeTag* node) {
                     load<^^Ts>(var.template emplace<Ts>(), node);
                 }}
             ...
         };
 
-        static constexpr std::array NAMES{nameOf<^^Ts>()...};
+        static constexpr std::array NAMES{nameOf(^^Ts)...};
 
         decltype(std::span{*node}) span;
 
         if constexpr(IsArr<INFO>) {
-            constexpr string_view NAME_OF{nameOf<INFO>()};
-            if(node = node->firstChild(NAME_OF); !node) {
-                // logRed("vec var {} {} {} {}", node->tag(), NAMES, node->size(), *node | v::transform(&Data::key));
-                return;
-            }
+            constexpr string_view NAME_OF{nameOf(INFO)};
+            if(node = node->firstChild(NAME_OF); !node) return;
             span = *node;
         } else {
             auto begin = r::find_first_of(*node, NAMES, {}, &Data::key);
-            if(begin == node->end()) {
-                // logRed("vec var {} {} {} {}", node->tag(), NAMES, node->size(), *node | v::transform(&Data::key));
-                return;
-            }
+            if(begin == node->end()) return;
             span = {begin, node->end()};
         }
 
         if(span.empty()) return;
-        if constexpr(requires { data.resize(0u); }) data.resize(span.size());
-        for(auto&& [var, node]: v::zip(data, span)) {
-            loaders.at(node->tag())(var, node.get());
-        }
-
-        // logGreen("vec var {} {}", data.size(), std::distance(begin, node->end()));
+        if constexpr(requires { data.resize(0u); })
+            data.resize(span.size());
+        for(auto dst = data.begin(); auto&& node: span)
+            loaders.at(node->tag())(*dst++, node.get());
     }
 
     template <meta::info INFO, typename T>
     static void load(std::optional<T>& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf<^^T>()};
+        constexpr string_view NAME_OF{nameOf(^^T)};
 
         Data* val = IsAttr<INFO> ? node->attr(NAME_OF)
                                  : node->firstChild(NAME_OF);
@@ -599,7 +561,7 @@ private:
     template <meta::info INFO, typename T>
         requires IsElem<INFO>
     static void load(std::vector<T>& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf<^^T>()};
+        constexpr string_view NAME_OF{nameOf(^^T)};
         auto begin = r::find(*node, NAME_OF, &Data::key);
         if(begin == node->end()) return;
         auto end = r::find_last(*node, NAME_OF, &Data::key);
@@ -607,7 +569,7 @@ private:
         if constexpr(requires { data.resize(0u); }) {
             std::span span{begin, ++end.begin()};
             data.resize(span.size());
-            for(auto&& [dst, src]: v::zip(data, span)) load(dst, src.get());
+            for(auto dst = data.begin(); auto&& src: span) load(*dst++, src.get());
         } else
             static_assert(false, display_string_of(^^T)); // TODO
     }
@@ -615,13 +577,11 @@ private:
     template <meta::info INFO, typename T>
         requires IsArr<INFO>
     static void load(T& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf<INFO>()};
+        constexpr string_view NAME_OF{nameOf(INFO)};
         if(node = node->firstChild(NAME_OF); !node) return;
         if constexpr(requires { data.resize(0u); }) {
             data.resize(node->size());
-            for(auto&& [dst, src]: v::zip(data, *node)) load(dst, src.get());
-            // for(auto&& var: v::zip(data, *node))
-            // std::apply(load<typename T::value_type, NodeTag*>, var);
+            for(auto dst = data.begin(); auto&& src: *node) load(*dst++, src.get());
         } else
             static_assert(false, display_string_of(^^T)); // TODO
     }
@@ -629,12 +589,12 @@ private:
     template <meta::info INFO, typename T>
         requires IsRoot<INFO> || ((IsClass<T> || IsElem<INFO>) && !IsRange<T>)
     static void load(T& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf<INFO>()};
+        constexpr string_view NAME_OF{nameOf(INFO)};
         if(node->tag() != NAME_OF)
             if(node = node->firstChild(NAME_OF); !node)
                 return;
         // static_assert(members<T>().size(), display_string_of(^^T));
-        template for(constexpr meta::info MEMBER: members<T>())
+        template for(constexpr meta::info MEMBER: members(^^T))
             load<MEMBER>(data.[:MEMBER:], node);
     }
 #endif
