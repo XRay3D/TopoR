@@ -521,19 +521,11 @@ void GraphicsView::mousePressEvent(QMouseEvent* event) {
     if(event->buttons() & Qt::MiddleButton) {
         setInteractive(false);
         // по нажатию средней кнопки мыши создаем событие ее отпускания выставляем моду перетаскивания и создаем событие зажатой левой кнопки мыши
-        // #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        //        QMouseEvent releaseEvent(QEvent::MouseButtonRelease, event->localPos(), event->screenPos(), event->windowPos(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
-        //        QGraphicsView::mouseReleaseEvent(&releaseEvent);
-        //        setDragMode(ScrollHandDrag);
-        //        QMouseEvent fakeEvent(event->type(), event->localPos(), event->screenPos(), event->windowPos(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
-        //        QGraphicsView::mousePressEvent(&fakeEvent);
-        // #else
-        QMouseEvent releaseEvent(QEvent::MouseButtonRelease, event->pos(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
+        QMouseEvent releaseEvent{QEvent::MouseButtonRelease, event->position(), event->globalPosition(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers()};
         QGraphicsView::mouseReleaseEvent(&releaseEvent);
         setDragMode(ScrollHandDrag);
-        QMouseEvent fakeEvent(event->type(), event->pos(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers());
+        QMouseEvent fakeEvent{event->type(), event->position(), event->globalPosition(), Qt::LeftButton, event->buttons() | Qt::LeftButton, event->modifiers()};
         QGraphicsView::mousePressEvent(&fakeEvent);
-        // #endif
     } else if(event->button() == Qt::RightButton) {
         //        { // удаление мостика
         //            QGraphicsItem* item = scene()->itemAt(mapToScene(event->pos()), transform());
@@ -581,11 +573,7 @@ void GraphicsView::mousePressEvent(QMouseEvent* event) {
 void GraphicsView::mouseReleaseEvent(QMouseEvent* event) {
     if(event->button() == Qt::MiddleButton) {
         // отпускаем левую кнопку мыши которую виртуально зажали в mousePressEvent
-        // #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        //        QMouseEvent fakeEvent(event->type(), event->localPos(), event->screenPos(), event->windowPos(), Qt::LeftButton, event->buttons() & ~Qt::LeftButton, event->modifiers());
-        // #else
-        QMouseEvent fakeEvent(event->type(), event->pos(), Qt::LeftButton, event->buttons() & ~Qt::LeftButton, event->modifiers());
-        // #endif
+        QMouseEvent fakeEvent{event->type(), event->position(), event->globalPosition(), Qt::LeftButton, event->buttons() & ~Qt::LeftButton, event->modifiers()};
         QGraphicsView::mouseReleaseEvent(&fakeEvent);
         setDragMode(NoDrag);
         setInteractive(true);

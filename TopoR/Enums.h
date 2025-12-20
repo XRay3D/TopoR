@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ctre.hpp"
+#include <ctre.hpp>
 #include "qdebug.h"
 #include <QString>
 #include <algorithm>
@@ -23,7 +23,7 @@ inline constexpr std::string_view enumToString(E value) {
     template for(constexpr auto e: std::define_static_array(meta::enumerators_of(^^E))) {
         if(value == [:e:]) return meta::identifier_of(e);
     }
-    return "";
+    return {};
 }
 
 template <Enum E>

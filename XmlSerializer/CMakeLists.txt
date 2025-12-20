@@ -4,9 +4,9 @@ project(XmlSerializer LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-find_package(QT NAMES Qt5 Core Widgets Xml)
+find_package(QT NAMES Qt6 Core Widgets Xml)
 find_package(
-  Qt5
+  Qt6
   COMPONENTS Core Widgets Xml
   REQUIRED)
 
@@ -22,4 +22,4 @@ target_sources(
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Xml Qt5::Core Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Xml Qt6::Core Qt6::Widgets)

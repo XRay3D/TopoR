@@ -12,9 +12,7 @@ QVariant TreeItem::data(int column, int role) const {
     if(role == Qt::DisplayRole || role == Qt::EditRole)
         return itemData.at(column);
     if(role == Qt::BackgroundRole && itemData.at(column).toString().startsWith('#')) {
-        QColor retColor{};
-        retColor.setNamedColor(itemData.at(column).toString());
-        return retColor;
+        return QColor{itemData.at(column).toString()};
     }
     return {};
 }
