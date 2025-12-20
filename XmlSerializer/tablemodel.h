@@ -5,9 +5,9 @@
 
 #include "xmlserializertypes.h"
 #include <QAbstractTableModel>
-#include <boost/pfr.hpp>
+#include <pfr.hpp>
 
-namespace pfr = boost::pfr;
+
 
 template <typename Data>
 class TableModel : public QAbstractTableModel {

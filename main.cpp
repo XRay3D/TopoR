@@ -83,10 +83,12 @@ void MainWindow::loadFile() {
     // }
 
     try {
+        auto fn = xml.getFileName().toStdString();
         xml >> *file;
         xml << *file;
         xml.save("out.fst");
-        edit();
+        system(std::format("diff --color -b -B -u {} out.fst", fn).c_str());
+        // edit();
     } catch(const std::set<QString>& names) {
         qCritical() << names;
     } catch(const std::exception& ex) {

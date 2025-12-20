@@ -37,17 +37,13 @@ bool Serializer::load() {
             qWarning() << file.errorString();
             break;
         }
-
-        QString errorMsg{};
-        int errorLine{};
-        int errorColumn{};
-        if(!doc.setContent(&file, &errorMsg, &errorLine, &errorColumn)) {
+        if(auto [errorMsg, errorLine, errorColumn] = doc.setContent(&file)) {
+            file.close();
+            return true;
+        } else {
             qWarning() << errorMsg << errorLine << errorColumn;
             break;
         }
-
-        file.close();
-        return true;
     } while(false);
     return false;
 }
@@ -62,6 +58,10 @@ QString Serializer::toString() const {
     text.replace("&#xa;", "\x0A");
     return text;
 }
+
+QString Serializer::getFileName() const { return fileName; }
+
+void Serializer::setFileName(const QString& newFileName) { fileName = newFileName; }
 
 bool Serializer::save() {
     if(QFile file{fileName}; file.open(QFile::WriteOnly)) {

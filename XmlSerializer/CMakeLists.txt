@@ -17,7 +17,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(QT NAMES Qt6 Qt5 Widgets Xml)
 find_package(
-  Qt${QT_VERSION_MAJOR}
+  Qt6
   COMPONENTS Widgets Xml
   REQUIRED)
 
@@ -35,5 +35,5 @@ target_sources(
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Xml
-                                              Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Xml
+                                              Qt6::Widgets)

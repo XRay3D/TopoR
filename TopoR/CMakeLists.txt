@@ -17,7 +17,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(QT NAMES Qt6 Qt5 Widgets)
 find_package(
-  Qt${QT_VERSION_MAJOR}
+  Qt6
   COMPONENTS Widgets
   REQUIRED)
 
@@ -30,4 +30,4 @@ target_sources(${PROJECT_NAME} PRIVATE ${SRC} #[[PUBLIC]] ${HEADER})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets)

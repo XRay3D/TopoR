@@ -23,18 +23,22 @@ set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+execute_process(
+  COMMAND git rev-parse --abbrev-ref HEAD
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  OUTPUT_VARIABLE GIT_BRANCH
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}_${CMAKE_CXX_COMPILER_ID}
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin_${GIT_BRANCH}/${CMAKE_BUILD_TYPE}_${CMAKE_CXX_COMPILER_ID}
 )
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
 
-add_definitions(-DQT_MESSAGELOGCONTEXT # qDebug()
-                -DQT_DISABLE_DEPRECATED_BEFORE=0x060000)
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x060800)
 
-find_package(QT NAMES Qt6 Qt5 Core)
 find_package(
-  Qt${QT_VERSION_MAJOR}
+  Qt6
   COMPONENTS Core Gui Widgets Xml
   REQUIRED)
 
@@ -51,21 +55,17 @@ add_compile_options(
 
 # add_link_options($<$<CXX_COMPILER_ID:GNU>:-Wa,-mbig-obj>)
 
-# file(GLOB_RECURSE HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h) file(GLOB_RECURSE
-# JSONS ${CMAKE_CURRENT_SOURCE_DIR}/*.json) file(GLOB_RECURSE SOURCES
-# ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp) file(GLOB_RECURSE UIS
-# ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../pfr/include)
-find_package(Boost)
-if(Boost_FOUND) # workaround for msys2 used in msvc #
-  include_directories(${Boost_INCLUDE_DIR})
-  message(==> ${Boost_INCLUDE_DIR})
-else()
-  message(FATAL_ERROR "Boost not found!!!")
-endif()
-
-include_directories(pfr_non_boost/include
-                    compile-time-regular-expressions/single-header)
+include(FetchContent)
+FetchContent_Declare(
+  pfr
+  GIT_REPOSITORY "https://github.com/apolukhin/pfr_non_boost.git"
+  GIT_TAG master)
+FetchContent_Declare(
+  ctre
+  GIT_REPOSITORY
+    "https://github.com/hanickadot/compile-time-regular-expressions.git"
+  GIT_TAG main)
+FetchContent_MakeAvailable(pfr ctre)
 
 file(GLOB_RECURSE FST *.fst)
 add_custom_target(FST_Test SOURCES ${FST})
@@ -81,22 +81,19 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 add_subdirectory(XmlSerializer)
-add_subdirectory(TopoR)
+target_link_libraries(XmlSerializer PUBLIC pfr::pfr)
 
+add_subdirectory(TopoR)
 target_link_libraries(TopoR PRIVATE XmlSerializer)
 
-target_link_libraries(
-  ${PROJECT_NAME}
-  PRIVATE TopoR XmlSerializer Qt${QT_VERSION_MAJOR}::Core
-          Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::Widgets
-          Qt${QT_VERSION_MAJOR}::Xml)
+target_link_libraries(${PROJECT_NAME} PRIVATE TopoR XmlSerializer Qt6::Core
+                                              Qt6::Gui Qt6::Widgets Qt6::Xml)
 
 if(WIN32_)
   target_link_libraries(${PROJECT_NAME} PRIVATE setupapi)
   # windeployqt
   set(CMAKE_INSTALL_UCRT_LIBRARIES TRUE)
-  get_target_property(_QMAKE_EXECUTABLE Qt${QT_VERSION_MAJOR}::qmake
-                      IMPORTED_LOCATION)
+  get_target_property(_QMAKE_EXECUTABLE Qt6::qmake IMPORTED_LOCATION)
   get_filename_component(_QT_BIN_DIR "${_QMAKE_EXECUTABLE}" DIRECTORY)
   find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_QT_BIN_DIR}")
   add_custom_command(

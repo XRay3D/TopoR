@@ -8,7 +8,7 @@
 #include <QRegularExpression>
 #include <QtXml/QDomDocument>
 
-#include <boost/pfr.hpp>
+#include <pfr.hpp>
 #include <ranges>
 #include <set>
 #include <source_location>
@@ -18,7 +18,6 @@ namespace Xml {
 // };
 // using namespace TopoR; // call to function 'stringToEnum' ADL
 
-namespace pfr = boost::pfr;
 namespace ranges = std::ranges;
 namespace views = std::ranges::views;
 using sl = std::source_location;
@@ -70,6 +69,11 @@ struct Serializer {
 
     TreeItem* getItem() const { return item; }
     QString toString() const;
+
+
+public:
+    QString getFileName() const;
+    void setFileName(const QString &newFileName);
 
 private:
     QString fileName;
