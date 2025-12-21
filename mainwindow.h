@@ -27,15 +27,15 @@ public:
     TopoR::TopoR_PCB_File* file;
     QString dir;
 
-    QMap<QString, QColor> detailsColor;
-    QMap<QString, QColor> fixColor;
-    QMap<QString, QColor> padsColor;
+    QMap<std::string_view, QColor> detailsColor;
+    QMap<std::string_view, QColor> fixColor;
+    QMap<std::string_view, QColor> padsColor;
 
-    std::unordered_map<QString, QGraphicsItemGroup*> lauerGroups;
+    std::unordered_map<std::string_view, QGraphicsItemGroup*> lauerGroups;
 
-    QMap<QString, bool> isDetailsVisible;
-    QMap<QString, bool> isPadsVisible;
-    QMap<QString, bool> isVisible;
+    QMap<std::string_view, bool> isDetailsVisible;
+    QMap<std::string_view, bool> isPadsVisible;
+    QMap<std::string_view, bool> isVisible;
 
     void edit();
 

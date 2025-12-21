@@ -116,7 +116,7 @@ struct HiSpeedRules {
         // Ссылки на сигнал, диф.сигнал, или группу сигналов
         // <value>SignalRef, DiffSignalRef, SignalGroupRef</value>
         // public List<Object> References;
-        [[= XML::Elem]] std::vector<std::variant<XML::Null, SignalRef, DiffSignalRef, SignalGroupRef>> References;
+        [[= XML::Elem]] std::vector<std::variant</*XML::Null,*/ SignalRef, DiffSignalRef, SignalGroupRef>> References;
         bool ShouldSerialize_References();
     };
     // Описание правил выравнивания задержек.
@@ -154,7 +154,7 @@ struct HiSpeedRules {
             [[= XML::Attr]] double toleranceOver{}; //("toleranceOver")
             // Объекты воздействия правила.
             //[XmlArrayItem("SignalRef", typeof(SignalRef)), XmlArrayItem("DiffSignalRef", typeof(DiffSignalRef)), XmlArrayItem("SignalGroupRef", typeof(SignalGroupRef))] public List<Object> ObjectsAffected;
-            [[= XML::Array]] std::vector<std::variant<XML::Null, SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
+            [[= XML::Array]] std::vector<std::variant</*XML::Null,*/ SignalRef, DiffSignalRef, SignalGroupRef>> ObjectsAffected;
             bool ShouldSerialize_ObjectsAffected();
         };
         // Описание правила взаимного выравнивания задержек.
@@ -231,8 +231,8 @@ struct HiSpeedRules {
     // Версия раздела.
     [[= XML::Attr]] std::string version;
     // Волновые сопротивления и правила разводки сигналов.
-    //[XmlArrayItem("Impedance", typeof()), XmlArrayItem("ImpedanceDiff", typeof())] public List<Object> RulesImpedances;
-    [[= XML::Array]] std::vector<std::variant<XML::Null, Impedance, ImpedanceDiff>> RulesImpedances;
+    //[XmlArrayItem("Impedance"), XmlArrayItem("ImpedanceDiff")] public List<Object> RulesImpedances;
+    [[= XML::Array]] std::vector<std::variant</*XML::Null,*/ Impedance, ImpedanceDiff>> RulesImpedances;
     bool ShouldSerialize_RulesImpedances();
     // Сигнальные кластеры цепей.
     //[XmlArrayItem("SignalCluster")] public List<SignalCluster> SignalClusters;

@@ -15,7 +15,7 @@ struct Constructive {
             [[= XML::Attr]] double lineWidth{};
             // Незалитая фигура.
             // public Object NonfilledFigure;
-            /*[[= XML::Elem]]*/ std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Circle, Line, Polyline, Rect, Contour> NonfilledFigure;
+            /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Circle, Line, Polyline, Rect, Contour> NonfilledFigure;
             /*************************************************************************
              * Здесь находятся функции для работы с элементами класса Shape. *
              * Они не являются частью формата TopoR PCB.                             *
@@ -29,7 +29,7 @@ struct Constructive {
             [[= XML::Attr]] double lineWidth{};
             // Описание залитой фигуры.
             // public Object FilledFigure;
-            /*[[= XML::Elem]]*/ std::variant<XML::Null, FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure;
+            /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure;
             /**********************************************************************
              * Здесь находятся функции для работы с элементами класса Voids. *
              * Они не являются частью формата TopoR PCB.                           *
@@ -75,7 +75,7 @@ struct Constructive {
                                              // Ссылка на слои. См. также LayersRefs
                                              // ! При null необходимо смотреть LayersRefs - там описан список ссылок типа LayerRef.
                                              // public Object LayersRef;
-                /*[[= XML::Elem]]*/ std::variant<XML::Null, AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
+                /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ AllLayers, AllLayersInner, AllLayersInnerSignal, AllLayersSignal, AllLayersOuter, LayerGroupRef> LayersRef;
                 // Ссылка на слои. См. также LayersRef
                 // ! При null необходимо смотреть LayersRef - там описаны ссылки остальных типов.
                 ///*[[= XML::Elem]]*/ // public List<LayerRef> LayersRefs;//("LayerRef")
@@ -98,7 +98,7 @@ struct Constructive {
         Role Role;
         // Описание фигуры.
         // public Object FigureContPolyline;
-        /*[[= XML::Elem]]*/ std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Contour, FilledContour, Polyline> FigureContPolyline;
+        /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, Contour, FilledContour, Polyline> FigureContPolyline;
         /********************************************************************************
          * Здесь находятся функции для работы с элементами класса Keepout. *
          * Они не являются частью формата TopoR PCB.                                    *

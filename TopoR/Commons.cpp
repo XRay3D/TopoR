@@ -147,4 +147,220 @@ double Ut::UnitsConvert(double value, dist in_units, dist out_units) {
     default: return value;
     }
 }
+
+void arc(ArcDir dir, QPainterPath& path, const std::optional<QPointF>& startOpt, const QPointF& center, const QPointF& stop) {
+    QPointF start;
+    if(startOpt.has_value()) {
+        start = startOpt.value();
+        path.moveTo(start);
+    } else
+        start = path.currentPosition();
+
+    const auto a1 = QLineF{center, start}.angle();
+    const auto a2 = QLineF{center, stop}.angle();
+    const auto radius = QLineF{center, start}.length();
+
+    auto aSpan = a2 - a1;
+
+    if(dir == CCW) {
+        if(aSpan > 0.0) aSpan -= 360.0;
+    } else {
+        if(aSpan < 0.0) aSpan += 360.0;
+    }
+
+    path.arcTo(
+        -radius + center.x(),
+        -radius + center.y(),
+        radius * 2,
+        radius * 2,
+        a1, aSpan);
+}
+
+QPainterPath SegmentLine::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void SegmentLine::drawTo(QPainterPath& path) const {
+    path.lineTo(End);
+}
+
+QPainterPath SegmentArcCCW::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void SegmentArcCCW::drawTo(QPainterPath& path) const {
+    arc(CCW, path, {}, Center, End);
+}
+
+QPainterPath SegmentArcCW::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void SegmentArcCW::drawTo(QPainterPath& path) const {
+    arc(CW, path, {}, Center, End);
+}
+
+QPainterPath SegmentArcByAngle::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void SegmentArcByAngle::drawTo(QPainterPath& path) const {
+    // FIXME path.lineTo(End);
+}
+
+QPainterPath SegmentArcByMiddle::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void SegmentArcByMiddle::drawTo(QPainterPath& path) const {
+    // FIXME path.lineTo(End);
+}
+
+QPainterPath ArcCCW::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void ArcCCW::drawTo(QPainterPath& path) const {
+    arc(CCW, path, Start, Center, End);
+}
+
+QPainterPath ArcCW::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void ArcCW::drawTo(QPainterPath& path) const {
+    arc(CW, path, Start, Center, End);
+}
+
+QPainterPath ArcByAngle::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void ArcByAngle::drawTo(QPainterPath& path) const {
+    // FIXME path.lineTo(End);
+}
+
+QPainterPath ArcByMiddle::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void ArcByMiddle::drawTo(QPainterPath& path) const {
+    // FIXME path.lineTo(End);
+}
+
+QPainterPath Circle::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void Circle::drawTo(QPainterPath& path) const {
+    path.addEllipse(Center, diameter * 0.5, diameter * 0.5);
+}
+
+QPainterPath Line::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void Line::drawTo(QPainterPath& path) const {
+    for(int fl{}; auto&& pt: Dots)
+        if(!fl++) path.moveTo(pt);
+        else [[likely]] path.lineTo(pt);
+}
+
+QPainterPath Polyline::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void Polyline::drawTo(QPainterPath& path) const {
+    path.moveTo(Start);
+    for(auto&& segment: Segments)
+        segment.visit([&path](auto&& segment) { segment.drawTo(path); });
+}
+
+QPainterPath Contour::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void Contour::drawTo(QPainterPath& path) const {
+    path.moveTo(Start);
+    for(auto&& segment: Segments)
+        segment.visit([&path](auto&& segment) { segment.drawTo(path); });
+    if(path.currentPosition() != Start)
+        path.lineTo(Start);
+}
+
+QPainterPath Rect::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void Rect::drawTo(QPainterPath& path) const {
+    QRectF rect;
+    rect.setTopLeft(Dots.front());
+    rect.setBottomRight(Dots.back());
+    path.addRect(rect);
+}
+
+QPainterPath FilledContour::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void FilledContour::drawTo(QPainterPath& path) const {
+    path.moveTo(Start);
+    for(auto&& segment: Segments)
+        segment.visit([&path](auto&& segment) { segment.drawTo(path); });
+    if(path.currentPosition() != Start)
+        path.lineTo(Start);
+}
+
+QPainterPath FilledCircle::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void FilledCircle::drawTo(QPainterPath& path) const {
+    path.addEllipse(Center, diameter * 0.5, diameter * 0.5);
+}
+
+QPainterPath FilledRect::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void FilledRect::drawTo(QPainterPath& path) const {
+    QRectF rect;
+    rect.setTopLeft(Dots.front());
+    rect.setBottomRight(Dots.back());
+    path.addRect(rect);
+}
+
+QPainterPath Polygon::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void Polygon::drawTo(QPainterPath& path) const {
+    for(auto&& pt: Dots)
+        path.lineTo(pt);
+}
+
+QPainterPath TrackArcCW::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void TrackArcCW::drawTo(QPainterPath& path) const {
+    arc(CW, path, {}, Center, End);
+}
+
+QPainterPath TrackArc::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void TrackArc::drawTo(QPainterPath& path) const {
+    arc(CCW, path, {}, Center, End);
+}
+
+QPainterPath TrackLine::toPPath() const {
+    QPainterPath path;
+    return drawTo(path), path;
+}
+void TrackLine::drawTo(QPainterPath& path) const {
+    path.lineTo(End);
+}
+
 } // namespace TopoR

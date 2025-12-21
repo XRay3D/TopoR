@@ -25,7 +25,14 @@ struct TextStyles {
     [[= XML::Attr]] std::string version;
     // Стили надписей.
     [[= XML::Elem]] std::vector<TextStyle> TextStyles;
-    bool ShouldSerialize_TextStyles();
+    // bool ShouldSerialize_TextStyles();
+
+    tl::optional<const TextStyle&> getTextStyle(std::string_view name) const {
+        auto ps = r::find(TextStyles, name, &TextStyle::name);
+        if(ps != TextStyles.end()) return *ps.base();
+        return {};
+    }
+
     /**********************************************************************
      * Здесь находятся функции для работы с элементами класса TextStyles. *
      * Они не являются частью формата TopoR PCB.                          *

@@ -5,6 +5,8 @@
  * k@kilkennycat.pro
  * http://kilkennycat.ru  http://kilkennycat.pro
  */
+
+class QGraphicsItem;
 namespace TopoR {
 // Раздел «Соединения на плате».
 // В этом разделе описывается конкретная реализация соединений: печатные проводники, межслойные переходы и области металлизации.
@@ -58,8 +60,8 @@ struct Connectivity {
         // Описание(я) сегмента проводника.
         // ! В случае отсутствия - предупреждение. Весь ZippedWire будет проигнорирован.
         // public List<Object> Tracks;
-        [[= XML::Elem]] std::vector<std::variant<XML::Null, TrackLine, TrackArc, TrackArcCW>> Tracks;
-        bool ShouldSerialize_Tracks();
+        [[= XML::Elem]] std::vector<std::variant</*XML::Null,*/ TrackLine, TrackArc, TrackArcCW>> Tracks;
+        // bool ShouldSerialize_Tracks();
     };
     // Описание проводника.
     struct Wire {
@@ -72,7 +74,7 @@ struct Connectivity {
                 // координаты точки, вершины.
                 ///*[[= XML::Elem]]*/ // public List<Dot> Dots;
                 [[= XML::Elem]] std::vector<Dot> Dots;
-                bool ShouldSerialize_Dots();
+                // bool ShouldSerialize_Dots();
             };
             // Признак фиксации.
             [[= XML::Attr]] Bool fixed{};
@@ -86,14 +88,15 @@ struct Connectivity {
             // От KilkennyCat: сделал как массив, в спецификации не так, но так удобней
             //[XmlArrayItem/*("Teardrop")*/] public List<Teardrop> Teardrops;
             [[= XML::Array]] std::vector<Teardrop> Teardrops;
-            bool ShouldSerialize_Teardrops();
+            // bool ShouldSerialize_Teardrops();
             // Начальная точка линии, дуги.
             /*[[= XML::Elem]]*/ Start Start;
             // Описание(я) сегмента проводника.
             // ! В случае отсутствия - предупреждение. Весь проводник будет проигнорирован.
             // public List<Object> Tracks;
-            [[= XML::Elem]] std::vector<std::variant<XML::Null, TrackLine, TrackArc, TrackArcCW>> Tracks;
-            bool ShouldSerialize_Tracks();
+            [[= XML::Elem]] std::vector<std::variant</*XML::Null,*/ TrackLine, TrackArc, TrackArcCW>> Tracks;
+            // bool ShouldSerialize_Tracks();
+            QGraphicsItem* graphicsItem(const QColor& color) const;
         };
         // Ссылка на слой.
         /*[[= XML::Elem]]*/ LayerRef LayerRef;
@@ -101,10 +104,9 @@ struct Connectivity {
         /*[[= XML::Elem]]*/ NetRef NetRef;
         // Части проводника (последовательность сегментов с одной шириной и одинаковым признаком фиксации).
         ///*[[= XML::Elem]]*/ // public List<Subwire> Subwires;
-        // [[= XML::Elem("Subwire")]] std::vector<Subwire> Subwires; // FIXME
-        // [[= XML::]] std::vector<Subwire> Subwires;
-        /*[[= XML::Elem]]*/ Subwire Subwire;
-        // bool ShouldSerialize_Subwires();
+        [[= XML::Elem]] std::vector<Subwire> Subwires; // FIXME
+        // /*[[= XML::Elem]]*/ Subwire Subwire;
+        bool ShouldSerialize_Subwires();
     };
     // Описание заливаемой области металлизации (полигона).
     // ! Заливка полигона линиями (Fill) записывается только для других САПР. TopoR при импорте её игнорирует. Сплошная заливка (fillType = Solid) не записывается.
@@ -123,7 +125,7 @@ struct Connectivity {
         struct Shape {
             // Описание залитой фигуры.
             // public Object FilledFigure;
-            /*[[= XML::Elem]]*/ std::variant<XML::Null, FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure;
+            /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ FilledCircle, FilledRect, Polygon, FilledContour> FilledFigure;
         };
         // Описание островка области металлизации.
         struct Island {
@@ -135,19 +137,19 @@ struct Connectivity {
                 // ! В случае отсутствия - весь ThermalSpoke будет проигнорирован.
                 ///*[[= XML::Elem]]*/ // public List<Dot> Dots;
                 [[= XML::Elem]] std::vector<Dot> Dots;
-                bool ShouldSerialize_Dots();
+                // bool ShouldSerialize_Dots();
             };
             // Описание многоугольника.
             // public Object Polygon;
-            [[= XML::Elem("Polygon")]] std::variant<XML::Null, Polygon, FilledContour> polygon;
+            [[= XML::Elem("Polygon")]] std::variant</*XML::Null,*/ Polygon, FilledContour> polygon;
             // Вырезы в островке области металлизации.
             // ! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
             //[XmlArrayItem/*("Polygon")*/, XmlArrayItem/*("FilledContour")*/] public List<Object> Voids;
-            [[= XML::Array(XML::DontSkip)]] std::vector<std::variant<XML::Null, Polygon, FilledContour>> Voids;
+            [[= XML::Array(XML::DontSkip)]] std::vector<std::variant</*XML::Null,*/ Polygon, FilledContour>> Voids;
             // Описание спиц термобарьеров, присутствующих на плате
             ///*[[= XML::Elem]]*/ // public List<ThermalSpoke> ThermalSpokes;
             [[= XML::Elem]] std::vector<ThermalSpoke> ThermalSpokes;
-            bool ShouldSerialize_ThermalSpokes();
+            // bool ShouldSerialize_ThermalSpokes();
         };
         // Параметр области металлизации (полигона): приоритет заливки.
         [[= XML::Attr]] int priority{};
@@ -193,7 +195,7 @@ struct Connectivity {
         // Вырезы в областях металлизации (полигонах) заданные пользователем.
         // ! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
         //[XmlArrayItem/*("FilledCircle")*/, XmlArrayItem/*("FilledRect")*/, XmlArrayItem/*("Polygon")*/, XmlArrayItem/*("FilledContour")*/] public List<Object> Voids;
-        [[= XML::Array(XML::DontSkip)]] std::vector<std::variant<XML::Null, FilledCircle, FilledRect, Polygon, FilledContour>> Voids;
+        [[= XML::Array(XML::DontSkip)]] std::vector<std::variant</*XML::Null,*/ FilledCircle, FilledRect, Polygon, FilledContour>> Voids;
         // Островки области металлизации.
         // ! В случае отсутствия - критическая ошибка. Обязан быть пустой тэг.
         //[XmlArrayItem/*("Island")*/] public List<Island> Islands;
@@ -202,7 +204,7 @@ struct Connectivity {
         // ! TopoR при импорте игнорирует эту информацию и строит заливку заново.
         //[XmlArrayItem/*("Line")*/] public List<Line> Fill_lines;
         [[= XML::Array]] std::vector<Line> FillLines;
-        bool ShouldSerialize_Fill_lines();
+        // bool ShouldSerialize_Fill_lines();
     };
     // Описание незаливаемой области металлизации.
     struct NonfilledCopper {
@@ -210,7 +212,7 @@ struct Connectivity {
         struct Shape_NonfilledCopper {
             // Описание фигуры.
             // public Object FigureContPoliline;
-            /*[[= XML::Elem]]*/ std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Circle, Line, Polyline, Rect, Contour> FigureContPoliline;
+            /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Circle, Line, Polyline, Rect, Contour> FigureContPoliline;
         };
         // Толщина линии.
         [[= XML::Attr]] double lineWidth{};
@@ -226,27 +228,27 @@ struct Connectivity {
     // Переходные отверстия на плате.
     //[XmlArrayItem/*("Via")*/] public List<Via> Vias;
     [[= XML::Array]] std::vector<Via> Vias;
-    bool ShouldSerialize_Vias();
+    // bool ShouldSerialize_Vias();
     // Змейки
     //[XmlArrayItem/*("Serpent")*/] public List<Serpent> Serpents;
     [[= XML::Array]] std::vector<Serpent> Serpents;
-    bool ShouldSerialize_Serpents();
+    // bool ShouldSerialize_Serpents();
     // Застёгнутые пары проводников.
     //[XmlArrayItem/*("ZippedWire")*/] public List<ZippedWire> ZippedWires;
     [[= XML::Array]] std::vector<ZippedWire> ZippedWires;
-    bool ShouldSerialize_ZippedWires();
+    // bool ShouldSerialize_ZippedWires();
     // Проводники.
     //[XmlArrayItem/*("Wire")*/] public List<Wire> Wires;
     [[= XML::Array]] std::vector<Wire> Wires;
-    bool ShouldSerialize_Wires();
+    // bool ShouldSerialize_Wires();
     // Oбласти металлизации (полигонов).
     //[XmlArrayItem/*("Copper")*/] public List<Copper> Coppers;
     [[= XML::Array]] std::vector<Copper> Coppers;
-    bool ShouldSerialize_Coppers();
+    // bool ShouldSerialize_Coppers();
     // Незаливаемые области металлизации.
     //[XmlArrayItem/*("NonfilledCopper")*/] public List<NonfilledCopper> NonfilledCoppers;
     [[= XML::Array]] std::vector<NonfilledCopper> NonfilledCoppers;
-    bool ShouldSerialize_NonfilledCoppers();
+    // bool ShouldSerialize_NonfilledCoppers();
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса Connectivity. *
      * Они не являются частью формата TopoR PCB.                            *

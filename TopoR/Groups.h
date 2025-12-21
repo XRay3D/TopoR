@@ -15,7 +15,7 @@ struct Groups {
         [[= XML::Attr]] std::string name;
         // Ссылка на слой или ссылка на группу слоёв.
         // public List<Object> LayerRefs;
-        [[= XML::Elem]] std::vector<std::variant<XML::Null, LayerRef, LayerGroupRef>> LayerRefs;
+        [[= XML::Elem]] std::vector<std::variant</*XML::Null,*/ LayerRef, LayerGroupRef>> LayerRefs;
         bool ShouldSerializeLayerRefs();
         /**********************************************************************
          * Здесь находятся функции для работы с элементами класса LayerGroup. *
@@ -31,7 +31,7 @@ struct Groups {
         [[= XML::Attr]] std::string name;
         // Ссылка на цепь или ссылка на группу цепей.
         // public List<Object> NetRefs;
-        [[= XML::Elem]] std::vector<std::variant<XML::Null, NetRef, NetGroupRef>> NetRefs;
+        [[= XML::Elem]] std::vector<std::variant</*XML::Null,*/ NetRef, NetGroupRef>> NetRefs;
         bool ShouldSerialize_NetRefs();
     };
     // Описание группы компонентов.
@@ -41,7 +41,7 @@ struct Groups {
         [[= XML::Attr]] std::string name;
         // Ссылка на компонент на плате или ссылка на группу компонентов.
         // public List<Object> CompRefs;
-        [[= XML::Elem]] std::vector<std::variant<XML::Null, CompInstanceRef, CompGroupRef>> CompRefs;
+        [[= XML::Elem]] std::vector<std::variant</*XML::Null,*/ CompInstanceRef, CompGroupRef>> CompRefs;
         bool ShouldSerialize_CompRefs();
     };
     // Версия раздела.

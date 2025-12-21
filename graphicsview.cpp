@@ -688,7 +688,7 @@ void GraphicsView::drawForeground(QPainter* painter, const QRectF& rect) {
 }
 
 void GraphicsView::drawBackground(QPainter* painter, const QRectF& rect) {
-    painter->fillRect(rect, Qt::black);
+    // painter->fillRect(rect, {0xF, 0xF, 0xF});
 }
 
 void GraphicsView::timerEvent(QTimerEvent* event) {

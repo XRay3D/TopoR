@@ -22,7 +22,7 @@ using std ::print;
 using std ::println;
 using std ::string_view;
 
-// =============== Serialiser ===============
+// =============== Serializer ===============
 
 struct Ignore_ {
 } inline constexpr Ignore;
@@ -216,8 +216,8 @@ struct Overload final : Functors... {
     using Functors::operator()...;
 };
 
-struct Serialiser {
-    Serialiser(string_view path)
+struct Serializer {
+    Serializer(string_view path)
         : path{path}, node{&document.root} { }
 
     template <typename T>
@@ -279,7 +279,7 @@ private:
 
     template <meta::info INFO, typename T>
     static void load(T& data, ptree& node) {
-        constexpr string_view NAME_OF{nameOf(INFO)};
+ static       constexpr string_view NAME_OF{nameOf(INFO)};
         logRed("name {}", NAME_OF);
 
         node.get_optional(NAME_OF);
@@ -457,8 +457,8 @@ private:
             // static_assert(members<T>().size(), display_string_of(^^T));
             template for(constexpr meta::info MEMBER: members(^^T))
                 save<MEMBER>(data.[:MEMBER:], node);
-            if(/*CanSkip<INFO>
-                &&*/ node->text().empty()
+            if(CanSkip<INFO>
+                && node->text().empty()
                 && node->attributes.empty()
                 && node->empty()) // remove if is all data is empty
                 node->parent->pop_back();
@@ -476,7 +476,7 @@ private:
 
     template <meta::info INFO, typename T>
     static void load(T& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf(INFO)};
+        static constexpr string_view NAME_OF{nameOf(INFO)};
         Data* val = IsAttr<INFO> ? node->attr(NAME_OF)
                                  : node->firstChild(NAME_OF);
         if(!val) return;
@@ -532,7 +532,7 @@ private:
         decltype(std::span{*node}) span;
 
         if constexpr(IsArr<INFO>) {
-            constexpr string_view NAME_OF{nameOf(INFO)};
+            static constexpr string_view NAME_OF{nameOf(INFO)};
             if(node = node->firstChild(NAME_OF); !node) return;
             span = *node;
         } else {
@@ -550,7 +550,7 @@ private:
 
     template <meta::info INFO, typename T>
     static void load(std::optional<T>& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf(^^T)};
+        static constexpr string_view NAME_OF{nameOf(^^T)};
 
         Data* val = IsAttr<INFO> ? node->attr(NAME_OF)
                                  : node->firstChild(NAME_OF);
@@ -561,7 +561,7 @@ private:
     template <meta::info INFO, typename T>
         requires IsElem<INFO>
     static void load(std::vector<T>& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf(^^T)};
+        static constexpr string_view NAME_OF{nameOf(^^T)};
         auto begin = r::find(*node, NAME_OF, &Data::key);
         if(begin == node->end()) return;
         auto end = r::find_last(*node, NAME_OF, &Data::key);
@@ -577,7 +577,7 @@ private:
     template <meta::info INFO, typename T>
         requires IsArr<INFO>
     static void load(T& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf(INFO)};
+        static constexpr string_view NAME_OF{nameOf(INFO)};
         if(node = node->firstChild(NAME_OF); !node) return;
         if constexpr(requires { data.resize(0u); }) {
             data.resize(node->size());
@@ -589,7 +589,7 @@ private:
     template <meta::info INFO, typename T>
         requires IsRoot<INFO> || ((IsClass<T> || IsElem<INFO>) && !IsRange<T>)
     static void load(T& data, NodeTag* node) {
-        constexpr string_view NAME_OF{nameOf(INFO)};
+        static constexpr string_view NAME_OF{nameOf(INFO)};
         if(node->tag() != NAME_OF)
             if(node = node->firstChild(NAME_OF); !node)
                 return;

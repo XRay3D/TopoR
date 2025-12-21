@@ -117,7 +117,6 @@ void print(const T& str, size_t times = 0, bool field = false);
 
 template <typename... Ts>
 void print(const std::variant<Ts...>& variant, size_t times = 0, bool field = 0) {
-    // std::println("{}{}{}", XML::Green, display_string_of(^^std::variant<Ts...>), XML::Cancel);
     variant.visit([=](auto&& arg) { print(arg, times, field); });
 }
 
@@ -187,8 +186,8 @@ int main() {
 
     TopoR::TopoR_PCB_File topor;
 
-    XML::Serialiser{file} >> topor;
-    XML::Serialiser{file = "out2.fst"} << topor;
+    XML::Serializer{file} >> topor;
+    XML::Serializer{file = "out2.fst"} << topor;
 
     // print(topor);
     system(std::format("diff --color -b -B -u out.fst out2.fst", file).c_str());

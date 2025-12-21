@@ -21,8 +21,8 @@ public:
     }
 
     QVariant data(const QModelIndex& index, int role) const override {
-        if(role == Qt::DisplayRole)
-            return proj(data_.at(index.row()));
+        // if(role == Qt::DisplayRole)
+        // return proj(data_.at(index.row()));
         return {};
     }
 };

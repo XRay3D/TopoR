@@ -51,5 +51,6 @@ struct[[= XML::Root]] TopoR_PCB_File {
     /*[[= XML::Elem]]*/ DisplayControl DisplayControl;
     // Раздел «Настройки диалогов».
     /*[[= XML::Elem]]*/ DialogSettings DialogSettings;
+
 };
 } // namespace TopoR

@@ -25,14 +25,14 @@
 LXML_BEGIN_MODULE_EXPORT
 // using namespace std::string_literals;
 using namespace std ::string_view_literals;
+namespace r = std ::ranges;
+namespace v = std ::views;
 LXML_END_MODULE_EXPORT
 
 // LXML_BEGIN_MODULE_EXPORT
 LXML_EXPORT
 namespace XML {
 
-namespace r = std ::ranges;
-namespace v = std ::views;
 using std ::print;
 using std ::println;
 using std ::string_view;

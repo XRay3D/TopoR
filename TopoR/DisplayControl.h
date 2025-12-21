@@ -318,7 +318,7 @@ struct DisplayControl {
             [[= XML::Attr]] std::string color;
             // Ссылка на цепь или сигнал
             // public Object Refs;
-            /*[[= XML::Elem]]*/ std::variant<XML::Null, NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef> Refs;
+            /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef> Refs;
         };
         // Флаг применения правила.
         [[= XML::Attr]] Bool enabled{};
@@ -357,7 +357,7 @@ struct DisplayControl {
         bool getEnabledSpecified() const;
         // Ссылки на цепь или сигнал
         // public List<Object> Refs;
-        [[= XML::Elem]] std::vector<std::variant<XML::Null, NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> Refs;
+        [[= XML::Elem]] std::vector<std::variant</*XML::Null,*/ NetRef, NetGroupRef, AllNets, SignalRef, DiffSignalRef, SignalGroupRef>> Refs;
         bool ShouldSerialize_Refs();
     };
     // Версия раздела.

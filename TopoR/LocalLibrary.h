@@ -11,12 +11,13 @@ struct LocalLibrary {
     struct BasePad {
         // Ссылка на слой или тип слоя.
         // public Object Reference;
-        /*[[= XML::Elem]]*/ std::variant<XML::Null, LayerTypeRef, LayerRef> Reference;
+        /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ LayerTypeRef, LayerRef> Reference;
     };
     // Описание круглой контактной площадки.
     struct PadCircle : public BasePad {
         // Диаметр окружности, круга, овала.
         [[= XML::Attr]] double diameter{};
+        operator QPainterPath() const;
     };
     // Описание овальной контактной площадки.
     struct PadOval : public BasePad {
@@ -26,6 +27,7 @@ struct LocalLibrary {
         /*[[= XML::Elem]]*/ Stretch Stretch;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
         /*[[= XML::Elem]]*/ Shift Shift;
+        operator QPainterPath() const;
     };
     // Описание прямоугольной контактной площадки.
     // Дополнительные атрибуты(handling и handlingValue) позволяют задавать тип и величину обработки углов.
@@ -73,6 +75,7 @@ struct LocalLibrary {
         bool getCornerLTSpecified() const;
         // Параметр контактной площадки: смещение точки привязки по осям x и y.
         /*[[= XML::Elem]]*/ Shift Shift;
+        operator QPainterPath() const;
     };
     // Описание полигональной контактной площадки.
     struct PadPoly : public BasePad {
@@ -80,7 +83,9 @@ struct LocalLibrary {
         // ! Минимум 3 элемента
         ///*[[= XML::Elem]]*/ // public List<Dot> Dots;//("Dot")
         [[= XML::Elem]] std::vector<Dot> Dots;
-        bool ShouldSerialize_Dots();
+        // bool ShouldSerialize_Dots();
+        operator QPolygonF() const;
+        operator QPainterPath() const;
     };
     // Описание стека контактных площадок.
     struct Padstack {
@@ -101,8 +106,8 @@ struct LocalLibrary {
         // Контактные площадки стека.
         // <value>PadCircle, PadOval, PadRect, PadPoly</value>
         //[XmlArrayItem("PadCircle", typeof(PadCircle)), XmlArrayItem("PadOval", typeof(PadOval)), XmlArrayItem("PadRect", typeof(PadRect)), XmlArrayItem("PadPoly", typeof(PadPoly))] public List<Object> Pads;
-        [[= XML::Array]] std::vector<std::variant<XML::Null, PadCircle, PadOval, PadRect, PadPoly>> Pads;
-        bool ShouldSerialize_Pads();
+        [[= XML::Array]] std::vector<std::variant</*XML::Null,*/ PadCircle, PadOval, PadRect, PadPoly>> Pads;
+        // bool ShouldSerialize_Pads();
     };
     // Описание типа (стека) переходного отверстия.
     struct Viastack {
@@ -134,7 +139,7 @@ struct LocalLibrary {
         // Описание площадок стека переходного отверстия.
         //[XmlArrayItem("PadCircle", typeof(PadCircle))] public List<PadCircle> ViaPads;
         [[= XML::Array]] std::vector<PadCircle> ViaPads;
-        bool ShouldSerialize_ViaPads();
+        // bool ShouldSerialize_ViaPads();
     };
     // Описание посадочного места.
     struct Footprint {
@@ -147,7 +152,7 @@ struct LocalLibrary {
             // Описание фигуры.
             // <value>ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon</value>
             // public Object Figure;
-            /*[[= XML::Elem]]*/ std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour> Figure;
+            /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour> Figure;
         };
         // Описание запрета в посадочном месте Footprint. Для запрета размещения должен быть указан слой с типом Assy.
         struct Keepout {
@@ -156,7 +161,7 @@ struct LocalLibrary {
             // Описание фигуры.
             // <value>ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon</value>
             // public Object Figure;
-            /*[[= XML::Elem]]*/ std::variant<XML::Null, ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour> Figure;
+            /*[[= XML::Elem]]*/ std::variant</*XML::Null,*/ ArcCCW, ArcCW, ArcByAngle, ArcByMiddle, Line, Circle, Rect, FilledCircle, FilledRect, Polygon, FilledContour> Figure;
         };
         // Описание монтажного отверстия в посадочном месте.
         struct Mnthole {
@@ -185,6 +190,12 @@ struct LocalLibrary {
             /*[[= XML::Elem]]*/ TextStyleRef TextStyleRef;
             // Точка привязки объекта.
             /*[[= XML::Elem]]*/ Org Org;
+            QTransform transform() const {
+                QTransform transform;
+                if(Org) transform.translate(Org.x, Org.y);
+                if(angle) transform.rotate(angle);
+                return transform;
+            }
         };
         // Описание контактной площадки (вывода) посадочного места.
         // ! В системе TopoR поддерживаются планарные контакты на внешних металлических слоях и не поддерживаются на внутренних.
@@ -211,41 +222,47 @@ struct LocalLibrary {
             [[= XML::ElemF]] PadstackRef PadstackRef; //("PadstackRef")
             // Точка привязки объекта.
             [[= XML::ElemF]] Org Org; //("Org")
+            QTransform transform() const {
+                QTransform transform;
+                if(Org) transform.translate(Org.x, Org.y);
+                if(angle) transform.rotate(angle);
+                return transform;
+            }
         };
         // Имя объекта или ссылка на именованный объект.
         [[= XML::Attr]] std::string name;
         // Описание контактных площадок посадочного места.
         //[XmlArrayItem("Pad")] public List<Pad> Pads;
         [[= XML::Array]] std::vector<Pad> Pads;
-        bool ShouldSerialize_Pads();
+        // bool ShouldSerialize_Pads();
         // Надписи.
         //[XmlArrayItem("Text")] public List<Text> Texts;
         [[= XML::Array]] std::vector<Text> Texts;
-        bool ShouldSerialize_Texts();
+        // bool ShouldSerialize_Texts();
         // Детали посадочного места.
         //[XmlArrayItem("Detail")] public List<Detail> Details;
         [[= XML::Array]] std::vector<Detail> Details;
-        bool ShouldSerialize_Details();
+        // bool ShouldSerialize_Details();
         // Области металлизации (полигонов) в посадочных местах компонентов.
         //[XmlArrayItem("Copper")] public List<Copper> Coppers;
         [[= XML::Array]] std::vector<Copper> Coppers;
-        bool ShouldSerialize_Coppers();
+        // bool ShouldSerialize_Coppers();
         // Запреты размещения в посадочном месте.
         //[XmlArrayItem("Keepout")] public List<Keepout> KeepoutsPlace;
         [[= XML::Array]] std::vector<Keepout> KeepoutsPlace;
-        bool ShouldSerialize_KeepoutsPlace();
+        // bool ShouldSerialize_KeepoutsPlace();
         // Запреты трассировки в посадочном месте.
         //[XmlArrayItem("Keepout")] public List<Keepout> KeepoutsTrace;
         [[= XML::Array]] std::vector<Keepout> KeepoutsTrace;
-        bool ShouldSerialize_KeepoutsTrace();
+        // bool ShouldSerialize_KeepoutsTrace();
         // Монтажные отверстия.
         //[XmlArrayItem("Mnthole")] public List<Mnthole> Mntholes;
         [[= XML::Array]] std::vector<Mnthole> Mntholes;
-        bool ShouldSerialize_Mntholes();
+        // bool ShouldSerialize_Mntholes();
         // Ярлыки.
         //[XmlArrayItem("Label")] public List<Label> Labels;
         [[= XML::Array]] std::vector<Label> Labels;
-        bool ShouldSerialize_Labels();
+        // bool ShouldSerialize_Labels();
         std::string ToString();
     };
     // Описание схемного компонента.
@@ -277,11 +294,11 @@ struct LocalLibrary {
         // Контакты схемного компонента.
         //[XmlArrayItem("Pin")] public List<Pin> Pins;
         [[= XML::Array]] std::vector<Pin> Pins;
-        bool ShouldSerialize_Pins();
+        // bool ShouldSerialize_Pins();
         // Атрибуты компонента.
         //[XmlArrayItem("Attribute")] public List<Attribute> Attributes;
         [[= XML::Array]] std::vector<Attribute> Attributes;
-        bool ShouldSerialize_Attributes();
+        // bool ShouldSerialize_Attributes();
         std::string ToString();
     };
     // Описание упаковки (соответствие контактов компонента и выводов посадочного места).
@@ -304,34 +321,62 @@ struct LocalLibrary {
         // Соответствие контакта схемного компонента и вывода посадочного места.
         ///*[[= XML::Elem]]*/ // public List<Pinpack> Pinpacks;//("Pinpack")
         [[= XML::Elem]] std::vector<Pinpack> Pinpacks; //("Pinpack")
-        bool ShouldSerialize_Pinpacks();
+        // bool ShouldSerialize_Pinpacks();
     };
     // Версия раздела.
     [[= XML::Attr]] std::string version;
     // Стеки контактных площадок.
     //[XmlArrayItem("Padstack")] public List<Padstack> Padstacks;
     [[= XML::Array]] std::vector<Padstack> Padstacks;
-    bool ShouldSerialize_Padstacks();
+    // bool ShouldSerialize_Padstacks();
     // Типы (стеки) переходных отверстий.
     //[XmlArrayItem("Viastack")] public List<Viastack> Viastacks;
     [[= XML::Array]] std::vector<Viastack> Viastacks;
-    bool ShouldSerialize_Viastacks();
+    // bool ShouldSerialize_Viastacks();
     // Посадочные места.
     //[XmlArrayItem("Footprint")] public List<Footprint> Footprints;
     [[= XML::Array]] std::vector<Footprint> Footprints;
-    bool ShouldSerialize_Footprints();
+    // bool ShouldSerialize_Footprints();
     // Схемные компоненты.
     //[XmlArrayItem("Component")] public List<Component> Components;
     [[= XML::Array]] std::vector<Component> Components;
-    bool ShouldSerialize_Components();
+    // bool ShouldSerialize_Components();
     // Упаковки.
     //[XmlArrayItem("Package")] public List<Package> Packages;
     [[= XML::Array]] std::vector<Package> Packages;
-    bool ShouldSerialize_Packages();
+    // bool ShouldSerialize_Packages();
     /************************************************************************
      * Здесь находятся функции для работы с элементами класса LocalLibrary. *
      * Они не являются частью формата TopoR PCB.                            *
      * **********************************************************************/
+
+    tl::optional<const Padstack&> getPadstack(std::string_view name) const {
+        auto ps = r::find(Padstacks, name, &Padstack::name);
+        if(ps != Padstacks.end()) return *ps.base();
+        return {};
+    }
+    tl::optional<const Viastack&> getViastack(std::string_view name) const {
+        auto ps = r::find(Viastacks, name, &Viastack::name);
+        if(ps != Viastacks.end()) return *ps.base();
+        return {};
+    }
+    tl::optional<const Footprint&> getFootprint(std::string_view name) const {
+        auto ps = r::find(Footprints, name, &Footprint::name);
+        if(ps != Footprints.end()) return *ps.base();
+        return {};
+    }
+    tl::optional<const Component&> getComponent(std::string_view name) const {
+        auto ps = r::find(Components, name, &Component::name);
+        if(ps != Components.end()) return *ps.base();
+        return {};
+    }
+    /*
+    tl::optional<const Package&> getPackage(std::string_view name) const {
+        auto ps = r::find(Packages, name, &Package::name);
+        if(ps != Packages.end()) return *ps.base();
+        return {};
+    }
+*/
     /************************************************************************/
 };
 } // namespace TopoR

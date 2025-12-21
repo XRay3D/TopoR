@@ -2,10 +2,12 @@
 
 // #include "Commons.h"
 // using namespace TopoR;
+// #include "xmlserializertypes.h"
 
-#include "xmlserializertypes.h"
+#include "lxmlser.hpp"
 #include <QAbstractTableModel>
 #include <boost/pfr.hpp>
+#include <type_traits>
 
 namespace pfr = boost::pfr;
 
@@ -65,7 +67,7 @@ public:
             return [section, this]<size_t... Is>(std::index_sequence<Is...>) {
                 QString ret;
                 (((section == Is)
-                         ? ret = Xml::TypeName<decltype(pfr::get<Is>(*data_.data()))> + QByteArray{"\n"} + pfr::get_name<Is, DataType>().data()
+                         ? ret = display_string_of(^^decltype(pfr::get<Is>(*data_.data()))) + QByteArray{"\n"} + pfr::get_name<Is, DataType>().data()
                          : ret),
                     ...);
                 return ret;
@@ -79,7 +81,7 @@ public:
 
 private:
     auto get() const {
-        return Xml::Overload{
+        return XML::Overload{
             [](const QString& str) -> QVariant { // Строки
                 return str;
             },
@@ -91,34 +93,34 @@ private:
             []<typename T>(const T& e) -> QVariant // enum`ы
                 requires std::is_enum_v<T>
             {
-                return QString::fromStdString(std::string{enumToString(e)});
+                return QString::fromStdString(std::string{XML::toString(e)});
             },
             [this]<typename T>(const std::optional<T>& optional) -> QVariant { // перенаправление ↑↑↑
                 if(optional.has_value()) return get(optional.value());
                 return {};
             },
-            [this]<typename T>(const[[= Xml::Attr]] T& attr) -> QVariant { // перенаправление ↑↑↑
-                return get(attr.value);
+            [this]<typename T>(const[[= XML::Attr]] T& attr) -> QVariant { // перенаправление ↑↑↑
+                return get(attr);
             },
-            []<typename... Ts>(const Xml::Variant<Ts...>& variant) -> QVariant { // перенаправление ↑↑↑
-                return variant.visit([]<typename T>(const T&) { return Xml::TypeName<T>; });
+            []<typename... Ts>(const std::variant<Ts...>& variant) -> QVariant { // перенаправление ↑↑↑
+                return variant.visit([]<typename T>(const T&) { return display_string_of(^^T); });
             },
-            []<typename T>(const[[= Xml::ArrayElem]] std::vector<T>& vector) -> QVariant { // перенаправление ↑↑↑
-                return QString{"Elem: %1[%2]"}.arg(Xml::TypeName<T>).arg(vector.size());
+            []<typename T>(const[[= XML::Array]] std::vector<T>& vector) -> QVariant { // перенаправление ↑↑↑
+                return QString{"Elem: %1[%2]"}.arg(display_string_of(^^T)).arg(vector.size());
             },
-            []<typename T>(const Xml::Array<T>& vector) -> QVariant { // перенаправление ↑↑↑
-                return QString{"Field: %1[%2]"}.arg(Xml::TypeName<T>).arg(vector.size());
-            },
+            // []<typename T>(const XML::Array<T>& vector) -> QVariant { // перенаправление ↑↑↑
+            //     return QString{"Field: %1[%2]"}.arg(display_string_of(^^T)).arg(vector.size());
+            // },
             []<typename T>(const T& str) -> QVariant // чтение полей структуры
                 requires(std::is_class_v<T> && std::is_aggregate_v<T>)
             {
-                return Xml::TypeName<T>;
+                return display_string_of(^^T).data();
             },
             };
     }
 
     auto set() {
-        return Xml::Overload{
+        return XML::Overload{
             [this](QString& str) -> bool { // Строки
                 return str = value_.toString(), true;
             },
@@ -139,18 +141,18 @@ private:
                 if(set(val)) return optional = val, true;
                 return false;
             },
-            [this]<typename T>([[= Xml::Attr]] T& attr) -> bool { // перенаправление ↑↑↑
-                return set(attr.value);
+            [this]<typename T>([[= XML::Attr]] T& attr) -> bool { // перенаправление ↑↑↑
+                return set(attr);
             },
-            []<typename... Ts>(Xml::Variant<Ts...>& variant) -> bool { // перенаправление ↑↑↑
+            []<typename... Ts>(std::variant<Ts...>& variant) -> bool { // перенаправление ↑↑↑
                 return false;                                          // variant.visit([]<typename T>( T&) { return typeName<T>; });
             },
             []<typename T>(std::vector<T>& vector) -> bool { // перенаправление ↑↑↑
                 return false;                                // QString{"Elem: %1[%2]"}.arg(typeName<T>).arg(vector.size());
             },
-            []<typename T>(Xml::Array<T>& vector) -> bool { // перенаправление ↑↑↑
-                return false;                               // QString{"Field: %1[%2]"}.arg(typeName<T>).arg(vector.size());
-            },
+            // []<typename T>(XML::Array<T>& vector) -> bool { // перенаправление ↑↑↑
+            //     return false;                               // QString{"Field: %1[%2]"}.arg(typeName<T>).arg(vector.size());
+            // },
             []<typename T>(T& str) -> bool // чтение полей структуры
                 requires(std::is_class_v<T> && std::is_aggregate_v<T>)
             {

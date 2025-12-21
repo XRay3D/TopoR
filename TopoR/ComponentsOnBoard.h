@@ -128,6 +128,12 @@ struct ComponentsOnBoard {
         // Для отображения имени компонента
         //
         std::string ToString();
+        QTransform transform() const {
+            QTransform transform;
+            if(Org) transform.translate(Org.x, Org.y);
+            if(angle) transform.rotate(angle);
+            return transform;
+        }
         /***********************************************************************/
     };
     // Описание одиночного контакта..
@@ -152,6 +158,12 @@ struct ComponentsOnBoard {
         // Точка привязки объекта.
         // public Org Org;
         [[= XML::ElemF]] Org Org; /*("Org")*/
+        QTransform transform() const {
+            QTransform transform;
+            if(Org) transform.translate(Org.x, Org.y);
+            if(angle) transform.rotate(angle);
+            return transform;
+        }
     };
     // Версия раздела.
     // public string version;
