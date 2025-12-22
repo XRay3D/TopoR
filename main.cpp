@@ -67,6 +67,7 @@ int main(int argc, char* argv[]) {
 }
 
 #include "TopoR_PCB_File.h"
+#include "tree.h"
 // #include "treemodel.h"
 #include "ui_mainwindow.h"
 #include <QtWidgets>
@@ -112,17 +113,18 @@ void MainWindow::loadFile() {
     });
 
     const QStringList headers({tr("Title"), tr("Description")});
-    // TreeModel* model = new TreeModel{xml.getItem(), headers, this};
-    // ui->treeView->setModel(model);
-    // ui->treeView->header()->setSectionResizeMode(QHeaderView::Stretch);
-    // ui->treeView->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-    // ui->treeView->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    // ui->treeView->expandAll();
-    // ui->treeView->setAlternatingRowColors(true);
-    // for(int column = 0; column < model->columnCount(); ++column)
-    // ui->treeView->resizeColumnToContents(column);
+    ui->treeView->setModel(new TreeModel{
+        (new Item{*file, new TreeItem{}})->parent(),
+        ui->treeView});
+
+    ui->treeView->header()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->treeView->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->treeView->expandAll();
+    ui->treeView->setAlternatingRowColors(true);
+    for(int column = 0; column < ui->treeView->model()->columnCount(); ++column)
+        ui->treeView->resizeColumnToContents(column);
     // ui->treeView->collapseAll();
-    // connect(ui->treeView, &QTreeView::doubleClicked, [this](const QModelIndex& index) {
-    // ui->treeView->expandRecursively(index, 1);
-    // });
+    connect(ui->treeView, &QTreeView::doubleClicked, [this](const QModelIndex& index) {
+        ui->treeView->expandRecursively(index, 1);
+    });
 }

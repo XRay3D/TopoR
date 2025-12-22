@@ -114,17 +114,19 @@ static QGraphicsItem* graphicsItem(const LocalLibrary::Footprint& fp, const Topo
     return group;
 }
 
+
+
 void MainWindow::drawFile() {
-
+    /*
     for(auto&& layerOptions: file->DisplayControl.LayersVisualOptions) {
-        detailsColor[layerOptions.LayerRef] = {layerOptions.Colors.details.c_str()};
-        fixColor[layerOptions.LayerRef] = {layerOptions.Colors.fix.c_str()};
-        padsColor[layerOptions.LayerRef] = {layerOptions.Colors.pads.c_str()};
-        isDetailsVisible[layerOptions.LayerRef] = +layerOptions.Show.details;
-        isPadsVisible[layerOptions.LayerRef] = +layerOptions.Show.pads;
-        isVisible[layerOptions.LayerRef] = +layerOptions.Show.visible;
+        detailsColor.emplace(layerOptions.LayerRef, layerOptions.Colors.details.c_str());
+        fixColor.emplace(layerOptions.LayerRef, layerOptions.Colors.fix.c_str());
+        padsColor.emplace(layerOptions.LayerRef, layerOptions.Colors.pads.c_str());
+        isDetailsVisible.emplace(layerOptions.LayerRef, +layerOptions.Show.details);
+        isPadsVisible.emplace(layerOptions.LayerRef, +layerOptions.Show.pads);
+        isVisible.emplace(layerOptions.LayerRef, +layerOptions.Show.visible);
     }
-
+    */
     ui->tvContakts->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->tvContakts->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 

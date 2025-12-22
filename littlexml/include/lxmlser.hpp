@@ -192,7 +192,7 @@ inline constexpr auto toString(Enum e) -> string_view {
     switch(e) {
     template for(constexpr meta::info ENUM: std::define_static_array(enumerators_of(^^Enum)))
     case [:ENUM:]: return display_string_of(ENUM);
-    default: return {};
+    default: return ""sv;
     }
     // clang-format on
 }

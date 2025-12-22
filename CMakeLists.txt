@@ -56,8 +56,8 @@ find_package(
   REQUIRED)
 
 
-file(GLOB_RECURSE FST *.fst)
-add_custom_target(FST_Test SOURCES ${FST})
+# file(GLOB_RECURSE FST *.fst)
+# add_custom_target(FST_Test SOURCES ${FST})
 
 file(GLOB SOURCES *.cpp *.h *.ui)
 
